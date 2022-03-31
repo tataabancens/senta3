@@ -60,6 +60,7 @@
         <artifactId>postgresql</artifactId>
         <version>${org.postgresql.version}</version>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 
