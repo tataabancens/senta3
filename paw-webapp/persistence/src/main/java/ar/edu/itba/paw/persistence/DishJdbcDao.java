@@ -29,7 +29,8 @@ public class DishJdbcDao implements DishDao {
                 + "dishId SERIAL PRIMARY KEY,"
                 + "restaurantId int NOT NULL,"
                 + "dishName varchar(100) NOT NULL,"
-                + "price int NOT NULL"
+                + "price int NOT NULL,"
+                + "FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)"
                 + ")");
         jdbcTemplate.execute("INSERT INTO dish VALUES (default , 1, 'milanga', 100)");
     }
