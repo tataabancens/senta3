@@ -20,9 +20,44 @@
 
     <title>Hello, world!</title>
 </head>
-    <body>
-        <h1>Hello, world!</h1>
-        <button type="button" class="btn btn-primary"><c:out value="${user.username}"/></button>
+    <body id="order">
+        <%@ include file="components/navbar.jsp" %>
+        <h1><c:out value="${restaurant.restaurantName}"/></h1>
+        <h2>Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></h2>
+        <div class="footer">
+            <div class="buttons">
+                <a type="button" class="btn btn-primary" href="order">Reservar</a>
+                <a type="button" class="btn btn-primary" href="menu">Ver menu</a>
+                <div>
+                    <input  type="text" class="form-control" placeholder="Codigo" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+
+<style>
+    body{
+        display:flex;
+        flex-direction: column;
+        min-height: 100vh;
+
+    }
+    .footer{
+        position: absolute;
+        bottom:0;
+        width: 100%;
+        background-color: orange;
+        padding: 1em 0;
+    }
+    .buttons{
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: space-between;
+        margin-left: 30%;
+        margin-right: 30%;
+    }
+
+</style>
 
