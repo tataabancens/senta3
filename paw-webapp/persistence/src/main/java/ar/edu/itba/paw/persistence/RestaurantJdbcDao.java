@@ -37,6 +37,15 @@ public class RestaurantJdbcDao implements RestaurantDao {
                 + "phone varchar(100) NOT NULL,"
                 + "Mail varchar(50) NOT NULL"
                 + ")");
+
+        /*
+        jdbcTemplate.execute("IF NOT EXISTS (SELECT * FROM public.restaurant WHERE restaurantid=1)"
+                + "BEGIN"
+                + "INSERT INTO restaurant VALUES (1, 'El rincón enchilado'::varchar(100), '12345678'::varchar(100), 'elrincon@gmail.com'::varchar(50))"
+                + "END"
+        );
+         */
+
     }
 
 
