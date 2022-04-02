@@ -55,6 +55,7 @@ public class HelloWorldController {
         final ModelAndView mav = new ModelAndView("order");
 
         mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+        mav.addObject("dish", rs.getRestaurantDishes(1));
         return mav;
     }
 
