@@ -33,20 +33,9 @@
         </thead>
         <tbody>
         <tr>
-            <td>Milanesa</td>
-            <td>Milanesa de ternera</td>
-            <td>$500</td>
-            <td><select class="form-select">
-                <option selected>0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select></td>
-        </tr>
-        <tr>
-            <td>Empanadas</td>
-            <td>Carne, verdura, jamon y queso</td>
-            <td>$200</td>
+            <td><c:out value="${dish.get(0).dishName}"/></td>
+            <td>??</td>
+            <td>$<c:out value="${dish.get(0).price}"/></td>
             <td><select class="form-select">
                 <option selected>0</option>
                 <option value="1">1</option>

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.RestaurantDao;
@@ -24,6 +25,12 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail")));
+
+    private static final RowMapper<Dish> ROW_MAPPER_DISH = ((resultSet, i) ->
+            new Dish(resultSet.getLong("dishId"),
+                    resultSet.getLong("restaurantId"),
+                    resultSet.getString("dishName"),
+                    resultSet.getInt("price")));
 
     @Autowired
     public RestaurantJdbcDao(final DataSource ds) {
@@ -54,6 +61,13 @@ public class RestaurantJdbcDao implements RestaurantDao {
         List<Restaurant> query = jdbcTemplate.query("SELECT * FROM restaurant WHERE restaurantId = ?",
                         new Object[]{id}, ROW_MAPPER);
         return query.stream().findFirst();
+    }
+
+    @Override
+    public List<Dish> getRestaurantDishes(long restaurantId) {
+        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_DISH);
+        return query;
     }
 
     @Override

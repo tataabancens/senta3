@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +27,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {
         return null;
+    }
+
+    @Override
+    public List<Dish> getRestaurantDishes(long id) {
+        return restaurantDao.getRestaurantDishes(id);
     }
 }

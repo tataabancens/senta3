@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.model;
 
+import java.util.List;
+
 public class Restaurant {
     private long id;
     private String restaurantName;
     private String phone;
     private String mail;
+    private List<Dish> dishes;
 
     public Restaurant(long id, String username, String phone, String mail) {
         super();
@@ -28,5 +31,13 @@ public class Restaurant {
 
     public long getId() {
         return id;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
     }
 }
