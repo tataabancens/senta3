@@ -20,14 +20,14 @@
 
     <title>Hello, world!</title>
 </head>
-    <body>
+    <body id="order">
         <%@ include file="components/navbar.jsp" %>
         <h1><c:out value="${restaurant.restaurantName}"/></h1>
         <h2>Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></h2>
         <div class="footer">
             <div class="buttons">
-                <button type="button" class="btn btn-primary">Reservar</button>
-                <button type="button" class="btn btn-primary">Ver menu</button>
+                <a type="button" class="btn btn-primary" href="order">Reservar</a>
+                <a type="button" class="btn btn-primary" href="menu">Ver menu</a>
                 <div>
                     <input  type="text" class="form-control" placeholder="Codigo" aria-label="Username" aria-describedby="basic-addon1">
                 </div>

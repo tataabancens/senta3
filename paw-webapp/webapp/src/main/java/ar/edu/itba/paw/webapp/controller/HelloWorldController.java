@@ -40,6 +40,24 @@ public class HelloWorldController {
         return mav;
     }
 
+    @RequestMapping("/menu")
+    public ModelAndView menuPage(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+
+        final ModelAndView mav = new ModelAndView("menu");
+
+        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+        return mav;
+    }
+
+    @RequestMapping("/order")
+    public ModelAndView orderFood(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+
+        final ModelAndView mav = new ModelAndView("order");
+
+        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+        return mav;
+    }
+
     @RequestMapping("/profile/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
 
