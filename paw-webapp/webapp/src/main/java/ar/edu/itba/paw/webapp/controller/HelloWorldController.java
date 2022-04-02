@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.service.DishService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,13 @@ public class HelloWorldController {
 
     private UserService us;
     private RestaurantService rs;
+    private DishService ds;
 
     @Autowired
-    public HelloWorldController(final UserService us, final RestaurantService rs) {
+    public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds) {
         this.us = us;
         this.rs = rs;
+        this.ds = ds;
     }
 
     @RequestMapping("/")
@@ -32,6 +36,7 @@ public class HelloWorldController {
 
         mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
         return mav;
     }
 
