@@ -22,6 +22,8 @@
 </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
+        <h1><c:out value="${restaurant.restaurantName}"/></h1>
+        <h2>Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></h2>
         <div class="footer">
             <div class="buttons">
                 <button type="button" class="btn btn-primary">Reservar</button>
