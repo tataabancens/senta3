@@ -22,12 +22,19 @@
 </head>
     <body id="order">
         <%@ include file="components/navbar.jsp" %>
-        <h1><c:out value="${restaurant.restaurantName}"/></h1>
-        <h2>Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></h2>
+
+        <div class="card" style="width: 18rem;">
+            <!-- TODO reemplazar por una imagen de la bd -->
+            <img class="card-img-top" src="components/default.jpg" alt="Card image cap" >
+            <div class="card-body">
+                <h5 class="card-title"><c:out value="${restaurant.restaurantName}"/></h5>
+                <p class="card-text">Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></p>
+                <a type="button" class="btn btn-primary" href="menu">Ver menu</a>
+            </div>
+        </div>
         <div class="footer">
             <div class="buttons">
                 <a type="button" class="btn btn-primary" href="order">Reservar</a>
-                <a type="button" class="btn btn-primary" href="menu">Ver menu</a>
                 <div>
                     <input  type="text" class="form-control" placeholder="Codigo" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
@@ -57,6 +64,12 @@
         justify-content: space-between;
         margin-left: 30%;
         margin-right: 30%;
+    }
+    .card {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        margin: -25px 0 0 -25px;
     }
 
 </style>
