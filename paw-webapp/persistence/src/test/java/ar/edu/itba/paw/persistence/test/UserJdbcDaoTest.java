@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.UserJdbcDao;
-import com.sun.javafx.collections.MappingChange;
 import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.jdbc.JdbcTestUtils;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 
 import java.util.HashMap;
@@ -34,40 +32,58 @@ public class UserJdbcDaoTest {
         ds.setPassword("");
         userDao = new UserJdbcDao(ds);
         jdbcTemplate = new JdbcTemplate(ds);
-        jdbcInsert = new SimpleJdbcInsert(ds);
+        jdbcInsert = new SimpleJdbcInsert(ds)
+                .withTableName("users")
+                .usingGeneratedKeyColumns("id");
+
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users (" +
+                "userId INTEGER IDENTITY PRIMARY KEY," +
+                "username varchar(100)," +
+                "password varchar(100)" +
+                ")");
     }
 
     @Test
     public void testCreateUser(){
+        // 1. Precondiciones
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+
+        // 2. Ejercitacion
         User user = userDao.create("pepe", "pass");
+
+        // 3. PostCondiciones
         Assert.assertNotNull(user);
         Assert.assertEquals("pepe", user.getUsername());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }
 
     @Test
-    public void testUserDoesntExist(){
-
+    public void testFindUserByIdDoesntExist(){
+        // 1. Precondiciones
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
 
+        // 2. Ejercitacion
         Optional<User> maybeUser = userDao.getUserById(1);
 
+        // 3. PostCondiciones
         Assert.assertFalse(maybeUser.isPresent());
 
     }
 
     @Test
-    public void testUserExists(){
-
+    public void testFindUserByIdExists(){
+        // 1. Precondiciones
         Map<String, String> map = new HashMap<>();
         map.put("username", "pepe");
 
         JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
-        jdbcInsert.executeAndReturnKey(map);
+        Number key = jdbcInsert.executeAndReturnKey(map);
 
-        Optional<User> maybeUser = userDao.getUserById(1);
+        // 2. Ejercitacion
+        Optional<User> maybeUser = userDao.getUserById(key.longValue());
 
-        Assert.assertFalse(maybeUser.isPresent());
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeUser.isPresent());
         Assert.assertEquals("pepe", maybeUser.get().getUsername());
     }
 }
