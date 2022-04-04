@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class Reservation {
     private long reservationId;
     private long restaurantId;
+    private long customerId;
     private Timestamp reservationDate;
 
     public Reservation(long reservationId, long restaurantId, Timestamp reservationDate){
@@ -30,6 +31,14 @@ public class Reservation {
 
     public Timestamp getReservationDate() {
         return reservationDate;
+    }
+
+    public long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     public void setReservationDate(Timestamp reservationDate) {

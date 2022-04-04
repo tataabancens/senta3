@@ -9,6 +9,6 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationById(long id);
 
-    Reservation create(long restaurantId, Timestamp reservationDate);
+    Reservation create(long restaurantId, long customerId, Timestamp reservationDate);
 
 }

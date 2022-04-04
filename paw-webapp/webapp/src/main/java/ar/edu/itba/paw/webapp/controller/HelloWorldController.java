@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.service.DishService;
-import ar.edu.itba.paw.service.ReservationService;
-import ar.edu.itba.paw.service.RestaurantService;
-import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
@@ -24,12 +21,15 @@ public class HelloWorldController {
     private RestaurantService rs;
     private DishService ds;
     private ReservationService reservationService;
+    private CustomerService cs;
 
     @Autowired
-    public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds, final ReservationService reservationService) {
+    public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds,
+                                final ReservationService reservationService, final CustomerService cs) {
         this.us = us;
         this.rs = rs;
         this.ds = ds;
+        this.cs = cs;
         this.reservationService = reservationService;
     }
 
