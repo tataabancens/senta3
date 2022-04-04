@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.DishService;
+import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
@@ -15,18 +16,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Properties;
+
 @Controller
 public class HelloWorldController {
 
     private UserService us;
     private RestaurantService rs;
     private DishService ds;
+    private MailingService ms;
 
     @Autowired
-    public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds) {
+    public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds, final MailingService ms) {
         this.us = us;
         this.rs = rs;
         this.ds = ds;
+        this.ms = ms;
     }
 
     @RequestMapping("/")
@@ -57,6 +62,8 @@ public class HelloWorldController {
 
         mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("dish", rs.getRestaurantDishes(1));
+        ms.sendEmail("smtp.gmail.com","sentate.paw","xblgoodfhlnunfmq","sentate.paw@gmail.com"
+                ,"gonzarossin@gmail.com","Test mail","This is a sample message. Thank you.");
         return mav;
     }
 

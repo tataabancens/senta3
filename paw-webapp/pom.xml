@@ -15,6 +15,7 @@
     <servlet-api.version>2.5</servlet-api.version>
     <jstl.version>1.2</jstl.version>
     <org.postgresql.version>42.2.5</org.postgresql.version>
+    <javax.mail.version>1.4</javax.mail.version>
   </properties>
 
   <dependencyManagement>
@@ -60,7 +61,11 @@
         <artifactId>postgresql</artifactId>
         <version>${org.postgresql.version}</version>
       </dependency>
-
+      <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>${javax.mail.version}</version>
+    </dependency>
     </dependencies>
   </dependencyManagement>
 
