@@ -17,16 +17,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloWorldController {
 
-    private UserService us;
+//    private UserService us;
     private RestaurantService rs;
     private DishService ds;
     private ReservationService reservationService;
     private CustomerService cs;
 
     @Autowired
-    public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds,
+    public HelloWorldController(final RestaurantService rs, final DishService ds,
                                 final ReservationService reservationService, final CustomerService cs) {
-        this.us = us;
+//        this.us = us;
         this.rs = rs;
         this.ds = ds;
         this.cs = cs;
@@ -38,7 +38,7 @@ public class HelloWorldController {
 
         final ModelAndView mav = new ModelAndView("index");
 
-        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
         mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
         mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
@@ -50,7 +50,7 @@ public class HelloWorldController {
 
         final ModelAndView mav = new ModelAndView("menu");
 
-        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         return mav;
     }
 
@@ -59,7 +59,7 @@ public class HelloWorldController {
 
         final ModelAndView mav = new ModelAndView("order");
 
-        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("dish", rs.getRestaurantDishes(1));
         return mav;
     }
@@ -69,7 +69,7 @@ public class HelloWorldController {
 
         final ModelAndView mav = new ModelAndView("profile");
 
-        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         return mav;
     }
 
@@ -77,7 +77,7 @@ public class HelloWorldController {
     public ModelAndView goodbyeWorld() {
         final ModelAndView mav = new ModelAndView("byebye");
 
-        mav.addObject("user", us.getUserByID(1).orElseThrow(UserNotFoundException::new));
+//        mav.addObject("user", us.getUserByID(1).orElseThrow(UserNotFoundException::new));
         return mav;
     }
 }

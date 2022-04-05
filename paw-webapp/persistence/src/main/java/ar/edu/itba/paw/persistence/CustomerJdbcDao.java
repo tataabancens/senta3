@@ -32,12 +32,6 @@ public class CustomerJdbcDao implements CustomerDao {
         this.jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("customer")
                 .usingGeneratedKeyColumns("customerId");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS customer ("
-                + "customerId SERIAL PRIMARY KEY,"
-                + "customerName varchar(50) NOT NULL,"
-                + "Phone varchar(50) NOT NULL,"
-                + "Mail varchar(50)"
-                + ")");
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Optional;
 public class RestaurantJdbcDao implements RestaurantDao {
 
     private final JdbcTemplate jdbcTemplate;
-//    private final SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert jdbcInsert;
 
     private static final RowMapper<Restaurant> ROW_MAPPER = ((resultSet, i) ->
             new Restaurant(resultSet.getLong("restaurantId"),
@@ -35,23 +35,9 @@ public class RestaurantJdbcDao implements RestaurantDao {
     @Autowired
     public RestaurantJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-//        jdbcInsert = new SimpleJdbcInsert(ds)
-//                .withTableName("Restaurant")
-//                .usingGeneratedKeyColumns("restaurantId");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS restaurant ("
-                + "restaurantId SERIAL PRIMARY KEY,"
-                + "restaurantName varchar(100) NOT NULL,"
-                + "phone varchar(100) NOT NULL,"
-                + "Mail varchar(50) NOT NULL"
-                + ")");
-
-        /*
-        jdbcTemplate.execute("IF NOT EXISTS (SELECT * FROM public.restaurant WHERE restaurantid=1)"
-                + "BEGIN"
-                + "INSERT INTO restaurant VALUES (1, 'El rincón enchilado'::varchar(100), '12345678'::varchar(100), 'elrincon@gmail.com'::varchar(50))"
-                + "END"
-        );
-         */
+        jdbcInsert = new SimpleJdbcInsert(ds)
+                .withTableName("Restaurant")
+                .usingGeneratedKeyColumns("restaurantId");
 
     }
 

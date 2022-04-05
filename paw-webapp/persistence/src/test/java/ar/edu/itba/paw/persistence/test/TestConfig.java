@@ -15,6 +15,9 @@ import javax.sql.DataSource;
 @Configuration
 public class TestConfig {
 
+    @Value("classpath:sql/hsqldb.sql")
+    private Resource hsqldbSql;
+
     @Value("classpath:sql/schema.sql")
     private Resource schemaSql;
 
@@ -40,6 +43,7 @@ public class TestConfig {
 
     public DatabasePopulator databasePopulator() {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(hsqldbSql);
         populator.addScript(schemaSql);
         return populator;
     }

@@ -25,14 +25,6 @@ public class DishJdbcDao implements DishDao {
     @Autowired
     public DishJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS dish ("
-                + "dishId SERIAL PRIMARY KEY,"
-                + "restaurantId int NOT NULL,"
-                + "dishName varchar(100) NOT NULL,"
-                + "price int NOT NULL,"
-                + "FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)"
-                + ")");
-        jdbcTemplate.execute("INSERT INTO dish VALUES (default , 1, 'milanga', 100)");
     }
 
     @Override

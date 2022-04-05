@@ -34,14 +34,6 @@ public class ReservationJdbcDao implements ReservationDao {
         jdbcInsert = new SimpleJdbcInsert(ds)
             .withTableName("reservation")
             .usingGeneratedKeyColumns("reservationId");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS reservation ("
-                + "reservationId SERIAL PRIMARY KEY,"
-                + "restaurantId integer NOT NULL,"
-                + "customerId integer NOT NULL,"
-                + "reservationDate timestamp,"
-                + "FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),"
-                + "FOREIGN KEY (customerId) REFERENCES customer (customerId)"
-                + ")");
     }
 
     @Override
