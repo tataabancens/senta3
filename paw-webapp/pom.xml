@@ -16,6 +16,7 @@
     <jstl.version>1.2</jstl.version>
     <org.postgresql.version>42.2.5</org.postgresql.version>
     <org.hsqldb.version>2.3.1</org.hsqldb.version>
+    <mockito.version>2.25.1</mockito.version>
   </properties>
 
   <dependencyManagement>
@@ -79,6 +80,13 @@
         <version>${org.hsqldb.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
