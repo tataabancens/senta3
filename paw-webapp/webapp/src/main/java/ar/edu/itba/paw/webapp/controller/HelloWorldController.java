@@ -62,8 +62,7 @@ public class HelloWorldController {
 
         mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("dish", rs.getRestaurantDishes(1));
-        ms.sendEmail("smtp.gmail.com","sentate.paw","xblgoodfhlnunfmq","sentate.paw@gmail.com"
-                ,"gonzarossin@gmail.com","Test mail","This is a sample message. Thank you.");
+        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
         return mav;
     }
 

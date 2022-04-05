@@ -13,31 +13,34 @@ import java.util.Properties;
 
 @Service
 public class MailingServiceImpl implements MailingService{
+    private final String FROMADDRESS="sentate.paw@gmail.com";
+    private final String USERNAME="sentate.paw";
+    private final String PASSWORD="xblgoodfhlnunfmq";
 
-    @Override
-    public void sendEmail(String host, String username, String password, String fromEmailAddress, String toEmailAddress,
+    public void sendConfirmationEmail(Restaurant restaurant){
+        Properties properties=setProperties();
+        String subject="reservation data";
+        String messageText="your reservation is confirmed, if you need to contact the restaurant, this is their email: "
+                +restaurant.getMail();
+        String toAddress="gonzarossin@gmail.com";
+        sendEmail(properties,toAddress,subject,messageText);
+    }
+
+    private void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageText) {
-
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.socketFactory.port", "465");
-        properties.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.port", "465");
 
         Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication
                     getPasswordAuthentication() {
-                        return new PasswordAuthentication(username,
-                                password);
+                        return new PasswordAuthentication(USERNAME,
+                                PASSWORD);
                     }
                 });
         try {
-            Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(fromEmailAddress));
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(FROMADDRESS));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toEmailAddress));
             msg.setSubject(subject);
@@ -46,5 +49,15 @@ public class MailingServiceImpl implements MailingService{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    private Properties setProperties(){
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        return properties;
     }
 }
