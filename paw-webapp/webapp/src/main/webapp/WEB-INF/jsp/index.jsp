@@ -23,6 +23,8 @@
     <body id="order">
         <%@ include file="components/navbar.jsp" %>
         <h1><c:out value="${restaurant.restaurantName}"/></h1>
+        <h1>Tenes una reserva con el siguiente codigo: <c:out value="${reservation.reservationId}"/></h1>
+        <h1>A las <c:out value="${reservation.reservationDate}"/></h1>
         <h2>Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></h2>
         <div class="footer">
             <div class="buttons">
