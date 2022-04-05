@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,12 @@ public class MailingServiceImpl implements MailingService{
     private final String USERNAME="sentate.paw";
     private final String PASSWORD="xblgoodfhlnunfmq";
 
-    public void sendConfirmationEmail(Restaurant restaurant){
+    public void sendConfirmationEmail(Restaurant restaurant , Customer customer){
         Properties properties=setProperties();
         String subject="reservation data";
         String messageText="your reservation is confirmed, if you need to contact the restaurant, this is their email: "
                 +restaurant.getMail();
-        String toAddress="gonzarossin@gmail.com";
-        sendEmail(properties,toAddress,subject,messageText);
+        sendEmail(properties,customer.getMail(),subject,messageText);
     }
 
     private void sendEmail(Properties properties, String toEmailAddress,

@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.service.*;
-import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -28,7 +25,7 @@ public class HelloWorldController {
 
     @Autowired
     public HelloWorldController(final UserService us, final RestaurantService rs, final DishService ds,
-                                final ReservationService reservationService, final CustomerService cs) {
+                                final ReservationService reservationService, final CustomerService cs, final MailingService ms) {
         this.us = us;
         this.rs = rs;
         this.ds = ds;
@@ -66,7 +63,8 @@ public class HelloWorldController {
 
         mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("dish", rs.getRestaurantDishes(1));
-        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                cs.getUserByID(1).orElseThrow(CustomerNotFoundException::new));
         return mav;
     }
 
