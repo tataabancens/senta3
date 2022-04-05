@@ -22,16 +22,10 @@
 </head>
     <body id="order">
         <%@ include file="components/navbar.jsp" %>
-
-        <div class="card" style="width: 18rem;">
-            <!-- TODO reemplazar por una imagen de la bd -->
-            <img class="card-img-top" src="components/default.jpg" alt="Card image cap" >
-            <div class="card-body">
-                <h5 class="card-title"><c:out value="${restaurant.restaurantName}"/></h5>
-                <p class="card-text">Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></p>
-                <a type="button" class="btn btn-primary" href="menu">Ver menu</a>
-            </div>
-        </div>
+        <h1><c:out value="${restaurant.restaurantName}"/></h1>
+        <h1>Tenes una reserva con el siguiente codigo: <c:out value="${reservation.reservationId}"/></h1>
+        <h1>A las <c:out value="${reservation.reservationDate}"/></h1>
+        <h2>Contacto: <c:out value="${restaurant.mail}"/> <c:out value="${restaurant.phone}"/></h2>
         <div class="footer">
             <div class="buttons">
                 <a type="button" class="btn btn-primary" href="order">Reservar</a>
