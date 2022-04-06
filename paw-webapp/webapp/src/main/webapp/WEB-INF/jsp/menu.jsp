@@ -20,29 +20,42 @@
 
     <title>Hello, world!</title>
 </head>
-<body id="menu">
-    <%@ include file="components/navbar.jsp" %>
-
-    <!-- mockeado por ahora! TODO cambiar por lo que viene de la db -->
-    <table class="table table-striped">
+<body>
+<%@ include file="components/navbar.jsp" %>
+<div class="container">
+    <table class="table table-bordered">
         <thead>
         <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">Precio</th>
+            <th class="name" scope="col">Nombre</th>
+            <th scope="col" class="price">Precio</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Milanesa</td>
-            <td>Milanesa de ternera</td>
-            <td>$500</td>
-        </tr>
-        <tr>
-            <td>Empanadas</td>
-            <td>Carne, verdura, jamon y queso</td>
-            <td>$200</td>
-        </tr>
+        <c:forEach var="dish" items="${dish}">
+            <tr>
+                <td class="name"><c:out value="${dish.dishName}"/></td>
+                <td class="price">$<c:out value="${dish.price}"/></td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
+</div>
 </body>
+</html>
+
+<style>
+    .container{
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        margin: -25px 0 0 -25px;
+    }
+    .price{
+        width: 20px;
+        text-align: center;
+    }
+    .name{
+        width: 150px;
+        text-align: center;
+    }
+</style>

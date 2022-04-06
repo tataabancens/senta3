@@ -36,7 +36,7 @@ public class CustomerJdbcDao implements CustomerDao {
 
     @Override
     public Optional<Customer> getCustomerById(long id) {
-        List<Customer> query = jdbcTemplate.query("SELECT * FROM customer WHERE reservationId = ?", new Object[]{id}, ROW_MAPPER);
+        List<Customer> query = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{id}, ROW_MAPPER);
         return query.stream().findFirst();
     }
 

@@ -29,7 +29,6 @@
         <div class="footer">
             <div class="buttons">
                 <a type="button" class="btn btn-primary" href="order">Reservar</a>
-                <a type="button" class="btn btn-primary" href="menu">Ver menu</a>
                 <div>
                     <input  type="text" class="form-control" placeholder="Codigo" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
@@ -59,6 +58,12 @@
         justify-content: space-between;
         margin-left: 30%;
         margin-right: 30%;
+    }
+    .card {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        margin: -25px 0 0 -25px;
     }
 
 </style>
