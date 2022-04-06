@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS customer (
 );
 
 INSERT INTO customer (customername, phone, Mail)
-VALUES('Juan el loco','110502517', 'elmasloco@gmail.com');
+VALUES('Juan el loco','110502517', 'uriel.mihuraa@gmail.com');
 
 CREATE TABLE IF NOT EXISTS restaurant (
   restaurantId SERIAL PRIMARY KEY,

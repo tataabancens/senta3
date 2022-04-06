@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
@@ -43,6 +44,8 @@ public class MailingServiceImpl implements MailingService{
             msg.setFrom(new InternetAddress(FROMADDRESS));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toEmailAddress));
+            System.out.println("sending mail to " + Arrays.toString(msg.getAllRecipients()));
+
             msg.setSubject(subject);
             msg.setText(messageText);
             Transport.send(msg);
