@@ -17,11 +17,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class userServiceImplTest {
 
-    @InjectMocks
-    private UserServiceImpl userService = new UserServiceImpl();
-
     @Mock
     private UserDao userDao;
+
+    @InjectMocks
+    private UserServiceImpl userService = new UserServiceImpl(userDao);
 
 
     @Test
