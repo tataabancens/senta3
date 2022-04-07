@@ -1,6 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
 
 <!doctype html>
 <html lang="en">
@@ -16,7 +14,7 @@
 
     <title>Hello, world!</title>
 </head>
-    <body id="order">
+    <body>
         <%@ include file="components/navbar.jsp" %>
 
         <div class="row">
@@ -26,7 +24,7 @@
                         <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
                         <span class="text"><c:out value="${restaurant.phone}"/></span>
                         <div>
-                            <a class="waves-effect waves-light btn reservation-btn">Reservar</a>
+                            <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
                         </div>
                     </div>
                 </div>
