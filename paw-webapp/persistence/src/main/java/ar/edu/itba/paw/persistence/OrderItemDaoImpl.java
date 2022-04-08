@@ -6,11 +6,12 @@ import ar.edu.itba.paw.persistance.OrderItemDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+@Repository
 public class OrderItemDaoImpl implements OrderItemDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -30,7 +31,22 @@ public class OrderItemDaoImpl implements OrderItemDao {
 
     @Override
     public List<OrderItem> addOrderItemsByReservationId(long reservationId, List<OrderItem> orderItems) {
-        return null;
+        List<Map<String, ?>> maps = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItems) {
+            final Map<String, Object> orderItemData = new HashMap<>();
+            orderItemData.put("dishId", orderItem.getDishId());
+            orderItemData.put("reservationId", orderItem.getReservationId());
+            orderItemData.put("unitPrice", orderItem.getUnitPrice());
+            orderItemData.put("quantity", orderItem.getQuantity());
+            orderItemData.put("Staus", orderItem.getStatus());
+            maps.add(orderItemData);
+        }
+
+        Map<String, ?>[] toExecute = new Map[maps.size()] ;
+        toExecute = maps.toArray(toExecute);
+        jdbcInsert.executeBatch(maps.toArray(toExecute));
+        return orderItems;
     }
 
     @Override
