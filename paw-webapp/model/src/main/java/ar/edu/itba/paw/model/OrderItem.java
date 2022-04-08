@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.model;
 
+import java.util.Objects;
+
 public class OrderItem {
     private long reservationId;
     private long dishId;
@@ -53,5 +55,18 @@ public class OrderItem {
 
     public int getStatus() {
         return status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItem orderItem = (OrderItem) o;
+        return reservationId == orderItem.reservationId && dishId == orderItem.dishId && Float.compare(orderItem.unitPrice, unitPrice) == 0 && quantity == orderItem.quantity && status == orderItem.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reservationId, dishId, unitPrice, quantity, status);
     }
 }

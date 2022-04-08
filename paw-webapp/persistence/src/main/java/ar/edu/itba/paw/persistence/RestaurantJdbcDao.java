@@ -20,7 +20,7 @@ public class RestaurantJdbcDao implements RestaurantDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<Restaurant> ROW_MAPPER = ((resultSet, i) ->
+    private static final RowMapper<Restaurant> ROW_MAPPER_RESTAURANT = ((resultSet, i) ->
             new Restaurant(resultSet.getLong("restaurantId"),
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
@@ -45,7 +45,7 @@ public class RestaurantJdbcDao implements RestaurantDao {
     @Override
     public Optional<Restaurant> getRestaurantById(long id) {
         List<Restaurant> query = jdbcTemplate.query("SELECT * FROM restaurant WHERE restaurantId = ?",
-                        new Object[]{id}, ROW_MAPPER);
+                        new Object[]{id}, ROW_MAPPER_RESTAURANT);
         return query.stream().findFirst();
     }
 
