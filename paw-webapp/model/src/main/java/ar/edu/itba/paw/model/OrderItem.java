@@ -5,14 +5,14 @@ public class OrderItem {
     private long dishId;
     private float unitPrice;
     private int quantity;
-    private OrderItemStatus status;
+    private int status;
 
-    public OrderItem(long reservationId, long dishId, float unitPrice, int quantity /*, OrderItemStatus status */) {
+    public OrderItem(long reservationId, long dishId, float unitPrice, int quantity , int status) {
         this.reservationId = reservationId;
         this.dishId = dishId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        //this.status = status;
+        this.status = status;
     }
 
     public void setReservationId(long reservationId) {
@@ -31,7 +31,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public void setStatus(OrderItemStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -51,7 +51,7 @@ public class OrderItem {
         return quantity;
     }
 
-    public OrderItemStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 }

@@ -16,20 +16,13 @@ public class OrderItemDaoImpl implements OrderItemDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
-    /*
-    * reservationId;
-    private long dishId;
-    private float unitPrice;
-    private int quantity;
-    private OrderItemStatus status;
-    * */
 
     private static final RowMapper<OrderItem> ROW_MAPPER = ((resultSet, i) ->
             new OrderItem(resultSet.getLong("reservationId"),
                     resultSet.getLong("dishId"),
                     resultSet.getFloat("unitPrice"),
-                    resultSet.getInt("quantity")
-                    ));
+                    resultSet.getInt("quantity"),
+                    resultSet.getInt("status")));
 
 
     private static final RowMapper<Dish> ROW_MAPPER_STATUS = ((resultSet, i) ->
@@ -77,10 +70,9 @@ public class OrderItemDaoImpl implements OrderItemDao {
         return query;
     }
 
-    // TODO hacer bien
     @Override
     public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE status = ?",
+        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE status = ? AND reservationId = ?",
                 new Object[]{reservationId}, ROW_MAPPER);
         return query;
     }
