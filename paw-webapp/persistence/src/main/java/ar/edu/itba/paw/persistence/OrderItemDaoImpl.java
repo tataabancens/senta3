@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.model.OrderItemStatus;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.OrderItemDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +16,27 @@ public class OrderItemDaoImpl implements OrderItemDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    /*
+    * reservationId;
+    private long dishId;
+    private float unitPrice;
+    private int quantity;
+    private OrderItemStatus status;
+    * */
+
+    private static final RowMapper<OrderItem> ROW_MAPPER = ((resultSet, i) ->
+            new OrderItem(resultSet.getLong("reservationId"),
+                    resultSet.getLong("dishId"),
+                    resultSet.getFloat("unitPrice"),
+                    resultSet.getInt("quantity")
+                    ));
+
+
+    private static final RowMapper<Dish> ROW_MAPPER_STATUS = ((resultSet, i) ->
+            new Dish(resultSet.getLong("dishId"),
+                    resultSet.getLong("restaurantId"),
+                    resultSet.getString("dishName"),
+                    resultSet.getInt("price")));
 
     @Autowired
     public OrderItemDaoImpl(final DataSource ds) {
@@ -50,12 +71,17 @@ public class OrderItemDaoImpl implements OrderItemDao {
     }
 
     @Override
-    public List<Optional<OrderItem>> getOrderItemsByReservationId(long reservationId) {
-        return null;
+    public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
+        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE reservationId = ?",
+                new Object[]{reservationId}, ROW_MAPPER);
+        return query;
     }
 
+    // TODO hacer bien
     @Override
-    public List<Optional<OrderItem>> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-        return null;
+    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE status = ?",
+                new Object[]{reservationId}, ROW_MAPPER);
+        return query;
     }
 }

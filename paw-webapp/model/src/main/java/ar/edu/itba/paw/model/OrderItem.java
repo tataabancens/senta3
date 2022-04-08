@@ -7,12 +7,12 @@ public class OrderItem {
     private int quantity;
     private OrderItemStatus status;
 
-    public OrderItem(long reservationId, long dishId, float unitPrice, int quantity, OrderItemStatus status) {
+    public OrderItem(long reservationId, long dishId, float unitPrice, int quantity /*, OrderItemStatus status */) {
         this.reservationId = reservationId;
         this.dishId = dishId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        this.status = status;
+        //this.status = status;
     }
 
     public void setReservationId(long reservationId) {
