@@ -18,7 +18,7 @@
 <body>
 <nav>
     <div class="nav-wrapper navbar">
-        <span class="logo">Sentate</span>
+        <span class="logo">Senta3</span>
 
     </div>
 </nav>
