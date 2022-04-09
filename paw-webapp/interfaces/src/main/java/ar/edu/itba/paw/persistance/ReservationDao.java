@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface ReservationDao {
 
+
     Optional<Reservation> getReservationById(long id);
 
     Reservation create(long restaurantId, long customerId, Timestamp reservationDate);
@@ -18,6 +19,6 @@ public interface ReservationDao {
 
     List<OrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+    List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
 
 }

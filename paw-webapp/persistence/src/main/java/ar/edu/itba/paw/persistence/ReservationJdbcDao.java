@@ -85,7 +85,7 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
         List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE status = ? AND reservationId = ?",
                 new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
