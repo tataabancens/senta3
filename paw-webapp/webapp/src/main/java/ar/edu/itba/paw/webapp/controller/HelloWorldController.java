@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Controller
 public class HelloWorldController {
@@ -47,9 +48,8 @@ public class HelloWorldController {
         }
         final ModelAndView mav = new ModelAndView("index");
         Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
-        Timestamp timestamp=new Timestamp(6000000);
         Reservation reservation=reservationService.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer,timestamp);
+                customer,new Timestamp(form.getDate().getTime()+form.getTimeInEpoch()));
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                                     customer);
         mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
