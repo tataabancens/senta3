@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Dish;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
@@ -11,12 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 @Controller
 public class HelloWorldController {
 
-//    private UserService us;
     private RestaurantService rs;
     private DishService ds;
     private ReservationService reservationService;
@@ -32,30 +35,6 @@ public class HelloWorldController {
         this.cs = cs;
         this.reservationService = reservationService;
     }
-
-    @RequestMapping("/")
-    public ModelAndView helloWorld(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        final ModelAndView mav = new ModelAndView("index");
-
-//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
-        return mav;
-    }
-
-    /*@RequestMapping("/register")
-    public ModelAndView register(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        final ModelAndView mav = new ModelAndView("register");
-
-//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
-        return mav;
-    }*/
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
@@ -90,7 +69,6 @@ public class HelloWorldController {
 
         final ModelAndView mav = new ModelAndView("order");
 
-//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("dish", rs.getRestaurantDishes(1));
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                 cs.getUserByID(1).orElseThrow(CustomerNotFoundException::new));
