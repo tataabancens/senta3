@@ -11,30 +11,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
-    <title>Hello, world!</title>
+    <title>Sentate</title>
 </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
 
         <div class="row">
-            <div class="col s12 m6">
+            <div class="col s12 m12">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
                         <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
                         <span class="text"><c:out value="${restaurant.phone}"/></span>
-                        <div>
-                            <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
+                        <div class="row">
+                                <a class="waves-effect waves-light btn reservation-btn green" href="register">Reservar</a>
+                                <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Ya tengo reserva</a>
+                                <a class="waves-effect waves-light btn reservation-btn already-reserved-btn red">cancelar reserva</a>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Ya tengo reserva</a>
-                </div>
+
             </div>
-
-
+        </div>
+        <div class="row">
             <div class="col s12 m6">
-                <div class="card dish-card">
+                <c:forEach var="dish" items="${restaurant.dishes}">
+                    <div class="card dish-card">
+                        <div class="card-content white-text">
+                            <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
+                            <p class="description">I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                            <p class="price">$<c:out value="${dish.price}"/></p>
+                        </div>
+                    </div>
+                </c:forEach>
+               <!-- <div class="card dish-card">
                     <div class="card-content white-text">
                         <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
 
@@ -42,29 +52,8 @@
                             I am convenient because I require little markup to use effectively.</p>
                         <p class="price">$<c:out value="${dish.price}"/></p>
                     </div>
-                </div>
-                <div class="card dish-card">
-                    <div class="card-content white-text">
-                        <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-
-                        <p class="description">I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
-                    </div>
-                </div>
+                </div>-->
             </div>
-
-            <div class="col s12 m6">
-                <div class="card dish-card">
-                    <div class="card-content white-text">
-                        <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                        <p class="description">I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </body>
 </html>
@@ -85,7 +74,8 @@
     }
 
     .restaurant-card{
-        width: 70%;
+        width: 45%;
+        height: 20%;
     }
 
     .dish-card{
