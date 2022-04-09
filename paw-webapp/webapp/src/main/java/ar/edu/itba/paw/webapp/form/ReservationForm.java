@@ -11,14 +11,12 @@ public class ReservationForm {
     @Pattern(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")
     private String mail;
 
-    //@Size(min = 3, max = 50)
-    //@Pattern(regexp = "[a-zA-Z]+ \\s [a-zA-Z]+")
+    @Size(min = 1, max = 50)
+    @Pattern(regexp = "^[a-z ,.'-]+$")
     private String name;
-    //@Size(min = 8, max = 8)
-    //@Pattern(regexp = "[0-9]-[0-9]")
+    @Size(min = 10, max = 13)
+    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
-
-    //private Timestamp reservationDate;
 
     public String getPhone() {
         return phone;
@@ -44,7 +42,4 @@ public class ReservationForm {
         return name;
     }
 
-    //public Timestamp getReservationDate() {
-   //     return reservationDate;
-   // }
 }
