@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
@@ -49,14 +50,8 @@ public class HelloWorldController {
         return mav;
     }
 
-    @RequestMapping("/menu")
-    public ModelAndView menuPage(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
 
-        final ModelAndView mav = new ModelAndView("old/menu");
 
-        mav.addObject("dish", rs.getRestaurantDishes(1));
-        return mav;
-    }
 
     @RequestMapping("/order")
     public ModelAndView orderFood(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
