@@ -69,4 +69,18 @@ public class RestaurantController {
         return mav;
     }
 
+    @RequestMapping("/notify/{reservationId}")
+    public ModelAndView notifyCustomer(@PathVariable("reservationId") final int reservationId){
+        final ModelAndView mav = new ModelAndView("notifyCustomer");
+
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        Optional<Reservation> reservation = Optional.ofNullable(res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new));
+        mav.addObject("reservation", reservation);
+
+
+        return mav;
+    }
+
 }

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
 
 @Controller
 public class HelloWorldController {
@@ -45,11 +47,14 @@ public class HelloWorldController {
         }
         final ModelAndView mav = new ModelAndView("index");
         Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
+        Timestamp timestamp=new Timestamp(6000000);
+        Reservation reservation=reservationService.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                customer,timestamp);
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                                     customer);
         mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
         mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
+        mav.addObject("reservation", reservation);
         return mav;
     }
 
