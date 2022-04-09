@@ -17,7 +17,8 @@
     <%@ include file="components/navbar.jsp" %>
 
     <div class="row">
-        <div class="col s3"></div>
+        <div class="col s3"></div>     <!-- acá va el restaurant card -->
+
 
         <c:url value="/register" var="postPath"/>
         <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
@@ -47,14 +48,14 @@
                         </div>
                     </div>
 
-                    <div class="col s12 btns">
-                        <input type="submit" value="Confirmar"/>
+                    <div class="col s12 center">
+                        <!-- acá va un href -->
+                            <input type="submit" value="Continuar" class="continue-btn"/>
                     </div>-->
                 </div>
             </div>
         </div>
         </form:form>
-        </div>
     </div>
 </body>
 </html>
@@ -66,15 +67,6 @@
     }
     .text{
         color:  #707070;
-    }
-
-    .btns{
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-        justify-content: space-between;
-        margin-left: 30%;
-        margin-right: 30%;
     }
 
     .card{
@@ -92,6 +84,8 @@
 
 
     .continue-btn{
+        padding-inline: 7%;
+        padding-block: 1%;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
@@ -120,6 +114,10 @@
 
     .input{
         margin-bottom: 1px;
+    }
+
+    .center{
+        align-items: center;
     }
 
 </style>
