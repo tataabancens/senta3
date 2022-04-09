@@ -46,13 +46,6 @@
                             <form:input path="name" type="text"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                            <form:errors path="timestamp" element="p" cssStyle="color: red"/>
-                            <form:label path="timestamp" class="helper-text" data-error="wrong" data-success="right">Dia y hora</form:label>
-                            <form:input path="timestamp" type="timestamp"/>
-                        </div>
-                    </div>
 
                     <div class="col s12 btns">
                         <input type="submit" value="Confirmar"/>
