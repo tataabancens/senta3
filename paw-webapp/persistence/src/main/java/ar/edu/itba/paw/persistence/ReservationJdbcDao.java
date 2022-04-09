@@ -61,22 +61,19 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> addOrderItemsByReservationId(long reservationId, List<OrderItem> orderItems) {
-        List<Map<String, ?>> maps = new ArrayList<>();
-
-        for (OrderItem orderItem : orderItems) {
+    public List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems) {
+        Map<String, ?>[] maps = new Map[orderItems.size()];
+        for (int i = 0; i < maps.length; i++) {
             final Map<String, Object> orderItemData = new HashMap<>();
-            orderItemData.put("dishId", orderItem.getDishId());
-            orderItemData.put("reservationId", orderItem.getReservationId());
-            orderItemData.put("unitPrice", orderItem.getUnitPrice());
-            orderItemData.put("quantity", orderItem.getQuantity());
-            orderItemData.put("Staus", orderItem.getStatus());
-            maps.add(orderItemData);
-        }
+            orderItemData.put("dishId", orderItems.get(i).getDishId());
+            orderItemData.put("reservationId", orderItems.get(i).getReservationId());
+            orderItemData.put("unitPrice", orderItems.get(i).getUnitPrice());
+            orderItemData.put("quantity", orderItems.get(i).getQuantity());
+            orderItemData.put("Status", orderItems.get(i).getStatus());
 
-        Map<String, ?>[] toExecute = new Map[maps.size()] ;
-        toExecute = maps.toArray(toExecute);
-        jdbcInsertOrderItem.executeBatch(maps.toArray(toExecute));
+            maps[i] = orderItemData;
+        }
+        jdbcInsertOrderItem.executeBatch(maps);
         return orderItems;
     }
 

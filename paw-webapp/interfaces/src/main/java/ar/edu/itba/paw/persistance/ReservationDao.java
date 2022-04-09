@@ -14,7 +14,7 @@ public interface ReservationDao {
 
     Reservation create(long restaurantId, long customerId, Timestamp reservationDate);
 
-    List<OrderItem> addOrderItemsByReservationId(long reservationId, List<OrderItem> orderItems);
+    List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
     List<OrderItem> getOrderItemsByReservationId(long reservationId);
 

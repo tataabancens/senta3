@@ -91,4 +91,21 @@ public class ReservationJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertTrue(maybeList.isEmpty());
     }
+
+    @Test
+    public void testAddOrderItemsByReservationId() {
+        // 1. Precondiciones
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
+        List<OrderItem> testList = new ArrayList<>();
+        testList.add(new OrderItem(1, 1, 890, 3, 0));
+        testList.add(new OrderItem(1, 2, 650, 3, 0));
+
+        // 2. Ejercitacion
+
+        reservationDao.addOrderItemsByReservationId(testList);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
+    }
+
 }
