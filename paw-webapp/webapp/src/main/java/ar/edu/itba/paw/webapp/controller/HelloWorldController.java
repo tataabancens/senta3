@@ -1,21 +1,16 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 @Controller
 public class HelloWorldController {
@@ -56,14 +51,8 @@ public class HelloWorldController {
         return mav;
     }
 
-    @RequestMapping("/menu")
-    public ModelAndView menuPage(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
 
-        final ModelAndView mav = new ModelAndView("menu");
 
-        mav.addObject("dish", rs.getRestaurantDishes(1));
-        return mav;
-    }
 
     @RequestMapping("/order")
     public ModelAndView orderFood(@RequestParam(name = "userId", defaultValue = "1") final long userId) {

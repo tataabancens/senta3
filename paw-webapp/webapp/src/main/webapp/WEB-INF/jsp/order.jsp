@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <!doctype html>
 <html lang="en">
@@ -10,53 +9,142 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
-    <title>Hello, world!</title>
+    <title>Senta3</title>
 </head>
 <body>
-    <%@ include file="components/navbar.jsp" %>
-    <div class="container">
-    <table class="table table-hover table-bordered">
-        <thead>
-        <tr>
-            <th class="name" scope="col">Nombre</th>
-            <th class="price" scope="col">Precio</th>
-            <th class="price" scope="col">Unidades</th>
-        </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="dish" items="${dish}">
-                <tr>
-                    <td class="name"><c:out value="${dish.dishName}"/></td>
-                    <td class="price">$<c:out value="${dish.price}"/></td>
-                    <td class="price"><select class="form-select">
-                        <option selected>0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select></td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+<%@ include file="components/navbar.jsp" %>
+
+<div class="row">
+    <div class="col s3">
+        <div class="card restaurant-card">
+            <div class="card-content white-text">
+                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
+                <span class="text"><c:out value="${restaurant.phone}"/></span>
+            </div>
+        </div>
     </div>
+
+    <div class="col s6">
+        <div class="card order-card">
+            <div class="card-content white-text">
+                <div class="row">
+                    <span class="card-title title text">Resumen de tu pedido:</span>
+                </div>
+
+                <div class="row">
+                    <!-- acá va un for de la tabla orderItem -->
+                    <div class="col">
+                       <span class="card-title title text">Plato</span>
+                        <span class="card-title title text">Chao Fan Huevo</span>
+                        <span class="card-title title text">Empanada</span>
+                    </div>
+                    <div class="col center">
+                        <span class="card-title title text">Cantidad</span>
+                        <span class="card-title title text">3</span>
+                        <span class="card-title title text">6</span>
+                    </div>
+                    <div class="col center">
+                        <!-- acá va  -->
+                        <span class="card-title title text">Precio x U</span>
+                        <span class="card-title title text">100</span>
+                        <span class="card-title title text">100</span>
+                    </div>
+                    <div class="col center">
+                        <span class="card-title title text">Precio total</span>
+                        <span class="card-title title text">300</span>
+                        <span class="card-title title text">600</span>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col">
+                        <p class="price">Total</p>
+                    </div>
+                    <div class="col offset-s8">
+                        <p class="price">900</p>
+                    </div>
+                </div>
+
+                <div class="col s12 btns">
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Volver</a>
+
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green">Continuar</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
 
 <style>
-    .container{
-        position: absolute;
-        top: 20%;
-        left: 10%;
-        margin: -25px 0 0 -25px;
+
+    body{
+        background-color: #F0F0F0;
     }
+    .text{
+        color:  #707070
+    }
+
+
+    .card{
+        border-radius: 16px;
+        display: grid;
+    }
+
+    .restaurant-card{
+    }
+
+    .order-card{
+        width: 100%;
+    }
+
+
+
     .price{
-        width: 20px;
-        text-align: center;
+        font-size: 25px;
+        font-weight: bold;
+        color: black;
     }
-    .name{
-        width: 150px;
-        text-align: center;
+
+    .reservation-btn{
+        border-radius: 16px;
+        background-color: #37A6E6;
+        margin-top: 5%;
+        opacity: 57%;
     }
+
+    .reservation-btn:hover{
+        background-color: #37A6E6;
+        color: white;
+        opacity: 100%;
+    }
+
+    .center{
+        justify-content: center;
+    }
+
+    .btns{
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: space-between;
+        margin-left: 30%;
+        margin-right: 30%;
+    }
+
+    .smaller{
+        width: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .already-reserved-btn{
+    }
+
 </style>
 

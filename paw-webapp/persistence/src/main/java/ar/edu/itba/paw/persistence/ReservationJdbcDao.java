@@ -41,6 +41,7 @@ public class ReservationJdbcDao implements ReservationDao {
         List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ?", new Object[]{id}, ROW_MAPPER);
         return query.stream().findFirst();
     }
+
     @Override
     public Reservation create(long restaurantId, long customerId, Timestamp reservationDate) {
         final Map<String, Object> reservationData = new HashMap<>();
