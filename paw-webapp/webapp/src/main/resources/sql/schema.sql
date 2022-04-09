@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS orderItem
 (
+    id          SERIAL PRIMARY KEY,
     dishId     integer NOT NULL,
     reservationId serial NOT NULL,
     unitPrice     decimal(12,2) NOT NULL,
     quantity      integer NOT NULL,
     status        integer NOT NULL,
-    PRIMARY KEY (reservationId, dishId),
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
 );
