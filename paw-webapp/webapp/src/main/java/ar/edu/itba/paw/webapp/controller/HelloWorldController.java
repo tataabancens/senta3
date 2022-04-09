@@ -47,8 +47,9 @@ public class HelloWorldController {
         if (errors.hasErrors()){
             return createForm(form);
         }
-        final ModelAndView mav = new ModelAndView("register");
-
+        final ModelAndView mav = new ModelAndView("index");
+        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                                    cs.getUserByID(1).orElseThrow(CustomerNotFoundException::new));
         mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
         mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
         mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
