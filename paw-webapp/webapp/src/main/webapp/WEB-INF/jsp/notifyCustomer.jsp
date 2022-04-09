@@ -29,7 +29,7 @@
     <div class="col offset-s1 s4">
         <div class="card dish-card">
             <div class="card-content white-text">
-                <span class="card-title title text price">Tu código de reserva es:</span>
+                <span class="card-title title text price center">Tu código de reserva es:</span>
                 <div class="with-margin">
                     <p class="description center">abc123</p>
                 </div>
@@ -39,7 +39,7 @@
                     <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Continuar</a>
                 </div>
 
-            </div>
+            </div> 
         </div>
     </div>
 </div>

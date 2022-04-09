@@ -24,8 +24,9 @@ public class RestaurantController {
     ReservationService res;
 
     @Autowired
-    public RestaurantController(RestaurantService rs) {
+    public RestaurantController(RestaurantService rs, ReservationService res) {
         this.rs = rs;
+        this.res = res;
     }
 
     @RequestMapping("/")
@@ -50,21 +51,22 @@ public class RestaurantController {
     }
 
 
-
-/*
     @RequestMapping("/{reservationId}")
     public ModelAndView helloWorld(@PathVariable("reservationId") final int reservationId) {
 
-        final ModelAndView mav = new ModelAndView("fullMenu ");
+        final ModelAndView mav = new ModelAndView("fullMenu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
 
-        Optional<Reservation> reservation = res.getReservationById(reservationId);
+        Optional<Reservation> reservation = Optional.ofNullable(res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new));
+
 
         mav.addObject("restaurant", restaurant);
+        mav.addObject("dish", rs.getRestaurantDishes(1));
+
         mav.addObject("reservation", reservation);
         return mav;
     }
-    */
+
 }
