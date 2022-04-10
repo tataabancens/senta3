@@ -6,6 +6,7 @@ import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
+import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,14 @@ import javax.validation.Valid;
 public class RegisterController {
     private CustomerService cs;
     private RestaurantService rs;
-    private ReservationService reservationService;
+    private ReservationService res;
     private MailingService ms;
 
     @Autowired
-    public RegisterController(CustomerService cs, RestaurantService rs, ReservationService reservationService, MailingService ms) {
+    public RegisterController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms) {
         this.cs = cs;
         this.rs = rs;
-        this.reservationService = reservationService;
+        this.res = res;
         this.ms = ms;
     }
 
@@ -45,13 +46,22 @@ public class RegisterController {
         if (errors.hasErrors()){
             return createForm(form);
         }
-        final ModelAndView mav = new ModelAndView("index");
+
         Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
-        Reservation reservation=reservationService.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+        Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                 customer,form.getTimeStamp());
+
+
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                 customer);
+
+        final ModelAndView mav = new ModelAndView("notifyCustomer");
+
+        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+
         mav.addObject("reservation", reservation);
+
+
         return mav;
     }
 }

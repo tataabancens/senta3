@@ -31,12 +31,12 @@
             <div class="card-content white-text">
                 <span class="card-title title text price center">Tu código de reserva es:</span>
                 <div class="with-margin">
-                    <span class="card-title text center"><c:out value="${reservationId}"/></span>
+                    <span class="card-title text center"><c:out value="${reservation.reservationId}"/></span>
                 </div>
                 <p class="title2 center">No te preocupes,</p>
                 <p class="title2 center">también te lo mandamos por mail!</p>
                 <div class="center">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/${reservationId}">Continuar</a>
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/${reservation.reservationId}">Continuar</a>
                 </div>
 
             </div> 
