@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
 <html lang="en">
@@ -37,8 +39,10 @@
 
 
 
+        <c:url value="/menu" var="postPath"/>
+        <form:form modelAttribute="orderForm" action="${postPath}" method="post">
 
-    <div class="col offset-s1 s4">
+        <div class="col offset-s1 s4">
         <c:forEach var="dish" items="${dish}">
             <div class="card dish-card">
                 <div class="card-content white-text">
@@ -46,7 +50,9 @@
                             <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
                         </div>
                         <div class ="block right">
-                            <a class="btn-floating btn-large waves-effect waves-light plus-btn "><i class="material-icons">+</i></a>
+                            <form:errors path="qty" element="p" cssStyle="color: red"/>
+                            <form:label path="qty" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
+                            <form:input path="qty" type="text"/>
                         </div>
                     <p class="description">I am a very simple card. I am good at containing small bits of information.
                         I am convenient because I require little markup to use effectively.</p>
@@ -54,8 +60,9 @@
                 </div>
             </div>
         </c:forEach>
+        </div>
+        </form:form>
     </div>
-</div>
 </div>
 </body>
 </html>
