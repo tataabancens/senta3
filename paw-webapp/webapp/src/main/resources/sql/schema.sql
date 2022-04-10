@@ -46,9 +46,6 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
 
-INSERT INTO reservation (restaurantId, customerId, reservationDate)
-VALUES(1, 1, NOW());
-
 CREATE TABLE IF NOT EXISTS users (
   userId SERIAL PRIMARY KEY,
   username varchar(100),
@@ -57,18 +54,12 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS orderItem
 (
-    id          SERIAL PRIMARY KEY,
+    id          serial PRIMARY KEY,
     dishId     integer NOT NULL,
-    reservationId serial NOT NULL,
+    reservationId integer NOT NULL,
     unitPrice     decimal(12,2) NOT NULL,
     quantity      integer NOT NULL,
     status        integer NOT NULL,
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
 );
-
-INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
-VALUES(1, 1, 890, 3, 0);
-
-INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
-VALUES(2, 1, 650, 3, 0);

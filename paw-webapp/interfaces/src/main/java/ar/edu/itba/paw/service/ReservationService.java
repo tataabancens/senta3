@@ -13,12 +13,11 @@ import java.util.Optional;
 public interface ReservationService {
     Optional<Reservation> getReservationById(int id);
 
-    Reservation create(long restaurantId, long customerId, Timestamp reservationDate);
-
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
     List<OrderItem> getOrderItemsByReservationId(long reservationId);
 
     List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
+
     Reservation createReservation(Restaurant restaurant,Customer customer, Timestamp reservationDate);
 }

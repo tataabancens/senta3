@@ -22,7 +22,8 @@ public class ReservationJdbcDao implements ReservationDao {
     private static final RowMapper<Reservation> ROW_MAPPER_RESERVATION = ((resultSet, i) ->
             new Reservation(resultSet.getLong("reservationId"),
                     resultSet.getLong("restaurantId"),
-                    resultSet.getTimestamp("ReservationDate")));
+                    resultSet.getTimestamp("ReservationDate"),
+                    resultSet.getLong("customerId")));
 
     private static final RowMapper<OrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new OrderItem(resultSet.getLong("reservationId"),
@@ -38,7 +39,7 @@ public class ReservationJdbcDao implements ReservationDao {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsertReservation = new SimpleJdbcInsert(ds)
             .withTableName("reservation")
-            .usingGeneratedKeyColumns("reservationId");
+            .usingGeneratedKeyColumns("reservationid");
         jdbcInsertOrderItem = new SimpleJdbcInsert(ds)
                 .withTableName("orderItem");
     }
@@ -51,14 +52,20 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public Reservation create(long restaurantId, long customerId, Timestamp reservationDate) {
+    public Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate) {
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationDate", reservationDate);
         reservationData.put("customerId", customerId);
 
-        int reservationId = jdbcInsertReservation.execute(reservationData);
-        return new Reservation(reservationId, restaurantId, reservationDate);
+        Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
+
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId);
+
+        System.out.println("newReservation.getReservationId()");
+        System.out.println(newReservation.getReservationId());
+
+        return newReservation;
     }
 
     @Override

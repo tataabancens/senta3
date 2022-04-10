@@ -13,7 +13,7 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationById(long id);
 
-    Reservation create(long restaurantId, long customerId, Timestamp reservationDate);
+    Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 

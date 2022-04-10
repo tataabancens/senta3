@@ -41,8 +41,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors,
-                                 @RequestParam(name = "userId", defaultValue = "1") final long userId) {
+    public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) {
         if (errors.hasErrors()){
             return createForm(form);
         }
