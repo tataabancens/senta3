@@ -52,8 +52,9 @@
                             <input id="timeAndDate" name="timeAndDate" type="datetime-local" value=""/>
                         </div>
                     </div>
-                    <div class="col s12 btns">
-                        <input type="submit" value="Confirmar"/>
+                    <div class="col s12 center">
+                        <!-- acá va un href -->
+                        <input type="submit" value="Continuar" class="continue-btn"/>
                     </div>-->
                 </div>
             </div>
