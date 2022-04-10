@@ -32,31 +32,6 @@ public class HelloWorldController {
         this.reservationService = reservationService;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
-        return new ModelAndView("/register");
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors,
-                                 @RequestParam(name = "userId", defaultValue = "1") final long userId) {
-        if (errors.hasErrors()){
-            return createForm(form);
-        }
-        final ModelAndView mav = new ModelAndView("index");
-        Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
-        Reservation reservation=reservationService.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer,form.getTimeStamp());
-        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                                    customer);
-        //mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        //mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservation);
-        return mav;
-    }
-
-
-
 
     @RequestMapping("/order")
     public ModelAndView orderFood(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
