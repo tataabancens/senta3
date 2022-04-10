@@ -48,16 +48,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 input">
-                            <form:errors path="date" element="p" cssStyle="color: red"/>
-                            <form:label path="date" class="helper-text" data-error="wrong" data-success="right">Fecha:</form:label>
-                            <form:input path="date" type="date"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                            <form:errors path="time" element="p" cssStyle="color: red"/>
-                            <form:label path="time" class="helper-text" data-error="wrong" data-success="right">Hora:</form:label>
-                            <form:input path="time" type="text"/>
+                            <input id="timeAndDate" name="timeAndDate" type="datetime-local" value=""/>
                         </div>
                     </div>
                     <div class="col s12 btns">
