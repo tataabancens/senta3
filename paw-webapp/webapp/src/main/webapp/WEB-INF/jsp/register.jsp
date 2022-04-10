@@ -47,10 +47,13 @@
                             <form:input path="name" type="text"/>
                         </div>
                     </div>
-
-                    <div class="col s12 center">
-                        <!-- acá va un href -->
-                            <input type="submit" value="Continuar" class="continue-btn"/>
+                    <div class="row">
+                        <div class="input-field col s12 input">
+                            <input id="timeAndDate" name="timeAndDate" type="datetime-local" value=""/>
+                        </div>
+                    </div>
+                    <div class="col s12 btns">
+                        <input type="submit" value="Confirmar"/>
                     </div>-->
                 </div>
             </div>

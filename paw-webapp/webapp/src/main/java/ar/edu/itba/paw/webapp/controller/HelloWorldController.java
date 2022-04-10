@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
@@ -43,11 +44,14 @@ public class HelloWorldController {
             return createForm(form);
         }
         final ModelAndView mav = new ModelAndView("index");
+        Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
+        Reservation reservation=reservationService.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                customer,form.getTimeStamp());
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                                    cs.getUserByID(1).orElseThrow(CustomerNotFoundException::new));
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
+                                    customer);
+        //mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+        //mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
+        mav.addObject("reservation", reservation);
         return mav;
     }
 
@@ -60,8 +64,6 @@ public class HelloWorldController {
         final ModelAndView mav = new ModelAndView("order");
 
         mav.addObject("dish", rs.getRestaurantDishes(1));
-        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                cs.getUserByID(1).orElseThrow(CustomerNotFoundException::new));
         return mav;
     }
 

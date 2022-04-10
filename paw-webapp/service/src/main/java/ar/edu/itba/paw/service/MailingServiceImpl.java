@@ -44,7 +44,6 @@ public class MailingServiceImpl implements MailingService{
             msg.setFrom(new InternetAddress(FROMADDRESS));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toEmailAddress));
-            System.out.println("sending mail to " + Arrays.toString(msg.getAllRecipients()));
 
             msg.setSubject(subject);
             msg.setText(messageText);
