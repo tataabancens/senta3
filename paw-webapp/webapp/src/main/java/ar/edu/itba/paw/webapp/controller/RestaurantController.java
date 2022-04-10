@@ -59,7 +59,7 @@ public class RestaurantController {
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
 
-        Optional<Reservation> reservation = Optional.ofNullable(res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new));
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
 
         mav.addObject("restaurant", restaurant);

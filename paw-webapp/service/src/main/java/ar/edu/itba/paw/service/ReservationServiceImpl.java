@@ -27,6 +27,11 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getReservationById(id);
     }
 
+    @Override
+    public Reservation create(long restaurantId, long customerId, Timestamp reservationDate) {
+        return null;
+    }
+
 
     @Override
     public List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems) {
@@ -48,8 +53,5 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.create(restaurant.getId(),customer.getCustomerId(),reservationDate);
     }
 
-    }
-        return null;
-    public Reservation create(long restaurantId, long customerId, Timestamp reservationDate) {
-    @Override
+
 }
