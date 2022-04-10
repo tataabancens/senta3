@@ -2,6 +2,7 @@ drop table if exists customer cascade;
 drop table if exists restaurant cascade;
 drop table if exists dish cascade;
 drop table if exists reservation cascade;
+drop table if exists orderItem cascade;
 
 CREATE TABLE IF NOT EXISTS customer (
   customerId SERIAL PRIMARY KEY,
@@ -33,6 +34,8 @@ CREATE TABLE IF NOT EXISTS dish (
 
 INSERT INTO dish (restaurantId, dishName, price)
 VALUES(1,'Milanesa napolitana', 87);
+INSERT INTO dish (restaurantId, dishName, price)
+VALUES(1,'Pizza calabresa', 650);
 
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
@@ -51,3 +54,21 @@ CREATE TABLE IF NOT EXISTS users (
   username varchar(100),
   password varchar(100)
 );
+
+CREATE TABLE IF NOT EXISTS orderItem
+(
+    dishId     integer NOT NULL,
+    reservationId serial NOT NULL,
+    unitPrice     decimal(12,2) NOT NULL,
+    quantity      integer NOT NULL,
+    status        integer NOT NULL,
+    PRIMARY KEY (reservationId, dishId),
+    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
+    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
+);
+
+INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
+VALUES(1, 1, 890, 3, 0);
+
+INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
+VALUES(2, 1, 650, 3, 0);
