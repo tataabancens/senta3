@@ -36,7 +36,7 @@
                 <p class="title2 center">No te preocupes,</p>
                 <p class="title2 center">también te lo mandamos por mail!</p>
                 <div class="center">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/${reservation.reservationId}">Continuar</a>
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/menu?reservationId=${reservation.reservationId}">Continuar</a>
                 </div>
 
             </div> 

@@ -79,6 +79,6 @@ public class RegisterController {
             return findReservation(form);
         }
         Reservation reservation = res.getReservationById(form.getReservationId()).orElseThrow(ReservationNotFoundException::new);
-        return new ModelAndView("redirect:/" + reservation.getReservationId());
+        return new ModelAndView("redirect:/menu?reservationId=" + reservation.getReservationId());
     }
 }
