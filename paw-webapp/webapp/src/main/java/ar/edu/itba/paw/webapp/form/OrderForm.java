@@ -1,25 +1,15 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.model.OrderItem;
 
 public class OrderForm {
+    private OrderItem orderItem;
 
-    private long reservationId;
-
-    public long getReservationId() {
-        return reservationId;
+    public OrderItem getOrderItem() {
+        return orderItem;
     }
 
-    public void setReservationId(long reservationId) {
-        this.reservationId = reservationId;
-    }
-
-    private int qty;
-
-    public int getQty() {
-        return qty;
-    }
-
-    public void setQty(int qty) {
-        this.qty = qty;
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
     }
 }
