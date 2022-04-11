@@ -1,0 +1,26 @@
+.navbar{
+    background-color: pink;
+}
+
+.buttons{
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-between;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+.card {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    margin: -25px 0 0 -25px;
+}
+
+.error {
+    color: red;
+}
+
+.test-box {
+    background-color: orange;
+}
