@@ -29,12 +29,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
+    public List<FullOrderItem> getOrderItemsByReservationId(long reservationId) {
         return reservationDao.getOrderItemsByReservationId(reservationId);
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
+    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, status);
     }
 
@@ -46,5 +46,13 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
         return reservationDao.createOrderItemByReservationId(reservationId, dish, quantity);
+    }
+    @Override
+    public float getTotal(List<FullOrderItem> orderItems) {
+        float toRet = 0;
+        for (FullOrderItem orderItem : orderItems) {
+            toRet += orderItem.getQuantity() * orderItem.getUnitPrice();
+        }
+        return toRet;
     }
 }

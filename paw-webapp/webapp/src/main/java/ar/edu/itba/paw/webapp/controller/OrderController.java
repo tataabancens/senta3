@@ -30,7 +30,6 @@ public class OrderController {
 
     @Autowired
     public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds) {
-        //this.os = os;
         this.rs = rs;
         this.res = res;
         this.ds = ds;
@@ -58,17 +57,10 @@ public class OrderController {
                                   @ModelAttribute("orderForm") final OrderForm form){
         final ModelAndView mav = new ModelAndView("orderItem");
 
-//        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-//        restaurant.setDishes(rs.getRestaurantDishes(1));
+        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("dish", dish);
+        mav.addObject("reservationId", reservationId);
 
-        //Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-            Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-            mav.addObject("dish", dish);
-            mav.addObject("reservationId", reservationId);
-//        mav.addObject("restaurant", restaurant);
-//        mav.addObject("dish", rs.getRestaurantDishes(1));
-
-//        mav.addObject("reservation", reservation);
         return mav;
     }
     @RequestMapping(value = "/menu/orderItem", method = RequestMethod.POST)
@@ -86,4 +78,20 @@ public class OrderController {
 
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
+
+    @RequestMapping("/order")
+    public ModelAndView orderFood(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                                  @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+
+        final ModelAndView mav = new ModelAndView("order");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationId(reservationId);
+        mav.addObject("orderItems", orderItems);
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("total", res.getTotal(orderItems));
+        mav.addObject("reservationId", reservationId);
+        return mav;
+    }
+
 }

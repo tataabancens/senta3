@@ -13,9 +13,11 @@ public interface ReservationService {
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
-    List<OrderItem> getOrderItemsByReservationId(long reservationId);
+    List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
+    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
 
     Reservation createReservation(Restaurant restaurant,Customer customer, Timestamp reservationDate);
+
+    float getTotal(List<FullOrderItem> orderItems);
 }

@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import = "java.io.*,java.util.*" %>
 
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
                 </div>
             </div>
             <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn ">Pedir comida</a>
+                <a class="waves-effect waves-light btn reservation-btn " href="/order">Ver carrito</a>
             </div>
             <div class="center">
                 <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>

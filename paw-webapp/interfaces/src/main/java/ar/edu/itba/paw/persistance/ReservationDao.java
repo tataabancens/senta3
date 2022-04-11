@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.persistance;
 
-import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.model.OrderItemStatus;
-import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,8 +17,8 @@ public interface ReservationDao {
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
-    List<OrderItem> getOrderItemsByReservationId(long reservationId);
+    List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
+    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
 
 }
