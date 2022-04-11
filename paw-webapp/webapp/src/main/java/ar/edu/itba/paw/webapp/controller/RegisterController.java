@@ -2,12 +2,14 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.FindReservationForm;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,9 +48,9 @@ public class RegisterController {
             return createForm(form);
         }
 
-        Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
+        Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
         Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer,form.getTimeStamp());
+                customer, form.getTimeStamp());
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
@@ -63,5 +65,20 @@ public class RegisterController {
 
         return mav;
     }
+    @RequestMapping(value = "/findReservation", method = RequestMethod.GET)
+    public ModelAndView findReservation(@ModelAttribute("findReservationForm") final FindReservationForm form) {
 
+        final ModelAndView mav = new ModelAndView("findReservation");
+        return mav;
+    }
+    @RequestMapping(value = "/findReservation", method = RequestMethod.POST)
+    public ModelAndView findReservationForm(@ModelAttribute("findReservationForm") final FindReservationForm form,
+                                            final BindingResult errors) {
+
+        if (errors.hasErrors()) {
+            return findReservation(form);
+        }
+        Reservation reservation = res.getReservationById(form.getReservationId()).orElseThrow(ReservationNotFoundException::new);
+        return new ModelAndView("redirect:/" + reservation.getReservationId());
+    }
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,39 +10,31 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
     <title>Senta3</title>
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
-
 <div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
+        <div class=" col s4 offset-s4 box card dish-card">
             <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
+                <span class="card-title title text price center">Ingresa tu codigo de reserva</span>
+                <c:url value="/findReservation" var="postUrl"/>
+                <form:form modelAttribute="findReservationForm" action="${postUrl}" method="post">
+                    <div class="with-margin">
+                        <div>
+                            <form:errors path="reservationId" element="p" cssClass="error"/>
+                            <form:label path="reservationId"></form:label>
+                            <form:input type="number" path="reservationId"/>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <input type="submit" value="Buscar" class="continue-btn">
+                    </div>
+                </form:form>
             </div>
         </div>
-    </div>
-
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title title text price center">Tu código de reserva es:</span>
-                <div class="with-margin">
-                    <span class="card-title text center"><c:out value="${reservation.reservationId}"/></span>
-                </div>
-                <p class="title2 center">No te preocupes,</p>
-                <p class="title2 center">también te lo mandamos por mail!</p>
-                <div class="center">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/${reservation.reservationId}">Continuar</a>
-                </div>
-
-            </div> 
-        </div>
-    </div>
 </div>
 </body>
 </html>
@@ -85,14 +78,16 @@
         color: black;
     }
 
-    .reservation-btn{
+    .continue-btn{
+        padding-inline: 7%;
+        padding-block: 1%;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
     }
 
-    .reservation-btn:hover{
+    .continue-btn:hover{
         background-color: #37A6E6;
         color: white;
         opacity: 100%;
