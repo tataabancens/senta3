@@ -41,7 +41,8 @@ public class ReservationJdbcDao implements ReservationDao {
             .withTableName("reservation")
             .usingGeneratedKeyColumns("reservationid");
         jdbcInsertOrderItem = new SimpleJdbcInsert(ds)
-                .withTableName("orderItem");
+                .withTableName("orderitem")
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
@@ -97,5 +98,18 @@ public class ReservationJdbcDao implements ReservationDao {
         List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE status = ? AND reservationId = ?",
                 new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
+    }
+
+    @Override
+    public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
+        final Map<String, Object> orderItemData = new HashMap<>();
+        orderItemData.put("dishid", dish.getId());
+        orderItemData.put("reservationid", reservationId);
+        orderItemData.put("unitprice", dish.getPrice());
+        orderItemData.put("quantity", quantity);
+        orderItemData.put("status", 0);
+
+        Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
+        return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, 0);
     }
 }

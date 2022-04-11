@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.model;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.Objects;
 
 public class OrderItem {
@@ -15,6 +17,9 @@ public class OrderItem {
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.status = status;
+    }
+    public OrderItem() {
+
     }
 
     public void setReservationId(long reservationId) {

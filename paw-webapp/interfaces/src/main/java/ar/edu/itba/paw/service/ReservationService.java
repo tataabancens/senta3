@@ -1,10 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.model.OrderItemStatus;
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,6 +10,8 @@ public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
+
+    OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
     List<OrderItem> getOrderItemsByReservationId(long reservationId);
 

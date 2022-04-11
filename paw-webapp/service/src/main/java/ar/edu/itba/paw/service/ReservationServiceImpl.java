@@ -1,10 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.model.OrderItemStatus;
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +43,8 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(),reservationDate);
     }
 
-
+    @Override
+    public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
+        return reservationDao.createOrderItemByReservationId(reservationId, dish, quantity);
+    }
 }

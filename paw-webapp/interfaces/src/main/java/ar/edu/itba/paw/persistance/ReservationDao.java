@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistance;
 
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.OrderItemStatus;
 import ar.edu.itba.paw.model.Reservation;
@@ -16,6 +17,8 @@ public interface ReservationDao {
     Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
+
+    OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
     List<OrderItem> getOrderItemsByReservationId(long reservationId);
 

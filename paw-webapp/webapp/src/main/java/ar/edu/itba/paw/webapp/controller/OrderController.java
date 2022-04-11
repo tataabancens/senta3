@@ -81,7 +81,7 @@ public class OrderController {
         }
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
 
-        //res.addOrderItemsByReservationId(reservationId, );
+        res.createOrderItemByReservationId(reservationId, dish, form.getOrderItem().getQuantity());
         //Agregar a bd
 
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
