@@ -16,3 +16,11 @@
     left: 40%;
     margin: -25px 0 0 -25px;
 }
+
+.error {
+    color: red;
+}
+
+.test-box {
+    background-color: orange;
+}

@@ -63,3 +63,6 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
 );
+
+INSERT INTO reservation (restaurantId, customerId, reservationDate)
+VALUES(1, 1, NOW());
