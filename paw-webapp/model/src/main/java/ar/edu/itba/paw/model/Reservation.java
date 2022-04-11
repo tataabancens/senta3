@@ -8,10 +8,11 @@ public class Reservation {
     private long customerId;
     private Timestamp reservationDate;
 
-    public Reservation(long reservationId, long restaurantId, Timestamp reservationDate){
+    public Reservation(long reservationId, long restaurantId, Timestamp reservationDate, long customerId){
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.reservationDate = reservationDate;
+        this.customerId = customerId;
     }
     public long getReservationId() {
         return reservationId;

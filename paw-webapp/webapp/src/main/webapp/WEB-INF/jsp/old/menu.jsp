@@ -21,7 +21,7 @@
     <title>Hello, world!</title>
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 <div class="container">
     <table class="table table-bordered">
         <thead>

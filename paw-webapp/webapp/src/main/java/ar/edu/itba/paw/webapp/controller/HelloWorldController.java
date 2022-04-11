@@ -1,10 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,6 @@ import java.util.Properties;
 @Controller
 public class HelloWorldController {
 
-//    private UserService us;
     private RestaurantService rs;
     private DishService ds;
     private ReservationService reservationService;
@@ -33,67 +33,13 @@ public class HelloWorldController {
         this.reservationService = reservationService;
     }
 
-    @RequestMapping("/")
-    public ModelAndView helloWorld(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        final ModelAndView mav = new ModelAndView("index");
-
-//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
-        return mav;
-    }
-
-    /*@RequestMapping("/register")
-    public ModelAndView register(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        final ModelAndView mav = new ModelAndView("register");
-
-//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
-        return mav;
-    }*/
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
-        return new ModelAndView("/register");
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors,
-                                 @RequestParam(name = "userId", defaultValue = "1") final long userId) {
-        if (errors.hasErrors()){
-            return createForm(form);
-        }
-        final ModelAndView mav = new ModelAndView("register");
-
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-        mav.addObject("dish", ds.getDishById(1).orElseThrow(DishNotFoundException::new));
-        mav.addObject("reservation", reservationService.getReservationById(1).orElseThrow(ReservationNotFoundException::new));
-        return mav;
-    }
-
-    @RequestMapping("/menu")
-    public ModelAndView menuPage(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        final ModelAndView mav = new ModelAndView("menu");
-
-        mav.addObject("dish", rs.getRestaurantDishes(1));
-        return mav;
-    }
 
     @RequestMapping("/order")
     public ModelAndView orderFood(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
 
         final ModelAndView mav = new ModelAndView("order");
 
-//        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         mav.addObject("dish", rs.getRestaurantDishes(1));
-        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                cs.getUserByID(1).orElseThrow(CustomerNotFoundException::new));
         return mav;
     }
 

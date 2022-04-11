@@ -1,70 +1,52 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-<%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
+        <!-- Materialize CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
-    <title>Hello, world!</title>
-</head>
+        <title>Senta3</title>
+    </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
 
         <div class="row">
-            <div class="col s12 m6">
+            <div class="col s3">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
                         <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
                         <span class="text"><c:out value="${restaurant.phone}"/></span>
-                        <div>
-                            <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
+                        <div class="row center smaller">
+                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
+                        </div>
+                        <div class="row center smaller">
+                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
+                        </div>
+                        <div class="row center smaller">
+                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn red">cancelar reserva</a>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Ya tengo reserva</a>
-                </div>
             </div>
 
-
-            <div class="col s12 m6">
-                <div class="card dish-card">
-                    <div class="card-content white-text">
-                        <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-
-                        <p class="description">I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
+            <div class="col offset-s1 s4">
+                <c:forEach var="dish" items="${restaurant.dishes}">
+                    <div class="card dish-card">
+                        <div class="card-content white-text">
+                            <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
+                            <p class="description">I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                            <p class="price">$<c:out value="${dish.price}"/></p>
+                        </div>
                     </div>
-                </div>
-                <div class="card dish-card">
-                    <div class="card-content white-text">
-                        <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-
-                        <p class="description">I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
-                    </div>
-                </div>
+                </c:forEach>
             </div>
-
-            <div class="col s12 m6">
-                <div class="card dish-card">
-                    <div class="card-content white-text">
-                        <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                        <p class="description">I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </body>
 </html>
@@ -85,7 +67,6 @@
     }
 
     .restaurant-card{
-        width: 70%;
     }
 
     .dish-card{
@@ -116,8 +97,18 @@
         opacity: 100%;
     }
 
-    .already-reserved-btn{
-        margin-left: 15%;
+    .center{
+        justify-content: center;
     }
+
+    .smaller{
+        width: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .already-reserved-btn{
+    }
+
 </style>
 

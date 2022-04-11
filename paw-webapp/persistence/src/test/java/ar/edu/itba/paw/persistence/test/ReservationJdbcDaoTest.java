@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.OrderItem;
+import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistence.ReservationJdbcDao;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,6 +108,18 @@ public class ReservationJdbcDaoTest {
 
         // 3. PostCondiciones
         Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
+    }
+
+    @Test
+    public void testCreateReservation() {
+        // 1. Precondiciones
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
+
+        // 2. Ejercitacion
+        Reservation maybeReservation = reservationDao.createReservation(1, 1, new Timestamp(24));
+
+        // 3. PostCondiciones
+        Assert.assertEquals(1, maybeReservation.getReservationId());
     }
 
 }

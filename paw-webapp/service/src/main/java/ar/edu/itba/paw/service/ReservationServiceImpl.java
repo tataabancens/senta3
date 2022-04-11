@@ -2,7 +2,9 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.OrderItemStatus;
+import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Optional<Reservation> getReservationById(int id) {
+    public Optional<Reservation> getReservationById(long id) {
         return reservationDao.getReservationById(id);
-    }
-
-    @Override
-    public Reservation create(long restaurantId, long customerId, Timestamp reservationDate) {
-        return null;
     }
 
     @Override
@@ -44,4 +41,11 @@ public class ReservationServiceImpl implements ReservationService {
     public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, status);
     }
+
+    @Override
+    public Reservation createReservation(Restaurant restaurant, Customer customer, Timestamp reservationDate) {
+        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(),reservationDate);
+    }
+
+
 }
