@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn " href="/order">Ver carrito</a>
+                <a class="waves-effect waves-light btn reservation-btn " href="/order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
             </div>
             <div class="center">
                 <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
