@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.ReservationService;
@@ -61,6 +62,16 @@ public class RegisterController {
         mav.addObject("reservation", reservation);
 
 
+        return mav;
+    }
+
+    @RequestMapping("/findReservation")
+    public ModelAndView helloWorld(@RequestParam(name = "restaurantId") final long userId) {
+
+        final ModelAndView mav = new ModelAndView("findReservation");
+
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
         return mav;
     }
 }
