@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
     <head>
@@ -26,7 +26,7 @@
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
                         </div>
                         <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Ya tengo reserva</a>
+                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
                         </div>
                         <div class="row center smaller">
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn red">cancelar reserva</a>
