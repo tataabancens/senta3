@@ -37,40 +37,49 @@
                     <!-- acá va un for de la tabla orderItem -->
                     <div class="col">
                        <span class="card-title title text">Plato</span>
-                        <span class="card-title title text">Chao Fan Huevo</span>
-                        <span class="card-title title text">Empanada</span>
                     </div>
                     <div class="col center">
                         <span class="card-title title text">Cantidad</span>
-                        <span class="card-title title text">3</span>
-                        <span class="card-title title text">6</span>
                     </div>
                     <div class="col center">
                         <!-- acá va  -->
                         <span class="card-title title text">Precio x U</span>
-                        <span class="card-title title text">100</span>
-                        <span class="card-title title text">100</span>
                     </div>
                     <div class="col center">
                         <span class="card-title title text">Precio total</span>
-                        <span class="card-title title text">300</span>
-                        <span class="card-title title text">600</span>
                     </div>
                 </div>
+                <c:forEach var="orderItem" items="${orderItems}">
+                    <div class="row">
+                        <div class="col">
+                            <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
+                        </div>
+                        <div class="col center">
+                            <!-- acá va  -->
+                            <span class="card-title title text">$<c:out value="${orderItem.unitPrice}"/></span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                        </div>
+                    </div>
+                </c:forEach>
 
                 <div class="row ">
                     <div class="col">
                         <p class="price">Total</p>
                     </div>
                     <div class="col offset-s8">
-                        <p class="price">900</p>
+                        <p class="price"><c:out value="${total}"/></p>
                     </div>
                 </div>
 
                 <div class="col s12 btns">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn">Volver</a>
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/menu?reservationId=${reservationId}">Volver</a>
 
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green">Continuar</a>
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="/">Continuar</a>
                 </div>
 
             </div>

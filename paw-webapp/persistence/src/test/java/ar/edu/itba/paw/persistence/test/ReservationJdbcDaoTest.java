@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence.test;
 
+import ar.edu.itba.paw.model.FullOrderItem;
 import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.User;
@@ -73,7 +74,7 @@ public class ReservationJdbcDaoTest {
         testList.add(new OrderItem(1, 2, 650, 3, 0));
 
         // 2. Ejercitacion
-        List<OrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
+        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeList.isEmpty());
@@ -88,7 +89,7 @@ public class ReservationJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
 
         // 2. Ejercitacion
-        List<OrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
+        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeList.isEmpty());

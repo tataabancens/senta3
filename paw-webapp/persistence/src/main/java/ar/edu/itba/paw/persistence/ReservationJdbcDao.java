@@ -25,12 +25,13 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getTimestamp("ReservationDate"),
                     resultSet.getLong("customerId")));
 
-    private static final RowMapper<OrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
-            new OrderItem(resultSet.getLong("reservationId"),
+    private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
+            new FullOrderItem(resultSet.getLong("reservationId"),
                     resultSet.getLong("dishId"),
                     resultSet.getFloat("unitPrice"),
                     resultSet.getInt("quantity"),
-                    resultSet.getInt("status")));
+                    resultSet.getInt("status"),
+                    resultSet.getString("dishname")));
 
 
 
@@ -41,7 +42,8 @@ public class ReservationJdbcDao implements ReservationDao {
             .withTableName("reservation")
             .usingGeneratedKeyColumns("reservationid");
         jdbcInsertOrderItem = new SimpleJdbcInsert(ds)
-                .withTableName("orderItem");
+                .withTableName("orderitem")
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
@@ -86,16 +88,29 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
-        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE reservationId = ?",
+    public List<FullOrderItem> getOrderItemsByReservationId(long reservationId) {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ?",
                 new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
-        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem WHERE status = ? AND reservationId = ?",
+    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem  WHERE status = ? AND reservationId = ?",
                 new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
+    }
+
+    @Override
+    public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
+        final Map<String, Object> orderItemData = new HashMap<>();
+        orderItemData.put("dishid", dish.getId());
+        orderItemData.put("reservationid", reservationId);
+        orderItemData.put("unitprice", dish.getPrice());
+        orderItemData.put("quantity", quantity);
+        orderItemData.put("status", 0);
+
+        Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
+        return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, 0);
     }
 }

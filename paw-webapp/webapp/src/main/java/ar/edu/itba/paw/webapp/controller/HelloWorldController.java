@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
@@ -34,14 +35,6 @@ public class HelloWorldController {
     }
 
 
-    @RequestMapping("/order")
-    public ModelAndView orderFood(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        final ModelAndView mav = new ModelAndView("order");
-
-        mav.addObject("dish", rs.getRestaurantDishes(1));
-        return mav;
-    }
 
     @RequestMapping("/profile/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {

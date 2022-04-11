@@ -1,5 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import = "java.io.*,java.util.*" %>
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,7 +31,7 @@
                 </div>
             </div>
             <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn ">Pedir comida</a>
+                <a class="waves-effect waves-light btn reservation-btn " href="/order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
             </div>
             <div class="center">
                 <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
@@ -37,25 +41,31 @@
 
 
 
-
-    <div class="col offset-s1 s4">
-        <c:forEach var="dish" items="${dish}">
-            <div class="card dish-card">
-                <div class="card-content white-text">
-                        <div class="block">
-                            <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
-                        </div>
-                        <div class ="block right">
-                            <a class="btn-floating btn-large waves-effect waves-light plus-btn "><i class="material-icons">+</i></a>
-                        </div>
-                    <p class="description">I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                    <p class="price">$<c:out value="${dish.price}"/></p>
+        <c:url value="/menu" var="postPath"/>
+            <div class="col offset-s1 s4">
+            <c:forEach var="dish" items="${dish}">
+                <div class="card dish-card">
+                    <div class="card-content white-text">
+                            <div class="block">
+                                <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
+                            </div>
+                            <div class ="block right">
+<%--                                <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>--%>
+<%--                                <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>--%>
+<%--                                <form:input path="orderItem.quantity" type="number"/>--%>
+                                <div class="center">
+                                    <a class="waves-effect waves-light btn reservation-btn"
+                                       href="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
+                                </div>
+                            </div>
+                        <p class="description">I am a very simple card. I am good at containing small bits of information.
+                            I am convenient because I require little markup to use effectively.</p>
+                        <p class="price">$<c:out value="${dish.price}"/></p>
+                    </div>
                 </div>
+            </c:forEach>
             </div>
-        </c:forEach>
     </div>
-</div>
 </div>
 </body>
 </html>

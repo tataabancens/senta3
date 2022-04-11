@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,38 +10,33 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
     <title>Senta3</title>
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
-
 <div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
+    <div class=" col s4 offset-s4 box card dish-card test-box">
             <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
+                <div class="block">
+                    <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
+                </div>
+                <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
+                <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
+                    <div class ="block right">
+                        <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>
+                        <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
+                        <form:input path="orderItem.quantity" type="number"/>
+                        <div class="center">
+                            <input type="submit" value="+" class="waves-effect waves-light btn reservation-btn ">
+                        </div>
+                    </div>
+                </form:form>
+                <p class="description">I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                <p class="price">$<c:out value="${dish.price}"/></p>
             </div>
-        </div>
-    </div>
-
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title title text price center">Tu código de reserva es:</span>
-                <div class="with-margin">
-                    <span class="card-title text center"><c:out value="${reservation.reservationId}"/></span>
-                </div>
-                <p class="title2 center">No te preocupes,</p>
-                <p class="title2 center">también te lo mandamos por mail!</p>
-                <div class="center">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/menu?reservationId=${reservation.reservationId}">Continuar</a>
-                </div>
-
-            </div> 
-        </div>
     </div>
 </div>
 </body>
@@ -85,14 +81,16 @@
         color: black;
     }
 
-    .reservation-btn{
+    .continue-btn{
+        padding-inline: 7%;
+        padding-block: 1%;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
     }
 
-    .reservation-btn:hover{
+    .continue-btn:hover{
         background-color: #37A6E6;
         color: white;
         opacity: 100%;
