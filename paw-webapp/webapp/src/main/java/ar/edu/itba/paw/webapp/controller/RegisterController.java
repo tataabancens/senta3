@@ -46,9 +46,9 @@ public class RegisterController {
             return createForm(form);
         }
 
-        Customer customer=cs.create(form.getName(), form.getPhone(), form.getMail());
+        Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
         Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer,form.getTimeStamp());
+                customer, form.getTimeStamp());
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),

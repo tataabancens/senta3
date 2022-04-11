@@ -31,7 +31,7 @@ public class CustomerJdbcDao implements CustomerDao {
         this.jdbcTemplate = new JdbcTemplate(ds);
         this.jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("customer")
-                .usingGeneratedKeyColumns("customerId");
+                .usingGeneratedKeyColumns("customerid");
     }
 
     @Override
@@ -47,7 +47,7 @@ public class CustomerJdbcDao implements CustomerDao {
         customerData.put("Phone", phone);
         customerData.put("Mail", mail);
 
-        int customerId = jdbcInsert.execute(customerData);
-        return new Customer(customerId, customerName, phone, mail);
+        Number customerId = jdbcInsert.executeAndReturnKey(customerData);
+        return new Customer(customerId.longValue(), customerName, phone, mail);
     }
 }
