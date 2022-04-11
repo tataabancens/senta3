@@ -9,6 +9,7 @@ import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.FindReservationForm;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,14 +65,21 @@ public class RegisterController {
 
         return mav;
     }
-
-    @RequestMapping("/findReservation")
-    public ModelAndView helloWorld(@RequestParam(name = "restaurantId") final long userId) {
+    @RequestMapping(value = "/findReservation", method = RequestMethod.GET)
+    public ModelAndView findReservation(@ModelAttribute("findReservationForm") final FindReservationForm form) {
 
         final ModelAndView mav = new ModelAndView("findReservation");
-
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        mav.addObject("restaurant", restaurant);
         return mav;
+    }
+    @RequestMapping(value = "/findReservation", method = RequestMethod.POST)
+    public ModelAndView findReservationForm(@ModelAttribute("findReservationForm") final FindReservationForm form,
+                                            final BindingResult errors) {
+
+        if (errors.hasErrors()) {
+            return findReservation(form);
+        }
+        System.out.println(form.getReservationId());
+        Reservation reservation = res.getReservationById(form.getReservationId()).orElseThrow(ReservationNotFoundException::new);
+        return new ModelAndView("redirect:/" + reservation.getReservationId());
     }
 }

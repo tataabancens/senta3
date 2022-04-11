@@ -23,7 +23,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Optional<Reservation> getReservationById(int id) {
+    public Optional<Reservation> getReservationById(long id) {
         return reservationDao.getReservationById(id);
     }
 
