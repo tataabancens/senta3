@@ -115,7 +115,15 @@ public class OrderController {
         ms.sendOrderEmail(restaurant, customer, orderItems);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+
+        final ModelAndView mav = new ModelAndView("completeOrder");
+        mav.addObject("orderItems", orderItems);
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("total", res.getTotal(orderItems));
+        mav.addObject("reservationId", reservationId);
+
+        //return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        return mav;
     }
 
     @RequestMapping("/order/send-receipt")
