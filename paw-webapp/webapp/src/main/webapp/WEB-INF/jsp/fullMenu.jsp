@@ -41,23 +41,6 @@
                     </div>
                 </div>
             </div>
-            <div class="card restaurant-card">
-                <div class="card-content white-text">
-                    <c:forEach var="orderItem" items="${orderItems}">
-                        <div class="row">
-                            <div class="col">
-                                <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
-                            </div>
-                            <div class="col center">
-                                <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
-                            </div>
-                            <div class="col center">
-                                <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
-                            </div>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
 
         </div>
 
@@ -65,7 +48,7 @@
 
 
         <c:url value="/menu" var="postPath"/>
-            <div class="col offset-s1 s4">
+            <div class="col s4">
             <c:forEach var="dish" items="${dish}">
                 <div class="card dish-card">
                     <div class="card-content white-text">
@@ -87,6 +70,67 @@
                 </div>
             </c:forEach>
             </div>
+
+        <div class="col s5">
+            <div class="card order-card">
+                <div class="card-content white-text">
+                    <div class="row">
+                        <span class="card-title title text">Resumen de tu pedido:</span>
+                    </div>
+
+                    <div class="row">
+                        <!-- acá va un for de la tabla orderItem -->
+                        <div class="col">
+                            <span class="card-title title text">Plato</span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text">Cantidad</span>
+                        </div>
+                        <div class="col center">
+                            <!-- acá va  -->
+                            <span class="card-title title text">Precio x U</span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text">Precio total</span>
+                        </div>
+                    </div>
+                    <c:forEach var="orderItem" items="${orderItems}">
+                        <div class="row">
+                            <div class="col">
+                                <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
+                            </div>
+                            <div class="col center">
+                                <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
+                            </div>
+                            <div class="col center">
+                                <!-- acá va  -->
+                                <span class="card-title title text">$<c:out value="${orderItem.unitPrice}"/></span>
+                            </div>
+                            <div class="col center">
+                                <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                    <hr/>
+
+                    <div class="row margin-0">
+                        <div class="col s6">
+                            <p class="price">Total</p>
+                        </div>
+                        <div class="col s6">
+                            <p class="price right"><c:out value="${total}"/></p>
+                        </div>
+                    </div>
+                    <div class="row margin-0">
+                        <div class="col s12">
+                            <a class="waves-effect waves-light btn reservation-btn green right" href="">Continuar</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
@@ -101,6 +145,20 @@
         color:  #707070
     }
 
+    .margin-0{
+        margin: 0;
+    }
+
+
+    .hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #ccc;
+        margin: 1em 0;
+        padding: 0;
+    }
+
 
     .plus-btn{
         background-color: #37A6E6;
@@ -113,6 +171,11 @@
     }
 
     .restaurant-card{
+
+    }
+
+    .card{
+        border-radius: 10px;
     }
 
     .dish-card{
@@ -163,6 +226,15 @@
 
     .margin-bottom{
         margin-bottom: 10%;
+    }
+
+    .no-margin-botton{
+        margin-bottom: 0%;
+    }
+
+    .order-card{
+        width: 100%;
+
     }
 
 

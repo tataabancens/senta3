@@ -51,6 +51,7 @@ public class OrderController {
 
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationId(reservationId);
         mav.addObject("orderItems", orderItems);
+        mav.addObject("total", res.getTotal(orderItems));
         return mav;
     }
 
