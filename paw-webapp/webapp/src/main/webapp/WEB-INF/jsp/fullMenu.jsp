@@ -37,7 +37,7 @@
                         <a class="waves-effect waves-light btn reservation-btn " href="order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
                     </div>
                     <div class="center">
-                        <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
+                        <a class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
                     </div>
                 </div>
             </div>
@@ -56,9 +56,6 @@
                                 <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
                             </div>
                             <div class ="block right">
-<%--                                <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>--%>
-<%--                                <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>--%>
-<%--                                <form:input path="orderItem.quantity" type="number"/>--%>
                                 <div class="center">
                                     <a class="waves-effect waves-light btn reservation-btn"
                                        href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
@@ -124,7 +121,7 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s12">
-                            <a class="waves-effect waves-light btn reservation-btn green right" href="">Continuar</a>
+                            <a class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
                         </div>
                     </div>
 
