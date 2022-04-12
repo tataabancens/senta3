@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +9,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 @Service
@@ -25,6 +24,27 @@ public class MailingServiceImpl implements MailingService{
         String messageText="your reservation is confirmed, if you need to contact the restaurant, this is their email: "
                 +restaurant.getMail();
         sendEmail(properties,customer.getMail(),subject,messageText);
+    }
+
+    @Override
+    public void sendReceiptEmail(Restaurant restaurant, Customer customer) {
+        Properties properties=setProperties();
+        String subject="A customer wants the receipt";
+        String messageText="the customer: "+customer.getCustomerName()+" of id: "+customer.getCustomerId()+
+                "wants their receipt";
+        sendEmail(properties,restaurant.getMail(),subject,messageText);
+    }
+
+    @Override
+    public void sendOrderEmail(Restaurant restaurant, Customer customer, List<FullOrderItem> orderItems) {
+        Properties properties=setProperties();
+        String subject="A customer order this items";
+        StringBuilder stringBuilder=
+                new StringBuilder("The customer: "+customer.getCustomerName()+"of id: "+customer.getCustomerId()+"ordered this items:\n");
+        for(FullOrderItem item : orderItems){
+            stringBuilder.append(item.getDishName()).append("x").append(item.getQuantity()).append('\n');
+        }
+        sendEmail(properties,restaurant.getMail(),subject,stringBuilder.toString());
     }
 
     private void sendEmail(Properties properties, String toEmailAddress,
