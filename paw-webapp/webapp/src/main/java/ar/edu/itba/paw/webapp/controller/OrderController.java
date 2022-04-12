@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
@@ -26,13 +27,17 @@ public class OrderController {
     private RestaurantService rs;
     private ReservationService res;
     private  DishService ds;
+    private CustomerService cs;
+    private MailingService ms;
 
 
     @Autowired
-    public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds) {
+    public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds, final CustomerService cs, final MailingService ms) {
         this.rs = rs;
         this.res = res;
         this.ds = ds;
+        this.cs = cs;
+        this.ms = ms;
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
@@ -48,6 +53,10 @@ public class OrderController {
         mav.addObject("dish", rs.getRestaurantDishes(1));
 
         mav.addObject("reservation", reservation);
+
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationId(reservationId);
+        mav.addObject("orderItems", orderItems);
+        mav.addObject("total", res.getTotal(orderItems));
         return mav;
     }
 
@@ -92,6 +101,35 @@ public class OrderController {
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
         return mav;
+    }
+
+    @RequestMapping("/order/send-food")
+    public ModelAndView orderFoodSend(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                                  @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationId(reservationId);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ms.sendOrderEmail(restaurant, customer, orderItems);
+
+
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+    }
+
+    @RequestMapping("/order/send-receipt")
+    public ModelAndView orderReceipt(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                                      @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ms.sendReceiptEmail(restaurant, customer);
+
+
+        return new ModelAndView("redirect:/");
     }
 
 }
