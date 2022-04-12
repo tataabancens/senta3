@@ -29,13 +29,22 @@ CREATE TABLE IF NOT EXISTS dish (
   restaurantId int NOT NULL,
   dishName varchar(100) NOT NULL,
   price int NOT NULL,
+  dishDescription varchar(200) NOT NULL,
   FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
 );
 
-INSERT INTO dish (restaurantId, dishName, price)
-VALUES(1,'Milanesa napolitana', 890);
-INSERT INTO dish (restaurantId, dishName, price)
-VALUES(1,'Pizza calabresa', 650);
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES(1,'Milanesa napolitana', 890, 'Milanesa napolitana. Jamón, queso y tomate. Sin pasa de uva.');
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES(1,'Pizza calabresa', 650, 'Pizza tipo italiana con MUCHA calabresa. Es un poquito picante.');
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES(1,'Empanada de carne', 140, 'Empanada de carne cortada a cuchillo, sin aceitunas, sin pasas de uva y sin papa.');
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES(1,'Flan con dulce de leche', 400, 'El mejor flan con dulce de leche de Buenos Aires.');
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES(1,'Limonada', 350, 'Limonada bien fría con menta y gengibre, ideal para tomar si estás manejando.');
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES(1,'Cerveza Amber Patagonia', 350, 'Una pinta de cerveza Patagonia Amber dulzona añejada en notas de nuez.');
 
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
@@ -64,5 +73,3 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
 );
 
-INSERT INTO reservation (restaurantId, customerId, reservationDate)
-VALUES(1, 1, NOW());

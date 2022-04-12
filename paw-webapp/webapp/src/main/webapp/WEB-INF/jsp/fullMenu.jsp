@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn " href="/order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
+                <a class="waves-effect waves-light btn reservation-btn " href="order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
             </div>
             <div class="center">
                 <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
@@ -55,11 +55,10 @@
 <%--                                <form:input path="orderItem.quantity" type="number"/>--%>
                                 <div class="center">
                                     <a class="waves-effect waves-light btn reservation-btn"
-                                       href="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
+                                       href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
                                 </div>
                             </div>
-                        <p class="description">I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
+                        <p class="description"><c:out value="${dish.dishDescription}"/></p>
                         <p class="price">$<c:out value="${dish.price}"/></p>
                     </div>
                 </div>

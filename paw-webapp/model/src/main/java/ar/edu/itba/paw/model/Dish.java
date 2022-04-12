@@ -6,13 +6,15 @@ public class Dish {
     private long restaurantId;
     private String dishName;
     private int price;
+    private String dishDescription;
 
-    public Dish(long id, long restaurantId, String dishName, int price) {
+    public Dish(long id, long restaurantId, String dishName, int price, String dishDescription) {
         super();
         this.id = id;
         this.restaurantId = restaurantId;
         this.dishName = dishName;
         this.price = price;
+        this.dishDescription = dishDescription;
     }
 
     public long getId() {
@@ -29,5 +31,29 @@ public class Dish {
 
     public int getPrice() {
         return price;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setRestaurantId(long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public void setDishName(String dishName) {
+        this.dishName = dishName;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getDishDescription() {
+        return dishDescription;
+    }
+
+    public void setDishDescription(String dishDescription) {
+        this.dishDescription = dishDescription;
     }
 }
