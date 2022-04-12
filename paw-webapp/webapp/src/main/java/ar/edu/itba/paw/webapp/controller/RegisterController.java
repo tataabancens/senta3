@@ -54,7 +54,7 @@ public class RegisterController {
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer);
+                customer,reservation);
 
         final ModelAndView mav = new ModelAndView("notifyCustomer");
 
