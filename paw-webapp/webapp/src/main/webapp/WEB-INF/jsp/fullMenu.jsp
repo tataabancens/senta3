@@ -17,7 +17,8 @@
 
     <title>Senta3</title>
 </head>
-<body>
+<body >
+<a id="full-menu"></a>
 <%@ include file="components/navbar.jsp" %>
 
 <div class="row">
@@ -130,6 +131,8 @@
         </div>
     </div>
 </div>
+
+
 </body>
 </html>
 
