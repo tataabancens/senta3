@@ -20,7 +20,8 @@ public class DishJdbcDao implements DishDao {
             new Dish(resultSet.getLong("dishId"),
                     resultSet.getLong("restaurantId"),
                     resultSet.getString("dishName"),
-                    resultSet.getInt("price")));
+                    resultSet.getInt("price"),
+                    resultSet.getString("dishdescription")));
 
     @Autowired
     public DishJdbcDao(final DataSource ds) {

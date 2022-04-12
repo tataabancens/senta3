@@ -30,7 +30,8 @@ public class RestaurantJdbcDao implements RestaurantDao {
             new Dish(resultSet.getLong("dishId"),
                     resultSet.getLong("restaurantId"),
                     resultSet.getString("dishName"),
-                    resultSet.getInt("price")));
+                    resultSet.getInt("price"),
+                    resultSet.getString("dishdescription")));
 
     @Autowired
     public RestaurantJdbcDao(final DataSource ds) {
@@ -38,7 +39,6 @@ public class RestaurantJdbcDao implements RestaurantDao {
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Restaurant")
                 .usingGeneratedKeyColumns("restaurantId");
-
     }
 
 

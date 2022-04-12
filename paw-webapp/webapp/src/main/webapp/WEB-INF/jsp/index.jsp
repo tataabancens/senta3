@@ -26,7 +26,7 @@
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
                         </div>
                         <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
+                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
                         </div>
                         <div class="row center smaller">
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn red">cancelar reserva</a>
@@ -40,8 +40,7 @@
                     <div class="card dish-card">
                         <div class="card-content white-text">
                             <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                            <p class="description">I am a very simple card. I am good at containing small bits of information.
-                                I am convenient because I require little markup to use effectively.</p>
+                            <p class="description"><c:out value="${dish.dishDescription}"/></p>
                             <p class="price">$<c:out value="${dish.price}"/></p>
                         </div>
                     </div>

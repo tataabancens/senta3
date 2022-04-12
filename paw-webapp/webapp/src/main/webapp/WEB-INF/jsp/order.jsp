@@ -77,9 +77,9 @@
                 </div>
 
                 <div class="col s12 btns">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="/menu?reservationId=${reservationId}">Volver</a>
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="menu?reservationId=${reservationId}">Volver</a>
 
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="/">Continuar</a>
+                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="">Continuar</a>
                 </div>
 
             </div>
