@@ -6,7 +6,6 @@ import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
-import ar.edu.itba.paw.webapp.form.FindReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,8 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -131,6 +128,7 @@ public class OrderController {
                                       @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
@@ -138,7 +136,13 @@ public class OrderController {
         ms.sendReceiptEmail(restaurant, customer);
         res.updateReservationStatus(reservationId, ReservationStatus.ACTIVE, ReservationStatus.CHECK_ORDERED);
 
-        return new ModelAndView("redirect:/");
+        final ModelAndView mav = new ModelAndView("receipt");
+        mav.addObject("orderItems", orderItems);
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("total", res.getTotal(orderItems));
+        mav.addObject("reservationId", reservationId);
+
+        return mav;
     }
 
 }
