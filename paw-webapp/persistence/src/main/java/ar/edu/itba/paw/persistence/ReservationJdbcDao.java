@@ -64,9 +64,6 @@ public class ReservationJdbcDao implements ReservationDao {
 
         Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId);
 
-        System.out.println("newReservation.getReservationId()");
-        System.out.println(newReservation.getReservationId());
-
         return newReservation;
     }
 
