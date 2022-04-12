@@ -30,12 +30,35 @@
                     <span class="text"><c:out value="${restaurant.phone}"/></span>
                 </div>
             </div>
-            <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn " href="order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
+            <div class="card restaurant-card">
+                <div class="card-content white-text">
+                    <span class="card-title text center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+                    <div class="center">
+                        <a class="waves-effect waves-light btn reservation-btn " href="order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
+                    </div>
+                    <div class="center">
+                        <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
+                    </div>
+                </div>
             </div>
-            <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
+            <div class="card restaurant-card">
+                <div class="card-content white-text">
+                    <c:forEach var="orderItem" items="${orderItems}">
+                        <div class="row">
+                            <div class="col">
+                                <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
+                            </div>
+                            <div class="col center">
+                                <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
+                            </div>
+                            <div class="col center">
+                                <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
             </div>
+
         </div>
 
 
@@ -136,6 +159,10 @@
         width: 100%;
         margin-bottom: 0;
         margin-top: 0;
+    }
+
+    .margin-bottom{
+        margin-bottom: 10%;
     }
 
 
