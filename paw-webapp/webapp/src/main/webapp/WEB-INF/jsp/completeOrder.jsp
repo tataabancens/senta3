@@ -37,7 +37,22 @@
                     <span class="title2 text center">Resumen de tu pedido:</span>
                 </div>
                 <div class="summary">
-
+                    <div class="row">
+                        <!-- acá va un for de la tabla orderItem -->
+                        <div class="col">
+                            <span class="card-title title text">Plato</span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text">Cantidad</span>
+                        </div>
+                        <div class="col center">
+                            <!-- acá va  -->
+                            <span class="card-title title text">Precio x U</span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text">Precio total</span>
+                        </div>
+                    </div>
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="row">
                             <div class="col">
