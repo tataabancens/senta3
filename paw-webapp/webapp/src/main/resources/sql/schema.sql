@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     restaurantId    integer NOT NULL,
     customerId      integer NOT NULL,
     reservationDate timestamp,
+    reservationStatus integer,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );

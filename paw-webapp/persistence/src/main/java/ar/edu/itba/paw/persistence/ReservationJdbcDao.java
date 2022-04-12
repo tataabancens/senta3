@@ -26,7 +26,8 @@ public class ReservationJdbcDao implements ReservationDao {
             new Reservation(resultSet.getLong("reservationId"),
                     resultSet.getLong("restaurantId"),
                     resultSet.getTimestamp("ReservationDate"),
-                    resultSet.getLong("customerId")));
+                    resultSet.getLong("customerId"),
+                    resultSet.getInt("reservationStatus")));
 
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new FullOrderItem(resultSet.getLong("reservationId"),
@@ -57,15 +58,23 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
+    public Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND reservationstatus = ?",
+                new Object[]{id, status.ordinal()}, ROW_MAPPER_RESERVATION);
+        return query.stream().findFirst();
+    }
+
+    @Override
     public Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate) {
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationDate", reservationDate);
         reservationData.put("customerId", customerId);
+        reservationData.put("reservationstatus", ReservationStatus.ACTIVE.ordinal());
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId);
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId, ReservationStatus.ACTIVE.ordinal());
 
         return newReservation;
     }
@@ -111,12 +120,16 @@ public class ReservationJdbcDao implements ReservationDao {
         orderItemData.put("status", 0);
 
         Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
-        return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, 0);
+        return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, OrderItemStatus.SELECTED.ordinal());
     }
 
     @Override
     public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
-        int numRows = jdbcTemplate.update("UPDATE orderitem SET status = ? where status = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal()});
-        System.out.println(numRows);
+        jdbcTemplate.update("UPDATE orderitem SET status = ? where status = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal()});
+    }
+
+    @Override
+    public void updateReservationStatus(long reservationId, ReservationStatus oldStatus, ReservationStatus newStatus) {
+        jdbcTemplate.update("UPDATE reservation SET reservationStatus = ? where reservationStatus = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal()});
     }
 }

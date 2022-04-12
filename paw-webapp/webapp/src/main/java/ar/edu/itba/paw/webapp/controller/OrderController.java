@@ -126,8 +126,9 @@ public class OrderController {
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        ms.sendReceiptEmail(restaurant, customer);
 
+        ms.sendReceiptEmail(restaurant, customer);
+        res.updateReservationStatus(reservationId, ReservationStatus.ACTIVE, ReservationStatus.CHECK_ORDERED);
 
         return new ModelAndView("redirect:/");
     }

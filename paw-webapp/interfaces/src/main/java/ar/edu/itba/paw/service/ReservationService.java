@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
 
+    Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status);
+
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
@@ -22,4 +24,6 @@ public interface ReservationService {
     float getTotal(List<FullOrderItem> orderItems);
 
     void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
+
+    void updateReservationStatus(long reservationId, ReservationStatus oldStatus, ReservationStatus newStatus);
 }
