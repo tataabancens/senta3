@@ -27,9 +27,9 @@
                     <div class ="block right center">
                         <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
-                        <form:input path="orderItem.quantity" type="number" cssClass="center"/>
+                        <form:input path="orderItem.quantity" type="number" cssClass="center" min="1"/>
                         <div class="center">
-                            <input type="submit" value="+" class="waves-effect waves-light btn continue-btn">
+                            <input type="submit" value="+" class="waves-effect waves-light btn continue-btn" >
                         </div>
                     </div>
                 </form:form>

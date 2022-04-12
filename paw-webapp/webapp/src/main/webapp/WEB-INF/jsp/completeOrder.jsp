@@ -37,36 +37,21 @@
                     <span class="title2 text center">Resumen de tu pedido:</span>
                 </div>
                 <div class="summary">
-                    <div class="row">
-                        <!-- acá va un for de la tabla orderItem -->
-                        <div class="col">
-                            <span class="items-title">Plato</span>
-                        </div>
-                        <div class="col center">
-                            <span class="items-title">Cantidad</span>
-                        </div>
-                        <div class="col center">
-                            <!-- acá va  -->
-                            <span class="items-title">Precio x U</span>
-                        </div>
-                        <div class="col center">
-                            <span class=" items-title">Precio total</span>
-                        </div>
-                    </div>
+
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="row">
                             <div class="col">
-                                <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
+                                <span class="items-title text"><c:out value="${orderItem.dishName}"/></span>
                             </div>
                             <div class="col center">
-                                <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
+                                <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
                             </div>
                             <div class="col center">
                                 <!-- acá va  -->
-                                <span class="card-title title text">$<c:out value="${orderItem.unitPrice}"/></span>
+                                <span class="items-title text">$<c:out value="${orderItem.unitPrice}"/></span>
                             </div>
                             <div class="col center">
-                                <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                                <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                             </div>
                         </div>
                     </c:forEach>
@@ -125,6 +110,7 @@
     .items-title{
         color:  #707070;
         font-size: 18px;
+        text-overflow: ellipsis;
     }
 
     .title2{

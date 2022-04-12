@@ -53,7 +53,10 @@ public class OrderController {
 
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         mav.addObject("orderItems", orderItems);
+        mav.addObject("selected", orderItems.size());
         mav.addObject("total", res.getTotal(orderItems));
+        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
+        mav.addObject("ordered", res.getTotal(orderedItems));
         return mav;
     }
 
@@ -141,6 +144,7 @@ public class OrderController {
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
+
 
         return mav;
     }

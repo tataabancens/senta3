@@ -35,10 +35,12 @@
                 <div class="card-content white-text">
                     <span class="card-title text center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
                     <div class="center">
-                        <a class="waves-effect waves-light btn reservation-btn " href="order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
-                    </div>
-                    <div class="center">
-                        <a class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                        <c:if test="${ordered > 0}">
+                            <a class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                        </c:if>
+                        <c:if test="${ordered == 0}">
+                            <a disabled class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -122,7 +124,12 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s12">
-                            <a class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                            <c:if test="${selected > 0}">
+                                <a class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                            </c:if>
+                            <c:if test="${selected == 0}">
+                                <a disabled class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                            </c:if>
                         </div>
                     </div>
 
@@ -201,9 +208,16 @@
         display: inline-block;
     }
 
-    .reservation-btn{
+    .reservation-btn:enabled{
         border-radius: 16px;
         background-color: #37A6E6;
+        margin-top: 5%;
+        opacity: 57%;
+    }
+
+    .reservation-btn:enabled{
+        border-radius: 16px;
+        background-color:  #707070;
         margin-top: 5%;
         opacity: 57%;
     }
