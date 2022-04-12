@@ -19,6 +19,8 @@ public interface ReservationDao {
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
+    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+
+    void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
 
 }

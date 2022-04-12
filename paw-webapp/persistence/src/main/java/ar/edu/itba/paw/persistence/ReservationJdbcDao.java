@@ -3,12 +3,15 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -92,9 +95,9 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem  WHERE status = ? AND reservationId = ?",
-                new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
+    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ? AND reservationId = ?",
+                new Object[]{status.ordinal(), reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
 
@@ -109,5 +112,11 @@ public class ReservationJdbcDao implements ReservationDao {
 
         Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
         return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, 0);
+    }
+
+    @Override
+    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
+        int numRows = jdbcTemplate.update("UPDATE orderitem SET status = ? where status = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal()});
+        System.out.println(numRows);
     }
 }
