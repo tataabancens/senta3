@@ -67,7 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void updateReservationStatus(long reservationId, ReservationStatus oldStatus, ReservationStatus newStatus) {
-        reservationDao.updateReservationStatus(reservationId, oldStatus, newStatus);
+    public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
+        reservationDao.updateReservationStatus(reservationId, newStatus);
     }
 }
