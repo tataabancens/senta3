@@ -26,4 +26,6 @@ public interface ReservationService {
     void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
 
     void updateReservationStatus(long reservationId, ReservationStatus newStatus);
+
+    void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
 }

@@ -186,4 +186,10 @@ public class OrderController {
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         return new ModelAndView("redirect:/");
     }
+
+    @RequestMapping("/order/empty-cart")
+    public ModelAndView emptyCart(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId) {
+        res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+    }
 }

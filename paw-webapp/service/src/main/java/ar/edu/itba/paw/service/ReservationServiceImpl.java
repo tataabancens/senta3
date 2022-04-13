@@ -70,4 +70,9 @@ public class ReservationServiceImpl implements ReservationService {
     public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
         reservationDao.updateReservationStatus(reservationId, newStatus);
     }
+
+    @Override
+    public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+        reservationDao.deleteOrderItemsByReservationIdAndStatus(reservationId, status);
+    }
 }
