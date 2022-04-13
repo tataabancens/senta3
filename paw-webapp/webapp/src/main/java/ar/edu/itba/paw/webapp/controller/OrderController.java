@@ -144,14 +144,13 @@ public class OrderController {
 
 
         ms.sendReceiptEmail(restaurant, customer);
-        res.updateReservationStatus(reservationId, ReservationStatus.ACTIVE, ReservationStatus.CHECK_ORDERED);
+        res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
 
         final ModelAndView mav = new ModelAndView("receipt");
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
-
 
         return mav;
     }
@@ -164,9 +163,27 @@ public class OrderController {
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
         ms.sendReceiptEmail(restaurant, customer);
-        res.updateReservationStatus(reservationId, ReservationStatus.ACTIVE, ReservationStatus.CHECK_ORDERED);
+        res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
 
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
 
+    @RequestMapping("/reservation-cancel")
+    public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                                     @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        final ModelAndView mav = new ModelAndView("cancelReservation");
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("reservationId", reservationId);
+
+        return mav;
+    }
+
+    @RequestMapping("/reservation-cancel/confirm")
+    public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId) {
+
+        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
+        return new ModelAndView("redirect:/");
+    }
 }

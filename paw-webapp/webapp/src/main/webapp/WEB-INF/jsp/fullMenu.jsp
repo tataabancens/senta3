@@ -43,7 +43,7 @@
                         </c:if>
                     </div>
                     <div class="center div-padding">
-                        <a class="waves-effect waves-light btn reservation-btn red" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+                        <a class="waves-effect waves-light btn reservation-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
                     </div>
 
                 </div>
