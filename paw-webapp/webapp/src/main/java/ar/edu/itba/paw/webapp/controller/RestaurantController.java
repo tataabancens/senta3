@@ -69,10 +69,16 @@ public class RestaurantController {
         return new ModelAndView("redirect:/");
     }
 
-    @RequestMapping("/error")
-    public ModelAndView error() {
+    @RequestMapping("/error404")
+    public ModelAndView error404() {
 
-        return new ModelAndView("error");
+        return new ModelAndView("error404");
+    }
+
+    @RequestMapping("/error500")
+    public ModelAndView error500() {
+
+        return new ModelAndView("error500");
     }
 
 }
