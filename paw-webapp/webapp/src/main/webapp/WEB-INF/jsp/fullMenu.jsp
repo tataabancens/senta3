@@ -36,14 +36,14 @@
                     <span class="card-title text center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
                     <div class="center">
                         <c:if test="${ordered > 0}">
-                            <a class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                            <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
                         </c:if>
                         <c:if test="${ordered == 0}">
-                            <a disabled class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                            <a disabled class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
                         </c:if>
                     </div>
                     <div class="center div-padding">
-                        <a class="waves-effect waves-light btn reservation-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+                        <a class="waves-effect waves-light btn plus-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
                     </div>
 
                 </div>
@@ -64,7 +64,7 @@
                             </div>
                             <div class ="block right">
                                 <div class="center">
-                                    <a class="waves-effect waves-light btn reservation-btn"
+                                    <a class="waves-effect waves-light btn plus-btn"
                                        href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
                                 </div>
                             </div>
@@ -128,14 +128,14 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s6">
-                            <a class="waves-effect waves-light btn reservation-btn red" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Vaciar pedido</a>
+                            <a class="waves-effect waves-light btn plus-btn red" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Vaciar pedido</a>
                         </div>
                         <div class="col s6">
                             <c:if test="${selected > 0}">
-                                <a class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                                <a class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
                             </c:if>
                             <c:if test="${selected == 0}">
-                                <a disabled class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                                <a disabled class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
                             </c:if>
                         </div>
                     </div>
@@ -177,12 +177,15 @@
     .plus-btn{
         background-color: #37A6E6;
         opacity: 57%;
+        border-radius: 16px;
     }
 
     .plus-btn:hover{
         background-color: #37A6E6;
-        opacity: 100%
+        color: white;
+        opacity: 100%;
     }
+
 
     .restaurant-card{
 

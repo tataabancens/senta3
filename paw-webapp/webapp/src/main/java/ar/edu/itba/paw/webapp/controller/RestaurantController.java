@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.ReservationStatus;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
@@ -54,6 +55,30 @@ public class RestaurantController {
         mav.addObject("reservation", reservation);
 
         return mav;
+    }
+
+    @RequestMapping("/home")
+    public ModelAndView home() {
+
+        return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping("/menu/home")
+    public ModelAndView homeWithMenu() {
+
+        return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping("/error404")
+    public ModelAndView error404() {
+
+        return new ModelAndView("error404");
+    }
+
+    @RequestMapping("/error500")
+    public ModelAndView error500() {
+
+        return new ModelAndView("error500");
     }
 
 }
