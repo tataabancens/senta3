@@ -7,12 +7,14 @@ public class Reservation {
     private long restaurantId;
     private long customerId;
     private Timestamp reservationDate;
+    private ReservationStatus reservationStatus;
 
-    public Reservation(long reservationId, long restaurantId, Timestamp reservationDate, long customerId){
+    public Reservation(long reservationId, long restaurantId, Timestamp reservationDate, long customerId, int reservationStatus){
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.reservationDate = reservationDate;
         this.customerId = customerId;
+        this.reservationStatus = ReservationStatus.values()[reservationStatus];
     }
     public long getReservationId() {
         return reservationId;
@@ -44,5 +46,13 @@ public class Reservation {
 
     public void setReservationDate(Timestamp reservationDate) {
         this.reservationDate = reservationDate;
+    }
+
+    public ReservationStatus getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public void setReservationStatus(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
     }
 }

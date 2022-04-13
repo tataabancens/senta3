@@ -24,6 +24,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status) {
+        return reservationDao.getReservationByIdAndStatus(id, status);
+    }
+
+    @Override
     public List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems) {
         return reservationDao.addOrderItemsByReservationId(orderItems);
     }
@@ -34,7 +39,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
+    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, status);
     }
 
@@ -54,5 +59,15 @@ public class ReservationServiceImpl implements ReservationService {
             toRet += orderItem.getQuantity() * orderItem.getUnitPrice();
         }
         return toRet;
+    }
+
+    @Override
+    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
+        reservationDao.updateOrderItemsStatus(reservationId, oldStatus, newStatus);
+    }
+
+    @Override
+    public void updateReservationStatus(long reservationId, ReservationStatus oldStatus, ReservationStatus newStatus) {
+        reservationDao.updateReservationStatus(reservationId, oldStatus, newStatus);
     }
 }

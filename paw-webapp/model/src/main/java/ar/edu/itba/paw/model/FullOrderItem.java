@@ -8,7 +8,7 @@ public class FullOrderItem {
     private long dishId;
     private float unitPrice;
     private int quantity;
-    private int status;
+    private OrderItemStatus status;
     private String dishName;
 
     public FullOrderItem(long reservationId, long dishId, float unitPrice, int quantity , int status, String dishName) {
@@ -16,7 +16,7 @@ public class FullOrderItem {
         this.dishId = dishId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        this.status = status;
+        this.status = OrderItemStatus.values()[status];
         this.dishName = dishName;
     }
 
@@ -34,10 +34,6 @@ public class FullOrderItem {
         this.quantity = quantity;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public long getReservationId() {
         return reservationId;
     }
@@ -53,10 +49,6 @@ public class FullOrderItem {
     public int getQuantity() {
         return quantity;
     }
-        
-    public int getStatus() {
-        return status;
-    }
 
     public String getDishName() {
         return dishName;
@@ -64,5 +56,13 @@ public class FullOrderItem {
 
     public void setDishName(String dishName) {
         this.dishName = dishName;
+    }
+
+    public OrderItemStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderItemStatus status) {
+        this.status = status;
     }
 }

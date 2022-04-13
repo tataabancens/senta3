@@ -11,6 +11,8 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationById(long id);
 
+    Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status);
+
     Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
@@ -19,6 +21,10 @@ public interface ReservationDao {
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status);
+    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+
+    void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
+
+    void updateReservationStatus(long reservationId, ReservationStatus oldStatus, ReservationStatus newStatus);
 
 }
