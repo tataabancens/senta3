@@ -25,6 +25,8 @@ public interface ReservationDao {
 
     void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
 
-    void updateReservationStatus(long reservationId, ReservationStatus oldStatus, ReservationStatus newStatus);
+    void updateReservationStatus(long reservationId, ReservationStatus newStatus);
+
+    void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
 
 }
