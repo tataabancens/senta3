@@ -29,7 +29,7 @@
     <div class="col offset-s1 s4">
         <div class="card dish-card">
             <div class="card-content white-text">
-                <span class="card-title text price center">Hiciste un pedido en</span>
+                <span class="card-title text price center">Estas realizando un pedido en</span>
                 <div class="with-margin">
                     <span class="card-title text center"><c:out value="${restaurant.restaurantName}"/></span>
                 </div>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s12">
-                            <a class="waves-effect waves-light btn reservation-btn green right" href="${pageContext.request.contextPath}/menu?reservationId=${reservationId}">Volver</a>
+                            <a class="waves-effect waves-light btn reservation-btn green right" href="send-food/confirm?reservationId=${reservationId}&restaurantId=${restaurant.id}">Confirmar pedido</a>
                         </div>
                     </div>
 

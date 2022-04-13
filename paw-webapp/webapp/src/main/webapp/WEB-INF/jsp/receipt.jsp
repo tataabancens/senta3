@@ -29,7 +29,7 @@
     <div class="col offset-s1 s4">
         <div class="card dish-card">
             <div class="card-content white-text">
-                <span class="card-title text price center">Pediste la cuenta!</span>
+                <span class="card-title text price center">Estas pidiendo la cuenta!</span>
                 <div class="center">
                     <span class="title2 text center">Resumen de tu pedido:</span>
                 </div>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s12">
-                            <a class="waves-effect waves-light btn reservation-btn green right" href="${pageContext.request.contextPath}">Volver</a>
+                            <a class="waves-effect waves-light btn reservation-btn green right" href="${pageContext.request.contextPath}/">Confirmar</a>
                         </div>
                     </div>
 
