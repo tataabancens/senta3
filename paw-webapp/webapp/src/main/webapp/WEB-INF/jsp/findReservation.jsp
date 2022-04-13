@@ -25,7 +25,7 @@
                         <div>
                             <form:errors path="reservationId" element="p" cssClass="error"/>
                             <form:label path="reservationId"></form:label>
-                            <form:input type="number" path="reservationId"/>
+                            <form:input type="number" path="reservationId" min="1"/>
                         </div>
                     </div>
                     <div class="center">
