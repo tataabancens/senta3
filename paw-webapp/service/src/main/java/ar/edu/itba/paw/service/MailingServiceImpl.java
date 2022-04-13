@@ -20,10 +20,21 @@ public class MailingServiceImpl implements MailingService{
 
     public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
         Properties properties=setProperties();
+        sendCustomerConfirmation(restaurant,customer,reservation,properties);
+        sendRestaurantConfirmation(restaurant,customer,reservation,properties);
+    }
+    private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
         String subject="Confirmacion de reserva";
         String stringBuilder = "tu reserva fue confirmada\n" + "tu codigo de reserva es: "+reservation.getReservationId()+'\n' +
                 "si necesitas contactar al restaurant, este es su email: " + restaurant.getMail() + '\n';
-        sendEmail(properties,customer.getMail(),subject, stringBuilder);
+        sendEmail(props,customer.getMail(),subject, stringBuilder);
+    }
+
+    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
+        String subject="Un cliente realizo una reserva";
+        String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
+                reservation.getReservationDate().toString()+'\n';
+        sendEmail(props,restaurant.getMail(),subject,message);
     }
 
     @Override
