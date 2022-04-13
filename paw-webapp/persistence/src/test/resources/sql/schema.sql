@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS restaurant (
 );
 
 INSERT INTO restaurant (restaurantName, phone, Mail)
-VALUES('Pepito Masterchef','110502400', 'pepitococina@gmail.com');
+VALUES('Pepito Masterchef','110502400', 'tataabancens@gmail.com');
 
 CREATE TABLE IF NOT EXISTS dish (
   dishId SERIAL PRIMARY KEY,
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     restaurantId    integer NOT NULL,
     customerId      integer NOT NULL,
     reservationDate timestamp,
+    status          integer NOT NULL,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );

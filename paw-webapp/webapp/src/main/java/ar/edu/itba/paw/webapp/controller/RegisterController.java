@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.ReservationStatus;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.MailingService;
@@ -54,7 +55,7 @@ public class RegisterController {
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer);
+                customer,reservation);
 
         final ModelAndView mav = new ModelAndView("notifyCustomer");
 
@@ -78,7 +79,7 @@ public class RegisterController {
         if (errors.hasErrors()) {
             return findReservation(form);
         }
-        Reservation reservation = res.getReservationById(form.getReservationId()).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndStatus(form.getReservationId(), ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
         return new ModelAndView("redirect:/menu?reservationId=" + reservation.getReservationId());
     }
 }

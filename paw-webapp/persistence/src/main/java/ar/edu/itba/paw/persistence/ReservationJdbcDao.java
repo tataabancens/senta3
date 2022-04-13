@@ -3,12 +3,15 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -23,7 +26,8 @@ public class ReservationJdbcDao implements ReservationDao {
             new Reservation(resultSet.getLong("reservationId"),
                     resultSet.getLong("restaurantId"),
                     resultSet.getTimestamp("ReservationDate"),
-                    resultSet.getLong("customerId")));
+                    resultSet.getLong("customerId"),
+                    resultSet.getInt("reservationStatus")));
 
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new FullOrderItem(resultSet.getLong("reservationId"),
@@ -54,18 +58,23 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
+    public Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND reservationstatus = ?",
+                new Object[]{id, status.ordinal()}, ROW_MAPPER_RESERVATION);
+        return query.stream().findFirst();
+    }
+
+    @Override
     public Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate) {
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationDate", reservationDate);
         reservationData.put("customerId", customerId);
+        reservationData.put("reservationstatus", ReservationStatus.ACTIVE.ordinal());
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId);
-
-        System.out.println("newReservation.getReservationId()");
-        System.out.println(newReservation.getReservationId());
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId, ReservationStatus.ACTIVE.ordinal());
 
         return newReservation;
     }
@@ -95,9 +104,9 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, int status) {
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem  WHERE status = ? AND reservationId = ?",
-                new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
+    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ? AND reservationId = ?",
+                new Object[]{status.ordinal(), reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
 
@@ -111,6 +120,21 @@ public class ReservationJdbcDao implements ReservationDao {
         orderItemData.put("status", 0);
 
         Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
-        return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, 0);
+        return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, OrderItemStatus.SELECTED.ordinal());
+    }
+
+    @Override
+    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
+        jdbcTemplate.update("UPDATE orderitem SET status = ? where status = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal()});
+    }
+
+    @Override
+    public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
+        jdbcTemplate.update("UPDATE reservation SET reservationStatus = ?", new Object[]{newStatus.ordinal()});
+    }
+
+    @Override
+    public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+        jdbcTemplate.update("DELETE from orderitem where status = ?", new Object[]{status.ordinal()});
     }
 }

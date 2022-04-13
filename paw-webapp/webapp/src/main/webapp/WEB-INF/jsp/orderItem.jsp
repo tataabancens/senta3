@@ -10,7 +10,6 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
     <title>Senta3</title>
 </head>
@@ -24,17 +23,16 @@
                 </div>
                 <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
-                    <div class ="block right">
+                    <div class ="block right center">
                         <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
-                        <form:input path="orderItem.quantity" type="number"/>
+                        <form:input path="orderItem.quantity" type="number" cssClass="center" min="1"/>
                         <div class="center">
-                            <input type="submit" value="+" class="waves-effect waves-light btn reservation-btn ">
+                            <input type="submit" value="+" class="waves-effect waves-light btn continue-btn" >
                         </div>
                     </div>
                 </form:form>
-                <p class="description">I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                <p class="description"><c:out value="${dish.dishDescription}"/></p>
                 <p class="price">$<c:out value="${dish.price}"/></p>
             </div>
     </div>

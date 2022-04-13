@@ -17,7 +17,8 @@
 
     <title>Senta3</title>
 </head>
-<body>
+<body >
+<a id="full-menu"></a>
 <%@ include file="components/navbar.jsp" %>
 
 <div class="row">
@@ -30,19 +31,31 @@
                     <span class="text"><c:out value="${restaurant.phone}"/></span>
                 </div>
             </div>
-            <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn " href="order?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Ver carrito</a>
+            <div class="card restaurant-card">
+                <div class="card-content white-text">
+                    <span class="card-title text center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+                    <div class="center">
+                        <c:if test="${ordered > 0}">
+                            <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                        </c:if>
+                        <c:if test="${ordered == 0}">
+                            <a disabled class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                        </c:if>
+                    </div>
+                    <div class="center div-padding">
+                        <a class="waves-effect waves-light btn plus-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+                    </div>
+
+                </div>
             </div>
-            <div class="center">
-                <a class="waves-effect waves-light btn reservation-btn ">Pedir cuenta</a>
-            </div>
+
         </div>
 
 
 
 
         <c:url value="/menu" var="postPath"/>
-            <div class="col offset-s1 s4">
+            <div class="col s4">
             <c:forEach var="dish" items="${dish}">
                 <div class="card dish-card">
                     <div class="card-content white-text">
@@ -50,11 +63,8 @@
                                 <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
                             </div>
                             <div class ="block right">
-<%--                                <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>--%>
-<%--                                <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>--%>
-<%--                                <form:input path="orderItem.quantity" type="number"/>--%>
                                 <div class="center">
-                                    <a class="waves-effect waves-light btn reservation-btn"
+                                    <a class="waves-effect waves-light btn plus-btn"
                                        href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
                                 </div>
                             </div>
@@ -64,8 +74,84 @@
                 </div>
             </c:forEach>
             </div>
+
+        <div class="col s5">
+            <div class="card order-card">
+                <div class="card-content white-text">
+                    <div class="row">
+                        <span class="card-title title text">Resumen de tu pedido:</span>
+                    </div>
+
+                    <div class="row">
+                        <!-- acá va un for de la tabla orderItem -->
+                        <div class="col">
+                            <span class="card-title title text">Plato</span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text">Cantidad</span>
+                        </div>
+                        <div class="col center">
+                            <!-- acá va  -->
+                            <span class="card-title title text">Precio x U</span>
+                        </div>
+                        <div class="col center">
+                            <span class="card-title title text">Precio total</span>
+                        </div>
+                    </div>
+                    <c:forEach var="orderItem" items="${orderItems}">
+                        <div class="row">
+                            <div class="col">
+                                <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
+                            </div>
+                            <div class="col center">
+                                <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
+                            </div>
+                            <div class="col center">
+                                <!-- acá va  -->
+                                <span class="card-title title text">$<c:out value="${orderItem.unitPrice}"/></span>
+                            </div>
+                            <div class="col center">
+                                <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                    <hr/>
+
+                    <div class="row margin-0">
+                        <div class="col s6">
+                            <p class="price">Total</p>
+                        </div>
+                        <div class="col s6">
+                            <p class="price right"><c:out value="${total}"/></p>
+                        </div>
+                    </div>
+                    <div class="row margin-0">
+                        <div class="col s6">
+                            <c:if test="${selected > 0}">
+                                <a class="waves-effect waves-light btn plus-btn red" href="order/empty-cart?reservationId=${reservation.reservationId}">Vaciar pedido</a>
+                            </c:if>
+                            <c:if test="${selected == 0}">
+                                <a disabled class="waves-effect waves-light btn plus-btn red" href="order/empty-cart?reservationId=${reservation.reservationId}">Vaciar pedido</a>
+                            </c:if>
+                        </div>
+                        <div class="col s6">
+                            <c:if test="${selected > 0}">
+                                <a class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                            </c:if>
+                            <c:if test="${selected == 0}">
+                                <a disabled class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                            </c:if>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
 </body>
 </html>
 
@@ -78,18 +164,40 @@
         color:  #707070
     }
 
+    .margin-0{
+        margin: 0;
+    }
+
+
+    .hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #ccc;
+        margin: 1em 0;
+        padding: 0;
+    }
+
 
     .plus-btn{
         background-color: #37A6E6;
         opacity: 57%;
+        border-radius: 16px;
     }
 
     .plus-btn:hover{
         background-color: #37A6E6;
-        opacity: 100%
+        color: white;
+        opacity: 100%;
     }
 
+
     .restaurant-card{
+
+    }
+
+    .card{
+        border-radius: 10px;
     }
 
     .dish-card{
@@ -115,11 +223,22 @@
         display: inline-block;
     }
 
-    .reservation-btn{
+    .reservation-btn:enabled{
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+    }
+
+    .reservation-btn:enabled{
+        border-radius: 16px;
+        background-color:  #707070;
+        margin-top: 5%;
+        opacity: 57%;
+    }
+
+    .div-padding{
+        padding: 8px;
     }
 
     .reservation-btn:hover{
@@ -136,6 +255,19 @@
         width: 100%;
         margin-bottom: 0;
         margin-top: 0;
+    }
+
+    .margin-bottom{
+        margin-bottom: 10%;
+    }
+
+    .no-margin-botton{
+        margin-bottom: 0%;
+    }
+
+    .order-card{
+        width: 100%;
+
     }
 
 

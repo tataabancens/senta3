@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
@@ -13,12 +16,13 @@ public class ReservationForm {
     private String mail;
 
     @Size(min = 1, max = 50)
-    @Pattern(regexp = "^[a-z ,.'-]+$")
+    @Pattern(regexp = "^[a-zA-Z ,.'-]+$")
     private String name;
-    @Size(min = 10, max = 13)
+    @Size(min = 9, max = 13)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
-    @Size(min=1)
+    @NotEmpty
+    //@DateTimeConstraint
     private String timeAndDate;
 
     public String getTimeAndDate() {
