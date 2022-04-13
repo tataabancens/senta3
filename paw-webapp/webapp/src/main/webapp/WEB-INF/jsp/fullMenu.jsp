@@ -42,6 +42,10 @@
                             <a disabled class="waves-effect waves-light btn reservation-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
                         </c:if>
                     </div>
+                    <div class="center div-padding">
+                        <a class="waves-effect waves-light btn reservation-btn red" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+                    </div>
+
                 </div>
             </div>
 
@@ -123,7 +127,10 @@
                         </div>
                     </div>
                     <div class="row margin-0">
-                        <div class="col s12">
+                        <div class="col s6">
+                            <a class="waves-effect waves-light btn reservation-btn red" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Vaciar pedido</a>
+                        </div>
+                        <div class="col s6">
                             <c:if test="${selected > 0}">
                                 <a class="waves-effect waves-light btn reservation-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
                             </c:if>
@@ -220,6 +227,10 @@
         background-color:  #707070;
         margin-top: 5%;
         opacity: 57%;
+    }
+
+    .div-padding{
+        padding: 8px;
     }
 
     .reservation-btn:hover{
