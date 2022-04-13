@@ -18,7 +18,7 @@
 <body>
 <nav>
     <div class="nav-wrapper navbar">
-        <a href="${pageContext.request.contextPath}/reservation-cancel/confirm?reservationId=${reservationId}">
+        <a href="home">
             <span class="logo">Senta3</span>
         </a>
     </div>
