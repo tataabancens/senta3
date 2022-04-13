@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.form.CustomValidator.DateTimeConstraint;
-import org.hibernate.validator.constraints.NotBlank;
+import ar.edu.itba.paw.webapp.form.CustomValidator.DateConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
@@ -24,7 +22,7 @@ public class ReservationForm {
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
     @NotEmpty
-    //@DateTimeConstraint
+    @DateConstraint
     private String timeAndDate;
 
     public String getTimeAndDate() {
