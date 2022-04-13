@@ -28,9 +28,6 @@
                         <div class="row center smaller">
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
                         </div>
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn red">cancelar reserva</a>
-                        </div>
                     </div>
                 </div>
             </div>
