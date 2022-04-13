@@ -109,12 +109,6 @@ public class OrderController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
-        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
-
-        ms.sendOrderEmail(restaurant, customer, orderItems);
-        res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
-
 
         final ModelAndView mav = new ModelAndView("completeOrder");
         mav.addObject("orderItems", orderItems);
@@ -122,8 +116,21 @@ public class OrderController {
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
 
-        //return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
         return mav;
+    }
+    @RequestMapping("/order/send-food/confirm")
+    public ModelAndView orderFoodConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                                      @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ms.sendOrderEmail(restaurant, customer, orderItems);
+        res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
+
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
 
     @RequestMapping("/order/send-receipt")
@@ -131,7 +138,7 @@ public class OrderController {
                                       @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
@@ -147,6 +154,19 @@ public class OrderController {
 
 
         return mav;
+    }
+    @RequestMapping("/order/send-receipt/confirm")
+    public ModelAndView orderReceiptConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                                     @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ms.sendReceiptEmail(restaurant, customer);
+        res.updateReservationStatus(reservationId, ReservationStatus.ACTIVE, ReservationStatus.CHECK_ORDERED);
+
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
 
 }
