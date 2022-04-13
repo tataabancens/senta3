@@ -58,7 +58,13 @@ public class RestaurantController {
     }
 
     @RequestMapping("/home")
-    public ModelAndView cancelReservationConfirm() {
+    public ModelAndView home() {
+
+        return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping("/menu/home")
+    public ModelAndView homeWithMenu() {
 
         return new ModelAndView("redirect:/");
     }
