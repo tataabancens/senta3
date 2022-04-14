@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ReservationForm {
 
     @Size(min = 6, max = 50)
-    @Pattern(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")
+    @Pattern(regexp = "^\\w+([#$%&'*/=?^~`|{}!.+_-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")
     private String mail;
 
     @Size(min = 1, max = 50)

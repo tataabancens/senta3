@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateConstraint {
-    public String message() default "La reserva no puede ser en el pasado";
+    public String message() default "La reserva no puede ser en el pasado ni en mas de un año";
 
     public Class<?>[] groups() default {};
     public Class<? extends Payload>[] payload() default {};

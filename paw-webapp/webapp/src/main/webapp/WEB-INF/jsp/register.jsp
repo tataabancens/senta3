@@ -56,7 +56,7 @@
                     </div>
                     <div class="col s12 center">
                         <!-- acá va un href -->
-                        <input type="submit" value="Continuar" class="continue-btn"/>
+                        <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
                     </div>-->
                 </div>
             </div>
