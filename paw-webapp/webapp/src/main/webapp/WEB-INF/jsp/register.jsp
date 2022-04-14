@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="styless.css">
 
     <title>Sentate-Register</title>
+    <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 <body>
     <%@ include file="components/navbar.jsp" %>
 
