@@ -44,13 +44,14 @@
                     <div class="row">
                         <div class="input-field col s12 input">
                             <form:errors path="name" element="p" cssStyle="color: red"/>
-                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido</form:label>
+                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
                             <form:input path="name" type="text"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 input">
                             <form:errors path="timeAndDate" element="p" cssStyle="color: red"/>
+                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
                             <input id="timeAndDate" name="timeAndDate" type="datetime-local" value=""/>
                         </div>
                     </div>
@@ -73,6 +74,10 @@
     }
     .text{
         color:  #707070;
+    }
+
+    .date-input{
+        margin-top: 10px;
     }
 
     .card{

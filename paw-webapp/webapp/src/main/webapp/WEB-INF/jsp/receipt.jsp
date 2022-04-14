@@ -81,7 +81,7 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s12">
-                            <a class="waves-effect waves-light btn reservation-btn green right" href="${pageContext.request.contextPath}/">Confirmar</a>
+                            <a class="waves-effect waves-light btn reservation-btn green right" href="${pageContext.request.contextPath}/order/send-receipt/confirm">Confirmar</a>
                         </div>
                     </div>
 

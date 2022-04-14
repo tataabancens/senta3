@@ -164,8 +164,10 @@ public class OrderController {
 
         ms.sendReceiptEmail(restaurant, customer);
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
+        final ModelAndView mav = new ModelAndView("receiptConfirmed");
+        mav.addObject("restaurant", restaurant);
 
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        return mav;
     }
 
     @RequestMapping("/reservation-cancel")

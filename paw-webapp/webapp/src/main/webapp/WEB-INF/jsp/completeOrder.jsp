@@ -21,8 +21,8 @@
     <div class="col s3">
         <div class="card restaurant-card">
             <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
+                <span class="card-title text center"><c:out value="${restaurant.restaurantName}"/></span>
+                <span class="text center"><c:out value="${restaurant.phone}"/></span>
             </div>
         </div>
     </div>
