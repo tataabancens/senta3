@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.CustomValidator.DateConstraint;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 public class ReservationForm {
 
     @Size(min = 6, max = 50)
-    @Pattern(regexp = "^\\w+([#$%&'*/=?^~`|{}!.+_-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")
+    @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String mail;
 
     @Size(min = 1, max = 50)
@@ -21,7 +20,6 @@ public class ReservationForm {
     @Size(min = 9, max = 13)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
-    @NotEmpty
     @DateConstraint
     private String timeAndDate;
 
