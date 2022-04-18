@@ -18,6 +18,7 @@ public class MailingServiceImpl implements MailingService{
     private final String USERNAME="sentate.paw";
     private final String PASSWORD="xblgoodfhlnunfmq";
 
+    @Override
     public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
         Properties properties=setProperties();
         sendCustomerConfirmation(restaurant,customer,reservation,properties);
@@ -30,11 +31,33 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(props,customer.getMail(),subject, stringBuilder);
     }
 
-    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
+    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
         String subject="Un cliente realizo una reserva";
         String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
                 reservation.getReservationDate().toString()+'\n';
-        sendEmail(props,restaurant.getMail(),subject,message);
+        sendEmail(properties,restaurant.getMail(),subject,message);
+    }
+
+    @Override
+    public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation){
+        Properties properties=setProperties();
+        sendCustomerCancellation(restaurant,customer,reservation,properties);
+        sendRestaurantCancellation(restaurant,customer,reservation,properties);
+    }
+
+    private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties){
+        String subject="Se cancelo tu reserva";
+        String message="La siguiente reserva fue cancelada:\n"+"fecha: "+reservation.getReservationDate().toString()+'\n'
+                +"restaurante: "+restaurant.getRestaurantName()+'\n';
+        sendEmail(properties,customer.getMail(),subject,message);
+    }
+
+    private void sendRestaurantCancellation(Restaurant restaurant,Customer customer,Reservation reservation,Properties properties){
+        String subject="Una reserva fue cancelada";
+        String message="La siguiente reserva fue cancelada:\n"
+                +"cliente: "+customer.getCustomerName()+'\n'
+                +"fecha: "+reservation.getReservationDate().toString()+'\n';
+        sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
     @Override
