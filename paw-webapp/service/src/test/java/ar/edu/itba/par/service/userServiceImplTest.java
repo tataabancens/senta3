@@ -21,7 +21,7 @@ public class userServiceImplTest {
     private UserDao userDao;
 
     @InjectMocks
-    private UserServiceImpl userService = new UserServiceImpl(userDao);
+    private UserServiceImpl userService = new UserServiceImpl(userDao, null);
 
 
     @Test
