@@ -49,4 +49,9 @@ public class UserJdbcDao implements UserDao {
         int userId = jdbcInsert.execute(userData);
         return new User(userId, username, password);
     }
+
+    @Override
+    public Optional<User> findByName(final String username) {
+        return jdbcTemplate.query("SELECT * FROM users WHERE userId = ?", new Object[]{username}, ROW_MAPPER).stream().findFirst();
+    }
 }

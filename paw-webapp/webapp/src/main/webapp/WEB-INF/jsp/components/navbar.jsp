@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
-    <link rel="stylesheet" href="home">
+    <!-- <link rel="stylesheet" href="home"> -->
 
 
 
