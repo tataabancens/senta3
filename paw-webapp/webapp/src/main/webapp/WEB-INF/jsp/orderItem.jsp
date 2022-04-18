@@ -25,9 +25,9 @@
                 <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
                     <div class ="block right center">
-                        <form:errors path="orderItem.quantity" element="p" cssStyle="color: red"/>
+                        <form:errors path="orderItem" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
-                        <form:input path="orderItem.quantity" type="number" cssClass="center" min="1"/>
+                        <form:input path="orderItem.quantity" type="number" min="1" max="50" required="required" value="0" cssClass="center"/>
                         <div class="center">
                             <input type="submit" value="+" class="waves-effect waves-light btn continue-btn" >
                         </div>

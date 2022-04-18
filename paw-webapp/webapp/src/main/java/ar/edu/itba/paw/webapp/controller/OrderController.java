@@ -79,7 +79,7 @@ public class OrderController {
                                             final BindingResult errors) {
 
         if (errors.hasErrors()) {
-            return orderItem(form.getOrderItem().getReservationId(), form.getOrderItem().getDishId(), form);
+            return orderItem(reservationId, dishId, form);
         }
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
 
