@@ -35,14 +35,16 @@ public class PawUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No such user."));
 
         final Collection<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+        roles.add(new SimpleGrantedAuthority(user.getRole()));
         // if (user. debe ser editor) -> roles.add "ROLE_EDITOR". etc.
 
         String password = user.getPassword();
         //migrate users with un-hashed password
         if(! BCRYPT_PATTERN.matcher(password).matches()) {
             // update user password in the db
+            us.updatePassword(username, password);
             password = passwordEncoder.encode(password);
+
         }
 
         return new org.springframework.security.core.userdetails.User(username, password, roles);

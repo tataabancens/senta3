@@ -26,7 +26,7 @@ public class userServiceImplTest {
 
     @Test
     public void testCreateUser() {
-        User user = new User(1, "pepe", "pepe");
+        User user = new User(1, "pepe", "pepe", "ROLE_USER");
         Mockito.when(userDao.create(Mockito.anyString(), Mockito.anyString())).thenReturn(user);
 
         try {

@@ -3,6 +3,7 @@ drop table if exists restaurant cascade;
 drop table if exists dish cascade;
 drop table if exists reservation cascade;
 drop table if exists orderItem cascade;
+drop table if exists users cascade;
 
 CREATE TABLE IF NOT EXISTS customer (
   customerId SERIAL PRIMARY KEY,
@@ -58,9 +59,13 @@ CREATE TABLE IF NOT EXISTS reservation (
 
 CREATE TABLE IF NOT EXISTS users (
   userId SERIAL PRIMARY KEY,
-  username varchar(100),
-  password varchar(100)
+  username varchar(100) UNIQUE,
+  password varchar(100),
+  role varchar(100)
 );
+
+INSERT INTO users (username, password, role)
+VALUES('Pepito','123', 'ROLE_RESTAURANT');
 
 CREATE TABLE IF NOT EXISTS orderItem
 (

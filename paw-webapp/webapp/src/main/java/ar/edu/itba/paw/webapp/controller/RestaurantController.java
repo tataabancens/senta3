@@ -56,4 +56,10 @@ public class RestaurantController {
 
         return mav;
     }
+
+    @RequestMapping("/restaurant")
+    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+
+        return new ModelAndView("restaurantTest");
+    }
 }

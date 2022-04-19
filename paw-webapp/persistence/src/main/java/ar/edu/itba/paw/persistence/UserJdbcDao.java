@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.model.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class UserJdbcDao implements UserDao {
     private static final RowMapper<User> ROW_MAPPER = (resultSet, i) ->
             new User(resultSet.getLong("userId"),
             resultSet.getString("username"),
-            resultSet.getString("password"));
+            resultSet.getString("password"),
+                    resultSet.getString("role"));
     @Autowired
     public UserJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -47,11 +49,16 @@ public class UserJdbcDao implements UserDao {
         userData.put("password", password);
 
         int userId = jdbcInsert.execute(userData);
-        return new User(userId, username, password);
+        return new User(userId, username, password, Roles.ANONYMOUS.getDescription());
     }
 
     @Override
     public Optional<User> findByName(final String username) {
-        return jdbcTemplate.query("SELECT * FROM users WHERE userId = ?", new Object[]{username}, ROW_MAPPER).stream().findFirst();
+        return jdbcTemplate.query("SELECT * FROM users WHERE username = ?", new Object[]{username}, ROW_MAPPER).stream().findFirst();
+    }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        jdbcTemplate.update("UPDATE users SET password = ? WHERE username = ?", new Object[]{newPassword, username});
     }
 }

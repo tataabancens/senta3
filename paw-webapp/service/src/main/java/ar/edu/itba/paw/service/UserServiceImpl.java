@@ -36,4 +36,8 @@ public class UserServiceImpl implements UserService {
         return userDao.findByName(username);
     }
 
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        userDao.updatePassword(username, passwordEncoder.encode(newPassword));
+    }
 }
