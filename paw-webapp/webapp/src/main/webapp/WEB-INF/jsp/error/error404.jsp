@@ -32,7 +32,7 @@
             <p class="title2">tu información no se perdió</p>
         </div>
         <div class="center">
-            <a class="waves-effect waves-light btn reservation-btn" href="home">Volver</a>
+            <a class="waves-effect waves-light btn reservation-btn" href="${pageContext.request.contextPath}/">Volver</a>
         </div>
     </div>
         </div>

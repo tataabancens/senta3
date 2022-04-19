@@ -56,23 +56,4 @@ public class RestaurantController {
 
         return mav;
     }
-
-    @RequestMapping("/home")
-    public ModelAndView home() {
-
-        return new ModelAndView("redirect:/");
-    }
-
-    @RequestMapping("/menu/home")
-    public ModelAndView homeWithMenu() {
-
-        return new ModelAndView("redirect:/");
-    }
-
-    @RequestMapping("/order/home")
-    public ModelAndView homeWithOrder() {
-
-        return new ModelAndView("redirect:/");
-    }
-
 }
