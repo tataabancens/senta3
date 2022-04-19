@@ -29,6 +29,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
+        return reservationDao.getReservationsByStatus(status);
+    }
+
+    @Override
     public List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems) {
         return reservationDao.addOrderItemsByReservationId(orderItems);
     }
@@ -41,6 +46,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, status);
+    }
+
+    @Override
+    public List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status) {
+        return reservationDao.getOrderItemsByStatus(status);
     }
 
     @Override

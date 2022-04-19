@@ -65,6 +65,13 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
+    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationstatus = ?",
+                new Object[]{status.ordinal()}, ROW_MAPPER_RESERVATION);
+        return query;
+    }
+
+    @Override
     public Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate) {
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
@@ -107,6 +114,13 @@ public class ReservationJdbcDao implements ReservationDao {
     public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
         List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ? AND reservationId = ?",
                 new Object[]{status.ordinal(), reservationId}, ROW_MAPPER_ORDER_ITEMS);
+        return query;
+    }
+
+    @Override
+    public List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status) {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ?",
+                new Object[]{status.ordinal()}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
 
