@@ -12,4 +12,6 @@ public interface MailingService{
     void sendReceiptEmail(Restaurant restaurant , Customer customer);
 
     void sendOrderEmail(Restaurant restaurant, Customer customer, List<FullOrderItem> orderItems);
+
+    void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation);
 }

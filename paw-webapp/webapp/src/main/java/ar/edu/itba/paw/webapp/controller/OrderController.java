@@ -176,6 +176,7 @@ public class OrderController {
                                      @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("cancelReservation");
         mav.addObject("restaurant", restaurant);
         mav.addObject("reservationId", reservationId);
@@ -186,6 +187,11 @@ public class OrderController {
     @RequestMapping("/reservation-cancel/confirm")
     public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId) {
 
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ms.sendCancellationEmail(restaurant,customer,reservation);
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         return new ModelAndView("redirect:/");
     }
