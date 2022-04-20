@@ -52,8 +52,7 @@ CREATE TABLE IF NOT EXISTS orderItem
 
 CREATE TABLE IF NOT EXISTS pictures
 (
-    id          serial PRIMARY KEY,
-    name varchar(50),
+    id serial PRIMARY KEY,
     bitmap bytea
 );
 
