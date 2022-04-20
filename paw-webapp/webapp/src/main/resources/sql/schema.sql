@@ -50,3 +50,10 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
 );
 
+CREATE TABLE IF NOT EXISTS pictures
+(
+    id          serial PRIMARY KEY,
+    name varchar(50),
+    bitmap bytea
+);
+
