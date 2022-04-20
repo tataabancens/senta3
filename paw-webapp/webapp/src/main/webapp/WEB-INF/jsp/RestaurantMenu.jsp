@@ -35,7 +35,7 @@
                     <div class="card dish-card">
                         <div class="card-content white-text">
                             <div class="btn-row-card">
-                                <a class="waves-effect waves-light btn blue" href="menu/edit">Editar</a>
+                                <a class="waves-effect waves-light btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
                                 <a class="waves-effect waves-light btn red">Borrar</a>
                             </div>
                             <span class="card-title title text"><c:out value="${dish.dishName}"/></span>

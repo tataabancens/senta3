@@ -26,6 +26,7 @@
             <div class="card register-card">
                 <div class="card-content white-text">
                     <span class="card-title text">Editar Plato</span>
+                    <span class="card-title text"><c:out value="${dish.dishName}"/></span>
                     <div class="row">
                         <div class="input-field col s12 input">
                         <form:errors path="dishName" element="p" cssStyle="color:red"/>

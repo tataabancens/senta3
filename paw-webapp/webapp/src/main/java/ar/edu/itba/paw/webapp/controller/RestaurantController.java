@@ -1,65 +1,90 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.ReservationStatus;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.service.DishService;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.EditDishForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class RestaurantController {
     RestaurantService rs;
     ReservationService res;
+    DishService ds;
 
     @Autowired
-    public RestaurantController(RestaurantService rs, ReservationService res) {
+    public RestaurantController(RestaurantService rs, ReservationService res, DishService ds) {
         this.rs = rs;
         this.res = res;
+        this.ds = ds;
     }
 
-    @RequestMapping("/")
-    public ModelAndView helloWorld(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
+        final ModelAndView mav = new ModelAndView("login");
 
-        final ModelAndView mav = new ModelAndView("index");
+        return mav;
+    }
 
+
+    @RequestMapping("/restaurant")
+    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+
+        return new ModelAndView("restaurantTest");
+    }
+
+
+    @RequestMapping("/restaurant/menu")
+    public ModelAndView menuRestaurant() {
+
+        final ModelAndView mav = new ModelAndView("RestaurantMenu");
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
         mav.addObject("restaurant", restaurant);
         return mav;
     }
 
-    @RequestMapping("/notify/{reservationId}")
-    public ModelAndView notifyCustomer(@PathVariable("reservationId") final int reservationId){
+    @RequestMapping("/restaurant/menu/edit/dishId={dishId}")
 
-        final ModelAndView mav = new ModelAndView("notifyCustomer");
+    public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form,
+                                 @PathVariable("dishId") final int dishId) {
+
+        final ModelAndView mav = new ModelAndView("editDish");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
         mav.addObject("restaurant", restaurant);
 
+        Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("dish", dish);
 
-        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        mav.addObject("reservation", reservation);
+        form.setDishName(dish.getDishName());
+        form.setDishDesc(dish.getDishDescription());
+        form.setDishPrice((double) dish.getPrice());
 
         return mav;
     }
 
-    @RequestMapping("/restaurant")
-    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
-
-        return new ModelAndView("restaurantTest");
+    @RequestMapping(value = "/restaurant/orders", method = RequestMethod.GET)
+    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
+        final ModelAndView mav = new ModelAndView("orders");
+        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
+        List<FullOrderItem> orderedItems = res.getOrderItemsByStatus(OrderItemStatus.ORDERED);
+        List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
+        for (Reservation reservation : reservations) {
+            res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
+        }
+        mav.addObject("items", orderedItems);
+        mav.addObject("reservations", reservations);
+        mav.addObject("incoming", incomingItems);
+        return mav;
     }
 }

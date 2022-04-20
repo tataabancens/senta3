@@ -15,10 +15,7 @@ import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -81,5 +78,20 @@ public class RegisterController {
         }
         Reservation reservation = res.getReservationByIdAndStatus(form.getReservationId(), ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
         return new ModelAndView("redirect:/menu?reservationId=" + reservation.getReservationId());
+    }
+
+    @RequestMapping("/notify/{reservationId}")
+    public ModelAndView notifyCustomer(@PathVariable("reservationId") final int reservationId){
+
+        final ModelAndView mav = new ModelAndView("notifyCustomer");
+
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        mav.addObject("reservation", reservation);
+
+        return mav;
     }
 }

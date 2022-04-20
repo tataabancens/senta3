@@ -35,6 +35,16 @@ public class HelloWorldController {
         this.reservationService = reservationService;
     }
 
+    @RequestMapping("/")
+    public ModelAndView helloWorld(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+
+        final ModelAndView mav = new ModelAndView("index");
+
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
+        mav.addObject("restaurant", restaurant);
+        return mav;
+    }
 
 
     @RequestMapping("/profile/{userId}")
@@ -43,24 +53,6 @@ public class HelloWorldController {
         final ModelAndView mav = new ModelAndView("profile");
 
 //        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
-        return mav;
-    }
-
-    @RequestMapping("/restaurant/menu")
-    public ModelAndView menuRestaurant() {
-
-        final ModelAndView mav = new ModelAndView("RestaurantMenu");
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
-        mav.addObject("restaurant", restaurant);
-        return mav;
-    }
-
-    @RequestMapping("/restaurant/menu/edit")
-    public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form) {
-
-        final ModelAndView mav = new ModelAndView("editform");
-
         return mav;
     }
 
