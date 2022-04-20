@@ -56,3 +56,6 @@ CREATE TABLE IF NOT EXISTS pictures
     bitmap bytea
 );
 
+INSERT INTO pictures (bitmap)
+VALUES('\001'::bytea);
+
