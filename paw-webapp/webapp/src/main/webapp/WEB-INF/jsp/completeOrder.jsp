@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -84,7 +85,10 @@
                     </div>
                     <div class="row margin-0">
                         <div class="col s12">
-                            <a class="waves-effect waves-light btn reservation-btn green right" href="send-food/confirm?reservationId=${reservationId}&restaurantId=${restaurant.id}">Confirmar pedido</a>
+                            <c:url value="${pageContext.request.contextPath}/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn reservation-btn green right">
+                            </form:form>
                         </div>
                     </div>
 
