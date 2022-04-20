@@ -71,9 +71,9 @@ public class HelloWorldController {
 //        mav.addObject("user", us.getUserByID(1).orElseThrow(UserNotFoundException::new));
         return mav;
     }
-
+/*
     @RequestMapping("/login")
     public ModelAndView login() {
         return new ModelAndView("login");
-    }
+    }*/
 }
