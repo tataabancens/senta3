@@ -12,7 +12,8 @@
 
     <link rel="stylesheet" href="styless.css">
 
-    <title>Sentate-Register</title>
+    <title>Sentate-Registro</title>
+    <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 <body>
     <%@ include file="components/navbar.jsp" %>
 
@@ -30,32 +31,33 @@
                         <div class="input-field col s12 input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
                         <form:label path="mail" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
-                        <form:input path="mail" type="text"/>
+                        <form:input path="mail"  required="required" maxlength="50" type="text"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 input">
                         <form:errors path="phone" element="p" cssStyle="color:red"/>
                         <form:label path="phone" class="helper-text" data-error="wrong" data-success="right">Telefono:</form:label>
-                        <form:input path="phone" type="text"/>
+                        <form:input path="phone" required="required" maxlength="13" type="text"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 input">
                             <form:errors path="name" element="p" cssStyle="color: red"/>
-                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido</form:label>
-                            <form:input path="name" type="text"/>
+                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
+                            <form:input path="name" required="required" maxlength="50" type="text"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 input">
                             <form:errors path="timeAndDate" element="p" cssStyle="color: red"/>
-                            <input id="timeAndDate" name="timeAndDate" type="datetime-local" value=""/>
+                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
+                            <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
                         </div>
                     </div>
                     <div class="col s12 center">
                         <!-- acá va un href -->
-                        <input type="submit" value="Continuar" class="continue-btn"/>
+                        <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
                     </div>-->
                 </div>
             </div>
@@ -72,6 +74,10 @@
     }
     .text{
         color:  #707070;
+    }
+
+    .date-input{
+        margin-top: 10px;
     }
 
     .card{
