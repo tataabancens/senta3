@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -33,7 +34,10 @@
                 <span class="card-title text price center">Estas por cancelar tu reserva</span>
                     <div class="row margin-0">
                         <div class="center">
-                            <a class="waves-effect waves-light btn reservation-btn red" href="${pageContext.request.contextPath}/reservation-cancel/confirm?reservationId=${reservationId}">Confirmar</a>
+                            <c:url value="${pageContext.request.contextPath}/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red">
+                            </form:form>
                         </div>
                     </div>
                 </div>

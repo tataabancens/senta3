@@ -130,10 +130,13 @@
                     <div class="row margin-0">
                         <div class="col s6">
                             <c:if test="${selected > 0}">
-                                <a class="waves-effect waves-light btn plus-btn red" href="order/empty-cart?reservationId=${reservation.reservationId}">Vaciar pedido</a>
+                                <c:url value="order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
+                                <form:form action="${postUrl}" method="post">
+                                    <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn plus-btn red">
+                                </form:form>
                             </c:if>
                             <c:if test="${selected == 0}">
-                                <a disabled class="waves-effect waves-light btn plus-btn red" href="order/empty-cart?reservationId=${reservation.reservationId}">Vaciar pedido</a>
+                                <a disabled class="waves-effect waves-light btn plus-btn red">Vaciar pedido</a>
                             </c:if>
                         </div>
                         <div class="col s6">
@@ -141,7 +144,7 @@
                                 <a class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
                             </c:if>
                             <c:if test="${selected == 0}">
-                                <a disabled class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                                <a disabled class="waves-effect waves-light btn plus-btn green right">Continuar</a>
                             </c:if>
                         </div>
                     </div>
