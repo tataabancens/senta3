@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 
 <div class="row">
 
@@ -26,14 +26,14 @@
             <p class="card-title title text price center">OOPS</p>
         </div>
         <div>
-            <p class="card-title text">Algo salió mal</p>
+            <p class="card-title text">Error 404, página no encontrada</p>
         </div>
         <div>
             <p class="title2">No te preocupes,</p>
             <p class="title2">tu información no se perdió</p>
         </div>
         <div class="center">
-            <a class="waves-effect waves-light btn reservation-btn" href="home">Volver</a>
+            <a class="waves-effect waves-light btn reservation-btn" href="${pageContext.request.contextPath}/">Volver</a>
         </div>
     </div>
         </div>

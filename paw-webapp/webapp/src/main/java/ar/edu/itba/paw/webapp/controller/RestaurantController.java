@@ -57,28 +57,9 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping("/home")
-    public ModelAndView home() {
+    @RequestMapping("/restaurant")
+    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("restaurantTest");
     }
-
-    @RequestMapping("/menu/home")
-    public ModelAndView homeWithMenu() {
-
-        return new ModelAndView("redirect:/");
-    }
-
-    @RequestMapping("/error404")
-    public ModelAndView error404() {
-
-        return new ModelAndView("error404");
-    }
-
-    @RequestMapping("/error500")
-    public ModelAndView error500() {
-
-        return new ModelAndView("error500");
-    }
-
 }

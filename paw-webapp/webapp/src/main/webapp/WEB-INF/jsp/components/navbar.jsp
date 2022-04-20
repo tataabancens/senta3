@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
-    <link rel="stylesheet" href="home">
+    <!-- <link rel="stylesheet" href="home"> -->
 
 
 
@@ -18,7 +18,7 @@
 <body>
 <nav>
     <div class="nav-wrapper navbar">
-        <a href="home">
+        <a href="${pageContext.request.contextPath}/">
             <span class="logo">Senta3</span>
         </a>
     </div>

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -20,6 +21,7 @@ import javax.swing.*;
 import java.nio.charset.StandardCharsets;
 
 @ImportResource
+@PropertySource(value= {"classpath:application.properties"})
 @ComponentScan({"ar.edu.itba.paw.webapp.controller",
                 "ar.edu.itba.paw.service",
                 "ar.edu.itba.paw.persistence"})
@@ -78,5 +80,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+
+    //this bean needed to resolve ${property.name} syntax
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 }

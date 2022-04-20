@@ -21,12 +21,12 @@ public class userServiceImplTest {
     private UserDao userDao;
 
     @InjectMocks
-    private UserServiceImpl userService = new UserServiceImpl(userDao);
+    private UserServiceImpl userService = new UserServiceImpl(userDao, null);
 
 
     @Test
     public void testCreateUser() {
-        User user = new User(1, "pepe", "pepe");
+        User user = new User(1, "pepe", "pepe", "ROLE_USER");
         Mockito.when(userDao.create(Mockito.anyString(), Mockito.anyString())).thenReturn(user);
 
         try {
