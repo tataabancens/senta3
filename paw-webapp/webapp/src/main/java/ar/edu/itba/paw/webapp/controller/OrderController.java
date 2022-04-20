@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -74,11 +75,11 @@ public class OrderController {
     }
     @RequestMapping(value = "/menu/orderItem", method = RequestMethod.POST)
     public ModelAndView findReservationForm(@RequestParam(name = "reservationId") final long reservationId,
-                                            @RequestParam(name = "dishId") final long dishId,@ModelAttribute("orderForm") final OrderForm form,
+                                            @RequestParam(name = "dishId") final long dishId,@Valid @ModelAttribute("orderForm") final OrderForm form,
                                             final BindingResult errors) {
 
         if (errors.hasErrors()) {
-            return orderItem(form.getOrderItem().getReservationId(), form.getOrderItem().getDishId(), form);
+            return orderItem(reservationId, dishId, form);
         }
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
 
@@ -164,8 +165,10 @@ public class OrderController {
 
         ms.sendReceiptEmail(restaurant, customer);
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
+        final ModelAndView mav = new ModelAndView("receiptConfirmed");
+        mav.addObject("restaurant", restaurant);
 
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        return mav;
     }
 
     @RequestMapping("/reservation-cancel")

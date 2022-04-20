@@ -12,33 +12,34 @@
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <title>Senta3</title>
-    <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
 
 <div class="row">
-
-    <div class="col s4 offset-s4 center margin-top">
+    <div class="col s3">
         <div class="card restaurant-card">
             <div class="card-content white-text">
-        <div>
-            <p class="card-title title text price center">OOPS</p>
-        </div>
-        <div>
-            <p class="card-title text">Esa reserva no existe</p>
-        </div>
-        <div>
-            <p class="title2">No te preocupes,</p>
-            <p class="title2">tu información no se perdió</p>
-        </div>
-        <div class="center">
-            <a class="waves-effect waves-light btn reservation-btn" href="home">Volver</a>
-        </div>
-    </div>
+                <span class="card-title title text">Pedidos realizados</span>
+            </div>
         </div>
     </div>
 
+    <div class="col offset-s1 s4">
+        <c:forEach var="reservation" items="${reservations}">
+            <span class="res-title">Reserva: <c:out value="${reservation.reservationId}"/></span>
+            <div class="card dish-card">
+            <c:forEach var="item" items="${items}">
+                <c:if test="${item.reservationId == reservation.reservationId}">
+                    <div class="card-content white-text">
+                        <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                        <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
+                    </div>
+                </c:if>
+            </c:forEach>
+            </div>
+        </c:forEach>
+    </div>
 </div>
 </body>
 </html>
@@ -52,20 +53,27 @@
         color:  #707070
     }
 
+
     .card{
-        border-radius: 10px;
+        border-radius: 16px;
+        display: grid;
     }
 
-    .title2{
-        justify-content: center;
+    .restaurant-card{
+    }
+
+    .dish-card{
+        width: 100%;
+    }
+
+    .description{
         color:  #707070;
-        font-size: 20px;
+        font-size: 17px;
     }
 
-    .price{
+    .res-title{
         font-size: 25px;
-        font-weight: bold;
-        color: black;
+        color: #707070;
     }
 
     .reservation-btn{
@@ -85,8 +93,14 @@
         justify-content: center;
     }
 
-    .margin-top{
-        margin-top: 5%;
+    .smaller{
+        width: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+
+    .already-reserved-btn{
     }
 
 </style>
+

@@ -11,6 +11,8 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status);
 
+    List<Reservation> getReservationsByStatus(ReservationStatus status);
+
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
@@ -18,6 +20,8 @@ public interface ReservationService {
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
     List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+
+    List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
     Reservation createReservation(Restaurant restaurant,Customer customer, Timestamp reservationDate);
 
