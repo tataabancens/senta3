@@ -26,19 +26,39 @@
     </div>
 
     <div class="col offset-s1 s4">
-        <c:forEach var="reservation" items="${reservations}">
-            <span class="res-title">Reserva: <c:out value="${reservation.reservationId}"/></span>
-            <div class="card dish-card">
-            <c:forEach var="item" items="${items}">
-                <c:if test="${item.reservationId == reservation.reservationId}">
-                    <div class="card-content white-text">
-                        <span class="card-title title text"><c:out value="${item.dishName}"/></span>
-                        <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
-                    </div>
-                </c:if>
+        <span class="res-title">Nuevos pedidos</span>
+        <div>
+            <c:forEach var="reservation" items="${reservations}">
+                <c:forEach var="item" items="${items}">
+                    <c:if test="${item.reservationId == reservation.reservationId}">
+                        <div class="card dish-card">
+                            <div class="card-content white-text">
+                                <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                                <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
+                                <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:forEach>
             </c:forEach>
-            </div>
-        </c:forEach>
+        </div>
+
+        <span class="res-title">Pedidos en camino</span>
+        <div>
+            <c:forEach var="reservation" items="${reservations}">
+                    <c:forEach var="item" items="${incoming}">
+                        <c:if test="${item.reservationId == reservation.reservationId}">
+                            <div class="card dish-card">
+                                <div class="card-content white-text">
+                                    <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                                    <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
+                                    <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+            </c:forEach>
+        </div>
     </div>
 </div>
 </body>
@@ -74,6 +94,8 @@
     .res-title{
         font-size: 25px;
         color: #707070;
+        margin-left: 5%;
+        margin-top: 5%;
     }
 
     .reservation-btn{
