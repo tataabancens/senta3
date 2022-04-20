@@ -12,7 +12,6 @@
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <title>Senta3</title>
-    <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
@@ -21,25 +20,25 @@
     <div class="col s3">
         <div class="card restaurant-card">
             <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
+                <span class="card-title title text">Pedidos realizados</span>
             </div>
         </div>
     </div>
 
     <div class="col offset-s1 s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title text price center">Estas por cancelar tu reserva</span>
-                    <div class="row margin-0">
-                        <div class="center">
-                            <a class="waves-effect waves-light btn reservation-btn red" href="${pageContext.request.contextPath}/reservation-cancel/confirm?reservationId=${reservationId}">Confirmar</a>
-                        </div>
+        <c:forEach var="reservation" items="${reservations}">
+            <span class="res-title">Reserva: <c:out value="${reservation.reservationId}"/></span>
+            <div class="card dish-card">
+            <c:forEach var="item" items="${items}">
+                <c:if test="${item.reservationId == reservation.reservationId}">
+                    <div class="card-content white-text">
+                        <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                        <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
                     </div>
-                </div>
-
+                </c:if>
+            </c:forEach>
             </div>
-        </div>
+        </c:forEach>
     </div>
 </div>
 </body>
@@ -52,10 +51,6 @@
     }
     .text{
         color:  #707070
-    }
-
-    .summary{
-        margin-top: 20px;
     }
 
 
@@ -71,22 +66,14 @@
         width: 100%;
     }
 
-    .items-title{
+    .description{
         color:  #707070;
-        font-size: 18px;
+        font-size: 17px;
     }
 
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 20px;
-
-    }
-
-    .price{
+    .res-title{
         font-size: 25px;
-        font-weight: bold;
-        color: black;
+        color: #707070;
     }
 
     .reservation-btn{
@@ -106,11 +93,6 @@
         justify-content: center;
     }
 
-    .with-margin{
-        margin-top: 10%;
-        margin-bottom: 10%;
-    }
-
     .smaller{
         width: 100%;
         margin-bottom: 0;
@@ -121,3 +103,4 @@
     }
 
 </style>
+

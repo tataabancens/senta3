@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OrderConstraint {
-    public String message() default "La cantidad de productos debe ser mayor a 0";
+    public String message() default "La cantidad de productos debe ser entre 1 y 50";
 
     public Class<?>[] groups() default {};
     public Class<? extends Payload>[] payload() default {};

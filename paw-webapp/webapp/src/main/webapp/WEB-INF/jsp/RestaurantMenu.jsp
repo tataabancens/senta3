@@ -12,23 +12,20 @@
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
         <title>Senta3</title>
-        <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
+
+        <div class="btn-row">
+            <a class="waves-effect waves-light btn green">Crear Plato</a>
+        </div>
 
         <div class="row">
             <div class="col s3">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
-                        <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                        <span class="text"><c:out value="${restaurant.phone}"/></span>
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
-                        </div>
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
-                        </div>
+                        <span class="card-title text">Filter box</span>
+                        <span class="text">Lorem ipsum</span>
                     </div>
                 </div>
             </div>
@@ -37,6 +34,10 @@
                 <c:forEach var="dish" items="${restaurant.dishes}">
                     <div class="card dish-card">
                         <div class="card-content white-text">
+                            <div class="btn-row-card">
+                                <a class="waves-effect waves-light btn blue" href="menu/edit">Editar</a>
+                                <a class="waves-effect waves-light btn red">Borrar</a>
+                            </div>
                             <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
                             <p class="description"><c:out value="${dish.dishDescription}"/></p>
                             <p class="price">$<c:out value="${dish.price}"/></p>
@@ -79,6 +80,16 @@
         font-size: 25px;
         font-weight: bold;
         color: black;
+    }
+    .btn-row{
+        margin-top: 15px;
+        margin-left: 5%;
+        margin-bottom: 15px;
+    }
+    .btn-row-card{
+        margin-top: 5px;
+        justify-content: right;
+        margin-bottom: 5px;
     }
 
     .reservation-btn{

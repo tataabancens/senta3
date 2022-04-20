@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
+import ar.edu.itba.paw.webapp.form.EditDishForm;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,24 @@ public class HelloWorldController {
         final ModelAndView mav = new ModelAndView("profile");
 
 //        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
+        return mav;
+    }
+
+    @RequestMapping("/restaurant/menu")
+    public ModelAndView menuRestaurant() {
+
+        final ModelAndView mav = new ModelAndView("RestaurantMenu");
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
+        mav.addObject("restaurant", restaurant);
+        return mav;
+    }
+
+    @RequestMapping("/restaurant/menu/edit")
+    public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form) {
+
+        final ModelAndView mav = new ModelAndView("editform");
+
         return mav;
     }
 
