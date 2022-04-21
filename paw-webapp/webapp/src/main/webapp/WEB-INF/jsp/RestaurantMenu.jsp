@@ -24,8 +24,18 @@
             <div class="col s3">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
-                        <span class="card-title text">Filter box</span>
-                        <span class="text">Lorem ipsum</span>
+                        <span class="card-title text">Reservas abiertas</span>
+                        <div class="col offset-s1 s4">
+                            <c:forEach var="reservation" items="${reservations}">
+                                <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
+                                <p class="text">Fecha: <c:out value="${reservation.reservationDate}"/> </p>
+                                <p class="text">Status: <c:out value="${reservation.reservationStatus}"/> </p>
+                                <a class="waves-effect waves-light btn red">Cancelar</a>
+                                <p class="text">---------</p>
+
+                            </c:forEach>
+
+                        </div>
                     </div>
                 </div>
             </div>

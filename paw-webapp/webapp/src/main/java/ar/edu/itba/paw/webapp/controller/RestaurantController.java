@@ -53,6 +53,14 @@ public class RestaurantController {
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
         mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
+        for (Reservation reservation : reservations) {
+            res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
+        }
+        mav.addObject("reservations", reservations);
+
+
         return mav;
     }
 
@@ -74,6 +82,7 @@ public class RestaurantController {
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
         form.setDishPrice((double) dish.getPrice());
+
 
         return mav;
     }
