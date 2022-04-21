@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -24,11 +26,21 @@
                     <span class="logo">Senta3</span>
                 </a>
             </div>
-            <div class="col right">
-                <a href="${pageContext.request.contextPath}/login">
-                    <p class="logo smaller">log in</p>
-                </a>
-            </div>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <div class="col right">
+                    <a href="${pageContext.request.contextPath}/logout">
+                        <p class="logo smaller">log out</p>
+                    </a>
+                </div>
+            </sec:authorize>
+            <sec:authorize access="!hasRole('RESTAURANT')">
+                <div class="col right">
+                    <a href="${pageContext.request.contextPath}/login">
+                        <p class="logo smaller">log in</p>
+                    </a>
+                </div>
+            </sec:authorize>
+
         </div>
     </div>
 </nav>
