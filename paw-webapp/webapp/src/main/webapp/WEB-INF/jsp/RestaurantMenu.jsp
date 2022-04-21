@@ -55,6 +55,11 @@
                     </div>
                 </c:forEach>
             </div>
+            <div class="col">
+                <div class="card-content white-text">
+                    <a class="waves-effect waves-light btn restaurant-btn blue" href="orders">Ver ordenes</a>
+                </div>
+            </div>
         </div>
     </body>
 </html>
