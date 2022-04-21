@@ -27,4 +27,10 @@ public class DishServiceImpl implements DishService{
         return dishDao.create(restaurantId, dishName, dishDescription, price);
     }
 
+    @Override
+    public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
+        dishDao.updateDish(dishId, dishName, dishDescription, price, restaurantId);
+    }
+
+
 }

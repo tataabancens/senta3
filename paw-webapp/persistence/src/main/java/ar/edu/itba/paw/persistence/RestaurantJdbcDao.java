@@ -51,7 +51,7 @@ public class RestaurantJdbcDao implements RestaurantDao {
 
     @Override
     public List<Dish> getRestaurantDishes(long restaurantId) {
-        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ?",
+        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? ORDER BY dishId",
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);
         return query;
     }

@@ -20,7 +20,7 @@
         <div class="col s3"></div>     <!-- acá va el restaurant card -->
 
 
-        <c:url value="/restaurant/menu/edit" var="postPath"/>
+        <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
         <div class="col s6 center">
             <div class="card register-card">
@@ -51,7 +51,7 @@
                     <div class="col s12 center">
                         <!-- acá va un href -->
                         <input type="submit" value="Continuar" class="continue-btn"/>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </div>

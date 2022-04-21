@@ -64,13 +64,29 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping("/restaurant={restaurantId}/menu/edit/dishId={dishId}")
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.GET)
+    public ModelAndView editForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("editDishForm") final EditDishForm form, @PathVariable("dishId") final int dishId){
 
+        final ModelAndView mav = new ModelAndView("/editDish");
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
+        mav.addObject("restaurant", restaurant);
+        Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("dish", dish);
+
+        form.setDishName(dish.getDishName());
+        form.setDishDesc(dish.getDishDescription());
+        form.setDishPrice((double) dish.getPrice());
+        return mav;
+
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.POST)
     public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form,
                                  @PathVariable("dishId") final int dishId,
                                  @PathVariable("restaurantId") final int restaurantId) {
 
-        final ModelAndView mav = new ModelAndView("editDish");
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
@@ -79,10 +95,7 @@ public class RestaurantController {
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
 
-        form.setDishName(dish.getDishName());
-        form.setDishDesc(dish.getDishDescription());
-        form.setDishPrice((double) dish.getPrice());
-
+        ds.updateDish(dishId, form.getDishName(), form.getDishDesc(), form.getDishPrice(), dish.getRestaurantId());
 
         return mav;
     }

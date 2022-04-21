@@ -28,6 +28,7 @@ public class DishJdbcDao implements DishDao {
                     resultSet.getInt("price"),
                     resultSet.getString("dishdescription")));
 
+
     @Autowired
     public DishJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -54,5 +55,10 @@ public class DishJdbcDao implements DishDao {
 
         Number dishId = jdbcInsert.executeAndReturnKey(dishData);
         return new Dish(dishId.longValue(), restaurantId, dishName, (int)price, dishDescription);
+    }
+
+    @Override
+    public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
+        jdbcTemplate.update("UPDATE dish SET dishname= ?, dishdescription = ?, price = ? WHERE dishid = ?", new Object[]{dishName, dishDescription, price, dishId});
     }
 }
