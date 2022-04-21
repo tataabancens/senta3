@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -15,22 +16,32 @@
         <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     </head>
     <body>
-        <%@ include file="components/navbar.jsp" %>
-
+        <div class="row">
+            <%@ include file="components/navbar.jsp" %>
+        </div>
         <div class="row">
             <div class="col s3">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
                         <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
                         <span class="text"><c:out value="${restaurant.phone}"/></span>
+
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <a href="/restaurant=1/menu">
+                                <p class="logo smaller center">Editar menú</p>
+                            </a>
+                        </sec:authorize>
+                        <sec:authorize access="!hasRole('RESTAURANT')">
                         <div class="row center smaller">
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
                         </div>
                         <div class="row center smaller">
                             <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
                         </div>
+                        </sec:authorize>
                     </div>
                 </div>
+
             </div>
 
             <div class="col offset-s1 s4">
@@ -44,6 +55,7 @@
                     </div>
                 </c:forEach>
             </div>
+
         </div>
     </body>
 </html>

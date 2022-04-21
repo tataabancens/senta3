@@ -22,9 +22,18 @@
     <div class="nav-wrapper navbar">
         <div class="row">
             <div class="col">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                <a href="${pageContext.request.contextPath}/restaurant=1/menu">
+                    <span class="logo">Senta3</span>
+                </a>
+                </sec:authorize>
+
+                <sec:authorize access="!hasRole('RESTAURANT')">
                 <a href="${pageContext.request.contextPath}/">
                     <span class="logo">Senta3</span>
                 </a>
+                </sec:authorize>
+
             </div>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <div class="col right">
