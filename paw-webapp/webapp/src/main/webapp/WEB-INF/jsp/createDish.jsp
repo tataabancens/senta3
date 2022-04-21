@@ -47,6 +47,16 @@
                             <form:input path="dishPrice" type="text"/>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="input-field col s12 input">
+                            <form action="fileupload.jsp" method="post" enctype="multipart/form-data">
+                                <input type="file" name="file" size="50" />
+                                <input type="submit" value="Cargar" />
+                            </form>
+                        </div>
+                    </div>
+
                     <div class="col s12 center">
 
                         <input type="submit" value="Continuar" class="continue-btn"/>
