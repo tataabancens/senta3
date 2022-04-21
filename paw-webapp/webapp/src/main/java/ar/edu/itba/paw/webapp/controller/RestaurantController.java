@@ -38,15 +38,16 @@ public class RestaurantController {
     }
 
 
-    @RequestMapping("/restaurant")
-    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
+    @RequestMapping("/restaurant={restaurantId}")
+    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId,
+                                   @PathVariable("restaurantId") final int restaurantId) {
 
         return new ModelAndView("restaurantTest");
     }
 
 
-    @RequestMapping("/restaurant/menu")
-    public ModelAndView menuRestaurant() {
+    @RequestMapping("/restaurant={restaurantId}/menu")
+    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final int restaurantId) {
 
         final ModelAndView mav = new ModelAndView("RestaurantMenu");
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
@@ -55,10 +56,11 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping("/restaurant/menu/edit/dishId={dishId}")
+    @RequestMapping("/restaurant={restaurantId}/menu/edit/dishId={dishId}")
 
     public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form,
-                                 @PathVariable("dishId") final int dishId) {
+                                 @PathVariable("dishId") final int dishId,
+                                 @PathVariable("restaurantId") final int restaurantId) {
 
         final ModelAndView mav = new ModelAndView("editDish");
 
@@ -76,8 +78,9 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant/orders", method = RequestMethod.GET)
-    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
+    @RequestMapping(value = "/restaurant={restaurantId}/orders", method = RequestMethod.GET)
+    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
+                             @PathVariable("restaurantId") final int restaurantId){
         final ModelAndView mav = new ModelAndView("orders");
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
         List<FullOrderItem> orderedItems = res.getOrderItemsByStatus(OrderItemStatus.ORDERED);
