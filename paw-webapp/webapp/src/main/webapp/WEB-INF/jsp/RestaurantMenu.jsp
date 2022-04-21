@@ -17,7 +17,7 @@
         <%@ include file="components/navbar.jsp" %>
 
         <div class="btn-row">
-            <a class="waves-effect waves-light btn green" href="menu/create">Crear Plato</a>
+            <a class="waves-effect waves-light btn restaurant-btn green" href="menu/create">Crear Plato</a>
         </div>
 
         <div class="row">
@@ -25,12 +25,12 @@
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
                         <span class="card-title text">Reservas abiertas</span>
-                        <div class="col offset-s1 s4">
+                        <div class="col ">
                             <c:forEach var="reservation" items="${reservations}">
                                 <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
                                 <p class="text">Fecha: <c:out value="${reservation.reservationDate}"/> </p>
                                 <p class="text">Status: <c:out value="${reservation.reservationStatus}"/> </p>
-                                <a class="waves-effect waves-light btn red">Cancelar</a>
+                                <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
                                 <p class="text">---------</p>
 
                             </c:forEach>
@@ -45,8 +45,8 @@
                     <div class="card dish-card">
                         <div class="card-content white-text">
                             <div class="btn-row-card">
-                                <a class="waves-effect waves-light btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
-                                <a class="waves-effect waves-light btn red">Borrar</a>
+                                <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
+                                <a class="waves-effect waves-light restaurant-btn btn red">Borrar</a>
                             </div>
                             <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
                             <p class="description"><c:out value="${dish.dishDescription}"/></p>
@@ -102,14 +102,13 @@
         margin-bottom: 5px;
     }
 
-    .reservation-btn{
+    .restaurant-btn{
         border-radius: 16px;
         background-color: #37A6E6;
-        margin-top: 5%;
         opacity: 57%;
     }
 
-    .reservation-btn:hover{
+    .restaurant-btn:hover{
         background-color: #37A6E6;
         color: white;
         opacity: 100%;
