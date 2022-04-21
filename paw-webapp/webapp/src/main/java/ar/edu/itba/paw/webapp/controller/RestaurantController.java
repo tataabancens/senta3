@@ -10,9 +10,12 @@ import ar.edu.itba.paw.webapp.form.EditDishForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import javax.validation.Valid;
 
 @Controller
 public class RestaurantController {
@@ -85,6 +88,25 @@ public class RestaurantController {
         mav.addObject("items", orderedItems);
         mav.addObject("reservations", reservations);
         mav.addObject("incoming", incomingItems);
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
+    public ModelAndView createForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("createDishForm") final EditDishForm form){
+        return new ModelAndView("/createDish");
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
+    public ModelAndView createDish(@PathVariable ("restaurantId") final long restaurantId, @Valid @ModelAttribute("createDishForm") final EditDishForm form, final BindingResult errors) {
+        if (errors.hasErrors()){
+            return createForm(restaurantId, form);
+        }
+
+        // Dish create(long restaurantId, String dishName, String dishDescription, double price);
+        Dish dish = ds.create(restaurantId, form.getDishName(), form.getDishDesc(), form.getDishPrice());
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant/menu");
+
         return mav;
     }
 }

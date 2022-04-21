@@ -23,8 +23,8 @@ public class DishServiceImpl implements DishService{
     }
 
     @Override
-    public Dish create(String dishName, int price){
-        return null;
+    public Dish create(long restaurantId, String dishName, String dishDescription, double price){
+        return dishDao.create(restaurantId, dishName, dishDescription, price);
     }
 
 }

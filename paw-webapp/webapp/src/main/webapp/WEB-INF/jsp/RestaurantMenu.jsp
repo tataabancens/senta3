@@ -17,7 +17,7 @@
         <%@ include file="components/navbar.jsp" %>
 
         <div class="btn-row">
-            <a class="waves-effect waves-light btn green">Crear Plato</a>
+            <a class="waves-effect waves-light btn green" href="menu/create">Crear Plato</a>
         </div>
 
         <div class="row">

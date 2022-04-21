@@ -9,5 +9,5 @@ public interface DishDao {
 
     Optional<Dish> getDishById(long id);
 
-    Dish create(String dishName, int price);
+    Dish create(long restaurantId, String dishName, String dishDescription, double price);
 }
