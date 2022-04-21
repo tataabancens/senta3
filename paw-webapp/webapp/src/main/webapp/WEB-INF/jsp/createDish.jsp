@@ -48,9 +48,10 @@
                         </div>
                     </div>
                     <div class="col s12 center">
-                        <!-- acá va un href -->
+
                         <input type="submit" value="Continuar" class="continue-btn"/>
-                    </div>-->
+
+                    </div>
                 </div>
             </div>
         </div>
