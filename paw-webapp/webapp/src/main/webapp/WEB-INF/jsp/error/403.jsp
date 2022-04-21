@@ -2,6 +2,7 @@
 
 <html>
 <body>
-<h1>You shall not pass!</h1>
+<h1>You are already logged in</h1>
+<a href="/logout">log out?</a>
 </body>
 </html>

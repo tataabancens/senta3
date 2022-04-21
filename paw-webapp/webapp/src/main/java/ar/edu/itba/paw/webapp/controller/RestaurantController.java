@@ -117,7 +117,7 @@ public class RestaurantController {
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
         Dish dish = ds.create(restaurantId, form.getDishName(), form.getDishDesc(), form.getDishPrice());
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant/menu");
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
         return mav;
     }

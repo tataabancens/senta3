@@ -18,9 +18,18 @@
 <body>
 <nav>
     <div class="nav-wrapper navbar">
-        <a href="${pageContext.request.contextPath}/">
-            <span class="logo">Senta3</span>
-        </a>
+        <div class="row">
+            <div class="col">
+                <a href="${pageContext.request.contextPath}/">
+                    <span class="logo">Senta3</span>
+                </a>
+            </div>
+            <div class="col right">
+                <a href="${pageContext.request.contextPath}/login">
+                    <p class="logo smaller">log in</p>
+                </a>
+            </div>
+        </div>
     </div>
 </nav>
 </body>
@@ -37,5 +46,9 @@
         font-weight: bold;
         font-style: italic ;
         font-size:36px;
+    }
+
+    .smaller{
+        font-size: 25px;
     }
 </style>
