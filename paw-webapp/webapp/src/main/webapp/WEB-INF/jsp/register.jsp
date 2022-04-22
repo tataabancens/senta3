@@ -17,51 +17,37 @@
 <body>
     <%@ include file="components/navbar.jsp" %>
 
-    <div class="row">
-        <div class="col s3"></div>     <!-- acá va el restaurant card -->
-
-
+    <div class="content">
         <c:url value="/register" var="postPath"/>
         <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
-        <div class="col s6 center">
+            <div class="content">
             <div class="card register-card">
-                <div class="card-content white-text">
-                    <span class="card-title text">Para reservar vamos a necesitar algunos datos:</span>
-                    <div class="row">
-                        <div class="input-field col s12 input">
+                    <span class="text title">Para reservar vamos a necesitar algunos datos:</span>
+                    <div class="input-field input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
-                        <form:label path="mail" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
-                        <form:input path="mail"  required="required" maxlength="50" type="text"/>
-                        </div>
+                        <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
+                     <form:input path="mail"  required="required" maxlength="50" type="text"/>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
+                    <div class="input-field input">
                         <form:errors path="phone" element="p" cssStyle="color:red"/>
-                        <form:label path="phone" class="helper-text" data-error="wrong" data-success="right">Telefono:</form:label>
+                        <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Telefono:</form:label>
                         <form:input path="phone" required="required" maxlength="13" type="text"/>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                            <form:errors path="name" element="p" cssStyle="color: red"/>
-                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
-                            <form:input path="name" required="required" maxlength="50" type="text"/>
-                        </div>
+                    <div class="input-field input">
+                        <form:errors path="name" element="p" cssStyle="color: red"/>
+                        <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
+                        <form:input path="name" required="required" maxlength="50" type="text"/>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                            <form:errors path="timeAndDate" element="p" cssStyle="color: red"/>
-                            <form:label path="name" class="helper-text" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
-                            <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
-                        </div>
+                    <div class="input-field input">
+                        <form:errors path="timeAndDate" element="p" cssStyle="color: red"/>
+                        <form:label path="name" class="helper-text" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
+                        <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
                     </div>
-                    <div class="col s12 center">
-                        <!-- acá va un href -->
+                    <div class="submit">
                         <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
-                    </div>-->
+                    </div>
                 </div>
             </div>
-        </div>
         </form:form>
     </div>
 </body>
@@ -72,27 +58,41 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070;
-    }
-
-    .date-input{
-        margin-top: 10px;
-    }
-
     .card{
         border-radius: 16px;
-        display: grid;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        min-height: 300px;
+        height: 600px;
+        max-height: 900px;
+        min-width: 250px;
+        width: 500px;
+        max-width: 700px;
+        padding: 20px;
     }
-
-    .restaurant-card{
-        width:100%;
+    form{
+        display: flex;
+        flex-wrap: wrap;
     }
-
-    .register-card{
-
+    .content{
+        margin-top: 5%;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        align-content: center;
     }
-
+    span{
+        font-family: "Segoe UI", Lato, sans-serif;
+        font-size: 23px;
+    }
+    input{
+        font-family: "Segoe UI", Lato, sans-serif;
+        font-size: 20px;
+    }
 
     .continue-btn{
         padding-inline: 7%;
