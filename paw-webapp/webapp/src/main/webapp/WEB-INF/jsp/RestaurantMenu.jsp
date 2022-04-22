@@ -24,7 +24,7 @@
             <div class="col s3">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
-                        <span class="card-title text">Reservas abiertas</span>
+                        <span class="text title">Reservas abiertas</span>
                         <div class="col ">
                             <c:forEach var="reservation" items="${reservations}">
                                 <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
@@ -48,9 +48,9 @@
                                 <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
                                 <a class="waves-effect waves-light restaurant-btn btn red">Borrar</a>
                             </div>
-                            <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                            <p class="description"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="price">$<c:out value="${dish.price}"/></p>
+                            <span class="text title"><c:out value="${dish.dishName}"/></span>
+                            <p class="text"><c:out value="${dish.dishDescription}"/></p>
+                            <p class="text">$<c:out value="${dish.price}"/></p>
                         </div>
                     </div>
                 </c:forEach>
@@ -70,7 +70,13 @@
         background-color: #F0F0F0;
     }
     .text{
-        color:  #707070
+        font-family: "Segoe UI", Lato, sans-serif;
+        font-weight: normal;
+        font-size: 20px;
+        color: #463f3f;
+    }
+    .title{
+        font-size: 25px;
     }
 
 
