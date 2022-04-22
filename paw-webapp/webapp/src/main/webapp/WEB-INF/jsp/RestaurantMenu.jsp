@@ -18,14 +18,13 @@
 
         <div class="btn-row">
             <a class="waves-effect waves-light btn restaurant-btn green" href="menu/create">Crear Plato</a>
+            <a class="waves-effect waves-light btn restaurant-btn blue" href="orders">Ver ordenes</a>
         </div>
 
-        <div class="row">
-            <div class="col s3">
-                <div class="card restaurant-card">
-                    <div class="card-content white-text">
-                        <span class="text title">Reservas abiertas</span>
-                        <div class="col ">
+        <div class="contentContainer">
+            <div class="card restaurant-card">
+                        <div class="col">
+                            <span class="text title">Reservas abiertas</span>
                             <c:forEach var="reservation" items="${reservations}">
                                 <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
                                 <p class="text">Fecha: <c:out value="${reservation.reservationDate}"/> </p>
@@ -34,31 +33,23 @@
                                 <p class="text">---------</p>
 
                             </c:forEach>
-
                         </div>
-                    </div>
-                </div>
             </div>
 
-            <div class="col offset-s1 s4">
+            <div class="dishList">
                 <c:forEach var="dish" items="${restaurant.dishes}">
                     <div class="card dish-card">
                         <div class="card-content white-text">
                             <div class="btn-row-card">
                                 <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
-                                <a class="waves-effect waves-light restaurant-btn btn red">Borrar</a>
+                                <a class="waves-effect waves-light btn restaurant-btn red">Borrar</a>
                             </div>
                             <span class="text title"><c:out value="${dish.dishName}"/></span>
                             <p class="text"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="text">$<c:out value="${dish.price}"/></p>
+                            <p class="text price">$<c:out value="${dish.price}"/></p>
                         </div>
                     </div>
                 </c:forEach>
-            </div>
-            <div class="col">
-                <div class="card-content white-text">
-                    <a class="waves-effect waves-light btn restaurant-btn blue" href="orders">Ver ordenes</a>
-                </div>
             </div>
         </div>
     </body>
@@ -72,33 +63,54 @@
     .text{
         font-family: "Segoe UI", Lato, sans-serif;
         font-weight: normal;
-        font-size: 20px;
+        font-size: 23px;
         color: #463f3f;
     }
     .title{
-        font-size: 25px;
+        font-size: 28px;
     }
-
-
+    a{
+        margin: 5px;
+    }
+    .contentContainer{
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        padding: 25px;
+    }
     .card{
         border-radius: 16px;
-        display: grid;
+        display: flex;
+        justify-content: center;
+        min-width: 150px;
+        max-width: 250px;
+        padding: 10px;
+        width: 100%;
     }
-
-    .restaurant-card{
+    .card.restaurant-card{
+        max-width: 400px;
+    }
+    .dishList{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
     .dish-card{
         width: 100%;
+        margin: 10px;
+        min-width: 150px;
+        max-width: 450px;
+        max-height: 500px;
     }
-
-    .description{
-        color:  #707070;
-        font-size: 17px;
+    .restaurant-card{
+        margin-right: 10px;
+        max-height: 500px;
     }
-
     .price{
-        font-size: 25px;
         font-weight: bold;
         color: black;
     }
@@ -125,18 +137,7 @@
         opacity: 100%;
     }
 
-    .center{
-        justify-content: center;
-    }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
-    }
 
 </style>
 
