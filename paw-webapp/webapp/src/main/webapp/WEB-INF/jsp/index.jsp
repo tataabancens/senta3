@@ -10,7 +10,11 @@
 
         <!-- Materialize CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
+        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Goldplay-Bold">
 
         <title>Senta3</title>
         <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
@@ -19,7 +23,48 @@
         <div class="row">
             <%@ include file="components/navbar.jsp" %>
         </div>
-        <div class="row">
+        <div class="page-container">
+            <div class="restaurant-header">
+                <div class="restaurant-info">
+                    <div class="presentation-text title restaurant-title">
+                        <span><c:out value="${restaurant.restaurantName}"/></span>
+                    </div>
+                    <div class="presentation-text restaurant-description">
+                        <span>Telefono: </span>
+                        <span><c:out value="${restaurant.phone}"/></span>
+                    </div>
+                </div>
+            </div>
+            <div class="restaurant-content">
+                <div class="card client-actions">
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <a href="/restaurant=1/menu">
+                            <p class="logo smaller center">Editar menú</p>
+                        </a>
+                    </sec:authorize>
+                    <sec:authorize access="!hasRole('RESTAURANT')">
+                        <span class="presentation-text box-comments">Para hacer una reserva:</span>
+                        <div class="reservation-action-btn">
+                            <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
+                        </div>
+                        <span class="presentation-text box-comments">Si ya tenes una:</span>
+                        <div class="enter-reservation-btn">
+                            <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
+                        </div>
+                    </sec:authorize>
+                </div>
+                <div class="dishList">
+                    <c:forEach var="dish" items="${restaurant.dishes}">
+                        <div class="card dish-card">
+                            <span class="text title"><c:out value="${dish.dishName}"/></span>
+                            <span class="text description"><c:out value="${dish.dishDescription}"/></span>
+                            <span class="text price">$<c:out value="${dish.price}"/></span>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
             <div class="col s3">
                 <div class="card restaurant-card">
                     <div class="card-content white-text">
@@ -56,7 +101,7 @@
                 </c:forEach>
             </div>
 
-        </div>
+        </div>-->
     </body>
 </html>
 
@@ -65,28 +110,113 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    .page-container{
+        padding-left: 20px;
+        padding-right: 20px;
     }
-
-
+    .restaurant-content{
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    .restaurant-header{
+        background-color: #37A6E6;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-height: 150px;
+        max-height: 300px;
+        border-radius: 20px;
+        align-items: center;
+        padding: 15px;
+    }
+    .restaurant-info{
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        min-height: 150px;
+        max-height: 300px;
+    }
+    .presentation-text{
+        font-family: 'Goldplay-Bold',sans-serif;
+        color: #463f3f;
+        font-weight: bold;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 20px;
+    }
+    .presentation-text.box-comments{
+        color: white;
+    }
+    i{
+        color: white;
+        margin-right: 25px;
+    }
+    .presentation-text.restaurant-title{
+        font-size: 30px;
+        color:white;
+    }
+    .presentation-text.restaurant-description{
+        color: white;
+        font-size: 21px;
+    }
+    .text.description{
+        color: #463f3f;
+        font-size: 21px;
+    }
+    .text.price{
+        font-size: 21px;
+        font-weight: bold;
+    }
+    .reservation-action-btn{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
     .card{
         border-radius: 16px;
-        display: grid;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .card.client-actions{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        background-color: #37A6E6;
+        padding: 10px;
+        min-height: 150px;
+        max-height: 250px;
+        min-width: 300px;
+        margin-right: 100px;
+        width: 550px;
+        max-width: 700px;
     }
 
-    .restaurant-card{
-    }
-
-    .dish-card{
+    .card.dish-card{
+        display: flex;
+        justify-content: flex-start;
+        min-width: 150px;
+        max-width: 650px;
+        min-height: 250px;
+        max-height: 600px;
+        padding: 20px;
         width: 100%;
+        margin: 20px;
     }
 
     .description{
         color:  #707070;
         font-size: 17px;
     }
-
+    .dishList{
+        padding-right: 20px;
+        justify-self: center;
+    }
     .price{
         font-size: 25px;
         font-weight: bold;
@@ -95,9 +225,13 @@
 
     .reservation-btn{
         border-radius: 16px;
-        background-color: #37A6E6;
+        background-color: white;
+        display: flex;
+        font-family: 'Goldplay-Bold',sans-serif;
+        font-weight: bold;
+        font-size: 16px;
+        color: #37A6E6;
         margin-top: 5%;
-        opacity: 57%;
     }
 
     .reservation-btn:hover{
@@ -116,8 +250,6 @@
         margin-top: 0;
     }
 
-    .already-reserved-btn{
-    }
 
 </style>
 
