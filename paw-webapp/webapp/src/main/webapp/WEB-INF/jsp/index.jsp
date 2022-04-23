@@ -49,7 +49,7 @@
                         </div>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
                         <div class="enter-reservation-btn">
-                            <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
+                            <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
                         </div>
                     </sec:authorize>
                 </div>
@@ -175,6 +175,11 @@
         flex-direction: row;
         justify-content: flex-start;
     }
+    a{
+        padding: 5px;
+        justify-content: center;
+        max-width: 200px;
+    }
     .card{
         border-radius: 16px;
         display: flex;
@@ -192,16 +197,16 @@
         min-height: 150px;
         max-height: 250px;
         min-width: 300px;
+        width: 30%;
         margin-right: 100px;
-        width: 550px;
-        max-width: 700px;
+        max-width: 40%;
     }
 
     .card.dish-card{
         display: flex;
         justify-content: flex-start;
         min-width: 150px;
-        max-width: 650px;
+        max-width: 450px;
         min-height: 250px;
         max-height: 600px;
         padding: 20px;
@@ -214,8 +219,14 @@
         font-size: 17px;
     }
     .dishList{
+        display: flex;
         padding-right: 20px;
-        justify-self: center;
+        justify-self: flex-start;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        min-width: 60%;
+        height: 100%;
+        max-width: 60%;
     }
     .price{
         font-size: 25px;
@@ -225,18 +236,19 @@
 
     .reservation-btn{
         border-radius: 16px;
-        background-color: white;
+        background-color: transparent;
+        border-color: white;
         display: flex;
         font-family: 'Goldplay-Bold',sans-serif;
         font-weight: bold;
         font-size: 16px;
-        color: #37A6E6;
+        color: white;
         margin-top: 5%;
     }
 
     .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
+        background-color: white;
+        color: #37A6E6;
         opacity: 100%;
     }
 

@@ -74,7 +74,6 @@
     }
     .contentContainer{
         display: flex;
-        justify-content: space-evenly;
         flex-wrap: wrap;
         padding: 25px;
     }
@@ -88,22 +87,27 @@
         width: 100%;
     }
     .card.restaurant-card{
-        max-width: 400px;
+        display: flex;
+        justify-content: center;
+        margin-left: 5%;
+        width: 20%;
+        max-width: 40%;
     }
     .dishList{
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-evenly;
         flex-wrap: wrap;
+        width: 60%;
         margin-left: 5%;
         margin-right: 5%;
     }
 
     .dish-card{
         width: 100%;
-        margin: 10px;
+        margin: 8px;
         min-width: 150px;
-        max-width: 450px;
+        max-width: 40%;
         max-height: 500px;
     }
     .restaurant-card{
