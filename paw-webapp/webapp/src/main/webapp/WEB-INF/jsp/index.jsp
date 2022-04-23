@@ -26,6 +26,10 @@
         <div class="page-container">
             <div class="restaurant-header">
                 <div class="restaurant-info">
+                    <!--<div>
+                        <i class="large material-icons">restaurant</i>
+                        <img src="<c:url value="/resources/images/restaurant-icon.png"/>"
+                    </div>-->
                     <div class="presentation-text title restaurant-title">
                         <span><c:out value="${restaurant.restaurantName}"/></span>
                     </div>
@@ -117,11 +121,13 @@
     .restaurant-content{
         margin-top: 30px;
         display: flex;
+        width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
     }
     .restaurant-header{
-        background-color: #37A6E6;
+        background: rgb(2,0,36);
+        background: linear-gradient(214deg, rgba(2,0,36,1) 0%, rgba(255,255,255,1) 0%, rgba(55,166,230,0.9023984593837535) 85%);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -197,9 +203,9 @@
         min-height: 150px;
         max-height: 250px;
         min-width: 300px;
-        width: 30%;
-        margin-right: 100px;
-        max-width: 40%;
+        width: 25%;
+        margin-right: 50px;
+        max-width: 35%;
     }
 
     .card.dish-card{
@@ -224,7 +230,7 @@
         justify-self: flex-start;
         justify-content: space-evenly;
         flex-wrap: wrap;
-        min-width: 60%;
+        min-width: 70%;
         height: 100%;
         max-width: 60%;
     }
