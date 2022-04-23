@@ -1,3 +1,4 @@
+<%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -43,6 +44,26 @@
                         <form:label path="name" class="helper-text" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
                         <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
                     </div>
+
+                <div>
+                    <p>available hours:</p>
+                    <p>${hours}</p>
+
+                </div>
+
+                    <div>
+                        <select name="n_adultos">
+                            <option selected="selected" value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+
                     <div class="submit">
                         <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
                     </div>

@@ -13,4 +13,6 @@ public interface RestaurantService {
     Restaurant create(String restaurantName, String phone, String mail);
 
     List<Dish> getRestaurantDishes(long id);
+
+    List<Integer> getAvailableHours(long restaurantId);
 }

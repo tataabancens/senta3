@@ -33,4 +33,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Dish> getRestaurantDishes(long id) {
         return restaurantDao.getRestaurantDishes(id);
     }
+
+    @Override
+    public List<Integer> getAvailableHours(long restaurantId) {
+        return restaurantDao.getAvailableHours(restaurantId);
+    }
 }

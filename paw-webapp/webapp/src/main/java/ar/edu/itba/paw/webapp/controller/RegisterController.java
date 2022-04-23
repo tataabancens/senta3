@@ -37,7 +37,13 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
-        return new ModelAndView("/register");
+
+
+
+        ModelAndView mav = new ModelAndView("/register");
+        mav.addObject("hours", rs.getAvailableHours(1));
+
+        return mav;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

@@ -5,12 +5,37 @@ CREATE TABLE IF NOT EXISTS customer (
   Mail varchar(50)
 );
 
+DROP TABLE IF EXISTS restaurant CASCADE;
+
 CREATE TABLE IF NOT EXISTS restaurant (
   restaurantId SERIAL PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
   phone varchar(100) NOT NULL,
-  Mail varchar(50) NOT NULL
+  Mail varchar(50) NOT NULL,
+  Tables int NOT NULL
 );
+
+INSERT INTO restaurant(restaurantName, phone, Mail, Tables)
+VALUES ('Pepito masterchef', 110502400, 'pepitococina@gmail.com', 3);
+
+DROP TABLE IF EXISTS tables CASCADE;
+
+CREATE TABLE IF NOT EXISTS tables (
+    tableId SERIAL PRIMARY KEY,
+    restaurantId int NOT NULL,
+    hour int NOT NULL,
+    FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
+);
+
+INSERT INTO tables(restaurantId, hour)
+VALUES (1, 10);
+INSERT INTO tables(restaurantId, hour)
+VALUES (1, 10);
+INSERT INTO tables(restaurantId, hour)
+VALUES (1, 10);
+INSERT INTO tables(restaurantId, hour)
+VALUES (1, 11);
+
 
 CREATE TABLE IF NOT EXISTS dish (
   dishId SERIAL PRIMARY KEY,
@@ -30,6 +55,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
+
 
 CREATE TABLE IF NOT EXISTS users (
   userId SERIAL PRIMARY KEY,
