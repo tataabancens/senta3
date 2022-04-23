@@ -46,11 +46,13 @@ CREATE TABLE IF NOT EXISTS dish (
   FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
 );
 
+DROP TABLE IF EXISTS reservation CASCADE;
+
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
     customerId      integer NOT NULL,
-    reservationDate timestamp,
+    reservationHour integer NOT NULL,
     reservationStatus integer,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)

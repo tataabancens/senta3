@@ -39,7 +39,7 @@ public class RegisterController {
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
 
         ModelAndView mav = new ModelAndView("/register");
-        mav.addObject("hours", rs.getAvailableHours(1));
+        mav.addObject("hours", res.getAvailableHours(1));
 
         return mav;
     }
@@ -52,7 +52,7 @@ public class RegisterController {
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
         Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer, form.getTimeStamp());
+                customer, form.getHour());
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),

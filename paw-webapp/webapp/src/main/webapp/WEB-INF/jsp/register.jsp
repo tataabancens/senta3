@@ -42,7 +42,7 @@
 
 
                     <div class="input-field">
-                        <p style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;">Hora de la reserva:</p>
+                        <p style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;">Horarios disponibles:</p>
                         <form:select path="hour">
                             <form:options items="${hours}" />
                         </form:select>

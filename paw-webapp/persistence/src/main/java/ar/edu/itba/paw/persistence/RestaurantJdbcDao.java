@@ -34,10 +34,6 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getInt("price"),
                     resultSet.getString("dishdescription")));
 
-    private static final RowMapper<Tables> ROW_MAPPER_TABLES = ((resultSet, i) ->
-            new Tables(resultSet.getLong("tableId"),
-                    resultSet.getLong("restaurantId"),
-                    resultSet.getInt("hour")));
 
     @Autowired
     public RestaurantJdbcDao(final DataSource ds) {
@@ -60,60 +56,6 @@ public class RestaurantJdbcDao implements RestaurantDao {
         List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? ORDER BY dishId",
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);
         return query;
-    }
-
-    @Override
-    public List<Integer> getAvailableHours(long restaurantId) {
-        /* esto funciona:
-        List<Integer> test = new ArrayList<>();
-        test.add(1);
-        test.add(1);
-        test.add(2);
-        test.add(2);
-        test.add(3);
-        return test;
-         */
-
-        /*
-        List<Tables> query = jdbcTemplate.query("SELECT * FROM tables WHERE tables.restaurantId = ?",
-                new Object[]{restaurantId}, ROW_MAPPER_TABLES);
-         */
-
-
-        //no encuentra la tabla tables o algo así
-        List<Tables> query = jdbcTemplate.query("SELECT * FROM tables", ROW_MAPPER_TABLES);
-
-        Restaurant current = getRestaurantById(restaurantId).get();
-        int maxTables = current.getTables();
-
-        List<Integer> occupied = new ArrayList<>();
-        for (Tables table:query) {
-            occupied.add(table.getHour());
-        }
-        Collections.sort(occupied);
-
-        List<Integer> notAvailable = new ArrayList<>();
-        int qty = 1;
-        for(int i=0; i<occupied.size()-1; i++){
-
-            if(Objects.equals(occupied.get(i), occupied.get(i + 1))){
-                qty++;
-                if(qty >= maxTables){
-                    notAvailable.add(occupied.get(i));
-                }
-            } else {
-                qty = 1;
-            }
-        }
-
-        List<Integer> totalHours = new ArrayList<>();
-        for(int i=0; i<24; i++){
-            totalHours.add(i);
-        }
-
-        totalHours.removeAll(notAvailable);
-
-        return totalHours;
     }
 
     @Override

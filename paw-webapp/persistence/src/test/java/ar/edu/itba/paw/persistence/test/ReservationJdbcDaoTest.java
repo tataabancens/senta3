@@ -117,7 +117,7 @@ public class ReservationJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
 
         // 2. Ejercitacion
-        Reservation maybeReservation = reservationDao.createReservation(1, 1, new Timestamp(24));
+        Reservation maybeReservation = reservationDao.createReservation(1, 1, 1);
 
         // 3. PostCondiciones
         Assert.assertEquals(1, maybeReservation.getReservationId());
