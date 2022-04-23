@@ -23,6 +23,8 @@ public class ReservationForm {
     @DateConstraint
     private String timeAndDate;
 
+    private int hour;
+
     public String getTimeAndDate() {
         return timeAndDate;
     }
@@ -57,4 +59,10 @@ public class ReservationForm {
         return mail;
     }
 
+    public int getHour() {
+        return hour;
+    }
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
 }

@@ -22,7 +22,7 @@
         <c:url value="/register" var="postPath"/>
         <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
             <div class="content">
-            <div class="card register-card">
+                <div class="card register-card">
                     <span class="text title">Para reservar vamos a necesitar algunos datos:</span>
                     <div class="input-field input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
@@ -39,29 +39,13 @@
                         <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
                         <form:input path="name" required="required" maxlength="50" type="text"/>
                     </div>
-                    <div class="input-field input">
-                        <form:errors path="timeAndDate" element="p" cssStyle="color: red"/>
-                        <form:label path="name" class="helper-text" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
-                        <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
-                    </div>
 
-                <div>
-                    <p>available hours:</p>
-                    <p>${hours}</p>
 
-                </div>
-
-                    <div>
-                        <select name="n_adultos">
-                            <option selected="selected" value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                        </select>
+                    <div class="input-field">
+                        <p style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;">Hora de la reserva:</p>
+                        <form:select path="hour">
+                            <form:options items="${hours}" />
+                        </form:select>
                     </div>
 
                     <div class="submit">
@@ -71,6 +55,7 @@
             </div>
         </form:form>
     </div>
+
 </body>
 </html>
 
@@ -114,6 +99,10 @@
         font-family: "Segoe UI", Lato, sans-serif;
         font-size: 20px;
     }
+    select{
+        display: flex;
+    }
+
 
     .continue-btn{
         padding-inline: 7%;
