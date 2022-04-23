@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS restaurant (
   totalTables int NOT NULL
 );
 
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS totalTables int NOT NULL;
+
+
 CREATE TABLE IF NOT EXISTS dish (
   dishId SERIAL PRIMARY KEY,
   restaurantId int NOT NULL,
@@ -31,6 +34,10 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
+
+ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
+
+ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer NOT NULL;
 
 
 CREATE TABLE IF NOT EXISTS users (
