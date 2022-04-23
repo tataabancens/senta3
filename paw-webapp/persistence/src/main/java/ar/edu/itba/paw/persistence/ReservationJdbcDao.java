@@ -2,18 +2,13 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.ReservationDao;
-import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Repository
@@ -43,7 +38,7 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail"),
-                    resultSet.getInt("tables")));
+                    resultSet.getInt("totalTables")));
 
 
     @Autowired
@@ -170,7 +165,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
         Restaurant current = queryRestaurant.get(0);
 
-        int maxTables = current.getTables();
+        int maxTables = current.getTotalTables();
 
         List<Integer> occupied = new ArrayList<>();
         for (Reservation table:query) {

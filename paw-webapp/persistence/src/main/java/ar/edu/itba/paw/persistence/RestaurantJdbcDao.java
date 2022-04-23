@@ -23,7 +23,7 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail"),
-                    resultSet.getInt("tables")));
+                    resultSet.getInt("totalTables")));
 
     private static final RowMapper<Dish> ROW_MAPPER_DISH = ((resultSet, i) ->
             new Dish(resultSet.getLong("dishId"),

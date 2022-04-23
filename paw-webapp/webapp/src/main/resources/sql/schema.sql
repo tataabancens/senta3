@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS restaurant (
   restaurantName varchar(100) NOT NULL,
   phone varchar(100) NOT NULL,
   Mail varchar(50) NOT NULL,
-  Tables int NOT NULL
+  totalTables int NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS dish (
