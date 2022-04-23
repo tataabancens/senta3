@@ -15,35 +15,35 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+    <div class="row">
+        <%@ include file="components/navbar.jsp" %>
+    </div>
 
-<div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
+    <div class="page-container">
+        <div class="restaurant-card card">
             <div class="card-content white-text">
                 <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
                 <span class="text"><c:out value="${restaurant.phone}"/></span>
             </div>
         </div>
-    </div>
 
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title title text price center">Tu código de reserva es:</span>
-                <div class="with-margin">
-                    <span class="card-title text center"><c:out value="${reservation.reservationId}"/></span>
-                </div>
-                <p class="title2 center">No te preocupes,</p>
-                <p class="title2 center">también te lo mandamos por mail!</p>
-                <div class="center">
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
-                </div>
+        <div class="confirm-card">
+            <div class="card dish-card">
+                <div class="card-content white-text">
+                    <span class="card-title title text price center">Tu código de reserva es:</span>
+                    <div class="with-margin">
+                        <span class="card-title text center"><c:out value="${reservation.reservationId}"/></span>
+                    </div>
+                    <p class="title2 center">No te preocupes,</p>
+                    <p class="title2 center">también te lo mandamos por mail!</p>
+                    <div class="center">
+                        <a class="waves-effect waves-light btn reservation-btn" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
+                    </div>
 
-            </div> 
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
 
@@ -62,8 +62,6 @@
         display: grid;
     }
 
-    .restaurant-card{
-    }
 
     .dish-card{
         width: 100%;
@@ -91,6 +89,7 @@
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        padding: 0px;
     }
 
     .reservation-btn:hover{
@@ -114,7 +113,30 @@
         margin-top: 0;
     }
 
-    .already-reserved-btn{
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+
+    .restaurant-card{
+        display:flex;
+        margin-left: 5%;
+        width: 20%;
+        max-width: 40%;
+        margin-right: 5%;
+        height: 20%;
     }
 
 </style>

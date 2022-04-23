@@ -27,8 +27,8 @@
         </div>
     </div>
 
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
+    <div class="page-container">
+        <div class="card confirm-card">
             <div class="card-content white-text">
                 <span class="card-title text price center">Pediste la cuenta!</span>
                 <span class="card-title text price center">Muchas gracias!</span>
@@ -108,18 +108,19 @@
         justify-content: center;
     }
 
-    .with-margin{
-        margin-top: 10%;
-        margin-bottom: 10%;
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
 </style>
