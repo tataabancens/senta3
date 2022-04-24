@@ -14,5 +14,5 @@ public interface RestaurantDao {
 
     List<Dish> getRestaurantDishes(long restaurantId);
 
-    void updateRestaurantMaxTables(long restaurantId, int newMaxTables);
+    void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour);
 }

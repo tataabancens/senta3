@@ -28,8 +28,18 @@
           <span class="card-title text">Editar Mesas disponibles:</span>
           <div class="row">
             <div class="input-field col s12 input">
+              <form:errors path="openHour" element="p" cssStyle="color:red"/>
+              <form:label path="openHour" class="helper-text" data-error="wrong" data-success="right">Hora que abre el restaurant:</form:label>
+              <form:input path="openHour" type="text"/>
+            </div>
+            <div class="input-field col s12 input">
+              <form:errors path="closeHour" element="p" cssStyle="color:red"/>
+              <form:label path="closeHour" class="helper-text" data-error="wrong" data-success="right">Hora que cierra el restaurant:</form:label>
+              <form:input path="closeHour" type="text"/>
+            </div>
+            <div class="input-field col s12 input">
               <form:errors path="tableQty" element="p" cssStyle="color:red"/>
-              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right">Nueva cantidad de mesas disponibles:</form:label>
+              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right">Mesas disponibles:</form:label>
               <form:input path="tableQty" type="text"/>
             </div>
           </div>

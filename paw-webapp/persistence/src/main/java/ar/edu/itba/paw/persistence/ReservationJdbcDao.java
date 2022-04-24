@@ -38,7 +38,9 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail"),
-                    resultSet.getInt("totalTables")));
+                    resultSet.getInt("totalTables"),
+                    resultSet.getInt("openHour"),
+                    resultSet.getInt("closeHour")));
 
 
     @Autowired
@@ -188,8 +190,22 @@ public class ReservationJdbcDao implements ReservationDao {
         }
 
         List<Integer> totalHours = new ArrayList<>();
-        for(int i=0; i<24; i++){
-            totalHours.add(i);
+        int openHour = current.getOpenHour();
+        int closeHour = current.getCloseHour();
+        if(openHour < closeHour){
+            for(int i=openHour; i<closeHour; i++){
+                totalHours.add(i);
+            }
+        } else if(closeHour < openHour){
+            for(int i=openHour; i<24; i++){
+                totalHours.add(i);
+            }
+            for(int i=0; i<closeHour; i++){
+                totalHours.add(i);
+            }
+
+        } else {
+
         }
 
         totalHours.removeAll(notAvailable);

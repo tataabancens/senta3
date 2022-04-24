@@ -14,5 +14,5 @@ public interface RestaurantService {
 
     List<Dish> getRestaurantDishes(long id);
 
-    void updateRestaurantMaxTables(long restaurantId, int newMaxTables);
+    void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int openHour, int closeHour);
 }

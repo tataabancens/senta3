@@ -35,8 +35,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void updateRestaurantMaxTables(long restaurantId, int newMaxTables) {
-        restaurantDao.updateRestaurantMaxTables(restaurantId, newMaxTables);
+    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour) {
+        restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
     }
 
 }

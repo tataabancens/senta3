@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -154,6 +153,8 @@ public class RestaurantController {
         mav.addObject("restaurant", restaurant);
 
         form.setTableQty(restaurant.getTotalTables());
+        form.setOpenHour(restaurant.getOpenHour());
+        form.setCloseHour(restaurant.getCloseHour());
         return mav;
     }
 
@@ -169,7 +170,7 @@ public class RestaurantController {
         mav.addObject("restaurant", restaurant);
          */
 
-        rs.updateRestaurantMaxTables(restaurantId, form.getTableQty());
+        rs.updateRestaurantHourAndTables(restaurantId, form.getTableQty(), form.getOpenHour(), form.getCloseHour());
 
         return mav;
     }
