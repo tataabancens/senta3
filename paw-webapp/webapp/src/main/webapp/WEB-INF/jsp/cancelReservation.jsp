@@ -16,20 +16,22 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
-
-<div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
-            <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
-            </div>
-        </div>
+    <div class="row">
+        <%@ include file="components/navbar.jsp" %>
     </div>
 
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
+    <div class="page-container">
+
+        <div class="restaurant-card">
+            <div class="card">
+                <div class="card-content white-text">
+                    <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
+                    <span class="text"><c:out value="${restaurant.phone}"/></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="confirm-card card">
             <div class="card-content white-text">
                 <span class="card-title text price center">Estas por cancelar tu reserva</span>
                     <div class="row margin-0">
@@ -41,15 +43,16 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-</div>
+    </div>
 </body>
 </html>
 
 <style>
+
+
 
     body{
         background-color: #F0F0F0;
@@ -58,34 +61,13 @@
         color:  #707070
     }
 
-    .summary{
-        margin-top: 20px;
-    }
-
 
     .card{
         border-radius: 16px;
-        display: grid;
+        display: flex;
     }
 
-    .restaurant-card{
-    }
 
-    .dish-card{
-        width: 100%;
-    }
-
-    .items-title{
-        color:  #707070;
-        font-size: 18px;
-    }
-
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 20px;
-
-    }
 
     .price{
         font-size: 25px;
@@ -110,18 +92,31 @@
         justify-content: center;
     }
 
-    .with-margin{
-        margin-top: 10%;
-        margin-bottom: 10%;
+
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
+
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
-    .already-reserved-btn{
+
+    .restaurant-card{
+        display:flex;
+        margin-left: 5%;
+        width: 20%;
+        max-width: 40%;
+        margin-right: 5%;
+        height: 20%;
     }
 
 </style>

@@ -15,26 +15,25 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
-
 <div class="row">
+    <%@ include file="components/navbar.jsp" %>
+</div>
 
-    <div class="col s4 offset-s3 card-margin">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title text price center">Creaste el plato!</span>
-                <div class="row margin-0">
-                    <div class="col s12 center">
-                        <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
+
+    <div class="page-container">
+            <div class="card confirm-card">
+                <div class="card-content white-text">
+                    <span class="card-title text price center">Creaste el plato!</span>
+                    <div class="row margin-0">
+                        <div class="col s12 center">
+                            <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
+                        </div>
                     </div>
-                </div>
-
             </div>
-
         </div>
     </div>
-</div>
-</div>
+
+
 </body>
 </html>
 
@@ -103,13 +102,19 @@
         margin-top: 10%;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .already-reserved-btn{
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
 </style>
