@@ -175,4 +175,15 @@ public class RestaurantController {
         return mav;
     }
 
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
+    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final int reservationId,
+                                    @PathVariable("restaurantId") final int restaurantId){
+        final ModelAndView mav = new ModelAndView("cancelReservationConfirmation");
+
+        res.cancelReservation(restaurantId, reservationId);
+        mav.addObject("reservationId", reservationId);
+
+        return mav;
+    }
+
 }

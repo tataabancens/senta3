@@ -32,7 +32,7 @@
                                 <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
                                 <p class="text">Fecha: <c:out value="${reservation.reservationHour}"/> </p>
                                 <p class="text">Status: <c:out value="${reservation.reservationStatus}"/> </p>
-                                <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
+                                <a class="waves-effect waves-light btn red restaurant-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
                                 <p class="text">---------</p>
 
                             </c:forEach>

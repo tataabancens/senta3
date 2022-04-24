@@ -90,4 +90,9 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Integer> getAvailableHours(long restaurantId) {
         return reservationDao.getAvailableHours(restaurantId);
     }
+
+    @Override
+    public void cancelReservation(long restaurantId, long reservationId) {
+        reservationDao.cancelReservation(restaurantId, reservationId);
+    }
 }

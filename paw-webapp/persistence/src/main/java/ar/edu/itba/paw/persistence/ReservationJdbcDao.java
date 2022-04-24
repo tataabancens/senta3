@@ -212,4 +212,9 @@ public class ReservationJdbcDao implements ReservationDao {
 
         return totalHours;
     }
+
+    @Override
+    public void cancelReservation(long restaurantId, long reservationId){
+        jdbcTemplate.update("DELETE FROM reservation WHERE reservationId = ?", new Object[]{reservationId});
+    }
 }
