@@ -25,6 +25,7 @@
             <div class="card restaurant-card">
                         <div class="col">
                             <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
+                            <p class="text title">Horario: ${restaurant.openHour} a ${restaurant.closeHour}</p>
                             <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
                             <span class="text title">Reservas abiertas</span>
                             <c:forEach var="reservation" items="${reservations}">
