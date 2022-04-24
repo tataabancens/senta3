@@ -19,38 +19,15 @@
 </head>
 <body>
 <nav>
-    <div class="left-section">
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/restaurant=1/menu">
-                <span class="logo">Senta3</span>
-            </a>
-        </sec:authorize>
+    <div class="nav-wrapper">
+        <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Senta3</a>
+        <a href="#" class="logo">Inicio</a>
+        <a href="#" class="logo">Restaurantes</a>
         <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/">
-                <span class="logo">Senta3</span>
-            </a>
+            <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar cesion</a>
         </sec:authorize>
-        <div>
-            <a href="">Inicio</a>
-        </div>
-        <div>
-            <a href="">Restaurantes</a>
-        </div>
-    </div>
-    <div class="right-section">
         <sec:authorize access="hasRole('RESTAURANT')">
-            <div class="logout">
-                <a href="${pageContext.request.contextPath}/logout">
-                    <p class="logo smaller">log out</p>
-                </a>
-            </div>
-        </sec:authorize>
-        <sec:authorize access="!hasRole('RESTAURANT')">
-            <div class="login">
-                <a href="${pageContext.request.contextPath}/login">
-                    <p class="logo smaller">log in</p>
-                </a>
-            </div>
+            <a href="${pageContext.request.contextPath}/logout" class="logo right">Cerrar cesion</a>
         </sec:authorize>
     </div>
     <!--
@@ -97,34 +74,10 @@
         background: white;
 
     }
-    nav{
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        padding-left: 10px;
-        padding-right: 10px;
-        width: 100%;
-        background: white;
-        border-radius: 8px;
-        font-size: 0;
-        box-shadow: 0 2px 3px 0 rgba(0,0,0,.1);
-    }
-    .left-section{
-        display: flex;
-        justify-content: flex-start;
-        align-content: center;
-        left: 0;
-        width: 50%;
-    }
-    .right-section{
-        display: flex;
-        width: 50%;
-        color: #E63737;
-        justify-content: flex-end;
-    }
-    .logout{
-        width: 100%;
-        height: 100%;
+    .nav-wrapper{
+        background-color: white;
+        align-items: center;
+        color: #37A6E6;
     }
     nav a{
         font-size: 18px;
@@ -152,7 +105,7 @@
     }
     .logo{
         color:  #37A6E6;
-        margin-left: 5%;
+        margin-left: 2%;
         font-family: "Segoe UI", Arial, sans-serif;
         font-weight: bold;
         font-style: italic ;

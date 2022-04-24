@@ -14,7 +14,6 @@
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Goldplay-Bold">
 
         <title>Senta3</title>
         <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
@@ -146,14 +145,6 @@
         justify-content: flex-start;
         min-height: 150px;
         max-height: 300px;
-    }
-    .presentation-text{
-        font-family: 'Goldplay-Bold',sans-serif;
-        color: #463f3f;
-        font-weight: bold;
-        padding-left: 5px;
-        padding-right: 5px;
-        font-size: 20px;
     }
     .presentation-text.box-comments{
         color: white;
