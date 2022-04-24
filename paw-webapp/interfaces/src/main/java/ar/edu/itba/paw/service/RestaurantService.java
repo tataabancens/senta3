@@ -13,4 +13,6 @@ public interface RestaurantService {
     Restaurant create(String restaurantName, String phone, String mail);
 
     List<Dish> getRestaurantDishes(long id);
+
+    void updateRestaurantMaxTables(long restaurantId, int newMaxTables);
 }

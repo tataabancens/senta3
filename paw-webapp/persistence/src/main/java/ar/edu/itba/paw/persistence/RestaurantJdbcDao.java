@@ -57,6 +57,13 @@ public class RestaurantJdbcDao implements RestaurantDao {
     }
 
     @Override
+    public void updateRestaurantMaxTables(long restaurantId, int newMaxTables) {
+        jdbcTemplate.update("UPDATE restaurant SET totalTables = ? WHERE restaurantId = ?",
+            new Object[]{newMaxTables, restaurantId});
+    }
+
+
+    @Override
     public Restaurant create(String restaurantName, String phone, String mail) {
         return null;
     }

@@ -24,6 +24,8 @@
         <div class="contentContainer">
             <div class="card restaurant-card">
                         <div class="col">
+                            <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
+                            <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
                             <span class="text title">Reservas abiertas</span>
                             <c:forEach var="reservation" items="${reservations}">
                                 <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>

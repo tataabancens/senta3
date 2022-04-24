@@ -7,6 +7,7 @@ import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
+import ar.edu.itba.paw.webapp.form.EditTablesForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -142,4 +143,35 @@ public class RestaurantController {
 
         return mav;
     }
+
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.GET)
+    public ModelAndView editForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("editTablesForm") final EditTablesForm form){
+
+        final ModelAndView mav = new ModelAndView("/editAvailableTables");
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+
+        mav.addObject("restaurant", restaurant);
+
+        form.setTableQty(restaurant.getTotalTables());
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.POST)
+    public ModelAndView editMenu(@ModelAttribute("editTablesForm") final EditTablesForm form,
+                                 @PathVariable("restaurantId") final int restaurantId) {
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
+
+        /*
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
+        mav.addObject("restaurant", restaurant);
+         */
+
+        rs.updateRestaurantMaxTables(restaurantId, form.getTableQty());
+
+        return mav;
+    }
+
 }
