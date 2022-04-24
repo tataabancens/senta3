@@ -27,7 +27,7 @@
                             <span class="text title">Reservas abiertas</span>
                             <c:forEach var="reservation" items="${reservations}">
                                 <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
-                                <p class="text">Fecha: <c:out value="${reservation.reservationDate}"/> </p>
+                                <p class="text">Fecha: <c:out value="${reservation.reservationHour}"/> </p>
                                 <p class="text">Status: <c:out value="${reservation.reservationStatus}"/> </p>
                                 <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
                                 <p class="text">---------</p>
