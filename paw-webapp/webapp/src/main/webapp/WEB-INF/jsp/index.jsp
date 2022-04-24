@@ -26,16 +26,18 @@
         <div class="page-container">
             <div class="restaurant-header">
                 <div class="restaurant-info">
-                    <!--<div>
+                    <div>
                         <i class="large material-icons">restaurant</i>
-                        <img src="<c:url value="/resources/images/restaurant-icon.png"/>"
-                    </div>-->
-                    <div class="presentation-text title restaurant-title">
-                        <span><c:out value="${restaurant.restaurantName}"/></span>
+                        <!--<img src="<c:url value="/resources/images/restaurant-icon.png"/>-->
                     </div>
-                    <div class="presentation-text restaurant-description">
-                        <span>Telefono: </span>
-                        <span><c:out value="${restaurant.phone}"/></span>
+                    <div>
+                        <div class="presentation-text title restaurant-title">
+                            <span><c:out value="${restaurant.restaurantName}"/></span>
+                        </div>
+                        <div class="presentation-text restaurant-description">
+                            <span>Telefono: </span>
+                            <span><c:out value="${restaurant.phone}"/></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,8 +128,8 @@
         flex-wrap: wrap;
     }
     .restaurant-header{
-        background: rgb(2,0,36);
-        background: linear-gradient(214deg, rgba(2,0,36,1) 0%, rgba(255,255,255,1) 0%, rgba(55,166,230,0.9023984593837535) 85%);
+        background: rgb(55,166,230);
+        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -139,9 +141,9 @@
     }
     .restaurant-info{
         display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
         min-height: 150px;
         max-height: 300px;
     }
