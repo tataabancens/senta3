@@ -18,7 +18,6 @@
 
         <div class="btn-row">
             <a class="waves-effect waves-light btn restaurant-btn green" href="menu/create">Crear Plato</a>
-            <a class="waves-effect waves-light btn restaurant-btn blue" href="orders">Ver ordenes</a>
         </div>
 
         <div class="contentContainer">

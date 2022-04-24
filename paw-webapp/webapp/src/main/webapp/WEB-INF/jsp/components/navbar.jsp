@@ -22,7 +22,12 @@
     <div class="nav-wrapper">
         <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Senta3</a>
         <a href="#" class="logo">Inicio</a>
+        <sec:authorize access="!hasRole('RESTAURANT')">
         <a href="#" class="logo">Restaurantes</a>
+        </sec:authorize>
+        <sec:authorize access="hasRole('RESTAURANT')">
+            <a href="${pageContext.request.contextPath}/restaurant=1/orders" class="logo">Ordenes</a>
+        </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar cesion</a>
         </sec:authorize>
