@@ -21,7 +21,7 @@
     <div class="restaurant-card card">
         <div class="card-content white-text">
             <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
-            <span class="text"><c:out value="${restaurant.phone}"/></span>
+            <span class="title2"><c:out value="${restaurant.phone}"/></span>
         </div>
     </div>
 
