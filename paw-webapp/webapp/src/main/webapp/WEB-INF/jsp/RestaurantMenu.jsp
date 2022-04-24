@@ -118,9 +118,9 @@
         margin-left: 5%;
         margin-right: 5%;
     }
-    .add-dish{
+    a.add-card-link{
         width: 100%;
-        height: 400px;
+        height: 100%;
     }
     .dish-card{
         width: 100%;
