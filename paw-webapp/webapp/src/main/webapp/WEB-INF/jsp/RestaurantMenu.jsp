@@ -16,10 +16,6 @@
     <body>
         <%@ include file="components/navbar.jsp" %>
 
-        <div class="btn-row">
-            <a class="waves-effect waves-light btn restaurant-btn green" href="menu/create">Crear Plato</a>
-        </div>
-
         <div class="contentContainer">
             <div class="card restaurant-card">
                         <div class="col">
@@ -36,6 +32,14 @@
             </div>
 
             <div class="dishList">
+                <div class="card dish-card">
+                    <a href="menu/create" class="add-card-link">
+                        <div class="add-card-content">
+                            <i class="large material-icons">add</i>
+                            <span><h3>Crear Plato</h3></span>
+                        </div>
+                    </a>
+                </div>
                 <c:forEach var="dish" items="${restaurant.dishes}">
                     <div class="card dish-card">
                         <div class="card-content white-text">
@@ -74,6 +78,8 @@
     .contentContainer{
         display: flex;
         flex-wrap: wrap;
+        margin-top: 30px;
+        justify-content: space-evenly;
         padding: 25px;
     }
     .card{
@@ -93,6 +99,16 @@
         width: 20%;
         max-width: 40%;
     }
+    .add-card-content {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+        width: inherit;
+        height: inherit;
+        justify-content: center;
+        color: rgba(183, 179, 179, 0.87);
+        align-items: center;
+    }
     .dishList{
         display: flex;
         flex-direction: row;
@@ -102,7 +118,10 @@
         margin-left: 5%;
         margin-right: 5%;
     }
-
+    .add-dish{
+        width: 100%;
+        height: 400px;
+    }
     .dish-card{
         width: 100%;
         margin: 8px;
