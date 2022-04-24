@@ -37,7 +37,7 @@
                     <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
                     <form:input path="dishPrice" type="text"/>
                 </div>
-                <div class="submit">
+                <div class="submit center">
                     <input type="submit" value="Continuar" class="continue-btn"/>
                 </div>
             </div>

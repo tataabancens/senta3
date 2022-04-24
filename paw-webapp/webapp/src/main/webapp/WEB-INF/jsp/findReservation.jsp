@@ -28,7 +28,7 @@
                             <form:input type="number" path="reservationId" min="1"/>
                         </div>
                     </div>
-                    <div class="submit">
+                    <div class="submit center">
                         <input type="submit" value="Buscar" class="continue-btn">
                     </div>
                 </form:form>

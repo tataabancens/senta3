@@ -43,7 +43,7 @@
                     </form>
                 </div>
 
-                    <div class="submit">
+                    <div class="submit center">
                         <input type="submit" value="Crear" class="continue-btn"/>
                     </div>
             </div>

@@ -43,7 +43,7 @@
                         <form:label path="name" class="helper-text" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
                         <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
                     </div>
-                    <div class="submit">
+                    <div class="submit center">
                         <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
                     </div>
                 </div>
