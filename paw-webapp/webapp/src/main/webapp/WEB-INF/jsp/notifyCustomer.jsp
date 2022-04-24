@@ -22,22 +22,22 @@
     <div class="page-container">
         <div class="restaurant-card card">
             <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
+                <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
                 <span class="text"><c:out value="${restaurant.phone}"/></span>
             </div>
         </div>
 
         <div class="confirm-card">
             <div class="card dish-card">
-                <div class="card-content white-text">
-                    <span class="card-title title text price center">Tu código de reserva es:</span>
+                <div class="card-content white-text center">
+                    <span class="main-title title text center">Tu código de reserva es:</span>
                     <div class="with-margin">
-                        <span class="card-title text center"><c:out value="${reservation.reservationId}"/></span>
+                        <span class="main-title text center"><c:out value="${reservation.reservationId}"/></span>
                     </div>
                     <p class="title2 center">No te preocupes,</p>
                     <p class="title2 center">también te lo mandamos por mail!</p>
                     <div class="center">
-                        <a class="waves-effect waves-light btn reservation-btn" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
+                        <a class="waves-effect waves-light btn reservation-btn center" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
                     </div>
 
                 </div>
@@ -67,29 +67,17 @@
         width: 100%;
     }
 
-    .description{
-        color:  #707070;
-        font-size: 17px;
-    }
-
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 20px;
-    }
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
 
     .reservation-btn{
+        display: flex;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
-        padding: 0px;
+        width: 35%;
+        min-width: 10%;
+        font-size: 1vw;
+        text-align: center;
     }
 
     .reservation-btn:hover{
@@ -107,11 +95,6 @@
         margin-bottom: 10%;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
 
     .page-container {
         display: flex;
@@ -138,5 +121,17 @@
         margin-right: 5%;
         height: 20%;
     }
+
+    .main-title{
+        font-size: 2vw;
+        margin: 0 auto;
+    }
+
+    .title2{
+        justify-content: center;
+        color:  #707070;
+        font-size: 1.5vw;
+    }
+
 
 </style>

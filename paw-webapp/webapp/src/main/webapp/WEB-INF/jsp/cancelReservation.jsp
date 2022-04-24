@@ -22,10 +22,11 @@
 
     <div class="content-container">
 
-        <div class="restaurant-header">
-            <div class="restaurant-info">
-                <div>
-                    <i class="large material-icons">restaurant</i>
+        <div class="restaurant-card">
+            <div class="card">
+                <div class="card-content white-text">
+                    <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
+                    <span class="text title2"><c:out value="${restaurant.phone}"/></span>
                 </div>
                 <div>
                     <div class="presentation-text title restaurant-title">
@@ -38,15 +39,16 @@
                 </div>
             </div>
         </div>
-        <div class="card-container">
-            <div class="card confirmation">
-                <span class="card-title text center">Estas por cancelar tu reserva</span>
-                <div class="center">
-                    <c:url value="${pageContext.request.contextPath}/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
-                    <form:form action="${postUrl}" method="post">
-                        <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red">
-                    </form:form>
-                </div>
+
+        <div class="confirm-card card">
+            <div class="card-content white-text">
+                <span class="main-title text center">Estas por cancelar tu reserva</span>
+                    <div class="center-btn">
+                        <c:url value="${pageContext.request.contextPath}/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red center">
+                        </form:form>
+                    </div>
             </div>
         </div>
     </div>
@@ -104,29 +106,18 @@
         padding: 20px;
         display: flex;
     }
-    .card.confirmation{
-        justify-content: center;
-        align-content: center;
-        flex-direction: column;
-        font-family: "Segoe UI", Lato, sans-serif;
-        min-height: 150px;
-        height: 200px;
-        max-height: 800px;
-        min-width: 400px;
-        width: 500px;
-        max-width: 600px;
-    }
-    .card-title.text{
-        font-size: 30px;
-        justify-self: center;
-        font-family: "Goldplay", sans-serif;
-        margin-bottom: 15px;
-    }
+
+
     .reservation-btn{
+        display: flex;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        width: 35%;
+        min-width: 10%;
+        font-size: 1vw;
+        text-align: center;
     }
 
     .reservation-btn:hover{
@@ -135,5 +126,43 @@
         opacity: 100%;
     }
 
+
+
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+
+    .restaurant-card{
+        display:flex;
+        margin-left: 5%;
+        width: 20%;
+        max-width: 40%;
+        margin-right: 5%;
+        height: 20%;
+    }
+
+    .title2{
+        justify-content: center;
+        color:  #707070;
+        font-size: 1.5vw;
+    }
+
+    .main-title{
+        font-size: 2vw;
+        margin: 0 auto;
+    }
 
 </style>
