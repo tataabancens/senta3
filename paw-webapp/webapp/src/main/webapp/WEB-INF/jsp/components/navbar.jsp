@@ -20,13 +20,21 @@
 <body>
 <nav>
     <div class="nav-wrapper">
-        <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Senta3</a>
-        <a href="#" class="logo">Inicio</a>
+        <a href="${pageContext.request.contextPath}/" class="logo">Senta3</a>
+        <sec:authorize access="hasRole('RESTAURANT')">
+            <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Inicio</a>
+        </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
-        <a href="#" class="logo">Restaurantes</a>
+            <a href="#" class="logo">Restaurantes</a>
+        </sec:authorize>
+        <sec:authorize access="!hasRole('RESTAURANT')">
+            <a href="${pageContext.request.contextPath}/" class="logo">Inicio</a>
         </sec:authorize>
         <sec:authorize access="hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/restaurant=1/orders" class="logo">Ordenes</a>
+        </sec:authorize>
+        <sec:authorize access="hasRole('RESTAURANT')">
+            <a href="${pageContext.request.contextPath}/" class="logo">Restaurante</a>
         </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar cesion</a>
@@ -113,7 +121,7 @@
         margin-left: 2%;
         font-family: "Segoe UI", Arial, sans-serif;
         font-weight: bold;
-        font-style: italic ;
+        font-style: italic;
         font-size:23px;
     }
 

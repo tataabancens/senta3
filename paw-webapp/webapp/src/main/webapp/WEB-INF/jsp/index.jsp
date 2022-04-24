@@ -27,7 +27,6 @@
                 <div class="restaurant-info">
                     <div>
                         <i class="large material-icons">restaurant</i>
-                        <!--<img src="<c:url value="/resources/images/restaurant-icon.png"/>-->
                     </div>
                     <div>
                         <div class="presentation-text title restaurant-title">
@@ -42,12 +41,6 @@
             </div>
             <div class="restaurant-content">
                 <div class="card client-actions">
-                    <sec:authorize access="hasRole('RESTAURANT')">
-                        <a href="/restaurant=1/menu">
-                            <p class="logo smaller center">Editar menú</p>
-                        </a>
-                    </sec:authorize>
-                    <sec:authorize access="!hasRole('RESTAURANT')">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <div class="reservation-action-btn">
                             <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
@@ -56,7 +49,6 @@
                         <div class="enter-reservation-btn">
                             <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
                         </div>
-                    </sec:authorize>
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
@@ -69,44 +61,6 @@
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-            <div class="col s3">
-                <div class="card restaurant-card">
-                    <div class="card-content white-text">
-                        <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                        <span class="text"><c:out value="${restaurant.phone}"/></span>
-
-                        <sec:authorize access="hasRole('RESTAURANT')">
-                            <a href="/restaurant=1/menu">
-                                <p class="logo smaller center">Editar menú</p>
-                            </a>
-                        </sec:authorize>
-                        <sec:authorize access="!hasRole('RESTAURANT')">
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
-                        </div>
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
-                        </div>
-                        </sec:authorize>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col offset-s1 s4">
-                <c:forEach var="dish" items="${restaurant.dishes}">
-                    <div class="card dish-card">
-                        <div class="card-content white-text">
-                            <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                            <p class="description"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="price">$<c:out value="${dish.price}"/></p>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-
-        </div>-->
     </body>
 </html>
 
@@ -201,9 +155,12 @@
         max-width: 35%;
     }
 
-    .card.dish-card{
+    .dish-card{
         display: flex;
-        justify-content: flex-start;
+        justify-content:space-evenly;
+        align-items: flex-start;
+        height: 100%;
+        flex-direction: column;
         min-width: 150px;
         max-width: 450px;
         min-height: 250px;
