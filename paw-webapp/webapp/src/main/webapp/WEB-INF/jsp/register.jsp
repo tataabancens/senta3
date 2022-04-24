@@ -20,7 +20,7 @@
     <div class="content">
         <c:url value="/register" var="postPath"/>
         <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
-            <div class="content">
+            <div class="content-container">
             <div class="card register-card">
                     <span class="text title">Para reservar vamos a necesitar algunos datos:</span>
                     <div class="input-field input">
@@ -62,16 +62,14 @@
         border-radius: 16px;
         display: flex;
         flex-wrap: wrap;
-        margin: 20px;
+        margin: 10px;
         justify-content: center;
         align-content: center;
         flex-direction: column;
         min-height: 300px;
-        height: 600px;
-        max-height: 900px;
+        height: 100%;
         min-width: 250px;
-        width: 500px;
-        max-width: 700px;
+        width: 100%;
         padding: 20px;
     }
     form{
@@ -79,7 +77,6 @@
         flex-wrap: wrap;
     }
     .content{
-        margin-top: 5%;
         display: flex;
         justify-content: center;
         padding: 20px;
