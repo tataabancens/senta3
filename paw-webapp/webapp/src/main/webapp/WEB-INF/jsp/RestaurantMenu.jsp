@@ -89,7 +89,8 @@
     .card.restaurant-card{
         display: flex;
         justify-content: center;
-        margin-left: 5%;
+        margin-right: 10px;
+        margin-left: 10px;
         width: 20%;
         max-width: 40%;
     }
@@ -108,10 +109,6 @@
         margin: 8px;
         min-width: 150px;
         max-width: 40%;
-        max-height: 500px;
-    }
-    .restaurant-card{
-        margin-right: 10px;
         max-height: 500px;
     }
     .price{
