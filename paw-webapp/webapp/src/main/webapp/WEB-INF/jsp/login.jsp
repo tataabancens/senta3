@@ -19,37 +19,32 @@
 <c:url value="/login" var="loginUrl" />
 <%@ include file="components/navbar.jsp" %>
 
-<div class="row">
-
-
-    <div class="col s4 offset-s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
-                    <div>
-                        <label for="username">Username: </label>
-                        <input id="username" name="username" type="text"/>
-                    </div>
-                    <div>
-                        <label for="password">Password: </label>
-                        <input id="password" name="password" type="password"/>
-                    </div>
-                    <div class="rememberme">
-                        <label>
-                            <input type="checkbox" class="filled-in blue" name="rememberme"/>
-                            <span>Remember me</span>
-                        </label>
-                    </div>
-                    <div class="row center smaller">
-                        <input class="submit-btn" type="submit" value="Login!"/>
-                    </div>
-                </form>
-
+<div class="form-container">
+        <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="card card-content">
+                <div class="title">
+                    <h3>Iniciar cesion</h3>
+                </div>
+            <div>
+                <label for="username">Usuario: </label>
+                <input id="username" name="username" type="text"/>
             </div>
-        </div>
-    </div>
+            <div>
+                <label for="password">Contrasena: </label>
+                <input id="password" name="password" type="password"/>
+            </div>
+            <div class="rememberme">
+                <label>
+                    <input type="checkbox" class="filled-in blue" name="rememberme"/>
+                    <span>Permanecer conectado</span>
+                </label>
+            </div>
+            <div class="row center smaller">
+                <input class="submit-btn" type="submit" value="Ingresar"/>
+            </div>
+            </div>
+        </form>
 </div>
-
 </body>
 </html>
 
@@ -59,62 +54,43 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    .form-container{
+        display: flex;
+        padding-top: 30px;
+        justify-content: center;
     }
-
-
     .card{
         border-radius: 16px;
-        display: grid;
+        padding: 20px;
+        display: flex;
     }
-
-    .restaurant-card{
-    }
-
-    .dish-card{
-        width: 100%;
-    }
-
-    .description{
-        color:  #707070;
-        font-size: 17px;
-    }
-
-    .title2{
+    .card.card-content{
         justify-content: center;
-        color:  #707070;
-        font-size: 20px;
+        flex-direction: column;
+        align-content: center;
+        font-family: "Segoe UI", Lato, sans-serif;
+        min-height: 500px;
+        min-width: 400px;
+        max-width: 35%;
     }
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
-
     .submit-btn{
         border-radius: 10px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
         padding: 2%;
-        color: black;
+        color: white;
 
     }
 
     .submit-btn:hover{
         background-color: #37A6E6;
-        color: black;
+        color: white;
         opacity: 100%;
     }
 
     .rememberme{
         margin-top: 20px;
-    }
-
-    .blue{
-        background-color: #37A6E6;
     }
 
     .smaller{
