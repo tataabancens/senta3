@@ -42,10 +42,8 @@
                             </form:form>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 </html>
