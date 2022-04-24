@@ -25,22 +25,20 @@
         <div class="restaurant-card">
             <div class="card">
                 <div class="card-content white-text">
-                    <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                    <span class="text"><c:out value="${restaurant.phone}"/></span>
+                    <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
+                    <span class="text title2"><c:out value="${restaurant.phone}"/></span>
                 </div>
             </div>
         </div>
 
         <div class="confirm-card card">
             <div class="card-content white-text">
-                <span class="card-title text price center">Estas por cancelar tu reserva</span>
-                    <div class="row margin-0">
-                        <div class="center">
-                            <c:url value="${pageContext.request.contextPath}/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red">
-                            </form:form>
-                        </div>
+                <span class="main-title text center">Estas por cancelar tu reserva</span>
+                    <div class="center-btn">
+                        <c:url value="${pageContext.request.contextPath}/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red center">
+                        </form:form>
                     </div>
             </div>
         </div>
@@ -66,18 +64,16 @@
     }
 
 
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
-
     .reservation-btn{
+        display: flex;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        width: 35%;
+        min-width: 10%;
+        font-size: 1vw;
+        text-align: center;
     }
 
     .reservation-btn:hover{
@@ -115,6 +111,17 @@
         max-width: 40%;
         margin-right: 5%;
         height: 20%;
+    }
+
+    .title2{
+        justify-content: center;
+        color:  #707070;
+        font-size: 1.5vw;
+    }
+
+    .main-title{
+        font-size: 2vw;
+        margin: 0 auto;
     }
 
 </style>

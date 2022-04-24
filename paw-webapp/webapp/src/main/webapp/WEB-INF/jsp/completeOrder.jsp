@@ -78,7 +78,7 @@
                     </div>
                 </div>
 
-                    <div class="btn-div">
+                    <div >
                         <c:url value="${pageContext.request.contextPath}/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn reservation-btn green right">
@@ -141,9 +141,6 @@
         color: black;
     }
 
-    .btn-div{
-
-    }
 
     .reservation-btn{
         display: flex;
@@ -154,6 +151,7 @@
         width: 35%;
         min-width: 10%;
         font-size: 1vw;
+        text-align: center;
     }
 
     .reservation-btn:hover{
