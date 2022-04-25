@@ -148,7 +148,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
-        jdbcTemplate.update("UPDATE reservation SET reservationStatus = ?", new Object[]{newStatus.ordinal()});
+        jdbcTemplate.update("UPDATE reservation SET reservationStatus = ? where reservationId = ?", new Object[]{newStatus.ordinal(), reservationId});
     }
 
     @Override
