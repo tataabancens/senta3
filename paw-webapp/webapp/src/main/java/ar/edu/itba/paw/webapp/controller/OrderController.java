@@ -58,7 +58,11 @@ public class OrderController {
         mav.addObject("selected", orderItems.size());
         mav.addObject("total", res.getTotal(orderItems));
         List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
+        orderedItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.INCOMING));
+        orderedItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.DELIVERED));
+
         mav.addObject("ordered", res.getTotal(orderedItems));
+
         return mav;
     }
 
@@ -147,6 +151,9 @@ public class OrderController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
+
+        orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.INCOMING));
+        orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.DELIVERED));
 
         final ModelAndView mav = new ModelAndView("receipt");
         mav.addObject("orderItems", orderItems);
