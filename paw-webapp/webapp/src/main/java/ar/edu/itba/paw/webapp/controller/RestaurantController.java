@@ -128,6 +128,8 @@ public class RestaurantController {
 
         final ModelAndView mav = new ModelAndView("dishConfirmation");
         mav.addObject("dishId", dishId);
+        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("imageId", dish.getImageId());
         return mav;
     }
 
@@ -160,7 +162,7 @@ public class RestaurantController {
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
         Image image = ims.createImage(photo);
         ds.updateDishPhoto(dishId, image.getImageId());
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish");
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dishId);
         return mav;
     }
 }

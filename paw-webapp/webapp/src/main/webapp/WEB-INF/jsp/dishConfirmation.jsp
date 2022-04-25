@@ -40,6 +40,7 @@
                     </div>
                     </div>
                 </div>
+            <img src="/resources/images/${imageId}" alt="La foto del plato">
                 <div class="row margin-0">
                     <div class="col s12 center">
                         <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>

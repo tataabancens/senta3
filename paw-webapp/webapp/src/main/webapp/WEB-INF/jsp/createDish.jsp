@@ -36,15 +36,6 @@
                         <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
                         <form:input path="dishPrice" type="text"/>
                     </div>
-                <div class="image-upload">
-                    <form action="fileupload.jsp" method="post" enctype="multipart/form-data">
-                        <input type="file" name="file" size="50" />
-                        <input type="submit" value="Cargar" />
-                    </form>
-                </div>
-
-
-
                     <div class="col s12 center">
 
                         <input type="submit" value="Continuar" class="continue-btn"/>
