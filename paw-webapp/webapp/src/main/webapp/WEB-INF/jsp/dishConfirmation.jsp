@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -23,6 +24,20 @@
         <div class="card dish-card">
             <div class="card-content white-text">
                 <span class="card-title text price center">Creaste el plato!</span>
+                <span class="card-title text price center">Agregale una foto!</span>
+
+                <div class="row">
+                    <div class="input-field col s12 input">
+                        <c:url value="/restaurant=${restaurantId}/menu/edit-photo" var="postPath"/>
+                        <form action="${postPath}" method="post" enctype="multipart/form-data">
+                            <input type="file" name="photo"/>
+                            <div class="col s12 center">
+                                <input type="submit" value="Cargar" class="continue-btn"/>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
                 <div class="row margin-0">
                     <div class="col s12 center">
                         <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>

@@ -30,7 +30,8 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getLong("restaurantId"),
                     resultSet.getString("dishName"),
                     resultSet.getInt("price"),
-                    resultSet.getString("dishdescription")));
+                    resultSet.getString("dishdescription"),
+                    resultSet.getLong("imageId")));
 
 
     @Autowired

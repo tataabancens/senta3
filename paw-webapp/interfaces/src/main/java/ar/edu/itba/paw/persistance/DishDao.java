@@ -9,7 +9,7 @@ public interface DishDao {
 
     Optional<Dish> getDishById(long id);
 
-    Dish create(long restaurantId, String dishName, String dishDescription, double price);
+    Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId);
 
     void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId);
 }
