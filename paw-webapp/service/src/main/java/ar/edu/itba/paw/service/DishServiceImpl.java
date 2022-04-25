@@ -32,5 +32,8 @@ public class DishServiceImpl implements DishService{
         dishDao.updateDish(dishId, dishName, dishDescription, price, restaurantId);
     }
 
-
+    @Override
+    public void updateDishPhoto(long dishId, long imageId) {
+        dishDao.updateDishPhoto(dishId, imageId);
+    }
 }

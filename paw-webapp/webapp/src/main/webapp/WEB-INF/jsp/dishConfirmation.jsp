@@ -28,7 +28,7 @@
 
                 <div class="row">
                     <div class="input-field col s12 input">
-                        <c:url value="/restaurant=${restaurantId}/menu/edit-photo" var="postPath"/>
+                        <c:url value="/restaurant=${restaurantId}/menu/dish=${dish}/edit-photo" var="postPath"/>
                         <form action="${postPath}" method="post" enctype="multipart/form-data">
                             <input type="file" name="photo"/>
                             <div class="col s12 center">

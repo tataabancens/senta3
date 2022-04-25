@@ -150,13 +150,14 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit-photo", method = RequestMethod.POST)
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/dish={dishId}/edit-photo", method = RequestMethod.POST)
     public ModelAndView editPhoto(@PathVariable ("restaurantId") final long restaurantId,
                                   @PathVariable ("dishId") final long dishId,
                                   @RequestParam CommonsMultipartFile photo) {
 
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
         Image image = ims.createImage(photo);
+        ds.updateDishPhoto(dishId, image.getImageId());
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish");
         return mav;
     }

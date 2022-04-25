@@ -27,7 +27,7 @@
                     <div class="input-field input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
                         <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
-                     <form:input path="mail"  required="required" maxlength="50" type="text"/>
+                        <form:input path="mail"  required="required" maxlength="50" type="text"/>
                     </div>
                     <div class="input-field input">
                         <form:errors path="phone" element="p" cssStyle="color:red"/>
