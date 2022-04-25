@@ -33,6 +33,14 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("status"),
                     resultSet.getString("dishname")));
 
+    private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS_NONAME = ((resultSet, i) ->
+            new FullOrderItem(resultSet.getLong("reservationId"),
+                    resultSet.getLong("dishId"),
+                    resultSet.getFloat("unitPrice"),
+                    resultSet.getInt("quantity"),
+                    resultSet.getInt("status"),
+                    resultSet.getString("dishname")));
+
     private static final RowMapper<Restaurant> ROW_MAPPER_RESTAURANT = ((resultSet, i) ->
             new Restaurant(resultSet.getLong("restaurantId"),
                     resultSet.getString("restaurantName"),
@@ -216,5 +224,30 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public void cancelReservation(long restaurantId, long reservationId){
         jdbcTemplate.update("DELETE FROM reservation WHERE reservationId = ?", new Object[]{reservationId});
+    }
+
+    @Override
+    public List<Long> getUnavailableItems(long reservationId) {
+        //List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ?",
+        //        new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
+        List<FullOrderItem> query = getOrderItemsByReservationId(reservationId);
+
+        List<Long> dishIds = new ArrayList<>();
+
+        for (FullOrderItem item:query){
+            dishIds.add(item.getDishId());
+        }
+
+        List<Long> unavailableDishIds = new ArrayList<>();
+
+        int count;
+        for(Long dishId:dishIds){
+            count = Collections.frequency(dishIds, dishId);
+            if(count > 3 && ! unavailableDishIds.contains(dishId)){
+                unavailableDishIds.add(dishId);
+            }
+        }
+
+        return unavailableDishIds;
     }
 }

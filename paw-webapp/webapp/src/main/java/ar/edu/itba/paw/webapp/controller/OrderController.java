@@ -47,7 +47,6 @@ public class OrderController {
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
 
 
-
         mav.addObject("restaurant", restaurant);
         mav.addObject("dish", rs.getRestaurantDishes(1));
 
@@ -62,6 +61,8 @@ public class OrderController {
         orderedItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.DELIVERED));
 
         mav.addObject("ordered", res.getTotal(orderedItems));
+
+        mav.addObject("unavailable", res.getUnavailableItems(reservationId));
 
         return mav;
     }

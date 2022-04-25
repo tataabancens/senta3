@@ -95,4 +95,9 @@ public class ReservationServiceImpl implements ReservationService {
     public void cancelReservation(long restaurantId, long reservationId) {
         reservationDao.cancelReservation(restaurantId, reservationId);
     }
+
+    @Override
+    public List<Long> getUnavailableItems(long reservationId) {
+        return reservationDao.getUnavailableItems(reservationId);
+    }
 }

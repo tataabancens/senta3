@@ -64,10 +64,18 @@
                         <div class="start">
                             <span class="main-title"><c:out value="${dish.dishName}"/></span>
                         </div>
+                        <c:if test="${!unavailable.contains(dish.id)}">
                         <div class="dish-add">
                             <a class="btn-floating btn-large waves-effect waves-light plus-btn"
                                href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
                         </div>
+                        </c:if>
+                        <c:if test="${unavailable.contains(dish.id)}">
+                            <div class="dish-add">
+                                <a class="btn-floating btn-large waves-effect waves-light plus-btn" disabled
+                                   href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
+                            </div>
+                        </c:if>
                     </div>
                     <span class="title2"><c:out value="${dish.dishDescription}"/></span>
                     <span class="price">$<c:out value="${dish.price}"/></span>
