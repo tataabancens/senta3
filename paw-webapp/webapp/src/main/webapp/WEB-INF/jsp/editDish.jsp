@@ -16,45 +16,31 @@
 <body>
     <%@ include file="components/navbar.jsp" %>
 
-    <div class="row">
-        <div class="col s3"></div>     <!-- acá va el restaurant card -->
-
-
+    <div class="form-container">
         <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
-        <div class="col s6 center">
-            <div class="card register-card">
-                <div class="card-content white-text">
-                    <span class="card-title text">Editar Plato</span>
-                    <span class="card-title text"><c:out value="${dish.dishName}"/></span>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                        <form:errors path="dishName" element="p" cssStyle="color:red"/>
-                        <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right">Nombre del Plato:</form:label>
-                        <form:input path="dishName" type="text"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                        <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
-                        <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right">Descripcion:</form:label>
-                        <form:input path="dishDesc" type="text"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 input">
-                            <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
-                            <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
-                            <form:input path="dishPrice" type="text"/>
-                        </div>
-                    </div>
-                    <div class="col s12 center">
-                        <!-- acá va un href -->
-                        <input type="submit" value="Continuar" class="continue-btn"/>
-                    </div>
+            <div class="card card-content">
+                    <span class="main-title"><h3>Editar Plato</h3></span>
+                    <span class="title2"><c:out value="${dish.dishName}"/></span>
+                <div class="disName">
+                    <form:errors path="dishName" element="p" cssStyle="color:red"/>
+                    <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right">Nombre del Plato:</form:label>
+                    <form:input path="dishName" type="text"/>
+                </div>
+                <div class="dishDesc">
+                    <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
+                    <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right">Descripcion:</form:label>
+                    <form:input path="dishDesc" type="text"/>
+                </div>
+                <div class="dishPrice">
+                    <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
+                    <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
+                    <form:input path="dishPrice" type="text"/>
+                </div>
+                <div class="submit center">
+                    <input type="submit" value="Continuar" class="continue-btn"/>
                 </div>
             </div>
-        </div>
         </form:form>
     </div>
 </body>
@@ -65,59 +51,48 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070;
+    .form-container{
+        display: flex;
+        padding-top: 30px;
+        justify-content: center;
     }
 
     .card{
         border-radius: 16px;
-        display: grid;
+        padding: 20px;
+        display: flex;
+    }
+    .card.card-content{
+        justify-content: center;
+        flex-direction: column;
+        align-content: center;
+        font-family: "Segoe UI", Lato, sans-serif;
+        min-height: 500px;
+        height: 600px;
+        max-height: 800px;
+        min-width: 400px;
+        width: 500px;
+        max-width: 600px;
     }
 
-    .restaurant-card{
-        width:100%;
+    .card-description.text{
+        font-family: "Goldplay", sans-serif;
+        font-size: 25px;
+        margin-bottom: 15px;
     }
-
-    .register-card{
-
-    }
-
-
     .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
+        font-family: "Goldplay", sans-serif;
+        border-radius: 10px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        padding: 2%;
+        color: white;
     }
-
     .continue-btn:hover{
         background-color: #37A6E6;
         color: white;
         opacity: 100%;
-    }
-
-    .back-btn{
-        border-radius: 16px;
-        margin-top: 5%;
-        background-color: #E63737 ;
-        opacity: 87%;
-    }
-
-    .back-btn:hover{
-        border-radius: 16px;
-        margin-top: 5%;
-        background-color: #E63737 ;
-        opacity: 100%;
-    }
-
-    .input{
-        margin-bottom: 1px;
-    }
-
-    .center{
-        align-items: center;
     }
 
 </style>

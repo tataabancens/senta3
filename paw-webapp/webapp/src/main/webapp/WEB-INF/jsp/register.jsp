@@ -21,9 +21,9 @@
     <div class="content">
         <c:url value="/register" var="postPath"/>
         <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
-            <div class="content">
-                <div class="card register-card">
-                    <span class="text title">Para reservar vamos a necesitar algunos datos:</span>
+            <div class="content-container">
+            <div class="card register-card">
+                    <span class="main-title">Para reservar vamos a necesitar algunos datos:</span>
                     <div class="input-field input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
                         <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
@@ -47,8 +47,7 @@
                             <form:options items="${hours}" />
                         </form:select>
                     </div>
-
-                    <div class="submit">
+                    <div class="submit center">
                         <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
                     </div>
                 </div>
@@ -68,16 +67,14 @@
         border-radius: 16px;
         display: flex;
         flex-wrap: wrap;
-        margin: 20px;
+        margin: 10px;
         justify-content: center;
         align-content: center;
         flex-direction: column;
         min-height: 300px;
-        height: 600px;
-        max-height: 900px;
+        height: 100%;
         min-width: 250px;
-        width: 500px;
-        max-width: 700px;
+        width: 100%;
         padding: 20px;
     }
     form{
@@ -85,7 +82,6 @@
         flex-wrap: wrap;
     }
     .content{
-        margin-top: 5%;
         display: flex;
         justify-content: center;
         padding: 20px;

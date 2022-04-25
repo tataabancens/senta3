@@ -14,7 +14,6 @@
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Goldplay-Bold">
 
         <title>Senta3</title>
         <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
@@ -26,82 +25,56 @@
         <div class="page-container">
             <div class="restaurant-header">
                 <div class="restaurant-info">
-                    <div class="presentation-text title restaurant-title">
-                        <span><c:out value="${restaurant.restaurantName}"/></span>
+                    <div>
+                        <i class="large material-icons">restaurant</i>
                     </div>
-                    <div class="presentation-text restaurant-description">
-                        <span>Telefono: </span>
-                        <span><c:out value="${restaurant.phone}"/></span>
+                    <div>
+                        <div class="presentation-text title restaurant-title">
+                            <span><c:out value="${restaurant.restaurantName}"/></span>
+                        </div>
+                        <div class="presentation-text restaurant-description">
+                            <span>Telefono: </span>
+                            <span><c:out value="${restaurant.phone}"/></span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="restaurant-content">
                 <div class="card client-actions">
-                    <sec:authorize access="hasRole('RESTAURANT')">
-                        <a href="/restaurant=1/menu">
-                            <p class="logo smaller center">Editar menú</p>
-                        </a>
-                    </sec:authorize>
-                    <sec:authorize access="!hasRole('RESTAURANT')">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
-                        <div class="reservation-action-btn">
-                            <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
-                        </div>
+                        <sec:authorize access="!hasRole('RESTAURANT')">
+                            <div class="reservation-action-btn">
+                                <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
+                            </div>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <div class="reservation-action-btn">
+                                <a class="waves-effect waves-light btn reservation-btn" href="">Reservar</a>
+                            </div>
+                        </sec:authorize>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
+                        <sec:authorize access="!hasRole('RESTAURANT')">
                         <div class="enter-reservation-btn">
-                            <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
+                            <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
                         </div>
-                    </sec:authorize>
+                        </sec:authorize>
+                         <sec:authorize access="hasRole('RESTAURANT')">
+                            <div class="enter-reservation-btn">
+                                <a class="waves-effect waves-light btn reservation-btn" href="">Ingresar</a>
+                            </div>
+                        </sec:authorize>
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
-                            <span class="text title"><c:out value="${dish.dishName}"/></span>
-                            <span class="text description"><c:out value="${dish.dishDescription}"/></span>
-                            <span class="text price">$<c:out value="${dish.price}"/></span>
+                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
+                            <span class="title2"><c:out value="${dish.dishDescription}"/></span>
+                            <span class="price">$<c:out value="${dish.price}"/></span>
                         </div>
                     </c:forEach>
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-            <div class="col s3">
-                <div class="card restaurant-card">
-                    <div class="card-content white-text">
-                        <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                        <span class="text"><c:out value="${restaurant.phone}"/></span>
-
-                        <sec:authorize access="hasRole('RESTAURANT')">
-                            <a href="/restaurant=1/menu">
-                                <p class="logo smaller center">Editar menú</p>
-                            </a>
-                        </sec:authorize>
-                        <sec:authorize access="!hasRole('RESTAURANT')">
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="register">Reservar</a>
-                        </div>
-                        <div class="row center smaller">
-                            <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="findReservation?restaurantId=${restaurant.id}">Ya tengo reserva</a>
-                        </div>
-                        </sec:authorize>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col offset-s1 s4">
-                <c:forEach var="dish" items="${restaurant.dishes}">
-                    <div class="card dish-card">
-                        <div class="card-content white-text">
-                            <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                            <p class="description"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="price">$<c:out value="${dish.price}"/></p>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-
-        </div>-->
     </body>
 </html>
 
@@ -117,11 +90,13 @@
     .restaurant-content{
         margin-top: 30px;
         display: flex;
+        width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
     }
     .restaurant-header{
-        background-color: #37A6E6;
+        background: rgb(55,166,230);
+        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -133,19 +108,11 @@
     }
     .restaurant-info{
         display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
         min-height: 150px;
         max-height: 300px;
-    }
-    .presentation-text{
-        font-family: 'Goldplay-Bold',sans-serif;
-        color: #463f3f;
-        font-weight: bold;
-        padding-left: 5px;
-        padding-right: 5px;
-        font-size: 20px;
     }
     .presentation-text.box-comments{
         color: white;
@@ -166,14 +133,16 @@
         color: #463f3f;
         font-size: 21px;
     }
-    .text.price{
-        font-size: 21px;
-        font-weight: bold;
-    }
+
     .reservation-action-btn{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+    }
+    a{
+        padding: 5px;
+        justify-content: center;
+        max-width: 200px;
     }
     .card{
         border-radius: 16px;
@@ -192,21 +161,24 @@
         min-height: 150px;
         max-height: 250px;
         min-width: 300px;
-        margin-right: 100px;
-        width: 550px;
-        max-width: 700px;
+        width: 25%;
+        margin-right: 50px;
+        max-width: 35%;
     }
 
-    .card.dish-card{
+    .dish-card{
         display: flex;
-        justify-content: flex-start;
+        justify-content:space-evenly;
+        align-items: flex-start;
+        height: 100%;
+        flex-direction: column;
         min-width: 150px;
-        max-width: 650px;
+        max-width: 450px;
         min-height: 250px;
         max-height: 600px;
         padding: 20px;
         width: 100%;
-        margin: 20px;
+        margin: 40px;
     }
 
     .description{
@@ -214,29 +186,33 @@
         font-size: 17px;
     }
     .dishList{
+        display: flex;
         padding-right: 20px;
-        justify-self: center;
+        justify-self: flex-start;
+        justify-content: flex-start;
+        padding-left: 100px;
+        flex-wrap: wrap;
+        min-width: 70%;
+        height: 100%;
+        max-width: 60%;
     }
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
+
 
     .reservation-btn{
         border-radius: 16px;
-        background-color: white;
+        background-color: transparent;
+        border-color: white;
         display: flex;
         font-family: 'Goldplay-Bold',sans-serif;
         font-weight: bold;
         font-size: 16px;
-        color: #37A6E6;
+        color: white;
         margin-top: 5%;
     }
 
     .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
+        background-color: white;
+        color: #37A6E6;
         opacity: 100%;
     }
 

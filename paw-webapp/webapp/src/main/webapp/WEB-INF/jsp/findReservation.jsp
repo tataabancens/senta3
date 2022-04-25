@@ -11,30 +11,30 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
-<div class="row">
-        <div class=" col s4 offset-s4 box card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title title text price center">Ingresa tu codigo de reserva</span>
+<div class="form-container">
+            <div class="card card-content">
+                <span class="main-title">Ingresa tu codigo de reserva</span>
                 <c:url value="/findReservation" var="postUrl"/>
                 <form:form modelAttribute="findReservationForm" action="${postUrl}" method="post">
-                    <div class="with-margin">
+                    <div class="reservationId">
                         <div>
                             <form:errors path="reservationId" element="p" cssClass="error"/>
-                            <form:label path="reservationId"></form:label>
+                            <form:label path="reservationId">Codigo:</form:label>
                             <form:input type="number" path="reservationId" min="1"/>
                         </div>
                     </div>
-                    <div class="center">
+                    <div class="submit center">
                         <input type="submit" value="Buscar" class="continue-btn">
                     </div>
                 </form:form>
             </div>
-        </div>
 </div>
 </body>
 </html>
@@ -44,47 +44,38 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    .form-container{
+        display: flex;
+        padding-top: 30px;
+        justify-content: center;
     }
-
 
     .card{
         border-radius: 16px;
-        display: grid;
+        padding: 20px;
+        display: flex;
     }
-
-    .restaurant-card{
-    }
-
-    .dish-card{
-        width: 100%;
-    }
-
-    .description{
-        color:  #707070;
-        font-size: 17px;
-    }
-
-    .title2{
+    .card.card-content{
         justify-content: center;
-        color:  #707070;
-        font-size: 20px;
+        flex-direction: column;
+        font-family: "Segoe UI", Lato, sans-serif;
+        min-height: 150px;
+        height: 300px;
+        max-height: 800px;
+        min-width: 400px;
+        width: 500px;
+        max-width: 600px;
     }
 
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
 
     .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
+        font-family: "Goldplay", sans-serif;
+        border-radius: 10px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        padding: 2%;
+        color: white;
     }
 
     .continue-btn:hover{
@@ -93,22 +84,5 @@
         opacity: 100%;
     }
 
-    .center{
-        justify-content: center;
-    }
-
-    .with-margin{
-        margin-top: 10%;
-        margin-bottom: 10%;
-    }
-
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
-    }
 
 </style>
