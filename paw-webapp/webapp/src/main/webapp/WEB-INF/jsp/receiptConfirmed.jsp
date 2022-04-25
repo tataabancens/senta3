@@ -34,7 +34,7 @@
                 <span class="card-title text price center">Muchas gracias!</span>
                     <div class="row margin-0">
                         <div class="col s12 center">
-                            <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}">Volver al inicio</a>
+                            <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/">Volver al inicio</a>
                         </div>
                     </div>
 

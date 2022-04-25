@@ -143,7 +143,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
-        jdbcTemplate.update("UPDATE orderitem SET status = ? where status = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal()});
+        jdbcTemplate.update("UPDATE orderitem SET status = ? where status = ? AND reservationId = ?", new Object[]{newStatus.ordinal(), oldStatus.ordinal(), reservationId});
     }
 
     @Override
@@ -153,7 +153,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-        jdbcTemplate.update("DELETE from orderitem where status = ?", new Object[]{status.ordinal()});
+        jdbcTemplate.update("DELETE from orderitem where status = ? AND reservationId = ?", new Object[]{status.ordinal(), reservationId});
     }
 
     @Override
