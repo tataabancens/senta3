@@ -54,8 +54,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(Restaurant restaurant, Customer customer, Timestamp reservationDate) {
-        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(),reservationDate);
+    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour) {
+        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(), reservationHour);
     }
 
     @Override
@@ -84,5 +84,15 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
         reservationDao.deleteOrderItemsByReservationIdAndStatus(reservationId, status);
+    }
+
+    @Override
+    public List<Integer> getAvailableHours(long restaurantId) {
+        return reservationDao.getAvailableHours(restaurantId);
+    }
+
+    @Override
+    public void cancelReservation(long restaurantId, long reservationId) {
+        reservationDao.cancelReservation(restaurantId, reservationId);
     }
 }

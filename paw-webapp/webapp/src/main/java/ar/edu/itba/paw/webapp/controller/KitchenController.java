@@ -29,20 +29,6 @@ public class KitchenController {
         this.res = res;
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
-    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
-        final ModelAndView mav = new ModelAndView("orders");
-        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
-        List<FullOrderItem> orderedItems = res.getOrderItemsByStatus(OrderItemStatus.ORDERED);
-        mav.addObject("items", orderedItems);
-        mav.addObject("reservations", reservations);
-        return mav;
-    }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
-        final ModelAndView mav = new ModelAndView("login");
 
-        return mav;
-    }
 }

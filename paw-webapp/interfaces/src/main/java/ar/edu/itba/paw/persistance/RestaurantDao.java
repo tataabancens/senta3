@@ -13,4 +13,6 @@ public interface RestaurantDao {
     Restaurant create(String restaurantName, String phone, String mail);
 
     List<Dish> getRestaurantDishes(long restaurantId);
+
+    void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour);
 }

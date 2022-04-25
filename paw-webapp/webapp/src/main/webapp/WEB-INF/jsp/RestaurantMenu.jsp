@@ -9,37 +9,51 @@
 
         <!-- Materialize CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
+       <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
+        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
         <title>Senta3</title>
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
 
-        <div class="btn-row">
-            <a class="waves-effect waves-light btn green">Crear Plato</a>
-        </div>
+        <div class="contentContainer">
+            <div class="card restaurant-card">
+                        <div class="col">
+                            <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
+                            <p class="text title">Horario: ${restaurant.openHour} a ${restaurant.closeHour}</p>
+                            <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
+                            <span class="main-title">Reservas abiertas</span>
+                            <c:forEach var="reservation" items="${reservations}">
+                                <p class="items-title">Id: <c:out value="${reservation.reservationId}"/> </p>
+                                <p class="text">Fecha: <c:out value="${reservation.reservationHour}"/> </p>
+                                <p class="items-title">Status: <c:out value="${reservation.reservationStatus}"/> </p>
+                                <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
+                                <p class="items-title">---------</p>
 
-        <div class="row">
-            <div class="col s3">
-                <div class="card restaurant-card">
-                    <div class="card-content white-text">
-                        <span class="card-title text">Filter box</span>
-                        <span class="text">Lorem ipsum</span>
-                    </div>
-                </div>
+                            </c:forEach>
+                        </div>
             </div>
 
-            <div class="col offset-s1 s4">
+            <div class="dishList">
+                <div class="card dish-card">
+                    <a href="menu/create" class="add-card-link">
+                        <div class="add-card-content">
+                            <i class="large material-icons">add</i>
+                            <span class="main-title">Crear Plato</span>
+                        </div>
+                    </a>
+                </div>
                 <c:forEach var="dish" items="${restaurant.dishes}">
                     <div class="card dish-card">
                         <div class="card-content white-text">
                             <div class="btn-row-card">
-                                <a class="waves-effect waves-light btn blue" href="menu/edit">Editar</a>
-                                <a class="waves-effect waves-light btn red">Borrar</a>
+                                <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
+                                <a class="waves-effect waves-light btn restaurant-btn red" href="menu/edit/deleteDish=${dish.id}">Borrar</a>
                             </div>
-                            <span class="card-title title text"><c:out value="${dish.dishName}"/></span>
-                            <p class="description"><c:out value="${dish.dishDescription}"/></p>
+                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
+                            <p class="title2"><c:out value="${dish.dishDescription}"/></p>
                             <p class="price">$<c:out value="${dish.price}"/></p>
                         </div>
                     </div>
@@ -54,32 +68,62 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    a{
+        margin: 5px;
     }
-
-
+    .contentContainer{
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        justify-content: space-evenly;
+        padding: 25px;
+    }
     .card{
         border-radius: 16px;
-        display: grid;
-    }
-
-    .restaurant-card{
-    }
-
-    .dish-card{
+        display: flex;
+        justify-content: center;
+        min-width: 150px;
+        max-width: 250px;
+        padding: 10px;
         width: 100%;
     }
-
-    .description{
-        color:  #707070;
-        font-size: 17px;
+    .card.restaurant-card{
+        display: flex;
+        justify-content: center;
+        margin-right: 10px;
+        margin-left: 10px;
+        width: 20%;
+        max-width: 40%;
     }
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
+    .add-card-content {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+        width: inherit;
+        height: inherit;
+        justify-content: center;
+        color: rgba(183, 179, 179, 0.87);
+        align-items: center;
+    }
+    .dishList{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    a.add-card-link{
+        width: 100%;
+        height: 100%;
+    }
+    .dish-card{
+        width: 100%;
+        margin: 8px;
+        min-width: 150px;
+        max-width: 40%;
+        max-height: 500px;
     }
     .btn-row{
         margin-top: 15px;
@@ -92,31 +136,19 @@
         margin-bottom: 5px;
     }
 
-    .reservation-btn{
+    .restaurant-btn{
         border-radius: 16px;
         background-color: #37A6E6;
-        margin-top: 5%;
         opacity: 57%;
     }
 
-    .reservation-btn:hover{
+    .restaurant-btn:hover{
         background-color: #37A6E6;
         color: white;
         opacity: 100%;
     }
 
-    .center{
-        justify-content: center;
-    }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
-    }
 
 </style>
 

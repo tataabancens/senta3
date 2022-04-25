@@ -23,7 +23,7 @@ public interface ReservationService {
 
     List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
-    Reservation createReservation(Restaurant restaurant,Customer customer, Timestamp reservationDate);
+    Reservation createReservation(Restaurant restaurant,Customer customer, int reservationHour);
 
     float getTotal(List<FullOrderItem> orderItems);
 
@@ -32,4 +32,8 @@ public interface ReservationService {
     void updateReservationStatus(long reservationId, ReservationStatus newStatus);
 
     void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+
+    List<Integer> getAvailableHours(long restaurantId);
+
+    void cancelReservation(long restaurantId, long reservationId);
 }

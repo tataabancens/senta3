@@ -11,33 +11,33 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
-<div class="row">
-    <div class=" col s4 offset-s4 box card dish-card test-box">
-            <div class="card-content white-text">
-                <div class="block">
-                    <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
-                </div>
+<div class="form-container">
+            <div class="card card-content">
+                <span class="main-title"><h4><c:out value="${dish.dishName}"/></h4></span>
                 <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
-                    <div class ="block right center">
+                    <div class ="orderItem">
+                        <p class="title2"><c:out value="${dish.dishDescription}"/></p>
+                        <p class="price">$<c:out value="${dish.price}"/></p>
                         <form:errors path="orderItem" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
                         <form:input path="orderItem.quantity" type="number" min="1" max="50" required="required" value="0" cssClass="center"/>
-                        <div class="center">
-                            <input type="submit" value="+" class="waves-effect waves-light btn continue-btn" >
+                        <div class="submit center">
+                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn continue-btn">
                         </div>
                     </div>
                 </form:form>
-                <p class="description"><c:out value="${dish.dishDescription}"/></p>
-                <p class="price">$<c:out value="${dish.price}"/></p>
             </div>
     </div>
-</div>
 </body>
 </html>
 
@@ -46,38 +46,32 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    .form-container{
+        display: flex;
+        padding-top: 30px;
+        justify-content: center;
     }
-
-
     .card{
         border-radius: 16px;
-        display: grid;
+        padding: 20px;
+        display: flex;
     }
-
-    .restaurant-card{
-    }
-
-    .dish-card{
-        width: 100%;
+    .card.card-content{
+        justify-content: center;
+        flex-direction: column;
+        font-family: "Segoe UI", Lato, sans-serif;
+        min-height: 150px;
+        height: 500px;
+        max-height: 800px;
+        min-width: 400px;
+        width: 500px;
+        max-width: 600px;
     }
 
     .description{
-        color:  #707070;
-        font-size: 17px;
-    }
-
-    .title2{
-        justify-content: center;
+        font-family: "Segoe UI", Lato, sans-serif;
         color:  #707070;
         font-size: 20px;
-    }
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
     }
 
     .continue-btn{

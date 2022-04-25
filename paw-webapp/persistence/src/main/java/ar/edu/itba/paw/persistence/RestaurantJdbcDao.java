@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,8 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class RestaurantJdbcDao implements RestaurantDao {
@@ -24,14 +22,20 @@ public class RestaurantJdbcDao implements RestaurantDao {
             new Restaurant(resultSet.getLong("restaurantId"),
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
-                    resultSet.getString("mail")));
+                    resultSet.getString("mail"),
+                    resultSet.getInt("totalTables"),
+                    resultSet.getInt("openHour"),
+                    resultSet.getInt("closeHour")));
+
 
     private static final RowMapper<Dish> ROW_MAPPER_DISH = ((resultSet, i) ->
             new Dish(resultSet.getLong("dishId"),
                     resultSet.getLong("restaurantId"),
                     resultSet.getString("dishName"),
                     resultSet.getInt("price"),
-                    resultSet.getString("dishdescription")));
+                    resultSet.getString("dishdescription"),
+                    resultSet.getLong("imageId")));
+
 
     @Autowired
     public RestaurantJdbcDao(final DataSource ds) {
@@ -51,10 +55,17 @@ public class RestaurantJdbcDao implements RestaurantDao {
 
     @Override
     public List<Dish> getRestaurantDishes(long restaurantId) {
-        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ?",
+        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? ORDER BY dishId",
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);
         return query;
     }
+
+    @Override
+    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHOur) {
+        jdbcTemplate.update("UPDATE restaurant SET totalTables = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
+            new Object[]{newMaxTables, newOpenHour, newCloseHOur, restaurantId});
+    }
+
 
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {

@@ -7,14 +7,26 @@ public class Dish {
     private String dishName;
     private int price;
     private String dishDescription;
+    private long imageId;
 
-    public Dish(long id, long restaurantId, String dishName, int price, String dishDescription) {
+    public Dish(long id, long restaurantId, String dishName,
+                int price, String dishDescription,
+                long imageId) {
         super();
         this.id = id;
         this.restaurantId = restaurantId;
         this.dishName = dishName;
         this.price = price;
         this.dishDescription = dishDescription;
+        this.imageId = imageId;
+    }
+
+    public long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
     }
 
     public long getId() {

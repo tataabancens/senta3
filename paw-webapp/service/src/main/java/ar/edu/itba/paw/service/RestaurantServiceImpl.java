@@ -33,4 +33,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Dish> getRestaurantDishes(long id) {
         return restaurantDao.getRestaurantDishes(id);
     }
+
+    @Override
+    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour) {
+        restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
+    }
+
 }

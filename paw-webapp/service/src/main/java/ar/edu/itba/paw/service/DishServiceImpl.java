@@ -23,8 +23,23 @@ public class DishServiceImpl implements DishService{
     }
 
     @Override
-    public Dish create(String dishName, int price){
-        return null;
+    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId){
+        return dishDao.create(restaurantId, dishName, dishDescription, price, imageId);
     }
+
+    @Override
+    public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
+        dishDao.updateDish(dishId, dishName, dishDescription, price, restaurantId);
+    }
+
+    @Override
+    public void updateDishPhoto(long dishId, long imageId) {
+        dishDao.updateDishPhoto(dishId, imageId);
+    }
+    @Override
+    public void deleteDish(long dishId) {
+        dishDao.deleteDish(dishId);
+    }
+
 
 }

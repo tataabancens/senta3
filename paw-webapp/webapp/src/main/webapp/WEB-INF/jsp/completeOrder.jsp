@@ -12,91 +12,86 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
 
-<div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
-            <div class="card-content white-text">
-                <span class="card-title text center"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text center"><c:out value="${restaurant.phone}"/></span>
-            </div>
+<div class="page-container">
+    <div class="card restaurant-card">
+        <div class="card-content white-text">
+            <span class="text center main-title"><c:out value="${restaurant.restaurantName}"/></span>
+            <span class="text center title2"><c:out value="${restaurant.phone}"/></span>
         </div>
     </div>
 
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title text price center">Estas realizando un pedido en</span>
-                <div class="with-margin">
-                    <span class="card-title text center"><c:out value="${restaurant.restaurantName}"/></span>
+    <div class="card confirm-card">
+        <div class="card-content wider-content center">
+            <span class="text main-title">Estas realizando un pedido en</span>
+            <div class="with-margin">
+                <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
+            </div>
+            <div class="center">
+                <span class="title2 text center">Resumen de tu pedido:</span>
+            </div>
+            <div class="summary">
+                <div class="titles">
+                    <div class="dishname">
+                        <span class="title2 text">Plato</span>
+                    </div>
+                    <div>
+                        <span class="title2 text">Cantidad</span>
+                    </div>
+                    <div>
+                        <span class="title2 text">Precio x U</span>
+                    </div>
+                    <div>
+                        <span class="title2 text">Total</span>
+                    </div>
                 </div>
-                <div class="center">
-                    <span class="title2 text center">Resumen de tu pedido:</span>
-                </div>
-                <div class="summary">
-                    <div class="row">
-                        <!-- acá va un for de la tabla orderItem -->
-                        <div class="col">
-                            <span class="card-title title text">Plato</span>
+                <c:forEach var="orderItem" items="${orderItems}">
+                    <div class="titles">
+                        <div class="dishname-div">
+                            <span class="items-title text dishname"><c:out value="${orderItem.dishName}"/></span>
                         </div>
-                        <div class="col center">
-                            <span class="card-title title text">Cantidad</span>
+                        <div>
+                            <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
                         </div>
-                        <div class="col center">
-                            <!-- acá va  -->
-                            <span class="card-title title text">Precio x U</span>
+                        <div>
+                            <span class="items-title text">$<c:out value="${orderItem.unitPrice}"/></span>
                         </div>
-                        <div class="col center">
-                            <span class="card-title title text">Precio total</span>
+                        <div>
+                            <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                         </div>
                     </div>
-                    <c:forEach var="orderItem" items="${orderItems}">
-                        <div class="row">
-                            <div class="col">
-                                <span class="items-title text"><c:out value="${orderItem.dishName}"/></span>
-                            </div>
-                            <div class="col center">
-                                <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
-                            </div>
-                            <div class="col center">
-                                <!-- acá va  -->
-                                <span class="items-title text">$<c:out value="${orderItem.unitPrice}"/></span>
-                            </div>
-                            <div class="col center">
-                                <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
-                            </div>
-                        </div>
-                    </c:forEach>
+                </c:forEach>
 
-                    <hr/>
+                <hr/>
 
-                    <div class="row margin-0">
-                        <div class="col s6">
-                            <p class="price">Total</p>
-                        </div>
-                        <div class="col s6">
-                            <p class="price right"><c:out value="${total}"/></p>
-                        </div>
+                <div class="titles">
+                    <div >
+                        <p class="price">Total</p>
                     </div>
-                    <div class="row margin-0">
-                        <div class="col s12">
-                            <c:url value="${pageContext.request.contextPath}/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn reservation-btn green right">
-                            </form:form>
-                        </div>
+                    <div>
+                        <p class="price right "><c:out value="${total}"/></p>
                     </div>
-
                 </div>
+
+                    <div >
+                        <c:url value="${pageContext.request.contextPath}/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn reservation-btn green right">
+                        </form:form>
+                    </div>
 
             </div>
+
         </div>
     </div>
+
 </div>
 </body>
 </html>
@@ -112,45 +107,34 @@
 
     .summary{
         margin-top: 20px;
+        width: 100%;
     }
 
 
     .card{
         border-radius: 16px;
-        display: grid;
     }
 
     .restaurant-card{
+        display:flex;
+        margin-left: 5%;
+        width: 20%;
+        max-width: 40%;
+        margin-right: 5%;
+        height: 20%;
     }
 
-    .dish-card{
-        width: 100%;
-    }
-
-    .items-title{
-        color:  #707070;
-        font-size: 18px;
-        text-overflow: ellipsis;
-    }
-
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 20px;
-
-    }
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
 
     .reservation-btn{
+        display: flex;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        width: 35%;
+        min-width: 10%;
+        font-size: 1vw;
+        text-align: center;
     }
 
     .reservation-btn:hover{
@@ -168,13 +152,38 @@
         margin-bottom: 10%;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
-    .already-reserved-btn{
+    .dishname{
+        width: 120px;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
+
+    .titles{
+        display: flex;
+        justify-content: space-between;
+        margin-right: 10px;
+    }
+
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .wider-content{
+        width: 100%;
+    }
+
 
 </style>
