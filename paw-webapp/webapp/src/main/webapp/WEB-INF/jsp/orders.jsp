@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
 </head>
 <body>
@@ -126,12 +128,6 @@
         font-size: 17px;
     }
 
-    .res-title{
-        font-size: 25px;
-        color: #707070;
-        margin-left: 5%;
-        margin-top: 5%;
-    }
 
     .reservation-btn{
         border-radius: 16px;
@@ -156,8 +152,7 @@
         margin-top: 0;
     }
 
-    .already-reserved-btn{
-    }
+
 
 </style>
 

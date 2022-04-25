@@ -11,6 +11,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
+        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
         <title>Senta3</title>
     </head>
     <body>
@@ -19,13 +21,13 @@
         <div class="contentContainer">
             <div class="card restaurant-card">
                         <div class="col">
-                            <span class="text title">Reservas abiertas</span>
+                            <span class="main-title">Reservas abiertas</span>
                             <c:forEach var="reservation" items="${reservations}">
-                                <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
-                                <p class="text">Fecha: <c:out value="${reservation.reservationDate}"/> </p>
-                                <p class="text">Status: <c:out value="${reservation.reservationStatus}"/> </p>
+                                <p class="items-title">Id: <c:out value="${reservation.reservationId}"/> </p>
+                                <p class="items-title">Fecha: <c:out value="${reservation.reservationDate}"/> </p>
+                                <p class="items-title">Status: <c:out value="${reservation.reservationStatus}"/> </p>
                                 <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
-                                <p class="text">---------</p>
+                                <p class="items-title">---------</p>
 
                             </c:forEach>
                         </div>
@@ -36,7 +38,7 @@
                     <a href="menu/create" class="add-card-link">
                         <div class="add-card-content">
                             <i class="large material-icons">add</i>
-                            <span><h3>Crear Plato</h3></span>
+                            <span class="main-title">Crear Plato</span>
                         </div>
                     </a>
                 </div>
@@ -47,9 +49,9 @@
                                 <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
                                 <a class="waves-effect waves-light btn restaurant-btn red">Borrar</a>
                             </div>
-                            <span class="text title"><c:out value="${dish.dishName}"/></span>
-                            <p class="text"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="text price">$<c:out value="${dish.price}"/></p>
+                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
+                            <p class="title2"><c:out value="${dish.dishDescription}"/></p>
+                            <p class="price">$<c:out value="${dish.price}"/></p>
                         </div>
                     </div>
                 </c:forEach>
@@ -62,15 +64,6 @@
 
     body{
         background-color: #F0F0F0;
-    }
-    .text{
-        font-family: "Segoe UI", Lato, sans-serif;
-        font-weight: normal;
-        font-size: 23px;
-        color: #463f3f;
-    }
-    .title{
-        font-size: 28px;
     }
     a{
         margin: 5px;
@@ -128,10 +121,6 @@
         min-width: 150px;
         max-width: 40%;
         max-height: 500px;
-    }
-    .price{
-        font-weight: bold;
-        color: black;
     }
     .btn-row{
         margin-top: 15px;

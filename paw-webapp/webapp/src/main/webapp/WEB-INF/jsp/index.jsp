@@ -53,9 +53,9 @@
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
-                            <span class="text title"><c:out value="${dish.dishName}"/></span>
-                            <span class="text description"><c:out value="${dish.dishDescription}"/></span>
-                            <span class="text price">$<c:out value="${dish.price}"/></span>
+                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
+                            <span class="title2"><c:out value="${dish.dishDescription}"/></span>
+                            <span class="price">$<c:out value="${dish.price}"/></span>
                         </div>
                     </c:forEach>
                 </div>
@@ -119,10 +119,7 @@
         color: #463f3f;
         font-size: 21px;
     }
-    .text.price{
-        font-size: 21px;
-        font-weight: bold;
-    }
+
     .reservation-action-btn{
         display: flex;
         flex-direction: row;
@@ -185,11 +182,7 @@
         height: 100%;
         max-width: 60%;
     }
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
+
 
     .reservation-btn{
         border-radius: 16px;

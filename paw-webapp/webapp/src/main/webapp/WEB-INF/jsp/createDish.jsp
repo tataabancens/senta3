@@ -20,7 +20,7 @@
     <c:url value="/restaurant=${restaurantId}/menu/create" var="postPath"/>
     <form:form modelAttribute="createDishForm" action="${postPath}" method="post">
         <div class="card card-content">
-                <span class="card-title text"><h3>Crear Plato</h3></span>
+                <span class="main-title"><h3>Crear Plato</h3></span>
                     <div class="disName">
                         <form:errors path="dishName" element="p" cssStyle="color:red"/>
                         <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right">Nombre del Plato:</form:label>
@@ -80,11 +80,7 @@
         width: 500px;
         max-width: 600px;
     }
-    .card-title.text{
-        font-size: 30px;
-        font-family: "Goldplay", sans-serif;
-        margin-bottom: 15px;
-    }
+
     .image-upload{
         margin: 20px;
     }

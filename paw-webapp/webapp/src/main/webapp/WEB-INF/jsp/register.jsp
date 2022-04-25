@@ -22,7 +22,7 @@
         <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
             <div class="content-container">
             <div class="card register-card">
-                    <span class="text title">Para reservar vamos a necesitar algunos datos:</span>
+                    <span class="main-title">Para reservar vamos a necesitar algunos datos:</span>
                     <div class="input-field input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
                         <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
