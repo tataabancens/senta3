@@ -50,7 +50,7 @@
                     <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
                 </c:if>
                 <c:if test="${ordered == 0}">
-                    <a disabled class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                    <a disabled class="waves-effect waves-light btn plus-btn" href="">Pedir cuenta</a>
                 </c:if>
             </div>
             <div class="center div-padding">
@@ -73,7 +73,7 @@
                         <c:if test="${unavailable.contains(dish.id)}">
                             <div class="dish-add">
                                 <a class="btn-floating btn-large waves-effect waves-light plus-btn" disabled
-                                   href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
+                                   href=""><i class="material-icons">add</i></a>
                             </div>
                         </c:if>
                     </div>
