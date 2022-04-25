@@ -19,22 +19,31 @@
         <%@ include file="components/navbar.jsp" %>
 
         <div class="contentContainer">
-            <div class="card restaurant-card">
-                        <div class="col">
-                            <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
-                            <p class="text title">Horario: ${restaurant.openHour} a ${restaurant.closeHour}</p>
-                            <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
-                            <span class="main-title">Reservas abiertas</span>
-                            <c:forEach var="reservation" items="${reservations}">
-                                <p class="items-title">Id: <c:out value="${reservation.reservationId}"/> </p>
-                                <p class="text">Fecha: <c:out value="${reservation.reservationHour}"/> </p>
-                                <p class="items-title">Status: <c:out value="${reservation.reservationStatus}"/> </p>
-                                <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
-                                <p class="items-title">---------</p>
-
-                            </c:forEach>
+            <div class="notificationContainer">
+                <div class="card restaurant-card">
+                    <div>
+                        <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
+                    </div>
+                    <div>
+                        <p class="text title">Horario: ${restaurant.openHour} a ${restaurant.closeHour}</p>
+                    </div>
+                    <div>
+                        <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
+                    </div>
+                </div>
+                <div class="card restaurant-card">
+                    <span class="main-title">Reservas abiertas</span>
+                    <c:forEach var="reservation" items="${reservations}">
+                        <div class="card notification-card">
+                            <div class="notification-item"><span class="title2">Hora:<c:out value="${reservation.reservationHour}"/>:00</span></div>
+                            <div class="notification-item"><span class="title2">Id:<c:out value="${reservation.reservationId}"/> </span></div>
+                            <div class="notification-item"><span class="title2">Status:<c:out value="${reservation.reservationStatus}"/> </span></div>
+                            <div class="notification-item"><a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a></div>
                         </div>
+                    </c:forEach>
+                </div>
             </div>
+
 
             <div class="dishList">
                 <div class="card dish-card">
@@ -78,22 +87,30 @@
         justify-content: space-evenly;
         padding: 25px;
     }
+    .notificationContainer{
+        display: flex;
+        flex-direction: column;
+        width: 20%;
+    }
     .card{
         border-radius: 16px;
         display: flex;
         justify-content: center;
-        min-width: 150px;
-        max-width: 250px;
         padding: 10px;
         width: 100%;
     }
-    .card.restaurant-card{
+    .card.notification-card{
+        flex-direction: column;
+        align-items: flex-start;
+        justify-items: center;
+    }
+    .restaurant-card{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        flex-direction: column;
         margin-right: 10px;
         margin-left: 10px;
-        width: 20%;
-        max-width: 40%;
+        width: 100%;
     }
     .add-card-content {
         display: flex;
@@ -110,7 +127,7 @@
         flex-direction: row;
         justify-content: space-evenly;
         flex-wrap: wrap;
-        width: 60%;
+        width: 70%;
         margin-left: 5%;
         margin-right: 5%;
     }

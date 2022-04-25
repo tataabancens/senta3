@@ -23,7 +23,7 @@
         <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
             <div class="card card-content">
                 <div class="title">
-                    <h3>Iniciar cesion</h3>
+                    <h3>Iniciar sesion</h3>
                 </div>
             <div>
                 <label for="username">Usuario: </label>

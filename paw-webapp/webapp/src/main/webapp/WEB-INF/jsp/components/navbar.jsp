@@ -33,9 +33,6 @@
         <sec:authorize access="hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/restaurant=1/orders" class="logo">Ordenes</a>
         </sec:authorize>
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/" class="logo">Restaurante</a>
-        </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar sesion</a>
         </sec:authorize>
