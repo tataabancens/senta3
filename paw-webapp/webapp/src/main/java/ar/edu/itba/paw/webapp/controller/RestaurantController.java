@@ -121,11 +121,13 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/confirmDish", method = RequestMethod.GET)
+    @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)
     public ModelAndView confirmDish(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                             @PathVariable("restaurantId") final int restaurantId){
-        final ModelAndView mav = new ModelAndView("dishConfirmation");
+                             @PathVariable("restaurantId") final int restaurantId,
+                                    @PathVariable("dishId") final int dishId){
 
+        final ModelAndView mav = new ModelAndView("dishConfirmation");
+        mav.addObject("dishId", dishId);
         return mav;
     }
 
@@ -145,7 +147,7 @@ public class RestaurantController {
 
         Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), createDishForm.getDishPrice(), 1);
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish");
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dish.getId());
 
         return mav;
     }

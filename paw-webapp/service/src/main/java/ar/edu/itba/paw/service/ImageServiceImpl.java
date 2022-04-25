@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Image;
+import ar.edu.itba.paw.model.RawImage;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Optional<Image> getImageById(long id) {
+    public Optional<RawImage> getImageById(long id) {
         return imageDao.getImageById(id);
     }
 
