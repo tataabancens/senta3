@@ -25,10 +25,10 @@
             <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Inicio</a>
         </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="#" class="logo">Restaurantes</a>
+            <a href="${pageContext.request.contextPath}/" class="logo">Inicio</a>
         </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/" class="logo">Inicio</a>
+            <a href="#" class="logo">Restaurantes</a>
         </sec:authorize>
         <sec:authorize access="hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/restaurant=1/orders" class="logo">Ordenes</a>

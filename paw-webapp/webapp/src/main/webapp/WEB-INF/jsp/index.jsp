@@ -167,7 +167,7 @@
         max-height: 600px;
         padding: 20px;
         width: 100%;
-        margin: 20px;
+        margin: 40px;
     }
 
     .description{
@@ -178,7 +178,8 @@
         display: flex;
         padding-right: 20px;
         justify-self: flex-start;
-        justify-content: space-evenly;
+        justify-content: flex-start;
+        padding-left: 100px;
         flex-wrap: wrap;
         min-width: 70%;
         height: 100%;
