@@ -14,22 +14,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
 
-<div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
-            <div class="card-content white-text">
-                <span class="card-title title text">Pedidos realizados</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col offset-s1 s4">
-        <span class="res-title">Nuevos pedidos</span>
+<div class="header">
+    <span class="presentation-text title"><h3>Pedidos realizados</h3></span>
+</div>
+<div class="content-container">
+    <div class="card incoming-orders">
+        <span class="presentation-text title"><h5>Nuevos pedidos</h5></span>
         <div>
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${items}">
@@ -45,21 +42,22 @@
                 </c:forEach>
             </c:forEach>
         </div>
-
-        <span class="res-title">Pedidos en camino</span>
+    </div>
+    <div class="card finished-orders">
+        <span class="presentation-text title"><h5>Pedidos en camino</h5></span>
         <div>
             <c:forEach var="reservation" items="${reservations}">
-                    <c:forEach var="item" items="${incoming}">
-                        <c:if test="${item.reservationId == reservation.reservationId}">
-                            <div class="card dish-card">
-                                <div class="card-content white-text">
-                                    <span class="card-title title text"><c:out value="${item.dishName}"/></span>
-                                    <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
-                                    <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
-                                </div>
+                <c:forEach var="item" items="${incoming}">
+                    <c:if test="${item.reservationId == reservation.reservationId}">
+                        <div class="card dish-card">
+                            <div class="card-content white-text">
+                                <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                                <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
+                                <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
                             </div>
-                        </c:if>
-                    </c:forEach>
+                        </div>
+                    </c:if>
+                </c:forEach>
             </c:forEach>
         </div>
     </div>
@@ -72,19 +70,55 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    .header{
+        background: rgb(55,166,230);
+        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        color: white;
+        min-height: 150px;
+        max-height: 300px;
+        font-size: 25px;
+        border-radius: 20px;
+        align-items: center;
+        margin: 20px;
+        padding: 15px;
     }
-
-
+    .content-container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
     .card{
         border-radius: 16px;
-        display: grid;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
     }
-
-    .restaurant-card{
+    .card.incoming-orders{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+        width: 48%;
+        height: 100%;
+        margin: 10px;
     }
-
+    .card.finished-orders{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+        width: 48%;
+        height: 100%;
+        margin: 10px;
+    }
     .dish-card{
         width: 100%;
     }
@@ -94,12 +128,6 @@
         font-size: 17px;
     }
 
-    .res-title{
-        font-size: 25px;
-        color: #707070;
-        margin-left: 5%;
-        margin-top: 5%;
-    }
 
     .reservation-btn{
         border-radius: 16px;
@@ -124,8 +152,7 @@
         margin-top: 0;
     }
 
-    .already-reserved-btn{
-    }
+
 
 </style>
 

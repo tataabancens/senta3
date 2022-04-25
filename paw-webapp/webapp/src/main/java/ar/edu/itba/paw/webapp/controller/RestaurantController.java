@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.DishService;
+import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -22,12 +25,15 @@ public class RestaurantController {
     RestaurantService rs;
     ReservationService res;
     DishService ds;
+    ImageService ims;
 
     @Autowired
-    public RestaurantController(RestaurantService rs, ReservationService res, DishService ds) {
+    public RestaurantController(RestaurantService rs, ReservationService res,
+                                DishService ds, ImageService ims) {
         this.rs = rs;
         this.res = res;
         this.ds = ds;
+        this.ims = ims;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -116,30 +122,48 @@ public class RestaurantController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/confirmDish", method = RequestMethod.GET)
+    @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)
     public ModelAndView confirmDish(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                             @PathVariable("restaurantId") final int restaurantId){
-        final ModelAndView mav = new ModelAndView("dishConfirmation");
+                             @PathVariable("restaurantId") final int restaurantId,
+                                    @PathVariable("dishId") final int dishId){
 
+        final ModelAndView mav = new ModelAndView("dishConfirmation");
+        mav.addObject("dishId", dishId);
+        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("imageId", dish.getImageId());
         return mav;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
-    public ModelAndView createForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("createDishForm") final EditDishForm form){
-        return new ModelAndView("/createDish");
+    public ModelAndView createDishForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("createDishForm") final EditDishForm form){
+        return new ModelAndView("createDish");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
-    public ModelAndView createDish(@PathVariable ("restaurantId") final long restaurantId, @Valid @ModelAttribute("createDishForm") final EditDishForm form, final BindingResult errors) {
+    public ModelAndView createDish(@PathVariable ("restaurantId") final long restaurantId,
+                                   @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) {
         if (errors.hasErrors()){
-            return createForm(restaurantId, form);
+            return createDishForm(restaurantId, createDishForm);
         }
 
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
-        Dish dish = ds.create(restaurantId, form.getDishName(), form.getDishDesc(), form.getDishPrice());
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish");
+        Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), createDishForm.getDishPrice(), 1);
 
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dish.getId());
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/dish={dishId}/edit-photo", method = RequestMethod.POST)
+    public ModelAndView editPhoto(@PathVariable ("restaurantId") final long restaurantId,
+                                  @PathVariable ("dishId") final long dishId,
+                                  @RequestParam CommonsMultipartFile photo) {
+
+        // Dish create(long restaurantId, String dishName, String dishDescription, double price);
+        Image image = ims.createImage(photo);
+        ds.updateDishPhoto(dishId, image.getImageId());
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dishId);
         return mav;
     }
 

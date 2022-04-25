@@ -11,39 +11,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
 
-<div class="row">
-    <div class="col s3">
-        <div class="card restaurant-card">
-            <div class="card-content white-text">
-                <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
-            </div>
+<div class="page-container">
+    <div class="restaurant-card card">
+        <div class="card-content white-text">
+            <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
+            <span class="title2"><c:out value="${restaurant.phone}"/></span>
         </div>
     </div>
 
-    <div class="col offset-s1 s4">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title text price center">Pediste la cuenta!</span>
-                <span class="card-title text price center">Muchas gracias!</span>
-                    <div class="row margin-0">
-                        <div class="col s12 center">
-                            <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/">Volver al inicio</a>
-                        </div>
-                    </div>
-
+    <div class="card confirm-card">
+        <div class="card-content white-text center">
+            <span class="main-title text">Pediste la cuenta!</span>
+                <div class="center">
+                    <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/">Volver</a>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>
 
@@ -52,13 +46,6 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
-    }
-
-    .summary{
-        margin-top: 20px;
-    }
 
 
     .card{
@@ -66,36 +53,22 @@
         display: grid;
     }
 
-    .restaurant-card{
-    }
 
     .dish-card{
         width: 100%;
     }
 
-    .items-title{
-        color:  #707070;
-        font-size: 18px;
-    }
-
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 20px;
-
-    }
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
 
     .reservation-btn{
+        display: flex;
         border-radius: 16px;
         background-color: #37A6E6;
         margin-top: 5%;
         opacity: 57%;
+        width: 35%;
+        min-width: 10%;
+        font-size: 1vw;
+        text-align: center;
     }
 
     .reservation-btn:hover{
@@ -113,13 +86,32 @@
         margin-bottom: 10%;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
+
+    .page-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
-    .already-reserved-btn{
+
+    .confirm-card{
+        display:flex;
+        justify-content: center;
+        width: 40%;
+        max-width: 60%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
+
+
+    .restaurant-card{
+        display:flex;
+        margin-left: 5%;
+        width: 20%;
+        max-width: 40%;
+        margin-right: 5%;
+        height: 20%;
+    }
+
 
 </style>

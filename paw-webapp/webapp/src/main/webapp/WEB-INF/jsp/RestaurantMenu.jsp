@@ -11,15 +11,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
+        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
         <title>Senta3</title>
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
-
-        <div class="btn-row">
-            <a class="waves-effect waves-light btn restaurant-btn green" href="menu/create">Crear Plato</a>
-            <a class="waves-effect waves-light btn restaurant-btn blue" href="orders">Ver ordenes</a>
-        </div>
 
         <div class="contentContainer">
             <div class="card restaurant-card">
@@ -27,19 +24,27 @@
                             <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
                             <p class="text title">Horario: ${restaurant.openHour} a ${restaurant.closeHour}</p>
                             <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
-                            <span class="text title">Reservas abiertas</span>
+                            <span class="main-title">Reservas abiertas</span>
                             <c:forEach var="reservation" items="${reservations}">
-                                <p class="text">Id: <c:out value="${reservation.reservationId}"/> </p>
+                                <p class="items-title">Id: <c:out value="${reservation.reservationId}"/> </p>
                                 <p class="text">Fecha: <c:out value="${reservation.reservationHour}"/> </p>
-                                <p class="text">Status: <c:out value="${reservation.reservationStatus}"/> </p>
-                                <a class="waves-effect waves-light btn red restaurant-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
-                                <p class="text">---------</p>
+                                <p class="items-title">Status: <c:out value="${reservation.reservationStatus}"/> </p>
+                                <a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a>
+                                <p class="items-title">---------</p>
 
                             </c:forEach>
                         </div>
             </div>
 
             <div class="dishList">
+                <div class="card dish-card">
+                    <a href="menu/create" class="add-card-link">
+                        <div class="add-card-content">
+                            <i class="large material-icons">add</i>
+                            <span class="main-title">Crear Plato</span>
+                        </div>
+                    </a>
+                </div>
                 <c:forEach var="dish" items="${restaurant.dishes}">
                     <div class="card dish-card">
                         <div class="card-content white-text">
@@ -47,9 +52,9 @@
                                 <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
                                 <a class="waves-effect waves-light btn restaurant-btn red" href="menu/edit/deleteDish=${dish.id}">Borrar</a>
                             </div>
-                            <span class="text title"><c:out value="${dish.dishName}"/></span>
-                            <p class="text"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="text price">$<c:out value="${dish.price}"/></p>
+                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
+                            <p class="title2"><c:out value="${dish.dishDescription}"/></p>
+                            <p class="price">$<c:out value="${dish.price}"/></p>
                         </div>
                     </div>
                 </c:forEach>
@@ -63,22 +68,14 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        font-family: "Segoe UI", Lato, sans-serif;
-        font-weight: normal;
-        font-size: 23px;
-        color: #463f3f;
-    }
-    .title{
-        font-size: 28px;
-    }
     a{
         margin: 5px;
     }
     .contentContainer{
         display: flex;
-        justify-content: space-evenly;
         flex-wrap: wrap;
+        margin-top: 30px;
+        justify-content: space-evenly;
         padding: 25px;
     }
     .card{
@@ -91,31 +88,42 @@
         width: 100%;
     }
     .card.restaurant-card{
-        max-width: 400px;
+        display: flex;
+        justify-content: center;
+        margin-right: 10px;
+        margin-left: 10px;
+        width: 20%;
+        max-width: 40%;
+    }
+    .add-card-content {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+        width: inherit;
+        height: inherit;
+        justify-content: center;
+        color: rgba(183, 179, 179, 0.87);
+        align-items: center;
     }
     .dishList{
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-evenly;
         flex-wrap: wrap;
+        width: 60%;
         margin-left: 5%;
         margin-right: 5%;
     }
-
+    a.add-card-link{
+        width: 100%;
+        height: 100%;
+    }
     .dish-card{
         width: 100%;
-        margin: 10px;
+        margin: 8px;
         min-width: 150px;
-        max-width: 450px;
+        max-width: 40%;
         max-height: 500px;
-    }
-    .restaurant-card{
-        margin-right: 10px;
-        max-height: 500px;
-    }
-    .price{
-        font-weight: bold;
-        color: black;
     }
     .btn-row{
         margin-top: 15px;

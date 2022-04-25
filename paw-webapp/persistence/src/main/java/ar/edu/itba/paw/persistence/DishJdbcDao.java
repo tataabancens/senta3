@@ -26,7 +26,8 @@ public class DishJdbcDao implements DishDao {
                     resultSet.getLong("restaurantId"),
                     resultSet.getString("dishName"),
                     resultSet.getInt("price"),
-                    resultSet.getString("dishdescription")));
+                    resultSet.getString("dishdescription"),
+                    resultSet.getLong("imageId")));
 
 
     @Autowired
@@ -46,20 +47,26 @@ public class DishJdbcDao implements DishDao {
 
 
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price) {
+    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId) {
         final Map<String, Object> dishData = new HashMap<>();
         dishData.put("dishName", dishName);
         dishData.put("dishDescription", dishDescription);
         dishData.put("price", (int)price);
         dishData.put("restaurantId", restaurantId);
+        dishData.put("imageId", imageId);
 
         Number dishId = jdbcInsert.executeAndReturnKey(dishData);
-        return new Dish(dishId.longValue(), restaurantId, dishName, (int)price, dishDescription);
+        return new Dish(dishId.longValue(), restaurantId, dishName, (int)price, dishDescription, imageId);
     }
 
     @Override
     public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
         jdbcTemplate.update("UPDATE dish SET dishname= ?, dishdescription = ?, price = ? WHERE dishid = ?", new Object[]{dishName, dishDescription, price, dishId});
+    }
+
+    @Override
+    public void updateDishPhoto(long dishId, long imageId) {
+        jdbcTemplate.update("UPDATE dish SET imageId = ? WHERE dishid = ?", new Object[]{imageId, dishId});
     }
 
     @Override
