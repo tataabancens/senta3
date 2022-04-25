@@ -122,7 +122,7 @@
         font-family: "Segoe UI", Arial, sans-serif;
         font-weight: bold;
         font-style: italic;
-        font-size:1.5vw;
+        font-size:1.25vw;
     }
 
 

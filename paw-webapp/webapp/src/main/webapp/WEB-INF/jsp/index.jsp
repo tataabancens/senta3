@@ -42,13 +42,27 @@
             <div class="restaurant-content">
                 <div class="card client-actions">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
-                        <div class="reservation-action-btn">
-                            <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
-                        </div>
+                        <sec:authorize access="!hasRole('RESTAURANT')">
+                            <div class="reservation-action-btn">
+                                <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
+                            </div>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <div class="reservation-action-btn">
+                                <a class="waves-effect waves-light btn reservation-btn" href="">Reservar</a>
+                            </div>
+                        </sec:authorize>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
+                        <sec:authorize access="!hasRole('RESTAURANT')">
                         <div class="enter-reservation-btn">
                             <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
                         </div>
+                        </sec:authorize>
+                         <sec:authorize access="hasRole('RESTAURANT')">
+                            <div class="enter-reservation-btn">
+                                <a class="waves-effect waves-light btn reservation-btn" href="">Ingresar</a>
+                            </div>
+                        </sec:authorize>
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">

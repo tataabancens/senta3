@@ -16,6 +16,7 @@
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
@@ -24,133 +25,100 @@
 <a id="full-menu"></a>
 <%@ include file="components/navbar.jsp" %>
 
-<div class="row">
-
-    <div class="row">
-        <div class="col s3">
-            <div class="card restaurant-card">
-                <div class="card-content white-text">
-                    <span class="main-title"><c:out value="${restaurant.restaurantName}"/></span>
-                    <span class="title2"><c:out value="${restaurant.phone}"/></span>
-                </div>
-            </div>
-            <div class="card restaurant-card">
-                <div class="card-content white-text">
-                    <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
-                    <div class="center">
-                        <c:if test="${ordered > 0}">
-                            <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
-                        </c:if>
-                        <c:if test="${ordered == 0}">
-                            <a disabled class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
-                        </c:if>
-                    </div>
-                    <div class="center div-padding">
-                        <a class="waves-effect waves-light btn plus-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
-                    </div>
-
-                </div>
-            </div>
-
+<div class="restaurant-header">
+    <div class="restaurant-info">
+        <div>
+            <i class="large material-icons">restaurant</i>
         </div>
-
-
-
-
-        <c:url value="/menu" var="postPath"/>
-            <div class="col s4">
-            <c:forEach var="dish" items="${dish}">
+        <div>
+            <div class="presentation-text title restaurant-title">
+                <span><c:out value="${restaurant.restaurantName}"/></span>
+            </div>
+            <div class="presentation-text restaurant-description">
+                <span>Telefono: </span>
+                <span><c:out value="${restaurant.phone}"/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-container">
+    <div class="restaurant-content">
+        <div class="card client-actions">
+            <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+            <div class="center">
+                <c:if test="${ordered > 0}">
+                    <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                </c:if>
+                <c:if test="${ordered == 0}">
+                    <a disabled class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                </c:if>
+            </div>
+            <div class="center div-padding">
+                <a class="waves-effect waves-light btn plus-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+            </div>
+        </div>
+        <div class="dishList">
+            <c:forEach var="dish" items="${restaurant.dishes}">
                 <div class="card dish-card">
-                    <div class="card-content white-text">
-                            <div class="block">
-                                <span class="main-title"><c:out value="${dish.dishName}"/></span>
-                            </div>
-                            <div class ="block right">
-                                <div class="center">
-                                    <a class="waves-effect waves-light btn plus-btn"
-                                       href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
-                                </div>
-                            </div>
-                        <p class="title2"><c:out value="${dish.dishDescription}"/></p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
+                    <div class="dish-card-name">
+                        <div class="start">
+                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
+                        </div>
+                        <div class="dish-add">
+                            <a class="btn-floating btn-large waves-effect waves-light plus-btn"
+                               href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
+                        </div>
                     </div>
+                    <span class="title2"><c:out value="${dish.dishDescription}"/></span>
+                    <span class="price">$<c:out value="${dish.price}"/></span>
                 </div>
             </c:forEach>
-            </div>
-
-        <div class="col s5">
+        </div>
+        <div class="orderList">
             <div class="card order-card">
-                <div class="card-content white-text">
-                    <div class="row">
-                        <span class="main-title">Resumen de tu pedido:</span>
-                    </div>
-
-                    <div class="row">
-                        <!-- acá va un for de la tabla orderItem -->
-                        <div class="col">
-                            <span class="title2 dishname">Plato</span>
-                        </div>
-                        <div class="col center">
-                            <span class="title2">Cantidad</span>
-                        </div>
-                        <div class="col center">
-                            <!-- acá va  -->
-                            <span class="title2">Precio x U</span>
-                        </div>
-                        <div class="col center">
-                            <span class="title3">Precio total</span>
-                        </div>
-                    </div>
+                <span class="main-title">Resumen de tu pedido:</span>
+                <div class="order-headers">
+                    <span class="title2 dishname">Plato</span>
+                    <span class="title2">Cantidad</span>
+                    <span class="title2">Subtotal</span>
+                </div>
+                <div class="order-info">
                     <c:forEach var="orderItem" items="${orderItems}">
-                        <div class="row">
-                            <div class="col">
-                                <span class="items-title dishname"><c:out value="${orderItem.dishName}"/></span>
-                            </div>
-                            <div class="col center">
-                                <span class="items-title"><c:out value="${orderItem.quantity}"/></span>
-                            </div>
-                            <div class="col center">
-                                <!-- acá va  -->
-                                <span class="items-title">$<c:out value="${orderItem.unitPrice}"/></span>
-                            </div>
-                            <div class="col center">
-                                <span class="items-title"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
-                            </div>
+                        <div class="order-item">
+                            <div class="order-field center"><span class="items-title center dishname"><c:out value="${orderItem.dishName}"/></span></div>
+                            <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.quantity}"/></span></div>
+                            <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span></div>
                         </div>
                     </c:forEach>
-
-                    <hr/>
-
-                    <div class="row margin-0">
-                        <div class="col s6">
-                            <p class="price">Total</p>
-                        </div>
-                        <div class="col s6">
-                            <p class="price right"><c:out value="${total}"/></p>
-                        </div>
+                </div>
+                <div class="order-total">
+                    <div>
+                        <p class="price">Total</p>
                     </div>
-                    <div class="row margin-0">
-                        <div class="col s6">
-                            <c:if test="${selected > 0}">
-                                <c:url value="order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
-                                <form:form action="${postUrl}" method="post">
-                                    <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn plus-btn red">
-                                </form:form>
-                            </c:if>
-                            <c:if test="${selected == 0}">
-                                <a disabled class="waves-effect waves-light btn plus-btn red">Vaciar pedido</a>
-                            </c:if>
-                        </div>
-                        <div class="col s6">
-                            <c:if test="${selected > 0}">
-                                <a class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
-                            </c:if>
-                            <c:if test="${selected == 0}">
-                                <a disabled class="waves-effect waves-light btn plus-btn green right">Continuar</a>
-                            </c:if>
-                        </div>
+                    <div>
+                        <p class="price right"><c:out value="${total}"/></p>
                     </div>
-
+                </div>
+                <div class="order-btn-row">
+                    <div>
+                        <c:if test="${selected > 0}">
+                            <c:url value="order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn plus-btn red">
+                            </form:form>
+                        </c:if>
+                        <c:if test="${selected == 0}">
+                            <a disabled class="waves-effect waves-light btn plus-btn red">Vaciar pedido</a>
+                        </c:if>
+                    </div>
+                    <div>
+                        <c:if test="${selected > 0}">
+                            <a class="waves-effect waves-light btn plus-btn green right" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                        </c:if>
+                        <c:if test="${selected == 0}">
+                            <a disabled class="waves-effect waves-light btn plus-btn green right">Continuar</a>
+                        </c:if>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,48 +134,178 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
+    .page-container{
+        padding-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+    .restaurant-header{
+        background: rgb(55,166,230);
+        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-height: 150px;
+        max-height: 300px;
+        border-radius: 20px;
+        margin: 20px;
+        align-items: center;
+        padding: 15px;
+    }
+    .restaurant-info{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 150px;
+        max-height: 300px;
+    }
+    .restaurant-content{
+        margin-top: 30px;
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
     }
 
-    .margin-0{
-        margin: 0;
+    i{
+        color: white;
+        margin-right: 25px;
     }
-
-
-    .hr {
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 1px solid #ccc;
-        margin: 1em 0;
-        padding: 0;
+    .presentation-text.restaurant-title{
+        font-size: 30px;
+        color:white;
+    }
+    .presentation-text.restaurant-description{
+        color: white;
+        font-size: 21px;
+    }
+    .dishList{
+        display: flex;
+        padding-right: 20px;
+        justify-self: flex-start;
+        justify-content: flex-start;
+        padding-left: 20px;
+        flex-wrap: wrap;
+        min-width: 30%;
+        width: 40%;
+        height: 100%;
+    }
+    .card{
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .card.client-actions{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding: 10px;
+        min-height: 150px;
+        max-height: 250px;
+        min-width: 300px;
+        width: 25%;
+        max-width: 35%;
+    }
+    .dish-card{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        height: 400px;
+        flex-direction: column;
+        min-width: 150px;
+        min-height: 250px;
+        max-height: 500px;
+        padding: 20px;
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .dish-add{
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .dish-card-name{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .orderList{
+        width: 35%;
+        height: 100%;
+    }
+    .order-card{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        max-height: 100%;
+        flex-direction: column;
+        min-width: 150px;
+        min-height: 250px;
+        padding: 20px;
+        width: 100%;
+        margin: 8px;
+    }
+    .order-headers{
+        display: flex;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        justify-content: space-evenly;
+    }
+    .order-info{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+    .order-item{
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+    .order-field{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .order-total{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    .order-btn-row{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    .start{
+        justify-self: left;
+    }
+    .end{
+        justify-self: right;
+    }
+    .center{
+        justify-self: center;
     }
 
 
     .plus-btn{
         background-color: #37A6E6;
         opacity: 57%;
-        border-radius: 16px;
     }
 
     .plus-btn:hover{
         background-color: #37A6E6;
         color: white;
         opacity: 100%;
-    }
-
-
-    .restaurant-card{
-
-    }
-
-    .card{
-        border-radius: 10px;
-    }
-
-    .dish-card{
-        width: 100%;
     }
 
     .description{
@@ -252,20 +350,6 @@
         justify-content: center;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .margin-bottom{
-        margin-bottom: 10%;
-    }
-
-    .no-margin-botton{
-        margin-bottom: 0%;
-    }
-
     .order-card{
         width: 100%;
 
@@ -279,9 +363,6 @@
         white-space: nowrap;
     }
 
-    .more-margin{
-        margin-right: 30%;
-    }
 
 
 
