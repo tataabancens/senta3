@@ -8,13 +8,15 @@ public class Restaurant {
     private String phone;
     private String mail;
     private List<Dish> dishes;
+    private int totalTables;
 
-    public Restaurant(long id, String username, String phone, String mail) {
+    public Restaurant(long id, String username, String phone, String mail, int totalTables) {
         super();
         this.id = id;
         this.restaurantName = username;
         this.phone = phone;
         this.mail = mail;
+        this.totalTables = totalTables;
     }
 
     public String getRestaurantName() {
@@ -39,5 +41,9 @@ public class Restaurant {
 
     public List<Dish> getDishes() {
         return dishes;
+    }
+
+    public int getTotalTables() {
+        return totalTables;
     }
 }

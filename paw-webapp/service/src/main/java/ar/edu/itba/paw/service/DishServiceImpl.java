@@ -23,8 +23,8 @@ public class DishServiceImpl implements DishService{
     }
 
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price){
-        return dishDao.create(restaurantId, dishName, dishDescription, price);
+    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId){
+        return dishDao.create(restaurantId, dishName, dishDescription, price, imageId);
     }
 
     @Override
@@ -32,5 +32,8 @@ public class DishServiceImpl implements DishService{
         dishDao.updateDish(dishId, dishName, dishDescription, price, restaurantId);
     }
 
-
+    @Override
+    public void updateDishPhoto(long dishId, long imageId) {
+        dishDao.updateDishPhoto(dishId, imageId);
+    }
 }

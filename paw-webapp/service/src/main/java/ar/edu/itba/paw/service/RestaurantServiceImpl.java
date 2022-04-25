@@ -33,4 +33,5 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Dish> getRestaurantDishes(long id) {
         return restaurantDao.getRestaurantDishes(id);
     }
+
 }

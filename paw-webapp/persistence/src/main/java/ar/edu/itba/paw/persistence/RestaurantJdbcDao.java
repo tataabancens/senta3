@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,8 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class RestaurantJdbcDao implements RestaurantDao {
@@ -24,14 +22,17 @@ public class RestaurantJdbcDao implements RestaurantDao {
             new Restaurant(resultSet.getLong("restaurantId"),
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
-                    resultSet.getString("mail")));
+                    resultSet.getString("mail"),
+                    resultSet.getInt("totalTables")));
 
     private static final RowMapper<Dish> ROW_MAPPER_DISH = ((resultSet, i) ->
             new Dish(resultSet.getLong("dishId"),
                     resultSet.getLong("restaurantId"),
                     resultSet.getString("dishName"),
                     resultSet.getInt("price"),
-                    resultSet.getString("dishdescription")));
+                    resultSet.getString("dishdescription"),
+                    resultSet.getLong("imageId")));
+
 
     @Autowired
     public RestaurantJdbcDao(final DataSource ds) {

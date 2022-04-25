@@ -37,7 +37,11 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
-        return new ModelAndView("/register");
+
+        ModelAndView mav = new ModelAndView("/register");
+        mav.addObject("hours", res.getAvailableHours(1));
+
+        return mav;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -48,7 +52,7 @@ public class RegisterController {
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
         Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer, form.getTimeStamp());
+                customer, form.getHour());
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),

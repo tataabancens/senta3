@@ -9,7 +9,16 @@ CREATE TABLE IF NOT EXISTS restaurant (
   restaurantId SERIAL PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
   phone varchar(100) NOT NULL,
-  Mail varchar(50) NOT NULL
+  Mail varchar(50) NOT NULL,
+  totalTables int NOT NULL
+);
+
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS totalTables int DEFAULT 10 NOT NULL ;
+
+CREATE TABLE IF NOT EXISTS image
+(
+    imageId serial PRIMARY KEY,
+    bitmap bytea
 );
 
 CREATE TABLE IF NOT EXISTS dish (
@@ -21,15 +30,22 @@ CREATE TABLE IF NOT EXISTS dish (
   FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
 );
 
+ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
+
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
     customerId      integer NOT NULL,
-    reservationDate timestamp,
+    reservationHour integer NOT NULL,
     reservationStatus integer,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
+
+ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
+
+ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer NOT NULL;
+
 
 CREATE TABLE IF NOT EXISTS users (
   userId SERIAL PRIMARY KEY,
@@ -49,13 +65,4 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
 );
-
-CREATE TABLE IF NOT EXISTS pictures
-(
-    id serial PRIMARY KEY,
-    bitmap bytea
-);
-
-INSERT INTO pictures (bitmap)
-VALUES('\001'::bytea);
 

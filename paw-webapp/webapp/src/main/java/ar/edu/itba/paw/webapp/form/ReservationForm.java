@@ -20,18 +20,9 @@ public class ReservationForm {
     @Size(min = 9, max = 13)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
-    @DateConstraint
-    private String timeAndDate;
 
-    public String getTimeAndDate() {
-        return timeAndDate;
-    }
-    public Timestamp getTimeStamp(){
-        return Timestamp.valueOf(LocalDateTime.parse(timeAndDate));
-    }
-    public void setTimeAndDate(String timeAndDate) {
-        this.timeAndDate = timeAndDate;
-    }
+
+    private int hour;
 
     public String getPhone() {
         return phone;
@@ -57,4 +48,10 @@ public class ReservationForm {
         return mail;
     }
 
+    public int getHour() {
+        return hour;
+    }
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
 }

@@ -3,16 +3,12 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.*;
 
 @Repository
@@ -25,7 +21,7 @@ public class ReservationJdbcDao implements ReservationDao {
     private static final RowMapper<Reservation> ROW_MAPPER_RESERVATION = ((resultSet, i) ->
             new Reservation(resultSet.getLong("reservationId"),
                     resultSet.getLong("restaurantId"),
-                    resultSet.getTimestamp("ReservationDate"),
+                    resultSet.getInt("reservationHour"),
                     resultSet.getLong("customerId"),
                     resultSet.getInt("reservationStatus")));
 
@@ -37,6 +33,12 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("status"),
                     resultSet.getString("dishname")));
 
+    private static final RowMapper<Restaurant> ROW_MAPPER_RESTAURANT = ((resultSet, i) ->
+            new Restaurant(resultSet.getLong("restaurantId"),
+                    resultSet.getString("restaurantName"),
+                    resultSet.getString("phone"),
+                    resultSet.getString("mail"),
+                    resultSet.getInt("totalTables")));
 
 
     @Autowired
@@ -72,16 +74,16 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public Reservation createReservation(long restaurantId, long customerId, Timestamp reservationDate) {
+    public Reservation createReservation(long restaurantId, long customerId, int reservationHour) {
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
-        reservationData.put("reservationDate", reservationDate);
+        reservationData.put("reservationHour", reservationHour);
         reservationData.put("customerId", customerId);
         reservationData.put("reservationstatus", ReservationStatus.ACTIVE.ordinal());
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationDate, customerId, ReservationStatus.ACTIVE.ordinal());
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.ACTIVE.ordinal());
 
         return newReservation;
     }
@@ -150,5 +152,48 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
         jdbcTemplate.update("DELETE from orderitem where status = ?", new Object[]{status.ordinal()});
+    }
+
+    @Override
+    public List<Integer> getAvailableHours(long restaurantId) {
+
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
+
+        List<Restaurant> queryRestaurant = jdbcTemplate.query("SELECT * FROM restaurant WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_RESTAURANT);
+
+        Restaurant current = queryRestaurant.get(0);
+
+        int maxTables = current.getTotalTables();
+
+        List<Integer> occupied = new ArrayList<>();
+        for (Reservation table:query) {
+            occupied.add(table.getReservationHour());
+        }
+        Collections.sort(occupied);
+
+        List<Integer> notAvailable = new ArrayList<>();
+        int qty = 1;
+        for(int i=0; i<occupied.size()-1; i++){
+
+            if(Objects.equals(occupied.get(i), occupied.get(i + 1))){
+                qty++;
+                if(qty >= maxTables){
+                    notAvailable.add(occupied.get(i));
+                }
+            } else {
+                qty = 1;
+            }
+        }
+
+        List<Integer> totalHours = new ArrayList<>();
+        for(int i=0; i<24; i++){
+            totalHours.add(i);
+        }
+
+        totalHours.removeAll(notAvailable);
+
+        return totalHours;
     }
 }

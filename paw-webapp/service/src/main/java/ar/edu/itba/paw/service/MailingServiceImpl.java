@@ -34,7 +34,7 @@ public class MailingServiceImpl implements MailingService{
     private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
         String subject="Un cliente realizo una reserva";
         String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
-                reservation.getReservationDate().toString()+'\n';
+                reservation.getReservationHour() +'\n';
         sendEmail(properties,restaurant.getMail(),subject,message);
     }
 
@@ -47,7 +47,7 @@ public class MailingServiceImpl implements MailingService{
 
     private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties){
         String subject="Se cancelo tu reserva";
-        String message="La siguiente reserva fue cancelada:\n"+"fecha: "+reservation.getReservationDate().toString()+'\n'
+        String message="La siguiente reserva fue cancelada:\n"+"fecha: "+reservation.getReservationHour()+'\n'
                 +"restaurante: "+restaurant.getRestaurantName()+'\n';
         sendEmail(properties,customer.getMail(),subject,message);
     }
@@ -56,7 +56,7 @@ public class MailingServiceImpl implements MailingService{
         String subject="Una reserva fue cancelada";
         String message="La siguiente reserva fue cancelada:\n"
                 +"cliente: "+customer.getCustomerName()+'\n'
-                +"fecha: "+reservation.getReservationDate().toString()+'\n';
+                +"fecha: "+reservation.getReservationHour() +'\n';
         sendEmail(properties, restaurant.getMail(),subject,message);
     }
 

@@ -1,3 +1,4 @@
+<%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -26,7 +27,7 @@
                     <div class="input-field input">
                         <form:errors path="mail" element="p" cssStyle="color:red"/>
                         <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
-                     <form:input path="mail"  required="required" maxlength="50" type="text"/>
+                        <form:input path="mail"  required="required" maxlength="50" type="text"/>
                     </div>
                     <div class="input-field input">
                         <form:errors path="phone" element="p" cssStyle="color:red"/>
@@ -38,10 +39,13 @@
                         <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
                         <form:input path="name" required="required" maxlength="50" type="text"/>
                     </div>
-                    <div class="input-field input">
-                        <form:errors path="timeAndDate" element="p" cssStyle="color: red"/>
-                        <form:label path="name" class="helper-text" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" data-error="wrong" data-success="right">Fecha de reserva:</form:label>
-                        <input id="timeAndDate" name="timeAndDate" required="required" type="datetime-local" value=""/>
+
+
+                    <div class="input-field">
+                        <p style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;">Horarios disponibles:</p>
+                        <form:select path="hour">
+                            <form:options items="${hours}" />
+                        </form:select>
                     </div>
                     <div class="submit center">
                         <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
@@ -50,6 +54,7 @@
             </div>
         </form:form>
     </div>
+
 </body>
 </html>
 
@@ -90,6 +95,10 @@
         font-family: "Segoe UI", Lato, sans-serif;
         font-size: 20px;
     }
+    select{
+        display: flex;
+    }
+
 
     .continue-btn{
         padding-inline: 7%;

@@ -1,12 +1,16 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class EditDishForm {
 
-    String dishName;
+    private String dishName;
 
-    String dishDesc;
+    private String dishDesc;
 
-    Double dishPrice;
+    private Double dishPrice;
+
+    private MultipartFile photo;
 
     public String getDishName() {
         return dishName;
@@ -30,5 +34,13 @@ public class EditDishForm {
 
     public void setDishPrice(Double dishPrice) {
         this.dishPrice = dishPrice;
+    }
+
+    public MultipartFile getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(MultipartFile photo) {
+        this.photo = photo;
     }
 }
