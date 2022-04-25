@@ -11,6 +11,8 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <title>Senta3</title>
@@ -20,11 +22,11 @@
 <%@ include file="components/navbar.jsp" %>
 <div class="form-container">
             <div class="card card-content">
-                <span class="card-title text "><h4><c:out value="${dish.dishName}"/></h4></span>
+                <span class="main-title"><h4><c:out value="${dish.dishName}"/></h4></span>
                 <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
                     <div class ="orderItem">
-                        <p class="description"><c:out value="${dish.dishDescription}"/></p>
+                        <p class="title2"><c:out value="${dish.dishDescription}"/></p>
                         <p class="price">$<c:out value="${dish.price}"/></p>
                         <form:errors path="orderItem" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
@@ -65,22 +67,13 @@
         width: 500px;
         max-width: 600px;
     }
-    .card-title.text{
-        font-size: 30px;
-        justify-self: center;
-        font-family: "Goldplay", sans-serif;
-        margin-bottom: 15px;
-    }
+
     .description{
         font-family: "Segoe UI", Lato, sans-serif;
         color:  #707070;
         font-size: 20px;
     }
-    .price{
-        font-family: "Segoe UI", Lato, sans-serif;
-        color:  #707070;
-        font-size: 20px;
-    }
+
     .continue-btn{
         padding-inline: 7%;
         padding-block: 1%;

@@ -37,10 +37,10 @@
             <a href="${pageContext.request.contextPath}/" class="logo">Restaurante</a>
         </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar cesion</a>
+            <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar sesion</a>
         </sec:authorize>
         <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/logout" class="logo right">Cerrar cesion</a>
+            <a href="${pageContext.request.contextPath}/logout" class="logo right">Cerrar sesion</a>
         </sec:authorize>
     </div>
     <!--
@@ -122,7 +122,7 @@
         font-family: "Segoe UI", Arial, sans-serif;
         font-weight: bold;
         font-style: italic;
-        font-size:23px;
+        font-size:1.5vw;
     }
 
 

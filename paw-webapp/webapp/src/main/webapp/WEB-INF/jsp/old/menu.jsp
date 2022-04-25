@@ -50,10 +50,6 @@
         left: 10%;
         margin: -25px 0 0 -25px;
     }
-    .price{
-        width: 20px;
-        text-align: center;
-    }
     .name{
         width: 150px;
         text-align: center;

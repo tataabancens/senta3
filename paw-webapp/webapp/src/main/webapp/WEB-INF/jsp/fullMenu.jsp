@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
@@ -28,13 +30,13 @@
         <div class="col s3">
             <div class="card restaurant-card">
                 <div class="card-content white-text">
-                    <span class="card-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                    <span class="text"><c:out value="${restaurant.phone}"/></span>
+                    <span class="main-title"><c:out value="${restaurant.restaurantName}"/></span>
+                    <span class="title2"><c:out value="${restaurant.phone}"/></span>
                 </div>
             </div>
             <div class="card restaurant-card">
                 <div class="card-content white-text">
-                    <span class="card-title text center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+                    <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
                     <div class="center">
                         <c:if test="${ordered > 0}">
                             <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
@@ -61,7 +63,7 @@
                 <div class="card dish-card">
                     <div class="card-content white-text">
                             <div class="block">
-                                <span class="card-title title text "><c:out value="${dish.dishName}"/></span>
+                                <span class="main-title"><c:out value="${dish.dishName}"/></span>
                             </div>
                             <div class ="block right">
                                 <div class="center">
@@ -69,7 +71,7 @@
                                        href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}">+</a>
                                 </div>
                             </div>
-                        <p class="description"><c:out value="${dish.dishDescription}"/></p>
+                        <p class="title2"><c:out value="${dish.dishDescription}"/></p>
                         <p class="price">$<c:out value="${dish.price}"/></p>
                     </div>
                 </div>
@@ -80,39 +82,39 @@
             <div class="card order-card">
                 <div class="card-content white-text">
                     <div class="row">
-                        <span class="card-title title text">Resumen de tu pedido:</span>
+                        <span class="main-title">Resumen de tu pedido:</span>
                     </div>
 
                     <div class="row">
                         <!-- acá va un for de la tabla orderItem -->
                         <div class="col">
-                            <span class="card-title title text">Plato</span>
+                            <span class="title2 dishname">Plato</span>
                         </div>
                         <div class="col center">
-                            <span class="card-title title text">Cantidad</span>
+                            <span class="title2">Cantidad</span>
                         </div>
                         <div class="col center">
                             <!-- acá va  -->
-                            <span class="card-title title text">Precio x U</span>
+                            <span class="title2">Precio x U</span>
                         </div>
                         <div class="col center">
-                            <span class="card-title title text">Precio total</span>
+                            <span class="title3">Precio total</span>
                         </div>
                     </div>
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="row">
                             <div class="col">
-                                <span class="card-title title text"><c:out value="${orderItem.dishName}"/></span>
+                                <span class="items-title dishname"><c:out value="${orderItem.dishName}"/></span>
                             </div>
                             <div class="col center">
-                                <span class="card-title title text"><c:out value="${orderItem.quantity}"/></span>
+                                <span class="items-title"><c:out value="${orderItem.quantity}"/></span>
                             </div>
                             <div class="col center">
                                 <!-- acá va  -->
-                                <span class="card-title title text">$<c:out value="${orderItem.unitPrice}"/></span>
+                                <span class="items-title">$<c:out value="${orderItem.unitPrice}"/></span>
                             </div>
                             <div class="col center">
-                                <span class="card-title title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                                <span class="items-title"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                             </div>
                         </div>
                     </c:forEach>
@@ -213,11 +215,6 @@
         font-size: 17px;
     }
 
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
 
     .block-parent{
         justify-content: space-between;
@@ -272,6 +269,18 @@
     .order-card{
         width: 100%;
 
+    }
+
+    .dishname{
+        width: 120px;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .more-margin{
+        margin-right: 30%;
     }
 
 

@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
@@ -123,25 +125,6 @@
     }
 
 
-    .items-title{
-        color:  #707070;
-        font-size: 1.25vw;
-        margin-left: 20%;
-    }
-
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 1.5vw;
-    }
-
-    .price{
-        font-size: 2vw;
-        font-weight: bold;
-        color: black;
-    }
-
-
     .reservation-btn{
         display: flex;
         border-radius: 16px;
@@ -202,9 +185,5 @@
         width: 100%;
     }
 
-    .main-title{
-        font-size: 2vw;
-        margin: 0 auto;
-    }
 
 </style>
