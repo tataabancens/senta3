@@ -45,7 +45,7 @@
                         <div class="card-content white-text">
                             <div class="btn-row-card">
                                 <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
-                                <a class="waves-effect waves-light btn restaurant-btn red">Borrar</a>
+                                <a class="waves-effect waves-light btn restaurant-btn red" href="menu/edit/deleteDish=${dish.id}">Borrar</a>
                             </div>
                             <span class="text title"><c:out value="${dish.dishName}"/></span>
                             <p class="text"><c:out value="${dish.dishDescription}"/></p>

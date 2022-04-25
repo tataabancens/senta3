@@ -164,12 +164,6 @@ public class RestaurantController {
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
-        /*
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
-        mav.addObject("restaurant", restaurant);
-         */
-
         rs.updateRestaurantHourAndTables(restaurantId, form.getTableQty(), form.getOpenHour(), form.getCloseHour());
 
         return mav;
@@ -182,6 +176,19 @@ public class RestaurantController {
 
         res.cancelReservation(restaurantId, reservationId);
         mav.addObject("reservationId", reservationId);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)
+    public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final int dishId,
+                                                      @PathVariable("restaurantId") final int restaurantId){
+        final ModelAndView mav = new ModelAndView("deleteDish");
+
+        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        ds.deleteDish(dishId);
+
+        mav.addObject("dish", dish);
 
         return mav;
     }

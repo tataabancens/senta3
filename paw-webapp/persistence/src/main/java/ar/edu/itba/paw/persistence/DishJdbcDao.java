@@ -61,4 +61,9 @@ public class DishJdbcDao implements DishDao {
     public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
         jdbcTemplate.update("UPDATE dish SET dishname= ?, dishdescription = ?, price = ? WHERE dishid = ?", new Object[]{dishName, dishDescription, price, dishId});
     }
+
+    @Override
+    public void deleteDish(long dishId) {
+        jdbcTemplate.update("DELETE FROM dish WHERE dishId = ?", new Object[]{dishId});
+    }
 }
