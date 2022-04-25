@@ -22,7 +22,7 @@
 <%@ include file="components/navbar.jsp" %>
 <div class="form-container">
             <div class="card card-content">
-                <span class="main-title"><h4><c:out value="${dish.dishName}"/></h4></span>
+                <span class="main-title"><c:out value="${dish.dishName}"/></span>
                 <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
                     <div class ="orderItem">

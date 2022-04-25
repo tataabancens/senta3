@@ -84,14 +84,6 @@
         padding: 10px;
         width: 100%;
     }
-    .card.restaurant-card{
-        display: flex;
-        justify-content: center;
-        margin-right: 10px;
-        margin-left: 10px;
-        width: 20%;
-        max-width: 40%;
-    }
     .add-card-content {
         display: flex;
         flex-wrap: wrap;

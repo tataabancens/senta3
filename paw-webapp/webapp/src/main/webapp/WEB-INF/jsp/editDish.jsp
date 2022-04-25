@@ -20,7 +20,7 @@
         <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
             <div class="card card-content">
-                    <span class="main-title"><h3>Editar Plato</h3></span>
+                    <span class="main-title">Editar Plato</span>
                     <span class="title2"><c:out value="${dish.dishName}"/></span>
                 <div class="disName">
                     <form:errors path="dishName" element="p" cssStyle="color:red"/>
