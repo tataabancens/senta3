@@ -70,11 +70,6 @@
 
 
 
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
 
     .reservation-btn{
         border-radius: 16px;

@@ -64,13 +64,6 @@
         width: 100%;
     }
 
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
-
     .reservation-btn{
         border-radius: 16px;
         background-color: #37A6E6;

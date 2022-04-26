@@ -378,9 +378,7 @@
         width: 100%;
 
     }
-    .title2{
-        font-size: 1.25vw;
-    }
+
 
 
 

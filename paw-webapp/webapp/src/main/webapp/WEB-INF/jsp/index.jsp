@@ -172,6 +172,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        height: 40%;
     }
     .dish-card{
         display: flex;
@@ -181,13 +182,14 @@
         flex-direction: column;
         max-width: 30%;
         min-height: 250px;
-        height: 400px;
-        max-height: 600px;
+        height: 500px;
+        max-height: 700px;
         margin: 40px;
     }
     .dish-card-text{
         display: flex;
         flex-direction: column;
+        height: 40%;
         align-items: flex-start;
         width: 100%;
         padding: 20px;
@@ -199,7 +201,6 @@
     .dish-image{
         width: 100%;
         height: 100%;
-
         border-radius: 16px 16px 0 0;
     }
     .dishList{
