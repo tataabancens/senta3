@@ -38,7 +38,7 @@
                             <div class="notification-item"><span class="title2">Hora:<c:out value="${reservation.reservationHour}"/>:00</span></div>
                             <div class="notification-item"><span class="title2">Id:<c:out value="${reservation.reservationId}"/> </span></div>
                             <div class="notification-item"><span class="title2">Status:<c:out value="${reservation.reservationStatus}"/> </span></div>
-                            <div class="notification-item"><a class="waves-effect waves-light btn red restaurant-btn">Cancelar</a></div>
+                            <div class="notification-item"><a class="waves-effect waves-light btn red restaurant-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a></div>
                         </div>
                     </c:forEach>
                 </div>
