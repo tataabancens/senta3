@@ -6,5 +6,6 @@ public enum OrderItemStatus {
     INCOMING,
     DELIVERED,
     CHECK_ORDERED,
-    PAYED
+    PAYED,
+    FINISHED
 }

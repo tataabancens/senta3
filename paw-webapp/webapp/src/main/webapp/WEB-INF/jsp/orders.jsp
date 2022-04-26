@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -22,14 +23,14 @@
 <%@ include file="components/navbar.jsp" %>
 
 <div class="header">
-    <span class="presentation-text title"><h3>Pedidos realizados</h3></span>
+    <span class="presentation-text title header-title"><h3>Pedidos realizados</h3></span>
 </div>
 <div class="content-container">
     <div class="card incoming-orders">
         <span class="presentation-text title"><h5>Nuevos pedidos</h5></span>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${incoming}">
+                <c:forEach var="item" items="${incomingItems}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
                         <div class="card dish-card">
                             <div class="card-content white-text">
@@ -37,9 +38,10 @@
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
                                 <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
                             </div>
-                            <div>
-                                <a class="waves-effect waves-light btn blue center">Terminado</a>
-                            </div>
+                            <c:url value="${pageContext.request.contextPath}/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center">
+                            </form:form>
                         </div>
                     </c:if>
                 </c:forEach>
@@ -48,9 +50,9 @@
     </div>
     <div class="card finished-orders">
         <span class="presentation-text title"><h5>Pedidos terminados</h5></span>
-        <div>
+        <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${items}">
+                <c:forEach var="item" items="${finishedItems}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
                         <div class="card dish-card">
                             <div class="card-content white-text">
@@ -58,6 +60,10 @@
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
                                 <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
                             </div>
+                            <c:url value="${pageContext.request.contextPath}/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center">
+                            </form:form>
                         </div>
                     </c:if>
                 </c:forEach>
@@ -144,7 +150,9 @@
         color:  #707070;
         font-size: 17px;
     }
-
+    .header-title{
+        color: white;
+    }
 
     .reservation-btn{
         border-radius: 8px;

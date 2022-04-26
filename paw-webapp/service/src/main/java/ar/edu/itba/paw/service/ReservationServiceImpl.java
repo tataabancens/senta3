@@ -77,6 +77,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus) {
+        reservationDao.updateOrderItemStatus(orderItemId, newStatus);
+    }
+
+    @Override
     public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
         reservationDao.updateReservationStatus(reservationId, newStatus);
     }

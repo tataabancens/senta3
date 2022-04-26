@@ -153,6 +153,7 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
 
         orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.INCOMING));
+        orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.FINISHED));
         orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.DELIVERED));
 
         final ModelAndView mav = new ModelAndView("receipt");

@@ -111,15 +111,31 @@ public class RestaurantController {
                              @PathVariable("restaurantId") final int restaurantId){
         final ModelAndView mav = new ModelAndView("orders");
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
-        List<FullOrderItem> orderedItems = res.getOrderItemsByStatus(OrderItemStatus.ORDERED);
         List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
+        List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
         for (Reservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
-        mav.addObject("items", orderedItems);
         mav.addObject("reservations", reservations);
-        mav.addObject("incoming", incomingItems);
+        mav.addObject("incomingItems", incomingItems);
+        mav.addObject("finishedItems", finishedItems);
         return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/orders/incomingToFinished-{orderItemId}", method = RequestMethod.POST)
+    public ModelAndView OrderItemStatusFinished (@PathVariable("restaurantId") final int restaurantId,
+                                                 @PathVariable("orderItemId") final int orderItemId){
+
+        res.updateOrderItemStatus(orderItemId, OrderItemStatus.FINISHED);
+        return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/orders/finishedToDelivered-{orderItemId}", method = RequestMethod.POST)
+    public ModelAndView OrderItemStatusDelivered (@PathVariable("restaurantId") final int restaurantId,
+                                                 @PathVariable("orderItemId") final int orderItemId) {
+
+        res.updateOrderItemStatus(orderItemId, OrderItemStatus.DELIVERED);
+        return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)

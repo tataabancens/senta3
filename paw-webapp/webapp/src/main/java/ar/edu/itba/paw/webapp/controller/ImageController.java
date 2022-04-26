@@ -24,8 +24,8 @@ public class ImageController {
     }
 
     @RequestMapping(value = "/resources/images/{imageId}", method = RequestMethod.GET)
-    public @ResponseBody byte[] getImageAsByteArray(@PathVariable final long imageId) throws IOException {
-        RawImage image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+    public @ResponseBody byte[] getImageAsByteArray(@PathVariable final String imageId) throws IOException {
+        RawImage image = ims.getImageById(Long.parseLong(imageId)).orElseThrow(ImageNotFoundException::new);
         return image.getBytes();
     }
 }
