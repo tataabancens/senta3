@@ -46,7 +46,7 @@
             <div class="card-content white-text">
                 <span class="main-title text center">Estas por cancelar tu reserva</span>
                     <div class="center-btn">
-                        <c:url value="${pageContext.request.contextPath}/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
+                        <c:url value="/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red center">
                         </form:form>

@@ -213,11 +213,17 @@ public class RestaurantController {
     public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final int reservationId,
                                     @PathVariable("restaurantId") final int restaurantId){
         final ModelAndView mav = new ModelAndView("cancelReservationConfirmation");
-
-        res.cancelReservation(restaurantId, reservationId);
         mav.addObject("reservationId", reservationId);
+        mav.addObject("restaurantId", restaurantId);
 
         return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
+    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final int reservationId,
+                                                      @PathVariable("restaurantId") final int restaurantId){
+        res.cancelReservation(restaurantId, reservationId);
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)

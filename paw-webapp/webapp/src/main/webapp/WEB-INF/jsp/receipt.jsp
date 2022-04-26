@@ -82,9 +82,9 @@
 
 
                     <div>
-                        <c:url value="${pageContext.request.contextPath}/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                        <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="REALIZAR PAGO" class="waves-effect waves-light btn reservation-btn green right">
+                            <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn reservation-btn green right">
                         </form:form>
                     </div>
 

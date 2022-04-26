@@ -38,7 +38,7 @@
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
                                 <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
                             </div>
-                            <c:url value="${pageContext.request.contextPath}/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center">
                             </form:form>
@@ -60,7 +60,7 @@
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
                                 <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
                             </div>
-                            <c:url value="${pageContext.request.contextPath}/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center">
                             </form:form>
