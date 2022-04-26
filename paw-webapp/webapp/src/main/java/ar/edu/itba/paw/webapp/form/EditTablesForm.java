@@ -1,11 +1,15 @@
 package ar.edu.itba.paw.webapp.form;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 public class EditTablesForm {
 
     int tableQty;
 
+    @Size(max = 23)
     int openHour;
-
+    @Size(max=23)
     int closeHour;
 
     public int getTableQty() {
