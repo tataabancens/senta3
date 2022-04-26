@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS reservation (
 
 ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
 
-ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer NOT NULL;
+ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT NULL;
 
 
 CREATE TABLE IF NOT EXISTS users (
@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS users (
   password varchar(100),
   role varchar(100)
 );
+
+ALTER TABLE users ADD IF NOT EXISTS role varchar(100) default 'ROLE_RESTAURANT' NOT NULL;
 
 CREATE TABLE IF NOT EXISTS orderItem
 (

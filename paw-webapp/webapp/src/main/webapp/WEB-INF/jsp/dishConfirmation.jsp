@@ -52,7 +52,7 @@
                 <span class="main-title text center">Agrega una foto!</span>
                 <div class="img-visualizer">
                     <div class="card visualizer">
-                        <img src="/resources/images/${imageId}" alt="La foto del plato">
+                        <img src="${pageContext.request.contextPath}/resources/images/${imageId}" alt="La foto del plato">
                     </div>
                 </div>
                 <c:url value="/restaurant=${restaurantId}/menu/dish=${dishId}/edit-photo" var="postPath"/>

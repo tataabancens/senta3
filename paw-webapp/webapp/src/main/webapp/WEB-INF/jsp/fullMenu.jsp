@@ -105,7 +105,7 @@
                 <div class="order-btn-row">
                     <div>
                         <c:if test="${selected > 0}">
-                            <c:url value="order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
+                            <c:url value="/order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn plus-btn red">
                             </form:form>
