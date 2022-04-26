@@ -54,4 +54,10 @@ public class ImageJdbcDao implements ImageDao {
         Number imageId = jdbcInsert.executeAndReturnKey(imageData);
         return new Image(imageId.longValue(), photo);
     }
+
+    @Override
+    public void deleteImageById(long imageId) {
+        jdbcTemplate.update("DELETE FROM image WHERE imageId = ?", new Object[]{imageId});
+
+    }
 }

@@ -104,14 +104,4 @@
     }
 
 
-    .restaurant-card{
-        display:flex;
-        margin-left: 5%;
-        width: 20%;
-        max-width: 40%;
-        margin-right: 5%;
-        height: 20%;
-    }
-
-
 </style>
