@@ -22,7 +22,7 @@
 <%@ include file="components/navbar.jsp" %>
 
 <div class="header">
-    <span class="presentation-text title"><h3>Pedidos realizados</h3></span>
+    <span class="presentation-text title header-title"><h3>Pedidos realizados</h3></span>
 </div>
 <div class="content-container">
     <div class="card incoming-orders">
@@ -38,7 +38,7 @@
                                 <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
                             </div>
                             <div>
-                                <a class="waves-effect waves-light btn blue center">Terminado</a>
+                                <a class="waves-effect waves-light btn blue center" href="">Terminado</a>
                             </div>
                         </div>
                     </c:if>
@@ -50,7 +50,7 @@
         <span class="presentation-text title"><h5>Pedidos terminados</h5></span>
         <div>
             <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${items}">
+                <c:forEach var="item" items="${finishedItems}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
                         <div class="card dish-card">
                             <div class="card-content white-text">
@@ -144,7 +144,9 @@
         color:  #707070;
         font-size: 17px;
     }
-
+    .header-title{
+        color: white;
+    }
 
     .reservation-btn{
         border-radius: 8px;

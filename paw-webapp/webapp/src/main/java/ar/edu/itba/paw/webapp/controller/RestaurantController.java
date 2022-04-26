@@ -111,15 +111,20 @@ public class RestaurantController {
                              @PathVariable("restaurantId") final int restaurantId){
         final ModelAndView mav = new ModelAndView("orders");
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
-        List<FullOrderItem> orderedItems = res.getOrderItemsByStatus(OrderItemStatus.ORDERED);
         List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
         for (Reservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
-        mav.addObject("items", orderedItems);
         mav.addObject("reservations", reservations);
         mav.addObject("incoming", incomingItems);
         return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/orders/incomingToFinished", method = RequestMethod.POST)
+    public ModelAndView OrderItemStatusFinished (@PathVariable("restaurantId") final int restaurantId,
+                                                 @PathVariable("orderItemId") final int orderItemId){
+
+
+        return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)
