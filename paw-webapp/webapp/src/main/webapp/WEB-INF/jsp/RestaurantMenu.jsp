@@ -20,26 +20,25 @@
 
         <div class="contentContainer">
             <div class="notificationContainer">
-                <div class="card restaurant-card">
+                <div class="card">
                     <div>
-                        <p class="text title">Mesas abiertas: ${restaurant.totalTables}</p>
-                    </div>
-                    <div>
-                        <p class="text title">Horario: ${restaurant.openHour} a ${restaurant.closeHour}</p>
-                    </div>
-                    <div>
+                        <span class="main-title">Mesas abiertas: <c:out value=" ${restaurant.totalTables}"/></span>
+                        <span class="main-title">Horario: <c:out value=" ${restaurant.openHour}"/> a <c:out value=" ${restaurant.closeHour}"/></span>
                         <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
                     </div>
+
                 </div>
-                <div class="card restaurant-card">
+                <div class="card reservations-card">
                     <span class="main-title">Reservas abiertas</span>
                     <c:forEach var="reservation" items="${reservations}">
-                        <div class="card notification-card">
-                            <div class="notification-item"><span class="title2">Hora:<c:out value="${reservation.reservationHour}"/>:00</span></div>
-                            <div class="notification-item"><span class="title2">Id:<c:out value="${reservation.reservationId}"/> </span></div>
-                            <div class="notification-item"><span class="title2">Status:<c:out value="${reservation.reservationStatus}"/> </span></div>
-                            <div class="notification-item"><a class="waves-effect waves-light btn red restaurant-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a></div>
-                        </div>
+
+                            <div class="notification-item">
+                                <span class="title2">Hora:<c:out value="${reservation.reservationHour}"/>:00</span>
+                                <span class="title2">Id:<c:out value="${reservation.reservationId}"/> </span>
+                                <span class="title2">Status:<c:out value="${reservation.reservationStatus}"/> </span>
+                                <a class="waves-effect waves-light btn red restaurant-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
+                            </div>
+
                     </c:forEach>
                 </div>
             </div>
@@ -148,15 +147,7 @@
         height: 100%;
         width: 100%;
     }
-    .main-title{
-        font-size: 1.5vw;
-    }
-    .title2{
-        font-size: 1vw;
-    }
-    .price{
-        font-size: 1vw;
-    }
+
     .btn-row-card{
         margin-top: 5px;
         justify-content: right;
@@ -183,6 +174,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .reservations-card{
+        display: flex;
+        flex-direction: column;
     }
 
 </style>

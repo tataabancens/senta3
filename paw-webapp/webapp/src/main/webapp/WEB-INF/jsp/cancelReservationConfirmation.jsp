@@ -68,17 +68,7 @@
         width: 100%;
     }
 
-    .items-title{
-        color:  #707070;
-        font-size: 18px;
-    }
 
-    .title2{
-        justify-content: center;
-        color:  #707070;
-        font-size: 20px;
-
-    }
 
     .price{
         font-size: 25px;
