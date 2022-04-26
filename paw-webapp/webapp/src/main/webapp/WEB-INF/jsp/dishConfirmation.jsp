@@ -22,7 +22,7 @@
     <%@ include file="components/navbar.jsp" %>
 </div>
 
-    <div class="col s4 offset-s3 card-margin">
+    <!--<div class="col s4 offset-s3 card-margin">
         <div class="card dish-card">
             <div class="card-content white-text">
                 <span class="card-title text price center">Creaste el plato!</span>
@@ -45,19 +45,29 @@
                     <div class="col s12 center">
                         <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
                     </div>
-                </div>
+                </div>-->
 
     <div class="page-container">
             <div class="card confirm-card">
-                <div class="card-content white-text">
-                    <span class="main-title text center">Creaste el plato!</span>
-                    <div class="row margin-0">
+                <span class="main-title text center">Agrega una foto!</span>
+                <div class="img-visualizer">
+                    <div class="card visualizer">
+                        <img src="/resources/images/${imageId}" alt="La foto del plato">
+                    </div>
+                </div>
+                <c:url value="/restaurant=${restaurantId}/menu/dish=${dishId}/edit-photo" var="postPath"/>
+                <form action="${postPath}" method="post" enctype="multipart/form-data">
+                    <div class="img-row">
+                        <input type="file" name="photo"/>
                         <div class="col s12 center">
-                            <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
+                            <input type="submit" value="Cargar" class="continue-btn"/>
                         </div>
                     </div>
+                </form>
+                <div class="btn-row">
+                    <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Confirmar</a>
+                </div>
             </div>
-        </div>
     </div>
 
 
@@ -73,10 +83,39 @@
 
     .card{
         border-radius: 16px;
-        display: grid;
     }
-
-
+    .visualizer{
+        background-color:#37A6E6;
+        padding: 8px;
+    }
+    img{
+        border-radius: 16px;
+    }
+    .confirm-card{
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        padding: 20px;
+        justify-content: center;
+    }
+    .img-visualizer{
+        width: 100%;
+        display: flex;
+        margin: 20px;
+        justify-content: center;
+    }
+    .img-row{
+        width: 100%;
+        display: flex;
+        margin: 20px;
+        justify-content: center;
+    }
+    .btn-row{
+        width: 100%;
+        display: flex;
+        margin: 20px;
+        justify-content: center;
+    }
     .reservation-btn{
         display: flex;
         border-radius: 16px;

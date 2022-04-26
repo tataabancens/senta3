@@ -27,15 +27,18 @@
 <div class="content-container">
     <div class="card incoming-orders">
         <span class="presentation-text title"><h5>Nuevos pedidos</h5></span>
-        <div>
+        <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${items}">
+                <c:forEach var="item" items="${incoming}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
                         <div class="card dish-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
                                 <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
+                            </div>
+                            <div>
+                                <a class="waves-effect waves-light btn blue center">Terminado</a>
                             </div>
                         </div>
                     </c:if>
@@ -44,10 +47,10 @@
         </div>
     </div>
     <div class="card finished-orders">
-        <span class="presentation-text title"><h5>Pedidos en camino</h5></span>
+        <span class="presentation-text title"><h5>Pedidos terminados</h5></span>
         <div>
             <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${incoming}">
+                <c:forEach var="item" items="${items}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
                         <div class="card dish-card">
                             <div class="card-content white-text">
@@ -101,9 +104,16 @@
         justify-content: flex-start;
         align-items: center;
     }
+    .cardContainer{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 100%;
+    }
     .card.incoming-orders{
         display: flex;
         flex-direction: column;
+        flex-wrap: wrap;
         justify-content: center;
         padding: 10px;
         width: 48%;
@@ -121,6 +131,13 @@
     }
     .dish-card{
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-content: flex-start;
+        margin: 15px;
+        max-width: 40%;
+        padding: 15px;
     }
 
     .description{
@@ -130,8 +147,9 @@
 
 
     .reservation-btn{
-        border-radius: 16px;
+        border-radius: 8px;
         background-color: #37A6E6;
+        color: white;
         margin-top: 5%;
         opacity: 57%;
     }
