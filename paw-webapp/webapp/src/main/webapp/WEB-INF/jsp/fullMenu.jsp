@@ -142,7 +142,7 @@
         padding-left: 20px;
         padding-right: 20px;
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: wrap-reverse;
 
     }
     .restaurant-header{
@@ -231,7 +231,6 @@
         width: 100%;
         min-height: 200px;
         height: 200px;
-        max-height: 600px;
         margin: 20px;
     }
     .dish-image{
