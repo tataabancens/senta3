@@ -50,7 +50,7 @@
     </div>
     <div class="card finished-orders">
         <span class="presentation-text title"><h5>Pedidos terminados</h5></span>
-        <div>
+        <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
