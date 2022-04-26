@@ -26,7 +26,8 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("reservationStatus")));
 
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
-            new FullOrderItem(resultSet.getLong("reservationId"),
+            new FullOrderItem(resultSet.getLong("id"),
+                    resultSet.getLong("reservationId"),
                     resultSet.getLong("dishId"),
                     resultSet.getFloat("unitPrice"),
                     resultSet.getInt("quantity"),
@@ -147,6 +148,11 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
+    public void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus) {
+        jdbcTemplate.update("UPDATE orderitem SET status = ? where id = ?", new Object[]{newStatus.ordinal(), orderItemId});
+    }
+
+    @Override
     public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
         jdbcTemplate.update("UPDATE reservation SET reservationStatus = ? where reservationId = ?", new Object[]{newStatus.ordinal(), reservationId});
     }
@@ -177,11 +183,11 @@ public class ReservationJdbcDao implements ReservationDao {
 
         List<Integer> notAvailable = new ArrayList<>();
         int qty = 1;
-        for(int i=0; i<occupied.size()-1; i++){
+        for (int i = 0; i < occupied.size() - 1; i++) {
 
-            if(Objects.equals(occupied.get(i), occupied.get(i + 1))){
+            if(Objects.equals(occupied.get(i), occupied.get(i + 1))) {
                 qty++;
-                if(qty >= maxTables){
+                if (qty >= maxTables) {
                     notAvailable.add(occupied.get(i));
                 }
             } else {
@@ -192,24 +198,22 @@ public class ReservationJdbcDao implements ReservationDao {
         List<Integer> totalHours = new ArrayList<>();
         int openHour = current.getOpenHour();
         int closeHour = current.getCloseHour();
-        if(openHour < closeHour){
-            for(int i=openHour; i<closeHour; i++){
+        if (openHour < closeHour) {
+            for(int i = openHour; i < closeHour; i++) {
                 totalHours.add(i);
             }
-        } else if(closeHour < openHour){
-            for(int i=openHour; i<24; i++){
+        } else if( closeHour < openHour ) {
+            for (int i = openHour; i<24; i++) {
                 totalHours.add(i);
             }
-            for(int i=0; i<closeHour; i++){
+            for (int i = 0; i < closeHour; i++) {
                 totalHours.add(i);
             }
 
         } else {
 
         }
-
         totalHours.removeAll(notAvailable);
-
         return totalHours;
     }
 
