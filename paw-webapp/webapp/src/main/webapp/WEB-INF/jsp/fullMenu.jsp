@@ -330,6 +330,18 @@
         opacity: 100%;
     }
 
+<<<<<<< Updated upstream
+=======
+
+    .card{
+        border-radius: 10px;
+    }
+
+    .dish-card{
+        width: 100%;
+    }
+
+>>>>>>> Stashed changes
     .description{
         color:  #707070;
         font-size: 17px;

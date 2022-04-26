@@ -102,19 +102,6 @@
         padding: 10px;
         width: 100%;
     }
-    .card.notification-card{
-        flex-direction: column;
-        align-items: flex-start;
-        justify-items: center;
-    }
-    .restaurant-card{
-        display: flex;
-        justify-content: flex-start;
-        flex-direction: column;
-        margin-right: 10px;
-        margin-left: 10px;
-        width: 100%;
-    }
     .add-card-content {
         display: flex;
         flex-wrap: wrap;
