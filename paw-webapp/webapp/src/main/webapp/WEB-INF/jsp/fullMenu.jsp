@@ -60,11 +60,6 @@
         <div class="dishList">
             <c:forEach var="dish" items="${restaurant.dishes}">
                 <div class="card dish-card">
-                    <div class="image">
-                        <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
-                        <a class="btn-floating btn-large waves-effect waves-light plus-btn"
-                           href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
-                    </div>
                     <div class="dish-info">
                         <div class="dish-card-name">
                             <div class="start">
@@ -73,6 +68,11 @@
                         </div>
                         <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
                         <span class="price dishName">$<c:out value="${dish.price}"/></span>
+                    </div>
+                    <div class="image-box">
+                        <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                        <a class="btn-floating btn-large waves-effect waves-light plus-btn"
+                           href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
                     </div>
                 </div>
             </c:forEach>
@@ -163,8 +163,8 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
-        min-height: 150px;
-        max-height: 300px;
+        width: 50%;
+        height: 100%;
     }
     .restaurant-content{
         margin-top: 30px;
@@ -216,30 +216,38 @@
         width: 25%;
         max-width: 35%;
     }
+    .btn-floating.btn-large{
+        position: absolute;
+        bottom: 159px;
+        right: -15px;
+    }
     .dish-card{
         display: flex;
         border-radius: 16px;
         justify-content:space-between;
-        flex-wrap: wrap;
+        flex-wrap: wrap-reverse;
         align-items: flex-start;
-        flex-direction: column;
-        width: 70%;
-        min-height: 250px;
-        height: 400px;
+        flex-direction: row;
+        width: 100%;
+        min-height: 200px;
+        height: 200px;
         max-height: 600px;
         margin: 20px;
     }
-    .dish-card.image{
-        position: relative;
-        height: 55%;
+    .dish-image{
+        border-radius: 16px 16px 16px 16px;
+        height: 100%;
         width: 100%;
     }
-    .dish-image{
-        display: block;
-        border-radius: 16px 16px 0 0;
+    .image-box{
+        padding: 10px;
+        height: 100%;
     }
     .dish-info{
-        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        width: 50%;
+        height: 100%;
         padding: 10px;
     }
     .dish-add{
@@ -371,7 +379,7 @@
     }
 
     .dishName{
-        width: 600px;
+        width: 480px;
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
