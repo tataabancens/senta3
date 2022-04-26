@@ -48,7 +48,7 @@
                     <div class="center-btn">
                         <c:url value="/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn reservation-btn red center">
+                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn confirm-btn red center">
                         </form:form>
                     </div>
             </div>
@@ -110,23 +110,6 @@
     }
 
 
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
 
 
 

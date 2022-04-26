@@ -32,7 +32,7 @@
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${incomingItems}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
-                        <div class="card dish-card">
+                        <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
@@ -40,7 +40,7 @@
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center">
+                                <input type="submit" value="Terminado" class="waves-effect waves-light btn confirm-btn blue center">
                             </form:form>
                         </div>
                     </c:if>
@@ -54,7 +54,7 @@
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
                     <c:if test="${item.reservationId == reservation.reservationId}">
-                        <div class="card dish-card">
+                        <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
                                 <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
@@ -62,7 +62,7 @@
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center">
+                                <input type="submit" value="Terminado" class="waves-effect waves-light btn blue center confirm-btn">
                             </form:form>
                         </div>
                     </c:if>
@@ -135,7 +135,7 @@
         height: 100%;
         margin: 10px;
     }
-    .dish-card{
+    .order-card{
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -152,20 +152,6 @@
     }
     .header-title{
         color: white;
-    }
-
-    .reservation-btn{
-        border-radius: 8px;
-        background-color: #37A6E6;
-        color: white;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
     }
 
     .center{

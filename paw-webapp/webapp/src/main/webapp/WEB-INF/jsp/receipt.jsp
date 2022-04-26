@@ -84,7 +84,7 @@
                     <div>
                         <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn reservation-btn green right">
+                            <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
 
@@ -116,23 +116,7 @@
         border-radius: 16px;
     }
 
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
 
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
 
     .center{
         justify-content: center;
@@ -147,14 +131,6 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-    }
-
-    .dishname{
-        width: 120px;
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .titles{

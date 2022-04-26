@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
-        <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <title>Senta3</title>
     </head>
@@ -24,7 +24,7 @@
                     <div>
                         <span class="main-title">Mesas abiertas: <c:out value=" ${restaurant.totalTables}"/></span>
                         <span class="main-title">Horario: <c:out value=" ${restaurant.openHour}"/> a <c:out value=" ${restaurant.closeHour}"/></span>
-                        <a class="waves-effect waves-light btn restaurant-btn" href="editTables">Editar</a>
+                        <a class="waves-effect waves-light btn-floating btn-small plus-btn" href="editTables">  <i class="material-icons">edit</i></a>
                     </div>
 
                 </div>
@@ -36,7 +36,7 @@
                                 <span class="title2">Hora:<c:out value="${reservation.reservationHour}"/>:00</span>
                                 <span class="title2">Id:<c:out value="${reservation.reservationId}"/> </span>
                                 <span class="title2">Status:<c:out value="${reservation.reservationStatus}"/> </span>
-                                <a class="waves-effect waves-light btn red restaurant-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
+                                <a class="waves-effect waves-light btn red confirm-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
                             </div>
 
                     </c:forEach>
@@ -54,20 +54,21 @@
                     </a>
                 </div>
                 <c:forEach var="dish" items="${restaurant.dishes}">
-                    <div class="card dish-card">
-                        <div class="card-img">
-                            <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
-                        </div>
-                        <div class="btn-row-card">
-                            <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
-                            <a class="waves-effect waves-light btn restaurant-btn red" href="menu/edit/deleteDish=${dish.id}">Borrar</a>
-                        </div>
-                        <div class="card-content">
-                            <span class="main-title dishName"><c:out value="${dish.dishName}"/></span>
-                            <p class="title2 dishName"><c:out value="${dish.dishDescription}"/></p>
-                            <p class="price dishName">$<c:out value="${dish.price}"/></p>
-                        </div>
+
+                <div class="card dish-card">
+                    <div class="btn-row-card">
+                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
+                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
                     </div>
+                    <div class="imageContainer">
+                        <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                    </div>
+                    <div class="dish-card-text">
+                        <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
+                        <span class="title2 dishText"><c:out value="${dish.dishDescription}"/></span>
+                        <span class="price">$<c:out value="${dish.price}"/></span>
+                    </div>
+                </div>
                 </c:forEach>
             </div>
         </div>
@@ -124,17 +125,7 @@
         width: 100%;
         height: 100%;
     }
-    .dish-card{
-        width: 100%;
-        margin: 8px;
-        padding: 0;
-        flex-direction: column;
-        min-width: 150px;
-        justify-content:normal;
-        max-width: 35%;
-        height: 20%;
-        max-height: 500px;
-    }
+
     .card-content{
         height: 30%;
         width: 100%;
@@ -151,10 +142,7 @@
         width: 100%;
     }
 
-    .btn-row-card{
-        position: absolute;
-        justify-content: space-evenly;
-    }
+
 
     .restaurant-btn{
         border-radius: 16px;

@@ -31,7 +31,7 @@
         <div class="card-content white-text center">
             <span class="main-title text">Pediste la cuenta!</span>
                 <div class="center">
-                    <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/">Volver</a>
+                    <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/">Volver</a>
                 </div>
             </div>
         </div>
@@ -53,29 +53,7 @@
         display: grid;
     }
 
-
-    .dish-card{
-        width: 100%;
-    }
-
-
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
+    
 
     .center{
         justify-content: center;
