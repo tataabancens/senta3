@@ -67,8 +67,8 @@
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
-                            <div class="image">
-                                <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                            <div class="imageContainer">
+                               <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
                             </div>
                             <div class="dish-card-text">
                                 <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
@@ -179,11 +179,11 @@
         justify-content:space-between;
         align-items: flex-start;
         flex-direction: column;
-        max-width: 20%;
+        max-width: 30%;
         min-height: 250px;
         height: 400px;
         max-height: 600px;
-        margin: 20px;
+        margin: 40px;
     }
     .dish-card-text{
         display: flex;
@@ -192,12 +192,14 @@
         width: 100%;
         padding: 20px;
     }
-    .image{
-        height: 10%;
+    .imageContainer{
+        height: 55%;
         width: 100%;
     }
     .dish-image{
         width: 100%;
+        height: 100%;
+
         border-radius: 16px 16px 0 0;
     }
     .dishList{
