@@ -11,4 +11,5 @@ public interface ImageService {
     Optional<RawImage> getImageById(long id);
 
     Image createImage(MultipartFile photo);
+
 }

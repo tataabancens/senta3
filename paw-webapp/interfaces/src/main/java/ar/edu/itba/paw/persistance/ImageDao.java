@@ -12,4 +12,6 @@ public interface ImageDao {
     Optional<RawImage> getImageById(long id);
 
     Image create(MultipartFile photo) throws IOException;
+
+    void deleteImageById(long imageId);
 }

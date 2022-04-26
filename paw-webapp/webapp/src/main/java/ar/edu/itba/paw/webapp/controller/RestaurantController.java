@@ -172,7 +172,7 @@ public class RestaurantController {
     public ModelAndView editForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("editTablesForm") final EditTablesForm form){
 
         final ModelAndView mav = new ModelAndView("/editAvailableTables");
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
 
         mav.addObject("restaurant", restaurant);
 

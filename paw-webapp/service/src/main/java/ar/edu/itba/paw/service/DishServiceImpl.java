@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.persistance.DishDao;
+import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,12 @@ import java.util.Optional;
 public class DishServiceImpl implements DishService{
 
     private DishDao dishDao;
+    private ImageDao imageDao;
 
     @Autowired
-    public  DishServiceImpl(final DishDao dishDao){
+    public  DishServiceImpl(final DishDao dishDao, final ImageDao imageDao){
         this.dishDao = dishDao;
+        this.imageDao = imageDao;
     }
 
     @Override
@@ -34,12 +37,14 @@ public class DishServiceImpl implements DishService{
 
     @Override
     public void updateDishPhoto(long dishId, long imageId) {
+        Dish dish = dishDao.getDishById(dishId).get();
+        if(dish.getImageId() > 1) {
+            imageDao.deleteImageById(dish.getImageId());
+        }
         dishDao.updateDishPhoto(dishId, imageId);
     }
     @Override
     public void deleteDish(long dishId) {
         dishDao.deleteDish(dishId);
     }
-
-
 }
