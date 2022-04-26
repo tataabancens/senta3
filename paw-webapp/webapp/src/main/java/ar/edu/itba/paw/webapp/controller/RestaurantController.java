@@ -8,6 +8,7 @@ import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
+import ar.edu.itba.paw.webapp.form.EditTablesForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -165,4 +166,55 @@ public class RestaurantController {
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dishId);
         return mav;
     }
+
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.GET)
+    public ModelAndView editForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("editTablesForm") final EditTablesForm form){
+
+        final ModelAndView mav = new ModelAndView("/editAvailableTables");
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+
+        mav.addObject("restaurant", restaurant);
+
+        form.setTableQty(restaurant.getTotalTables());
+        form.setOpenHour(restaurant.getOpenHour());
+        form.setCloseHour(restaurant.getCloseHour());
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.POST)
+    public ModelAndView editMenu(@ModelAttribute("editTablesForm") final EditTablesForm form,
+                                 @PathVariable("restaurantId") final int restaurantId) {
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
+
+        rs.updateRestaurantHourAndTables(restaurantId, form.getTableQty(), form.getOpenHour(), form.getCloseHour());
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
+    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final int reservationId,
+                                    @PathVariable("restaurantId") final int restaurantId){
+        final ModelAndView mav = new ModelAndView("cancelReservationConfirmation");
+
+        res.cancelReservation(restaurantId, reservationId);
+        mav.addObject("reservationId", reservationId);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)
+    public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final int dishId,
+                                                      @PathVariable("restaurantId") final int restaurantId){
+        final ModelAndView mav = new ModelAndView("deleteDish");
+
+        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        ds.deleteDish(dishId);
+
+        mav.addObject("dish", dish);
+
+        return mav;
+    }
+
 }

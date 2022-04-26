@@ -49,7 +49,7 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a class="waves-effect waves-light btn reservation-btn" href="">Reservar</a>
+                                <a disabled class="waves-effect waves-light btn reservation-btn" href="">Reservar</a>
                             </div>
                         </sec:authorize>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
@@ -60,16 +60,21 @@
                         </sec:authorize>
                          <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-reservation-btn">
-                                <a class="waves-effect waves-light btn reservation-btn" href="">Ingresar</a>
+                                <a disabled class="waves-effect waves-light btn reservation-btn" href="">Ingresar</a>
                             </div>
                         </sec:authorize>
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
-                            <span class="main-title"><c:out value="${dish.dishName}"/></span>
-                            <span class="title2"><c:out value="${dish.dishDescription}"/></span>
-                            <span class="price">$<c:out value="${dish.price}"/></span>
+                            <div class="image">
+                                <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                            </div>
+                            <div class="dish-card-text">
+                                <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
+                                <span class="title2 dishText"><c:out value="${dish.dishDescription}"/></span>
+                                <span class="price">$<c:out value="${dish.price}"/></span>
+                            </div>
                         </div>
                     </c:forEach>
                 </div>
@@ -129,10 +134,6 @@
         color: white;
         font-size: 21px;
     }
-    .text.description{
-        color: #463f3f;
-        font-size: 21px;
-    }
 
     .reservation-action-btn{
         display: flex;
@@ -145,8 +146,8 @@
         max-width: 200px;
     }
     .card{
-        border-radius: 16px;
         display: flex;
+        border-radius: 16px;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
@@ -165,25 +166,39 @@
         margin-right: 50px;
         max-width: 35%;
     }
-
+    .dishText{
+        width: 100%;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     .dish-card{
         display: flex;
-        justify-content:space-evenly;
+        border-radius: 16px;
+        justify-content:space-between;
         align-items: flex-start;
-        height: 100%;
         flex-direction: column;
-        min-width: 150px;
-        max-width: 450px;
+        max-width: 20%;
         min-height: 250px;
+        height: 400px;
         max-height: 600px;
-        padding: 20px;
-        width: 100%;
-        margin: 40px;
+        margin: 20px;
     }
-
-    .description{
-        color:  #707070;
-        font-size: 17px;
+    .dish-card-text{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: 20px;
+    }
+    .image{
+        height: 10%;
+        width: 100%;
+    }
+    .dish-image{
+        width: 100%;
+        border-radius: 16px 16px 0 0;
     }
     .dishList{
         display: flex;
@@ -216,15 +231,6 @@
         opacity: 100%;
     }
 
-    .center{
-        justify-content: center;
-    }
-
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
 
 
 </style>

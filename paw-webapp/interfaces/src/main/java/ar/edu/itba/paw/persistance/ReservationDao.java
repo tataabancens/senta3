@@ -35,4 +35,6 @@ public interface ReservationDao {
 
     List<Integer> getAvailableHours(long restaurantId);
 
+    void cancelReservation(long restaurantId, long reservationId);
+
 }

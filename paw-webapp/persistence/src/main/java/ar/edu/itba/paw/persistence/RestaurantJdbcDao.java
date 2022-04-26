@@ -23,7 +23,10 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail"),
-                    resultSet.getInt("totalTables")));
+                    resultSet.getInt("totalTables"),
+                    resultSet.getInt("openHour"),
+                    resultSet.getInt("closeHour")));
+
 
     private static final RowMapper<Dish> ROW_MAPPER_DISH = ((resultSet, i) ->
             new Dish(resultSet.getLong("dishId"),
@@ -56,6 +59,13 @@ public class RestaurantJdbcDao implements RestaurantDao {
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);
         return query;
     }
+
+    @Override
+    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHOur) {
+        jdbcTemplate.update("UPDATE restaurant SET totalTables = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
+            new Object[]{newMaxTables, newOpenHour, newCloseHOur, restaurantId});
+    }
+
 
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {

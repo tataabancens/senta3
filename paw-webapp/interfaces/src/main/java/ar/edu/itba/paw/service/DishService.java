@@ -13,4 +13,6 @@ public interface DishService {
     void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId);
 
     void updateDishPhoto(long dishId, long imageId);
+
+    void deleteDish(long dishId);
 }

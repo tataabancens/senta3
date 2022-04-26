@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="styless.css">
 
-    <title>Sentate-Register</title>
+    <title>Editar Plato</title>
 <body>
     <%@ include file="components/navbar.jsp" %>
 
@@ -38,7 +38,7 @@
                     <form:input path="dishPrice" type="text"/>
                 </div>
                 <div class="submit center">
-                    <input type="submit" value="Continuar" class="continue-btn"/>
+                    <input type="submit" value="Confirmar" class="continue-btn"/>
                 </div>
             </div>
         </form:form>
