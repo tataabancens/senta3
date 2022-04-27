@@ -49,23 +49,23 @@
                     <a href="menu/create" class="add-card-link">
                         <div class="add-card-content">
                             <i class="large material-icons">add</i>
-                            <span class="main-title">Crear Plato</span>
+                            <span class="main-title" style="color: rgba(183, 179, 179, 0.87); ">Crear Plato</span>
                         </div>
                     </a>
                 </div>
                 <c:forEach var="dish" items="${restaurant.dishes}">
                     <div class="card dish-card">
+                        <div class="card-img">
+                            <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                        </div>
+                        <div class="btn-row-card">
+                            <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
+                            <a class="waves-effect waves-light btn restaurant-btn red" href="menu/edit/deleteDish=${dish.id}">Borrar</a>
+                        </div>
                         <div class="card-content">
-                            <div class="btn-row-card">
-                                <a class="waves-effect waves-light btn restaurant-btn blue" href="menu/edit/dishId=${dish.id}">Editar</a>
-                                <a class="waves-effect waves-light btn restaurant-btn red" href="menu/edit/deleteDish=${dish.id}">Borrar</a>
-                            </div>
                             <span class="main-title dishName"><c:out value="${dish.dishName}"/></span>
                             <p class="title2 dishName"><c:out value="${dish.dishDescription}"/></p>
                             <p class="price dishName">$<c:out value="${dish.price}"/></p>
-                        </div>
-                        <div class="card-img">
-                            <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
                         </div>
                     </div>
                 </c:forEach>
@@ -127,20 +127,23 @@
     .dish-card{
         width: 100%;
         margin: 8px;
+        padding: 0;
+        flex-direction: column;
         min-width: 150px;
-        max-width: 40%;
+        justify-content:normal;
+        max-width: 35%;
         height: 20%;
         max-height: 500px;
     }
     .card-content{
-        height: 100%;
-        width: 50%;
+        height: 30%;
+        width: 100%;
     }
     .card-img{
-        min-height: 50%;
-        min-width: 25%;
-        height: 100%;
-        width: 50%;
+        position: relative;
+        top: 0;
+        height: 45%;
+        width: 100%;
     }
     .dish-image{
         border-radius: 16px 16px 16px 16px;
@@ -149,27 +152,18 @@
     }
 
     .btn-row-card{
-        margin-top: 5px;
-        justify-content: right;
-        margin-bottom: 5px;
+        position: absolute;
+        justify-content: space-evenly;
     }
 
     .restaurant-btn{
         border-radius: 16px;
         background-color: #37A6E6;
-        opacity: 57%;
-    }
-    .dish-card:hover{
-        height: 20%;
-    }
-    .restaurant-btn:hover{
-        background-color: #37A6E6;
-        color: white;
         opacity: 100%;
     }
 
     .dishName{
-        width: 200px;
+        width: 90%;
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
