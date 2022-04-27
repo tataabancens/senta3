@@ -61,8 +61,7 @@
         flex-direction: column;
         font-family: "Segoe UI", Lato, sans-serif;
         min-height: 150px;
-        height: 500px;
-        max-height: 800px;
+        height: fit-content;
         min-width: 400px;
         width: 500px;
         max-width: 600px;
