@@ -23,7 +23,7 @@ public class ImageController {
         this.ims = ims;
     }
 
-    @RequestMapping(value = "/resources/images/{imageId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/resources_/images/{imageId}", method = RequestMethod.GET)
     public @ResponseBody byte[] getImageAsByteArray(@PathVariable("imageId") final String imageIdP) throws Exception {
 
         longParser(imageIdP);

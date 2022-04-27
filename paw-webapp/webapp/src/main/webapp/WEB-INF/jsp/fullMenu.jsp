@@ -47,7 +47,7 @@
             <c:forEach var="dish" items="${restaurant.dishes}">
                 <div class="card dish-card">
                     <div class="imageContainer">
-                        <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                        <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
                         <c:if test="${!unavailable.contains(dish.id)}">
                             <a class="btn-floating btn-large waves-effect waves-light plus-btn"
                                href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>

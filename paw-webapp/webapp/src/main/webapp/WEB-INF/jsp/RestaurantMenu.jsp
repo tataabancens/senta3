@@ -61,7 +61,7 @@
                         <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
                     </div>
                     <div class="imageContainer">
-                        <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                        <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
                     </div>
                     <div class="dish-card-text">
                         <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>

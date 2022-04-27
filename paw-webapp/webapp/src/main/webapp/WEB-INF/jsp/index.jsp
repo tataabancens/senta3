@@ -68,7 +68,7 @@
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
                             <div class="imageContainer">
-                               <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                               <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
                             </div>
                             <div class="dish-card-text">
                                 <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
