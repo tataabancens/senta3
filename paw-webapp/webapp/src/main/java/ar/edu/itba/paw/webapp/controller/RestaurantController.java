@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,18 +45,24 @@ public class RestaurantController {
 
     @RequestMapping("/restaurant={restaurantId}")
     public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId,
-                                   @PathVariable("restaurantId") final int restaurantId) {
+                                   @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         return new ModelAndView("restaurantTest");
     }
 
 
     @RequestMapping("/restaurant={restaurantId}/menu")
-    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final int restaurantId) {
+    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("RestaurantMenu");
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
 
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
@@ -71,11 +76,17 @@ public class RestaurantController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.GET)
-    public ModelAndView editForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("editDishForm") final EditDishForm form, @PathVariable("dishId") final int dishId){
+    public ModelAndView editForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                 @ModelAttribute("editDishForm") final EditDishForm form,
+                                 @PathVariable("dishId") final String dishIdP) throws Exception {
+
+        longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("/editDish");
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
@@ -89,13 +100,17 @@ public class RestaurantController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.POST)
     public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form,
-                                 @PathVariable("dishId") final int dishId,
-                                 @PathVariable("restaurantId") final int restaurantId) {
+                                 @PathVariable("dishId") final String dishIdP,
+                                 @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
 
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
@@ -107,8 +122,13 @@ public class RestaurantController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/orders", method = RequestMethod.GET)
-    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                             @PathVariable("restaurantId") final int restaurantId){
+    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                             @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
         final ModelAndView mav = new ModelAndView("orders");
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
         List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
@@ -123,16 +143,24 @@ public class RestaurantController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/orders/incomingToFinished-{orderItemId}", method = RequestMethod.POST)
-    public ModelAndView OrderItemStatusFinished (@PathVariable("restaurantId") final int restaurantId,
-                                                 @PathVariable("orderItemId") final int orderItemId){
+    public ModelAndView OrderItemStatusFinished (@PathVariable("restaurantId") final String restaurantIdP,
+                                                 @PathVariable("orderItemId") final String orderItemIdP) throws Exception {
+
+        longParser(orderItemIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long orderItemId = Long.parseLong(orderItemIdP);
 
         res.updateOrderItemStatus(orderItemId, OrderItemStatus.FINISHED);
         return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/orders/finishedToDelivered-{orderItemId}", method = RequestMethod.POST)
-    public ModelAndView OrderItemStatusDelivered (@PathVariable("restaurantId") final int restaurantId,
-                                                 @PathVariable("orderItemId") final int orderItemId) {
+    public ModelAndView OrderItemStatusDelivered (@PathVariable("restaurantId") final String restaurantIdP,
+                                                 @PathVariable("orderItemId") final String orderItemIdP) throws Exception {
+
+        longParser(orderItemIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long orderItemId = Long.parseLong(orderItemIdP);
 
         res.updateOrderItemStatus(orderItemId, OrderItemStatus.DELIVERED);
         return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
@@ -140,8 +168,12 @@ public class RestaurantController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)
     public ModelAndView confirmDish(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                             @PathVariable("restaurantId") final int restaurantId,
-                                    @PathVariable("dishId") final int dishId){
+                             @PathVariable("restaurantId") final String restaurantIdP,
+                                    @PathVariable("dishId") final String dishIdP) throws Exception {
+
+        longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("dishConfirmation");
         mav.addObject("dishId", dishId);
@@ -151,15 +183,22 @@ public class RestaurantController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
-    public ModelAndView createDishForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("createDishForm") final EditDishForm form){
+    public ModelAndView createDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                       @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
         return new ModelAndView("createDish");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
-    public ModelAndView createDish(@PathVariable ("restaurantId") final long restaurantId,
-                                   @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) {
+    public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
+                                   @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
         if (errors.hasErrors()){
-            return createDishForm(restaurantId, createDishForm);
+            return createDishForm(restaurantIdP, createDishForm);
         }
 
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
@@ -172,10 +211,13 @@ public class RestaurantController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/dish={dishId}/edit-photo", method = RequestMethod.POST)
-    public ModelAndView editPhoto(@PathVariable ("restaurantId") final long restaurantId,
-                                  @PathVariable ("dishId") final long dishId,
-                                  @RequestParam CommonsMultipartFile photo) {
+    public ModelAndView editPhoto(@PathVariable ("restaurantId") final String restaurantIdP,
+                                  @PathVariable ("dishId") final String dishIdP,
+                                  @RequestParam CommonsMultipartFile photo) throws Exception {
 
+        longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
         Image image = ims.createImage(photo);
         ds.updateDishPhoto(dishId, image.getImageId());
@@ -185,10 +227,14 @@ public class RestaurantController {
 
 
     @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.GET)
-    public ModelAndView editForm(@PathVariable ("restaurantId") final long restaurantId, @ModelAttribute("editTablesForm") final EditTablesForm form){
+    public ModelAndView editForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                 @ModelAttribute("editTablesForm") final EditTablesForm form) throws Exception {
+
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("/editAvailableTables");
-        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
         mav.addObject("restaurant", restaurant);
 
@@ -200,7 +246,10 @@ public class RestaurantController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.POST)
     public ModelAndView editMenu(@ModelAttribute("editTablesForm") final EditTablesForm form,
-                                 @PathVariable("restaurantId") final int restaurantId) {
+                                 @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
@@ -209,9 +258,14 @@ public class RestaurantController {
         return mav;
     }
 
+
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
-    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final int reservationId,
-                                    @PathVariable("restaurantId") final int restaurantId){
+    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
+                                    @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        longParser(reservationIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
         final ModelAndView mav = new ModelAndView("cancelReservationConfirmation");
         mav.addObject("reservationId", reservationId);
         mav.addObject("restaurantId", restaurantId);
@@ -220,15 +274,23 @@ public class RestaurantController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
-    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final int reservationId,
-                                                      @PathVariable("restaurantId") final int restaurantId){
+    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
+                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        longParser(reservationIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
         res.cancelReservation(restaurantId, reservationId);
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)
-    public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final int dishId,
-                                                      @PathVariable("restaurantId") final int restaurantId){
+    public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final String dishIdP,
+                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
+
         final ModelAndView mav = new ModelAndView("deleteDish");
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
@@ -238,5 +300,30 @@ public class RestaurantController {
 
         return mav;
     }
+
+    private void longParser(Object... str) throws Exception {
+        if(str.length > 0){
+            try{
+                Long str0 = Long.parseLong((String) str[0]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[0] + " is not a number");
+            }
+        }
+        if(str.length > 1){
+            try{
+                Long str1 = Long.parseLong((String) str[1]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[1] + " is not a number");
+            }
+        }
+        if(str.length > 2){
+            try{
+                Long str2 = Long.parseLong((String) str[2]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[2] + " is not a number");
+            }
+        }
+    }
+
 
 }

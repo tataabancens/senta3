@@ -64,30 +64,6 @@
     .restaurant-card{
     }
 
-    .dish-card{
-        width: 100%;
-    }
-
-
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
-
-    .reservation-btn{
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
 
     .center{
         justify-content: center;

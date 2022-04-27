@@ -23,9 +23,37 @@ public class ImageController {
         this.ims = ims;
     }
 
-    @RequestMapping(value = "/resources/images/{imageId}", method = RequestMethod.GET)
-    public @ResponseBody byte[] getImageAsByteArray(@PathVariable final String imageId) throws IOException {
-        RawImage image = ims.getImageById(Long.parseLong(imageId)).orElseThrow(ImageNotFoundException::new);
+    @RequestMapping(value = "/resources_/images/{imageId}", method = RequestMethod.GET)
+    public @ResponseBody byte[] getImageAsByteArray(@PathVariable("imageId") final String imageIdP) throws Exception {
+
+        longParser(imageIdP);
+        long imageId = Long.parseLong(imageIdP);
+
+        RawImage image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getBytes();
+    }
+
+    private void longParser(Object... str) throws Exception {
+        if(str.length > 0){
+            try{
+                Long str0 = Long.parseLong((String) str[0]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[0] + " is not a number");
+            }
+        }
+        if(str.length > 1){
+            try{
+                Long str1 = Long.parseLong((String) str[1]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[1] + " is not a number");
+            }
+        }
+        if(str.length > 2){
+            try{
+                Long str2 = Long.parseLong((String) str[2]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[2] + " is not a number");
+            }
+        }
     }
 }

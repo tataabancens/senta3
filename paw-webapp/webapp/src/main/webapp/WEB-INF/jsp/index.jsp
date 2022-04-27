@@ -40,27 +40,27 @@
                 </div>
             </div>
             <div class="restaurant-content">
-                <div class="card client-actions">
+                <div class="card client-actions center">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a class="waves-effect waves-light btn reservation-btn" href="register">Reservar</a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="register">Reservar</a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a disabled class="waves-effect waves-light btn reservation-btn" href="">Reservar</a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Reservar</a>
                             </div>
                         </sec:authorize>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
-                        <div class="enter-reservation-btn">
-                            <a class="waves-effect waves-light btn reservation-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
+                        <div class="enter-confirm-btn">
+                            <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
                         </div>
                         </sec:authorize>
                          <sec:authorize access="hasRole('RESTAURANT')">
-                            <div class="enter-reservation-btn">
-                                <a disabled class="waves-effect waves-light btn reservation-btn" href="">Ingresar</a>
+                            <div class="enter-confirm-btn">
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Ingresar</a>
                             </div>
                         </sec:authorize>
                 </div>
@@ -68,7 +68,7 @@
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
                             <div class="imageContainer">
-                               <img class="dish-image" src="${pageContext.request.contextPath}/resources/images/${dish.imageId}" alt="imagen del plato">
+                               <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
                             </div>
                             <div class="dish-card-text">
                                 <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
@@ -166,42 +166,8 @@
         margin-right: 50px;
         max-width: 35%;
     }
-    .dishText{
-        width: 100%;
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .dish-card{
-        display: flex;
-        border-radius: 16px;
-        justify-content:space-between;
-        align-items: flex-start;
-        flex-direction: column;
-        max-width: 30%;
-        min-height: 250px;
-        height: 400px;
-        max-height: 600px;
-        margin: 40px;
-    }
-    .dish-card-text{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        padding: 20px;
-    }
-    .imageContainer{
-        height: 55%;
-        width: 100%;
-    }
-    .dish-image{
-        width: 100%;
-        height: 100%;
 
-        border-radius: 16px 16px 0 0;
-    }
+
     .dishList{
         display: flex;
         padding-right: 20px;
@@ -213,26 +179,7 @@
         height: 100%;
         max-width: 60%;
     }
-
-
-    .reservation-btn{
-        border-radius: 16px;
-        background-color: transparent;
-        border-color: white;
-        display: flex;
-        font-family: 'Goldplay-Bold',sans-serif;
-        font-weight: bold;
-        font-size: 16px;
-        color: white;
-        margin-top: 5%;
-    }
-
-    .reservation-btn:hover{
-        background-color: white;
-        color: #37A6E6;
-        opacity: 100%;
-    }
-
+    
 
 
 </style>

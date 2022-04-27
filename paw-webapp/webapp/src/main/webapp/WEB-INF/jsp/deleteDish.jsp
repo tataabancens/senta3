@@ -25,7 +25,7 @@
                 <span class="card-title text price center">Borraste el plato ${dish.dishName}, id:${dish.id}</span>
                 <div class="row margin-0">
                     <div class="col s12 center">
-                        <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
+                        <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
                     </div>
                 </div>
 
@@ -60,29 +60,7 @@
     .restaurant-card{
     }
 
-    .dish-card{
-        width: 100%;
-    }
-
-
-    .price{
-        font-size: 25px;
-        font-weight: bold;
-        color: black;
-    }
-
-    .reservation-btn{
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
+    
 
     .center{
         justify-content: center;

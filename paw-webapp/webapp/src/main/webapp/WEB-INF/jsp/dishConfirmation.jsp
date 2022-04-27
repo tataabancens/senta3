@@ -43,7 +43,7 @@
             <img src="/resources/images/${imageId}" alt="La foto del plato">
                 <div class="row margin-0">
                     <div class="col s12 center">
-                        <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
+                        <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
                     </div>
                 </div>-->
 
@@ -52,7 +52,7 @@
                 <span class="main-title text center">Agrega una foto!</span>
                 <div class="img-visualizer">
                     <div class="card visualizer">
-                        <img src="${pageContext.request.contextPath}/resources/images/${imageId}" alt="La foto del plato">
+                        <img src="${pageContext.request.contextPath}/resources_/images/${imageId}" alt="La foto del plato">
                     </div>
                 </div>
                 <c:url value="/restaurant=${restaurantId}/menu/dish=${dishId}/edit-photo" var="postPath"/>
@@ -65,7 +65,7 @@
                     </div>
                 </form>
                 <div class="btn-row">
-                    <a class="waves-effect waves-light btn reservation-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Confirmar</a>
+                    <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Confirmar</a>
                 </div>
             </div>
     </div>
@@ -116,23 +116,7 @@
         margin: 20px;
         justify-content: center;
     }
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
 
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
 
     .center{
         justify-content: center;

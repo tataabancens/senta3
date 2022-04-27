@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
@@ -40,7 +42,7 @@
                 </label>
             </div>
             <div class="row center smaller">
-                <input class="submit-btn" type="submit" value="Ingresar"/>
+                <input class="confirm-btn center" type="submit" value="Ingresar"/>
             </div>
             </div>
         </form>

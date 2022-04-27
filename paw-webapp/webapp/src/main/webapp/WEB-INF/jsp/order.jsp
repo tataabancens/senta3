@@ -76,9 +76,9 @@
                 </div>
 
                 <div>
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn" href="menu?reservationId=${reservationId}">Volver</a>
+                    <a class="waves-effect waves-light btn confirm-btn already-reserved-btn" href="menu?reservationId=${reservationId}">Volver</a>
 
-                    <a class="waves-effect waves-light btn reservation-btn already-reserved-btn green" href="">Continuar</a>
+                    <a class="waves-effect waves-light btn confirm-btn already-reserved-btn green" href="">Continuar</a>
                 </div>
 
             </div>
@@ -107,25 +107,7 @@
     .card{
         border-radius: 16px;
     }
-
-
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
+    
 
     .center{
         justify-content: center;
@@ -142,13 +124,6 @@
         justify-content: flex-start;
     }
 
-    .dishname{
-        width: 120px;
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
 
     .titles{
         display: flex;

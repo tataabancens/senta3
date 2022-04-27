@@ -52,10 +52,11 @@
                         <span class="title2 text">Total</span>
                     </div>
                 </div>
+                <hr class="solid-divider">
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
-                        <div class="dishname-div">
-                            <span class="items-title text dishname"><c:out value="${orderItem.dishName}"/></span>
+                        <div >
+                            <span class="items-title text"><c:out value="${orderItem.dishName}"/></span>
                         </div>
                         <div>
                             <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
@@ -67,6 +68,7 @@
                             <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                         </div>
                     </div>
+                    <hr class="solid-divider">
                 </c:forEach>
 
                 <hr/>
@@ -83,7 +85,7 @@
                     <div >
                         <c:url value="/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn reservation-btn green right">
+                            <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
 
@@ -116,24 +118,6 @@
     }
 
 
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
-
     .center{
         justify-content: center;
     }
@@ -147,14 +131,6 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-    }
-
-    .dishname{
-        width: 120px;
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .titles{

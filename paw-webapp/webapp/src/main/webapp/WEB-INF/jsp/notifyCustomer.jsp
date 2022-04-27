@@ -30,7 +30,7 @@
         </div>
 
         <div class="confirm-card">
-            <div class="card dish-card">
+            <div class="card">
                 <div class="card-content white-text center">
                     <span class="main-title title text center">Tu código de reserva es:</span>
                     <div class="with-margin">
@@ -39,7 +39,7 @@
                     <p class="title2 center">No te preocupes,</p>
                     <p class="title2 center">también te lo mandamos por mail!</p>
                     <div class="center">
-                        <a class="waves-effect waves-light btn reservation-btn center" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
+                        <a class="waves-effect waves-light btn confirm-btn center" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
                     </div>
 
                 </div>
@@ -63,30 +63,7 @@
         border-radius: 16px;
         display: grid;
     }
-
-
-    .dish-card{
-        width: 100%;
-    }
-
-
-    .reservation-btn{
-        display: flex;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        width: 35%;
-        min-width: 10%;
-        font-size: 1vw;
-        text-align: center;
-    }
-
-    .reservation-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
+    
 
     .center{
         justify-content: center;
