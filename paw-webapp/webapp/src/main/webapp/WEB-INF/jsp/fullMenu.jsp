@@ -43,6 +43,20 @@
 </div>
 <div class="page-container">
     <div class="restaurant-content">
+        <div class="card client-actions">
+            <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+            <div class="center">
+                <c:if test="${ordered > 0}">
+                    <a class="waves-effect waves-light btn plus-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Pedir cuenta</a>
+                </c:if>
+                <c:if test="${ordered == 0}">
+                    <a disabled class="waves-effect waves-light btn plus-btn" href="">Pedir cuenta</a>
+                </c:if>
+            </div>
+            <div class="center div-padding">
+                <a class="waves-effect waves-light btn plus-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+            </div>
+        </div>
         <div class="dishList">
             <c:forEach var="dish" items="${restaurant.dishes}">
                 <div class="card dish-card">
@@ -59,6 +73,18 @@
                         </div>
                         <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
                         <span class="price dishName">$<c:out value="${dish.price}"/></span>
+                        <c:if test="${!unavailable.contains(dish.id)}">
+                        <div class="dish-add">
+                            <a class="btn-floating btn-large waves-effect waves-light plus-btn"
+                               href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
+                        </div>
+                        </c:if>
+                        <c:if test="${unavailable.contains(dish.id)}">
+                            <div class="dish-add">
+                                <a class="btn-floating btn-large waves-effect waves-light plus-btn" disabled
+                                   href=""><i class="material-icons">add</i></a>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </c:forEach>

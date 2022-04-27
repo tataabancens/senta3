@@ -38,4 +38,6 @@ public interface ReservationService {
     List<Integer> getAvailableHours(long restaurantId);
 
     void cancelReservation(long restaurantId, long reservationId);
+
+    List<Long> getUnavailableItems(long reservationId);
 }
