@@ -85,7 +85,10 @@ public class RegisterController {
     }
 
     @RequestMapping("/notify/{reservationId}")
-    public ModelAndView notifyCustomer(@PathVariable("reservationId") final int reservationId){
+    public ModelAndView notifyCustomer(@PathVariable("reservationId") final String reservationIdP) throws Exception {
+
+        longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("notifyCustomer");
 
@@ -97,5 +100,29 @@ public class RegisterController {
         mav.addObject("reservation", reservation);
 
         return mav;
+    }
+
+    private void longParser(Object... str) throws Exception {
+        if(str.length > 0){
+            try{
+                Long str0 = Long.parseLong((String) str[0]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[0] + " is not a number");
+            }
+        }
+        if(str.length > 1){
+            try{
+                Long str1 = Long.parseLong((String) str[1]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[1] + " is not a number");
+            }
+        }
+        if(str.length > 2){
+            try{
+                Long str2 = Long.parseLong((String) str[2]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[2] + " is not a number");
+            }
+        }
     }
 }

@@ -39,13 +39,16 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
+    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
+
+        longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
         final ModelAndView mav = new ModelAndView("fullMenu");
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
-
 
         mav.addObject("restaurant", restaurant);
         mav.addObject("dish", rs.getRestaurantDishes(1));
@@ -68,9 +71,14 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/menu/orderItem", method = RequestMethod.GET)
-    public ModelAndView orderItem(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                  @RequestParam(name = "dishId", defaultValue = "1") final long dishId,
-                                  @ModelAttribute("orderForm") final OrderForm form){
+    public ModelAndView orderItem(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                  @RequestParam(name = "dishId", defaultValue = "1") final String dishIdP,
+                                  @ModelAttribute("orderForm") final OrderForm form) throws Exception {
+
+        longParser(reservationIdP, dishIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long dishId = Long.parseLong(dishIdP);
+
         final ModelAndView mav = new ModelAndView("orderItem");
 
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
@@ -82,12 +90,17 @@ public class OrderController {
         return mav;
     }
     @RequestMapping(value = "/menu/orderItem", method = RequestMethod.POST)
-    public ModelAndView findReservationForm(@RequestParam(name = "reservationId") final long reservationId,
-                                            @RequestParam(name = "dishId") final long dishId,@Valid @ModelAttribute("orderForm") final OrderForm form,
-                                            final BindingResult errors) {
+    public ModelAndView findReservationForm(@RequestParam(name = "reservationId") final String reservationIdP,
+                                            @RequestParam(name = "dishId") final String dishIdP,
+                                            @Valid @ModelAttribute("orderForm") final OrderForm form,
+                                            final BindingResult errors) throws Exception {
+
+        longParser(reservationIdP, dishIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long dishId = Long.parseLong(dishIdP);
 
         if (errors.hasErrors()) {
-            return orderItem(reservationId, dishId, form);
+            return orderItem(reservationIdP, dishIdP, form);
         }
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
@@ -99,8 +112,12 @@ public class OrderController {
     }
 
     @RequestMapping("/order")
-    public ModelAndView orderFood(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                  @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView orderFood(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                  @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("order");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
@@ -115,8 +132,12 @@ public class OrderController {
     }
 
     @RequestMapping("/order/send-food")
-    public ModelAndView orderFoodSend(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                  @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView orderFoodSend(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                  @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
@@ -131,8 +152,12 @@ public class OrderController {
         return mav;
     }
     @RequestMapping(value = "/order/send-food", method = RequestMethod.POST)
-    public ModelAndView orderFoodConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                      @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView orderFoodConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                      @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
@@ -146,8 +171,12 @@ public class OrderController {
     }
 
     @RequestMapping("/order/send-receipt")
-    public ModelAndView orderReceipt(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                      @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView orderReceipt(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                      @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
@@ -166,8 +195,12 @@ public class OrderController {
         return mav;
     }
     @RequestMapping(value = "/order/send-receipt", method = RequestMethod.POST)
-    public ModelAndView orderReceiptSend(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                     @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView orderReceiptSend(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                     @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
@@ -181,7 +214,10 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/order/send-receipt/confirmed")
-    public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         final ModelAndView mav = new ModelAndView("receiptConfirmed");
@@ -192,8 +228,12 @@ public class OrderController {
 
 
     @RequestMapping("/reservation-cancel" )
-    public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                                     @RequestParam(name = "restaurantId", defaultValue = "1") final long restaurantId) {
+    public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                     @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
@@ -206,7 +246,10 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/reservation-cancel", method = RequestMethod.POST)
-    public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId) {
+    public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
+
+        longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
@@ -218,9 +261,37 @@ public class OrderController {
     }
 
     @RequestMapping(value= "/order/empty-cart", method = RequestMethod.POST)
-    public ModelAndView emptyCart(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId) {
+    public ModelAndView emptyCart(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
+
+        longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
         res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+    }
+
+    private void longParser(Object... str) throws Exception {
+        if(str.length > 0){
+            try{
+                Long str0 = Long.parseLong((String) str[0]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[0] + " is not a number");
+            }
+        }
+        if(str.length > 1){
+            try{
+                Long str1 = Long.parseLong((String) str[1]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[1] + " is not a number");
+            }
+        }
+        if(str.length > 2){
+            try{
+                Long str2 = Long.parseLong((String) str[2]);
+            } catch (NumberFormatException e) {
+                throw new Exception(str[2] + " is not a number");
+            }
+        }
     }
 }
