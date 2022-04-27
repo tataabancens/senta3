@@ -28,7 +28,7 @@
                     <div class="col s12 center">
                         <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn plus-btn red">
+                            <input type="submit" value="CANCELAR RESERVA" class="waves-effect waves-light btn plus-btn red">
                         </form:form>
                     </div>
                 </div>

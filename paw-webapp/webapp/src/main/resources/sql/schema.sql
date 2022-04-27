@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 ALTER TABLE users ADD IF NOT EXISTS role varchar(100) default 'ROLE_RESTAURANT' NOT NULL;
 
+DROP TABLE orderItem;
+
 CREATE TABLE IF NOT EXISTS orderItem
 (
     id          serial PRIMARY KEY,
@@ -66,7 +68,8 @@ CREATE TABLE IF NOT EXISTS orderItem
     unitPrice     decimal(12,2) NOT NULL,
     quantity      integer NOT NULL,
     status        integer NOT NULL,
-    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
-    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
+    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
+    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
+
 

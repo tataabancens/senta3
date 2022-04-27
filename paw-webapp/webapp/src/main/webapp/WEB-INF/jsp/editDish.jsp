@@ -12,6 +12,8 @@
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
+    <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
+
     <title>Editar Plato</title>
 <body>
     <%@ include file="components/navbar.jsp" %>

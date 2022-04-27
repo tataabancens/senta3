@@ -12,6 +12,8 @@
 
     <link rel="stylesheet" href="styless.css">
 
+    <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
+
     <title>Sentate-Register</title>
 <body>
 <%@ include file="components/navbar.jsp" %>

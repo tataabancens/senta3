@@ -13,6 +13,8 @@
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+        <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
+
         <title>Senta3</title>
     </head>
     <body>
@@ -33,12 +35,13 @@
                     <c:forEach var="reservation" items="${reservations}">
 
                             <div class="notification-item">
-                                <span class="title2">Hora:<c:out value="${reservation.reservationHour}"/>:00</span>
-                                <span class="title2">Id:<c:out value="${reservation.reservationId}"/> </span>
-                                <span class="title2">Status:<c:out value="${reservation.reservationStatus}"/> </span>
+                                <span class="title2">Hora: <c:out value="${reservation.reservationHour}"/>:00</span>
+                                <div>
+                                    <span class="title2">Id: <c:out value="${reservation.reservationId}"/></span>
+                                </div>
+                                <span class="title2">Estado: <c:out value="${reservation.reservationStatus}"/>
                                 <a class="waves-effect waves-light btn red confirm-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
                             </div>
-
                     </c:forEach>
                 </div>
             </div>
