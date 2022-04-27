@@ -234,7 +234,9 @@
         bottom: 271px;
         right: -5px;
     }
-
+    a:nth-child(1){
+        width: fit-content;
+    }
     .dish-add{
         display: flex;
         width: 100%;

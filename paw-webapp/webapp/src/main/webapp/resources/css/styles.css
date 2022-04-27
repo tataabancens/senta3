@@ -63,7 +63,6 @@
 }
 
 .dishname{
-
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -80,8 +79,9 @@ hr.solid-divider {
     border-radius: 16px;
     background-color: #37A6E6;
     margin-top: 5%;
-    opacity: 57%;
+    opacity: 90%;
     font-size: 1vw;
+    width: fit-content;
     text-align: center;
     color:white
 }
@@ -110,7 +110,7 @@ hr.solid-divider {
     flex-direction: column;
     max-width: 30%;
     min-height: 250px;
-    height: 500px;
+    height: fit-content;
     max-height: 700px;
     margin: 40px;
 }
