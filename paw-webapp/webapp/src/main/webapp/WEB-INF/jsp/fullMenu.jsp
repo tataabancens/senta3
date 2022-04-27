@@ -46,27 +46,38 @@
         <div class="dishList">
             <c:forEach var="dish" items="${restaurant.dishes}">
                 <div class="card dish-card">
-                    <div class="imageContainer">
-                        <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
-                        <c:if test="${!unavailable.contains(dish.id)}">
-                            <a class="btn-floating btn-large waves-effect waves-light plus-btn"
-                               href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"><i class="material-icons">add</i></a>
-                        </c:if>
-                        <c:if test="${unavailable.contains(dish.id)}">
-                            <a class="btn-floating btn-large waves-effect waves-light plus-btn"
-                               disabled href=""><i class="material-icons">add</i></a>
-                        </c:if>
-
-                    </div>
-                    <div class="dish-card-text">
-                        <div class="dish-card-name">
-                            <div class="start">
-                                <span class="main-title dishName"><c:out value="${dish.dishName}"/></span>
+                    <c:if test="${unavailable.contains(dish.id)}">
+                        <a disabled href="" class="selection-area">
+                            <div class="imageContainer">
+                                <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
                             </div>
-                        </div>
-                        <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
-                        <span class="price dishName">$<c:out value="${dish.price}"/></span>
-                    </div>
+                            <div class="dish-card-text">
+                                <div class="dish-card-name">
+                                    <div class="start">
+                                        <span class="main-title dishName"><c:out value="${dish.dishName}"/></span>
+                                    </div>
+                                </div>
+                                <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
+                                <span class="price dishName">$<c:out value="${dish.price}"/></span>
+                            </div>
+                        </a>
+                    </c:if>
+                    <c:if test="${!unavailable.contains(dish.id)}">
+                        <a href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}" class="selection-area">
+                            <div class="imageContainer">
+                                <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
+                            </div>
+                            <div class="dish-card-text">
+                                <div class="dish-card-name">
+                                    <div class="start">
+                                        <span class="main-title dishName"><c:out value="${dish.dishName}"/></span>
+                                    </div>
+                                </div>
+                                <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
+                                <span class="price dishName">$<c:out value="${dish.price}"/></span>
+                            </div>
+                        </a>
+                    </c:if>
                 </div>
             </c:forEach>
         </div>
@@ -211,6 +222,10 @@
         width: 55%;
         height: 100%;
     }
+    .selection-area{
+        width: inherit;
+        height: inherit;
+    }
     .card{
         border-radius: 16px;
         display: flex;
@@ -290,6 +305,12 @@
         width: 100%;
         display: flex;
         justify-content: space-around;
+    }
+    .dish-card:hover{
+        transform: scale(1.1);
+    }
+    .dish-card{
+        transition: 0.5s;
     }
     .order-btn-row{
         width: 100%;
