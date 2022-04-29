@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.FindReservationForm;
+import ar.edu.itba.paw.webapp.form.NumberForm;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,6 +69,55 @@ public class ReservationController {
 
         return mav;
     }
+
+    @RequestMapping(value = "/createReservation-1", method = RequestMethod.GET)
+    public ModelAndView createReservation_1(@ModelAttribute("peopleForm") final NumberForm form){
+        ModelAndView mav = new ModelAndView("reservation/createReservation_1_people");
+        return mav;
+    }
+
+    @RequestMapping(value = "/createReservation-1", method = RequestMethod.POST)
+    public ModelAndView createReservation_1(@Valid @ModelAttribute("peopleForm") final NumberForm form, final BindingResult errors) {
+        /*
+        if (errors.hasErrors()){
+            return createForm(form);
+        }
+         */
+
+        final ModelAndView mav = new ModelAndView("reservation/createReservation_2_date");
+
+        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+
+
+        mav.addObject("dates", new int[]{ 1,2,3,4,5,6,7,8,9,10 } ); //acá iría un get dates o algo así
+
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/createReservation-2", method = RequestMethod.GET)
+    public ModelAndView createReservation_2(@ModelAttribute("dayForm") final NumberForm form){
+        ModelAndView mav = new ModelAndView("reservation/createReservation_2_date");
+        return mav;
+    }
+
+    @RequestMapping(value = "/createReservation-2", method = RequestMethod.POST)
+    public ModelAndView createReservation_2(@Valid @ModelAttribute("dayForm") final NumberForm form, final BindingResult errors) {
+        /*
+        if (errors.hasErrors()){
+            return createForm(form);
+        }
+         */
+
+        final ModelAndView mav = new ModelAndView("reservation/createReservation_2_date");
+
+        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+
+
+        return mav;
+    }
+
+
     @RequestMapping(value = "/findReservation", method = RequestMethod.GET)
     public ModelAndView findReservation(@ModelAttribute("findReservationForm") final FindReservationForm form) {
 
