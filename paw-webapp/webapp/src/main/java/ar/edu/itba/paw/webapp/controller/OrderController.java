@@ -27,21 +27,23 @@ public class OrderController {
     private  DishService ds;
     private CustomerService cs;
     private MailingService ms;
+    private ControllerService controllerService;
 
 
     @Autowired
-    public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds, final CustomerService cs, final MailingService ms) {
+    public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds, final CustomerService cs, final MailingService ms, ControllerService controllerService) {
         this.rs = rs;
         this.res = res;
         this.ds = ds;
         this.cs = cs;
         this.ms = ms;
+        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
-        longParser(reservationIdP);
+        controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("menu/fullMenu");
@@ -75,7 +77,7 @@ public class OrderController {
                                   @RequestParam(name = "dishId", defaultValue = "1") final String dishIdP,
                                   @ModelAttribute("orderForm") final OrderForm form) throws Exception {
 
-        longParser(reservationIdP, dishIdP);
+        controllerService.longParser(reservationIdP, dishIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -95,7 +97,7 @@ public class OrderController {
                                             @Valid @ModelAttribute("orderForm") final OrderForm form,
                                             final BindingResult errors) throws Exception {
 
-        longParser(reservationIdP, dishIdP);
+        controllerService.longParser(reservationIdP, dishIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -115,7 +117,7 @@ public class OrderController {
     public ModelAndView orderFood(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                   @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -135,7 +137,7 @@ public class OrderController {
     public ModelAndView orderFoodSend(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                   @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -155,7 +157,7 @@ public class OrderController {
     public ModelAndView orderFoodConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                       @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -174,7 +176,7 @@ public class OrderController {
     public ModelAndView orderReceipt(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                       @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -198,7 +200,7 @@ public class OrderController {
     public ModelAndView orderReceiptSend(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                      @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -216,7 +218,7 @@ public class OrderController {
     @RequestMapping(value = "/order/send-receipt/confirmed")
     public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
@@ -228,7 +230,7 @@ public class OrderController {
     @RequestMapping(value= "/order/empty-cart", method = RequestMethod.POST)
     public ModelAndView emptyCart(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
-        longParser(reservationIdP);
+        controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);

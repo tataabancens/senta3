@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.model.*;
-import ar.edu.itba.paw.service.DishService;
-import ar.edu.itba.paw.service.ImageService;
-import ar.edu.itba.paw.service.ReservationService;
-import ar.edu.itba.paw.service.RestaurantService;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
@@ -25,14 +22,16 @@ public class RestaurantController {
     ReservationService res;
     DishService ds;
     ImageService ims;
+    ControllerService controllerService;
 
     @Autowired
     public RestaurantController(RestaurantService rs, ReservationService res,
-                                DishService ds, ImageService ims) {
+                                DishService ds, ImageService ims, ControllerService controllerService) {
         this.rs = rs;
         this.res = res;
         this.ds = ds;
         this.ims = ims;
+        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -47,7 +46,7 @@ public class RestaurantController {
     public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId,
                                    @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         return new ModelAndView("aa_Trash/restaurantTest");
@@ -57,7 +56,7 @@ public class RestaurantController {
     @RequestMapping("/restaurant={restaurantId}/menu")
     public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("menu/RestaurantMenu");
@@ -80,7 +79,7 @@ public class RestaurantController {
                                  @ModelAttribute("editDishForm") final EditDishForm form,
                                  @PathVariable("dishId") final String dishIdP) throws Exception {
 
-        longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -103,7 +102,7 @@ public class RestaurantController {
                                  @PathVariable("dishId") final String dishIdP,
                                  @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -125,7 +124,7 @@ public class RestaurantController {
     public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                              @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -146,7 +145,7 @@ public class RestaurantController {
     public ModelAndView OrderItemStatusFinished (@PathVariable("restaurantId") final String restaurantIdP,
                                                  @PathVariable("orderItemId") final String orderItemIdP) throws Exception {
 
-        longParser(orderItemIdP, restaurantIdP);
+        controllerService.longParser(orderItemIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long orderItemId = Long.parseLong(orderItemIdP);
 
@@ -158,7 +157,7 @@ public class RestaurantController {
     public ModelAndView OrderItemStatusDelivered (@PathVariable("restaurantId") final String restaurantIdP,
                                                  @PathVariable("orderItemId") final String orderItemIdP) throws Exception {
 
-        longParser(orderItemIdP, restaurantIdP);
+        controllerService.longParser(orderItemIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long orderItemId = Long.parseLong(orderItemIdP);
 
@@ -171,7 +170,7 @@ public class RestaurantController {
     public ModelAndView editForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                  @ModelAttribute("editTablesForm") final EditTablesForm form) throws Exception {
 
-        longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("/editAvailableTables");
@@ -189,7 +188,7 @@ public class RestaurantController {
     public ModelAndView editMenu(@ModelAttribute("editTablesForm") final EditTablesForm form,
                                  @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
@@ -197,32 +196,6 @@ public class RestaurantController {
         rs.updateRestaurantHourAndTables(restaurantId, form.getTableQty(), form.getOpenHour(), form.getCloseHour());
 
         return mav;
-    }
-
-
-
-    private void longParser(Object... str) throws Exception {
-        if(str.length > 0){
-            try{
-                Long str0 = Long.parseLong((String) str[0]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[0] + " is not a number");
-            }
-        }
-        if(str.length > 1){
-            try{
-                Long str1 = Long.parseLong((String) str[1]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[1] + " is not a number");
-            }
-        }
-        if(str.length > 2){
-            try{
-                Long str2 = Long.parseLong((String) str[2]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[2] + " is not a number");
-            }
-        }
     }
 
 

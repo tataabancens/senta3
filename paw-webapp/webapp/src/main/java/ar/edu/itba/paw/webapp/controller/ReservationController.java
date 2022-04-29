@@ -1,13 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.ReservationStatus;
-import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.service.CustomerService;
-import ar.edu.itba.paw.service.MailingService;
-import ar.edu.itba.paw.service.ReservationService;
-import ar.edu.itba.paw.service.RestaurantService;
+import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
@@ -21,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class ReservationController {
@@ -28,13 +23,15 @@ public class ReservationController {
     private RestaurantService rs;
     private ReservationService res;
     private MailingService ms;
+    private ControllerService controllerService;
 
     @Autowired
-    public ReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms) {
+    public ReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
         this.cs = cs;
         this.rs = rs;
         this.res = res;
         this.ms = ms;
+        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/createReservation", method = RequestMethod.GET)
@@ -138,7 +135,7 @@ public class ReservationController {
     @RequestMapping("/notify/{reservationId}")
     public ModelAndView notifyCustomer(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        longParser(reservationIdP);
+        controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("reservation/notifyCustomer");
@@ -156,7 +153,7 @@ public class ReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
     public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
                                                       @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -170,7 +167,7 @@ public class ReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
     public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
                                                           @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -184,7 +181,7 @@ public class ReservationController {
     public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                           @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -201,7 +198,7 @@ public class ReservationController {
     @RequestMapping(value = "/reservation-cancel", method = RequestMethod.POST)
     public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
-        longParser(reservationIdP);
+        controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
@@ -213,27 +210,24 @@ public class ReservationController {
         return new ModelAndView("redirect:/");
     }
 
-    private void longParser(Object... str) throws Exception {
-        if(str.length > 0){
-            try{
-                Long str0 = Long.parseLong((String) str[0]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[0] + " is not a number");
-            }
+    @RequestMapping("/restaurant={restaurantId}/menu")
+    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("menu/RestaurantMenu");
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
+        mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
+        for (Reservation reservation : reservations) {
+            res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
-        if(str.length > 1){
-            try{
-                Long str1 = Long.parseLong((String) str[1]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[1] + " is not a number");
-            }
-        }
-        if(str.length > 2){
-            try{
-                Long str2 = Long.parseLong((String) str[2]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[2] + " is not a number");
-            }
-        }
+        mav.addObject("reservations", reservations);
+
+
+        return mav;
     }
 }

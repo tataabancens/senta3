@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.model.RawImage;
 import ar.edu.itba.paw.persistance.ImageDao;
+import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,43 +18,21 @@ import java.io.InputStream;
 public class ImageController {
 
     private ImageService ims;
+    private ControllerService controllerService;
 
     @Autowired
-    public ImageController(final ImageService ims) {
+    public ImageController(final ImageService ims, final ControllerService controllerService) {
         this.ims = ims;
+        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/resources_/images/{imageId}", method = RequestMethod.GET)
     public @ResponseBody byte[] getImageAsByteArray(@PathVariable("imageId") final String imageIdP) throws Exception {
 
-        longParser(imageIdP);
+        controllerService.longParser(imageIdP);
         long imageId = Long.parseLong(imageIdP);
 
         RawImage image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getBytes();
-    }
-
-    private void longParser(Object... str) throws Exception {
-        if(str.length > 0){
-            try{
-                Long str0 = Long.parseLong((String) str[0]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[0] + " is not a number");
-            }
-        }
-        if(str.length > 1){
-            try{
-                Long str1 = Long.parseLong((String) str[1]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[1] + " is not a number");
-            }
-        }
-        if(str.length > 2){
-            try{
-                Long str2 = Long.parseLong((String) str[2]);
-            } catch (NumberFormatException e) {
-                throw new Exception(str[2] + " is not a number");
-            }
-        }
     }
 }
