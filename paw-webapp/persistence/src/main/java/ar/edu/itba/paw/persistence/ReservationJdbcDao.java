@@ -82,11 +82,11 @@ public class ReservationJdbcDao implements ReservationDao {
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationHour", reservationHour);
         reservationData.put("customerId", customerId);
-        reservationData.put("reservationstatus", ReservationStatus.ACTIVE.ordinal());
+        reservationData.put("reservationstatus", ReservationStatus.OPEN.ordinal());
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.ACTIVE.ordinal());
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.OPEN.ordinal());
 
         return newReservation;
     }

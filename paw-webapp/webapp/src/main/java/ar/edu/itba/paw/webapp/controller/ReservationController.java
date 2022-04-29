@@ -128,7 +128,7 @@ public class ReservationController {
         if (errors.hasErrors()) {
             return findReservation(form);
         }
-        Reservation reservation = res.getReservationByIdAndStatus(form.getReservationId(), ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationById(form.getReservationId()).orElseThrow(ReservationNotFoundException::new);
         return new ModelAndView("redirect:/menu?reservationId=" + reservation.getReservationId());
     }
 
@@ -171,7 +171,12 @@ public class ReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
         res.cancelReservation(restaurantId, reservationId);
+        ms.sendCancellationEmail(restaurant,customer,reservation);
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
     }
 
@@ -186,7 +191,7 @@ public class ReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         final ModelAndView mav = new ModelAndView("reservation/cancelReservation");
         mav.addObject("restaurant", restaurant);
@@ -201,7 +206,7 @@ public class ReservationController {
         controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
@@ -225,4 +230,24 @@ public class ReservationController {
 
         return mav;
     }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}")
+    public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
+                                     @PathVariable("reservationId") final String reservationIdP) throws Exception {
+        controllerService.longParser(restaurantIdP, reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
+
+        final ModelAndView mav = new ModelAndView("reservation/reservations");
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getAllReservations(restaurantId);
+        mav.addObject("reservations", reservations);
+        return mav;
+    }
+
+
 }

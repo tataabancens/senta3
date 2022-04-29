@@ -50,7 +50,7 @@ public class OrderController {
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
 
-        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         mav.addObject("restaurant", restaurant);
         mav.addObject("dish", rs.getRestaurantDishes(1));
@@ -83,7 +83,7 @@ public class OrderController {
 
         final ModelAndView mav = new ModelAndView("order/orderItem");
 
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
@@ -104,7 +104,7 @@ public class OrderController {
         if (errors.hasErrors()) {
             return orderItem(reservationIdP, dishIdP, form);
         }
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
 
         res.createOrderItemByReservationId(reservationId, dish, form.getOrderItem().getQuantity());
@@ -123,7 +123,7 @@ public class OrderController {
 
         final ModelAndView mav = new ModelAndView("order/order");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
 
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         mav.addObject("orderItems", orderItems);
@@ -143,7 +143,7 @@ public class OrderController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
 
         final ModelAndView mav = new ModelAndView("order/completeOrder");
         mav.addObject("orderItems", orderItems);
@@ -162,7 +162,7 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
@@ -181,7 +181,7 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
 
         orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.INCOMING));
@@ -205,7 +205,7 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
         ms.sendReceiptEmail(restaurant, customer);
@@ -233,7 +233,7 @@ public class OrderController {
         controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.SEATED).orElseThrow(ReservationNotFoundException::new);
         res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }

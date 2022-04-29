@@ -20,7 +20,8 @@
                     <span class="title2">Id: <c:out value="${reservation.reservationId}"/></span>
                 </div>
                 <span class="title2">Estado: <c:out value="${reservation.reservationStatus}"/>
-                                <a class="waves-effect waves-light btn red confirm-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
+                    <a class="waves-effect waves-light btn red confirm-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
+                    <a class="waves-effect waves-light btn red confirm-btn" href="seatCustomer=${reservation.reservationId}">Sentar</a>
             </div>
         </c:forEach>
 

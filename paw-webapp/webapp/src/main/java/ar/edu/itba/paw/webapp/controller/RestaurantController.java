@@ -64,7 +64,7 @@ public class RestaurantController {
         restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
 
-        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
+        List<Reservation> reservations = res.getAllReservations(restaurantId);
         for (Reservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
@@ -129,7 +129,7 @@ public class RestaurantController {
         long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("order/orders");
-        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
+        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.SEATED);
         List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
         List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
         for (Reservation reservation : reservations) {
