@@ -1,6 +1,9 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
-import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.ReservationStatus;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -15,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
-public class ReservationController {
+public class CustReservationController {
+
     private CustomerService cs;
     private RestaurantService rs;
     private ReservationService res;
@@ -26,7 +29,7 @@ public class ReservationController {
     private ControllerService controllerService;
 
     @Autowired
-    public ReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
+    public CustReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
         this.cs = cs;
         this.rs = rs;
         this.res = res;
@@ -150,38 +153,6 @@ public class ReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
-    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
-                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(reservationIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        final ModelAndView mav = new ModelAndView("reservation/cancelReservationConfirmation");
-        mav.addObject("reservationId", reservationId);
-        mav.addObject("restaurantId", restaurantId);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
-    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
-                                                          @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(reservationIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
-
-        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
-        ms.sendCancellationEmail(restaurant,customer,reservation);
-        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
-    }
-
-
-
     @RequestMapping("/reservation-cancel" )
     public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                           @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
@@ -214,40 +185,4 @@ public class ReservationController {
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         return new ModelAndView("redirect:/");
     }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/reservations")
-    public ModelAndView reservations(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-
-        controllerService.longParser(restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        final ModelAndView mav = new ModelAndView("reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        mav.addObject("restaurant", restaurant);
-
-        List<Reservation> reservations = res.getAllReservations(restaurantId);
-        mav.addObject("reservations", reservations);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}")
-    public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                     @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
-
-        final ModelAndView mav = new ModelAndView("reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        mav.addObject("restaurant", restaurant);
-
-        List<Reservation> reservations = res.getAllReservations(restaurantId);
-        mav.addObject("reservations", reservations);
-        return mav;
-    }
-
-
 }

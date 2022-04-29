@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.webapp.controller.utilities;
 
 import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.model.RawImage;
