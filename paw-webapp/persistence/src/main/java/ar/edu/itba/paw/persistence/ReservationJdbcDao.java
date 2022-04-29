@@ -246,4 +246,11 @@ public class ReservationJdbcDao implements ReservationDao {
 
         return unavailableDishIds;
     }
+
+    @Override
+    public List<Reservation> getAllReservations(long restaurantId) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
+        return query;
+    }
 }

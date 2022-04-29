@@ -40,4 +40,6 @@ public interface ReservationDao {
     void cancelReservation(long restaurantId, long reservationId);
 
     List<Long> getUnavailableItems(long reservationId);
+
+    List<Reservation> getAllReservations(long restaurantId);
 }

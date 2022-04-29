@@ -210,23 +210,18 @@ public class ReservationController {
         return new ModelAndView("redirect:/");
     }
 
-    @RequestMapping("/restaurant={restaurantId}/menu")
-    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations")
+    public ModelAndView reservations(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("menu/RestaurantMenu");
+        final ModelAndView mav = new ModelAndView("reservation/reservations");
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
 
-        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
-        for (Reservation reservation : reservations) {
-            res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
-        }
+        List<Reservation> reservations = res.getAllReservations(restaurantId);
         mav.addObject("reservations", reservations);
-
 
         return mav;
     }
