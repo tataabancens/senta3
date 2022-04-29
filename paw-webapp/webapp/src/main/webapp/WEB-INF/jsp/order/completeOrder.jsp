@@ -18,7 +18,7 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 
 <div class="page-container">
     <div class="card restaurant-card">
@@ -30,7 +30,7 @@
 
     <div class="card confirm-card">
         <div class="card-content wider-content center">
-            <span class="text main-title">Estas pidiendo la cuenta</span>
+            <span class="text main-title">Estas realizando un pedido en</span>
             <div class="with-margin">
                 <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
@@ -52,10 +52,11 @@
                         <span class="title2 text">Total</span>
                     </div>
                 </div>
+                <hr class="solid-divider">
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
-                        <div class="dishname-div">
-                            <span class="items-title text dishname"><c:out value="${orderItem.dishName}"/></span>
+                        <div >
+                            <span class="items-title text"><c:out value="${orderItem.dishName}"/></span>
                         </div>
                         <div>
                             <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
@@ -67,6 +68,7 @@
                             <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                         </div>
                     </div>
+                    <hr class="solid-divider">
                 </c:forEach>
 
                 <hr/>
@@ -80,19 +82,18 @@
                     </div>
                 </div>
 
-
-                    <div>
-                        <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                    <div >
+                        <c:url value="/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn confirm-btn green right">
+                            <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
 
-                </div>
-
             </div>
+
         </div>
     </div>
+
 </div>
 </body>
 </html>
@@ -115,7 +116,6 @@
     .card{
         border-radius: 16px;
     }
-
 
 
     .center{

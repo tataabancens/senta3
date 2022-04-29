@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="row">
-    <%@ include file="components/navbar.jsp" %>
+    <%@ include file="../components/navbar.jsp" %>
 </div>
 
     <!--<div class="col s4 offset-s3 card-margin">

@@ -44,7 +44,7 @@ public class OrderController {
         longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("fullMenu");
+        final ModelAndView mav = new ModelAndView("menu/fullMenu");
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
 
@@ -79,7 +79,7 @@ public class OrderController {
         long reservationId = Long.parseLong(reservationIdP);
         long dishId = Long.parseLong(dishIdP);
 
-        final ModelAndView mav = new ModelAndView("orderItem");
+        final ModelAndView mav = new ModelAndView("order/orderItem");
 
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
 
@@ -119,7 +119,7 @@ public class OrderController {
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("order");
+        final ModelAndView mav = new ModelAndView("order/order");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
 
@@ -143,7 +143,7 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
 
-        final ModelAndView mav = new ModelAndView("completeOrder");
+        final ModelAndView mav = new ModelAndView("order/completeOrder");
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
@@ -186,7 +186,7 @@ public class OrderController {
         orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.FINISHED));
         orderItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.DELIVERED));
 
-        final ModelAndView mav = new ModelAndView("receipt");
+        final ModelAndView mav = new ModelAndView("order/receipt");
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
@@ -220,7 +220,7 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        final ModelAndView mav = new ModelAndView("receiptConfirmed");
+        final ModelAndView mav = new ModelAndView("order/receiptConfirmed");
         mav.addObject("restaurant", restaurant);
         return mav;
     }
@@ -238,7 +238,7 @@ public class OrderController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
 
-        final ModelAndView mav = new ModelAndView("cancelReservation");
+        final ModelAndView mav = new ModelAndView("reservation/cancelReservation");
         mav.addObject("restaurant", restaurant);
         mav.addObject("reservationId", reservationId);
 

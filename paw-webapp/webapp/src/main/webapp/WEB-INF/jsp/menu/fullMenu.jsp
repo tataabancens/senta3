@@ -23,7 +23,7 @@
 </head>
 <body >
 <a id="full-menu"></a>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 
 <div class="restaurant-header">
     <div class="restaurant-info">

@@ -50,7 +50,7 @@ public class RestaurantController {
         longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        return new ModelAndView("restaurantTest");
+        return new ModelAndView("aa_Trash/restaurantTest");
     }
 
 
@@ -60,7 +60,7 @@ public class RestaurantController {
         longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("RestaurantMenu");
+        final ModelAndView mav = new ModelAndView("menu/RestaurantMenu");
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
@@ -84,7 +84,7 @@ public class RestaurantController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
-        final ModelAndView mav = new ModelAndView("/editDish");
+        final ModelAndView mav = new ModelAndView("dish/editDish");
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
@@ -129,7 +129,7 @@ public class RestaurantController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("orders");
+        final ModelAndView mav = new ModelAndView("order/orders");
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.ACTIVE);
         List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
         List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
@@ -175,7 +175,7 @@ public class RestaurantController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
-        final ModelAndView mav = new ModelAndView("dishConfirmation");
+        final ModelAndView mav = new ModelAndView("dish/dishConfirmation");
         mav.addObject("dishId", dishId);
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("imageId", dish.getImageId());
@@ -188,7 +188,7 @@ public class RestaurantController {
         longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        return new ModelAndView("createDish");
+        return new ModelAndView("dish/createDish");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
@@ -266,7 +266,7 @@ public class RestaurantController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("cancelReservationConfirmation");
+        final ModelAndView mav = new ModelAndView("reservation/cancelReservationConfirmation");
         mav.addObject("reservationId", reservationId);
         mav.addObject("restaurantId", restaurantId);
 
@@ -291,7 +291,7 @@ public class RestaurantController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
-        final ModelAndView mav = new ModelAndView("deleteDish");
+        final ModelAndView mav = new ModelAndView("dish/deleteDish");
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         ds.deleteDish(dishId);
