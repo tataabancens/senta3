@@ -175,7 +175,7 @@ public class ReservationController {
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        res.cancelReservation(restaurantId, reservationId);
+        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         ms.sendCancellationEmail(restaurant,customer,reservation);
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
     }

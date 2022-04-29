@@ -20,7 +20,7 @@
 
 <div class="content">
     <c:url value="/createReservation-1" var="postPath"/>
-    <form:form modelAttribute="numberForm" action="${postPath}" method="post">
+    <form:form modelAttribute="peopleForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
                 <span class="main-title">Cuanta gente viene a comer?</span>

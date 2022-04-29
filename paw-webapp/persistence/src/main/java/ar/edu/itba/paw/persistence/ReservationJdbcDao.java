@@ -253,4 +253,11 @@ public class ReservationJdbcDao implements ReservationDao {
                 new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
         return query;
     }
+
+    @Override
+    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND (reservationstatus = ? OR reservationstatus = ?)",
+                new Object[]{reservationId, ReservationStatus.OPEN.ordinal(), ReservationStatus.SEATED.ordinal()}, ROW_MAPPER_RESERVATION);
+        return query.stream().findFirst();
+    }
 }

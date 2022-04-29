@@ -42,4 +42,6 @@ public interface ReservationService {
     List<Long> getUnavailableItems(long reservationId);
 
     List<Reservation> getAllReservations(long restaurantId);
+
+    Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 }
