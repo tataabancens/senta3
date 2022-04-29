@@ -1,20 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
-import ar.edu.itba.paw.webapp.form.EditDishForm;
-import ar.edu.itba.paw.webapp.form.ReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
-import java.util.Properties;
 
 @Controller
 public class HelloWorldController {
@@ -38,7 +30,7 @@ public class HelloWorldController {
     @RequestMapping("/")
     public ModelAndView helloWorld(@RequestParam(name = "userId", defaultValue = "1") final long userId) {
 
-        final ModelAndView mav = new ModelAndView("index");
+        final ModelAndView mav = new ModelAndView("menu/menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
@@ -50,7 +42,7 @@ public class HelloWorldController {
     @RequestMapping("/profile/{userId}")
     public ModelAndView userProfile(@PathVariable("userId") final long userId) {
 
-        final ModelAndView mav = new ModelAndView("profile");
+        final ModelAndView mav = new ModelAndView("aa_Trash/profile");
 
 //        mav.addObject("user", us.getUserByID(userId).orElseThrow(UserNotFoundException::new));
         return mav;
@@ -58,7 +50,7 @@ public class HelloWorldController {
 
     @RequestMapping("/chau")
     public ModelAndView goodbyeWorld() {
-        final ModelAndView mav = new ModelAndView("byebye");
+        final ModelAndView mav = new ModelAndView("aa_Trash/byebye");
 
 //        mav.addObject("user", us.getUserByID(1).orElseThrow(UserNotFoundException::new));
         return mav;

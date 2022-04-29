@@ -17,7 +17,7 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 <div class="form-container">
             <div class="card card-content">
                 <span class="main-title">Ingresa tu codigo de reserva</span>

@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistance;
 
 import ar.edu.itba.paw.model.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,4 +39,8 @@ public interface ReservationDao {
     void cancelReservation(long restaurantId, long reservationId);
 
     List<Long> getUnavailableItems(long reservationId);
+
+    List<Reservation> getAllReservations(long restaurantId);
+
+    Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 }

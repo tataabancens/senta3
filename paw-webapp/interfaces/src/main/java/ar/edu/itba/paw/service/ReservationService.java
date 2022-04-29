@@ -40,4 +40,8 @@ public interface ReservationService {
     void cancelReservation(long restaurantId, long reservationId);
 
     List<Long> getUnavailableItems(long reservationId);
+
+    List<Reservation> getAllReservations(long restaurantId);
+
+    Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 }

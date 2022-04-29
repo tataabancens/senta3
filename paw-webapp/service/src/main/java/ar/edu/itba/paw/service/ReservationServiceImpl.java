@@ -105,4 +105,14 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Long> getUnavailableItems(long reservationId) {
         return reservationDao.getUnavailableItems(reservationId);
     }
+
+    @Override
+    public List<Reservation> getAllReservations(long restaurantId) {
+        return reservationDao.getAllReservations(restaurantId);
+    }
+
+    @Override
+    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
+        return reservationDao.getReservationByIdAndIsActive(reservationId);
+    }
 }

@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.model;
 
 public enum ReservationStatus {
-    ACTIVE,
+    OPEN,
+    SEATED,
     CHECK_ORDERED,
     FINISHED,
     CANCELED

@@ -17,35 +17,27 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-    <div class="row">
-        <%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
+
+<div class="page-container">
+    <div class="restaurant-card card">
+        <div class="card-content white-text">
+            <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
+            <span class="title2"><c:out value="${restaurant.phone}"/></span>
+        </div>
     </div>
 
-    <div class="page-container">
-        <div class="restaurant-card card">
-            <div class="card-content white-text">
-                <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
-            </div>
-        </div>
-
-        <div class="confirm-card">
-            <div class="card">
-                <div class="card-content white-text center">
-                    <span class="main-title title text center">Tu código de reserva es:</span>
-                    <div class="with-margin">
-                        <span class="main-title text center"><c:out value="${reservation.reservationId}"/></span>
-                    </div>
-                    <p class="title2 center">No te preocupes,</p>
-                    <p class="title2 center">también te lo mandamos por mail!</p>
-                    <div class="center">
-                        <a class="waves-effect waves-light btn confirm-btn center" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
-                    </div>
-
+    <div class="card confirm-card">
+        <div class="card-content white-text center">
+            <span class="main-title text">Pediste la cuenta!</span>
+                <div class="center">
+                    <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/">Volver</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 </body>
 </html>
 
@@ -54,15 +46,13 @@
     body{
         background-color: #F0F0F0;
     }
-    .text{
-        color:  #707070
-    }
 
 
     .card{
         border-radius: 16px;
         display: grid;
     }
+
     
 
     .center{
@@ -90,9 +80,6 @@
         margin-left: 5%;
         margin-right: 5%;
     }
-
-
-
 
 
 </style>

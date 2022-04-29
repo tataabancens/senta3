@@ -16,7 +16,7 @@
 
     <title>Editar Plato</title>
 <body>
-    <%@ include file="components/navbar.jsp" %>
+    <%@ include file="../components/navbar.jsp" %>
 
     <div class="form-container">
         <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>

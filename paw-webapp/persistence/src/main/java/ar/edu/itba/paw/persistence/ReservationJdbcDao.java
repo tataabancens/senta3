@@ -82,11 +82,11 @@ public class ReservationJdbcDao implements ReservationDao {
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationHour", reservationHour);
         reservationData.put("customerId", customerId);
-        reservationData.put("reservationstatus", ReservationStatus.ACTIVE.ordinal());
+        reservationData.put("reservationstatus", ReservationStatus.OPEN.ordinal());
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.ACTIVE.ordinal());
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.OPEN.ordinal());
 
         return newReservation;
     }
@@ -245,5 +245,19 @@ public class ReservationJdbcDao implements ReservationDao {
         }
 
         return unavailableDishIds;
+    }
+
+    @Override
+    public List<Reservation> getAllReservations(long restaurantId) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
+        return query;
+    }
+
+    @Override
+    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND (reservationstatus = ? OR reservationstatus = ?)",
+                new Object[]{reservationId, ReservationStatus.OPEN.ordinal(), ReservationStatus.SEATED.ordinal()}, ROW_MAPPER_RESERVATION);
+        return query.stream().findFirst();
     }
 }

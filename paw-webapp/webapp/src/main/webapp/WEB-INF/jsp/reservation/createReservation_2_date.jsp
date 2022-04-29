@@ -16,44 +16,27 @@
     <title>Sentate-Registro</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 <body>
-    <%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 
-    <div class="content">
-        <c:url value="/register" var="postPath"/>
-        <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
-            <div class="content-container">
+<div class="content">
+    <c:url value="/createReservation-1" var="postPath"/>
+    <form:form modelAttribute="numberForm" action="${postPath}" method="post">
+        <div class="content-container">
             <div class="card register-card">
-                    <span class="main-title">Para reservar vamos a necesitar algunos datos:</span>
-                    <div class="input-field input">
-                        <form:errors path="mail" element="p" cssStyle="color:red"/>
-                        <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
-                        <form:input path="mail"  required="required" maxlength="50" type="text"/>
-                    </div>
-                    <div class="input-field input">
-                        <form:errors path="phone" element="p" cssStyle="color:red"/>
-                        <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Telefono:</form:label>
-                        <form:input path="phone" required="required" maxlength="13" type="text"/>
-                    </div>
-                    <div class="input-field input">
-                        <form:errors path="name" element="p" cssStyle="color: red"/>
-                        <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
-                        <form:input path="name" required="required" maxlength="50" type="text"/>
-                    </div>
+                <span class="main-title">Que día?</span>
 
-
-                    <div class="input-field">
-                        <p style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;">Horarios disponibles:</p>
-                        <form:select path="hour">
-                            <form:options items="${hours}" />
-                        </form:select>
-                    </div>
-                    <div class="submit center">
-                        <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
-                    </div>
+                <div class="input-field">
+                    <form:select path="number">
+                        <form:options items="${dates}" />
+                    </form:select>
+                </div>
+                <div class="submit center">
+                    <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
                 </div>
             </div>
-        </form:form>
-    </div>
+        </div>
+    </form:form>
+</div>
 
 </body>
 </html>

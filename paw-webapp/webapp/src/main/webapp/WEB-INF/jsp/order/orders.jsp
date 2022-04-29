@@ -22,7 +22,7 @@
     <title>Senta3</title>
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 
 <div class="header">
     <span class="presentation-text title header-title"><h3>Pedidos realizados</h3></span>

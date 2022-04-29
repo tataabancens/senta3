@@ -20,7 +20,7 @@
     </head>
     <body>
         <div class="row">
-            <%@ include file="components/navbar.jsp" %>
+            <%@ include file="../components/navbar.jsp" %>
         </div>
         <div class="page-container">
             <div class="restaurant-header">
@@ -44,7 +44,7 @@
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a class="waves-effect waves-light btn confirm-btn" href="register">Reservar</a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="createReservation">Reservar</a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
