@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
 
-    Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status);
-
     List<Reservation> getReservationsByStatus(ReservationStatus status);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
