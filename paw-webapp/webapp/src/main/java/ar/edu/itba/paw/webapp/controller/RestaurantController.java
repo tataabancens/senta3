@@ -166,65 +166,6 @@ public class RestaurantController {
         return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)
-    public ModelAndView confirmDish(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId,
-                             @PathVariable("restaurantId") final String restaurantIdP,
-                                    @PathVariable("dishId") final String dishIdP) throws Exception {
-
-        longParser(dishIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long dishId = Long.parseLong(dishIdP);
-
-        final ModelAndView mav = new ModelAndView("dish/dishConfirmation");
-        mav.addObject("dishId", dishId);
-        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-        mav.addObject("imageId", dish.getImageId());
-        return mav;
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
-    public ModelAndView createDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
-                                       @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
-        longParser(restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        return new ModelAndView("dish/createDish");
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
-    public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
-                                   @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {
-        longParser(restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        if (errors.hasErrors()){
-            return createDishForm(restaurantIdP, createDishForm);
-        }
-
-        // Dish create(long restaurantId, String dishName, String dishDescription, double price);
-
-        Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), createDishForm.getDishPrice(), 1);
-
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dish.getId());
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/menu/dish={dishId}/edit-photo", method = RequestMethod.POST)
-    public ModelAndView editPhoto(@PathVariable ("restaurantId") final String restaurantIdP,
-                                  @PathVariable ("dishId") final String dishIdP,
-                                  @RequestParam CommonsMultipartFile photo) throws Exception {
-
-        longParser(dishIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long dishId = Long.parseLong(dishIdP);
-        // Dish create(long restaurantId, String dishName, String dishDescription, double price);
-        Image image = ims.createImage(photo);
-        ds.updateDishPhoto(dishId, image.getImageId());
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dishId);
-        return mav;
-    }
-
 
     @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.GET)
     public ModelAndView editForm(@PathVariable ("restaurantId") final String restaurantIdP,
@@ -259,47 +200,6 @@ public class RestaurantController {
     }
 
 
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
-    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
-                                    @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        longParser(reservationIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        final ModelAndView mav = new ModelAndView("reservation/cancelReservationConfirmation");
-        mav.addObject("reservationId", reservationId);
-        mav.addObject("restaurantId", restaurantId);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
-    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
-                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        longParser(reservationIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        res.cancelReservation(restaurantId, reservationId);
-        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
-    }
-
-    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)
-    public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final String dishIdP,
-                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        longParser(dishIdP, restaurantIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long dishId = Long.parseLong(dishIdP);
-
-        final ModelAndView mav = new ModelAndView("dish/deleteDish");
-
-        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-        ds.deleteDish(dishId);
-
-        mav.addObject("dish", dish);
-
-        return mav;
-    }
 
     private void longParser(Object... str) throws Exception {
         if(str.length > 0){

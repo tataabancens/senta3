@@ -8,6 +8,7 @@ import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.MailingService;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.service.RestaurantService;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.FindReservationForm;
@@ -21,30 +22,30 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-public class RegisterController {
+public class ReservationController {
     private CustomerService cs;
     private RestaurantService rs;
     private ReservationService res;
     private MailingService ms;
 
     @Autowired
-    public RegisterController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms) {
+    public ReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms) {
         this.cs = cs;
         this.rs = rs;
         this.res = res;
         this.ms = ms;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/createReservation", method = RequestMethod.GET)
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
 
-        ModelAndView mav = new ModelAndView("reservation/register");
+        ModelAndView mav = new ModelAndView("reservation/createReservation_old");
         mav.addObject("hours", res.getAvailableHours(1));
 
         return mav;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/createReservation", method = RequestMethod.POST)
     public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) {
         if (errors.hasErrors()){
             return createForm(form);
@@ -100,6 +101,66 @@ public class RegisterController {
         mav.addObject("reservation", reservation);
 
         return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
+    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
+                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        longParser(reservationIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        final ModelAndView mav = new ModelAndView("reservation/cancelReservationConfirmation");
+        mav.addObject("reservationId", reservationId);
+        mav.addObject("restaurantId", restaurantId);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
+    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
+                                                          @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        longParser(reservationIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        res.cancelReservation(restaurantId, reservationId);
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
+    }
+
+
+
+    @RequestMapping("/reservation-cancel" )
+    public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                                          @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+
+        longParser(reservationIdP, restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+
+        final ModelAndView mav = new ModelAndView("reservation/cancelReservation");
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("reservationId", reservationId);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/reservation-cancel", method = RequestMethod.POST)
+    public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
+
+        longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ms.sendCancellationEmail(restaurant,customer,reservation);
+        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
+        return new ModelAndView("redirect:/");
     }
 
     private void longParser(Object... str) throws Exception {

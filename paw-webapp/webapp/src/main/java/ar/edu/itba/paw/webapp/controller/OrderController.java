@@ -225,41 +225,6 @@ public class OrderController {
         return mav;
     }
 
-
-
-    @RequestMapping("/reservation-cancel" )
-    public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
-                                     @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
-
-        longParser(reservationIdP, restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
-
-        final ModelAndView mav = new ModelAndView("reservation/cancelReservation");
-        mav.addObject("restaurant", restaurant);
-        mav.addObject("reservationId", reservationId);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/reservation-cancel", method = RequestMethod.POST)
-    public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
-
-        longParser(reservationIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.ACTIVE).orElseThrow(ReservationNotFoundException::new);
-        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
-
-        ms.sendCancellationEmail(restaurant,customer,reservation);
-        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
-        return new ModelAndView("redirect:/");
-    }
-
     @RequestMapping(value= "/order/empty-cart", method = RequestMethod.POST)
     public ModelAndView emptyCart(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
