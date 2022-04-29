@@ -38,7 +38,7 @@ public class RegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
 
-        ModelAndView mav = new ModelAndView("register/register");
+        ModelAndView mav = new ModelAndView("reservation/register");
         mav.addObject("hours", res.getAvailableHours(1));
 
         return mav;
@@ -58,7 +58,7 @@ public class RegisterController {
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                 customer,reservation);
 
-        final ModelAndView mav = new ModelAndView("register/notifyCustomer");
+        final ModelAndView mav = new ModelAndView("reservation/notifyCustomer");
 
         mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
 
@@ -90,7 +90,7 @@ public class RegisterController {
         longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("register/notifyCustomer");
+        final ModelAndView mav = new ModelAndView("reservation/notifyCustomer");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
