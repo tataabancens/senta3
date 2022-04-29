@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +22,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Optional<Reservation> getReservationById(long id) {
         return reservationDao.getReservationById(id);
-    }
-
-    @Override
-    public Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status) {
-        return reservationDao.getReservationByIdAndStatus(id, status);
     }
 
     @Override
@@ -113,6 +109,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
-        return reservationDao.getReservationByIdAndIsActive(reservationId);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.SEATED);
+
+        return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
     }
 }

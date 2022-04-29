@@ -63,9 +63,24 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status) {
-        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND reservationstatus = ?",
-                new Object[]{id, status.ordinal()}, ROW_MAPPER_RESERVATION);
+    public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
+        // Building sql query
+        StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE reservationId = ? AND ");
+        Object[] params = new Object[statusList.size() + 1];
+        params[0] = id;
+        int i = 1;
+        query_string.append("( ");
+        for (ReservationStatus reservationStatus : statusList) {
+            if (i != 1) {
+                query_string.append("OR ");
+            }
+            query_string.append("reservationstatus = ? ");
+            params[i++] = reservationStatus.ordinal();
+        }
+        query_string.append(" )");
+        // Executing
+        List<Reservation> query = jdbcTemplate.query(query_string.toString(),
+                params, ROW_MAPPER_RESERVATION);
         return query.stream().findFirst();
     }
 
@@ -254,10 +269,10 @@ public class ReservationJdbcDao implements ReservationDao {
         return query;
     }
 
-    @Override
-    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
-        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND (reservationstatus = ? OR reservationstatus = ?)",
-                new Object[]{reservationId, ReservationStatus.OPEN.ordinal(), ReservationStatus.SEATED.ordinal()}, ROW_MAPPER_RESERVATION);
-        return query.stream().findFirst();
-    }
+//    @Override
+//    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
+//        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND (reservationstatus = ? OR reservationstatus = ?)",
+//                new Object[]{reservationId, ReservationStatus.OPEN.ordinal(), ReservationStatus.SEATED.ordinal()}, ROW_MAPPER_RESERVATION);
+//        return query.stream().findFirst();
+//    }
 }
