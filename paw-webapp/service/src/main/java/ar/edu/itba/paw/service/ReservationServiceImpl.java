@@ -41,7 +41,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-        return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, status);
+        List<OrderItemStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+        return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, statusList);
     }
 
     @Override
@@ -114,5 +116,26 @@ public class ReservationServiceImpl implements ReservationService {
         statusList.add(ReservationStatus.SEATED);
 
         return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
+    }
+
+    @Override
+    public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
+        List<OrderItemStatus> statusList = new ArrayList<>();
+        statusList.add(OrderItemStatus.ORDERED);
+        statusList.add(OrderItemStatus.INCOMING);
+        statusList.add(OrderItemStatus.DELIVERED);
+
+        return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, statusList);
+    }
+
+    @Override
+    public List<FullOrderItem> getAllOrderItemsByReservationId(long reservationId) {
+        List<OrderItemStatus> statusList = new ArrayList<>();
+        statusList.add(OrderItemStatus.ORDERED);
+        statusList.add(OrderItemStatus.INCOMING);
+        statusList.add(OrderItemStatus.DELIVERED);
+        statusList.add(OrderItemStatus.FINISHED);
+
+        return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, statusList);
     }
 }

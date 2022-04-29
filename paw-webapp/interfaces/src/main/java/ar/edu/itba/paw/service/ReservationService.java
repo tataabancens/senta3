@@ -42,4 +42,8 @@ public interface ReservationService {
     List<Reservation> getAllReservations(long restaurantId);
 
     Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
+
+    List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId);
+
+    List<FullOrderItem> getAllOrderItemsByReservationId(long reservationId);
 }

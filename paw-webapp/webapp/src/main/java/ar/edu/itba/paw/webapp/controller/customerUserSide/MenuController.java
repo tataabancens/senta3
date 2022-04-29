@@ -30,6 +30,17 @@ public class MenuController {
         this.controllerService = controllerService;
     }
 
+    @RequestMapping("/")
+    public ModelAndView helloWorld() {
+
+        final ModelAndView mav = new ModelAndView("menu/menu");
+
+        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
+        mav.addObject("restaurant", restaurant);
+        return mav;
+    }
+
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
@@ -53,9 +64,7 @@ public class MenuController {
         mav.addObject("orderItems", orderItems);
         mav.addObject("selected", orderItems.size());
         mav.addObject("total", res.getTotal(orderItems));
-        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.ORDERED);
-        orderedItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.INCOMING));
-        orderedItems.addAll(res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.DELIVERED));
+        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
 
         mav.addObject("ordered", res.getTotal(orderedItems));
 
