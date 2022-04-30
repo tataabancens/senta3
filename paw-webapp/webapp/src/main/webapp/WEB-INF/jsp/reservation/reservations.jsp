@@ -41,13 +41,15 @@
                     <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
                     <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
                     <td data-label="Confirmar" class="table-cell">
-                        <a href="#!" class="btn-floating large green">
-                            <i class="material-icons">check_circle</i>
-                        </a>
+                        <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <button type="submit" class="btn-floating large green">
+                                <i class="material-icons">check_circle</i>
+                            </button>
+                        </form:form>
                     </td>
                     <td data-label="Cancelar" class="table-cell">
-
-                        <a href="#!" class="btn-floating large red">
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn-floating large red">
                             <i class="material-icons">cancel</i>
                         </a>
                     </td>

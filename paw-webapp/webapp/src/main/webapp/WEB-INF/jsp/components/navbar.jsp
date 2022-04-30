@@ -23,8 +23,6 @@
 
         <a href="<c:url value="/"/>" class="logo">Senta3</a>
         <sec:authorize access="hasRole('RESTAURANT')">
-            <c:url value="/resources/images/fotoDefault.png"/>
-
             <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Inicio</a>
         </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
