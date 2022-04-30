@@ -32,7 +32,7 @@ public interface ReservationService {
 
     void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
 
-    List<Integer> getAvailableHours(long restaurantId);
+    List<Integer> getAvailableHours(long restaurantId, long qPeople);
 
     void cancelReservation(long restaurantId, long reservationId);
 

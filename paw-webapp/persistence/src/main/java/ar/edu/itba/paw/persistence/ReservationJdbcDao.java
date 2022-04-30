@@ -195,6 +195,17 @@ public class ReservationJdbcDao implements ReservationDao {
         jdbcTemplate.update("DELETE from orderitem where status = ? AND reservationId = ?", new Object[]{status.ordinal(), reservationId});
     }
 
+    /*
+    @Override
+    public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
+
+        return null;
+    }
+     */
+
+/*
     @Override
     public List<Integer> getAvailableHours(long restaurantId) {
 
@@ -249,11 +260,13 @@ public class ReservationJdbcDao implements ReservationDao {
         totalHours.removeAll(notAvailable);
         return totalHours;
     }
+ */
 
     @Override
     public void cancelReservation(long restaurantId, long reservationId){
         jdbcTemplate.update("DELETE FROM reservation WHERE reservationId = ?", new Object[]{reservationId});
     }
+
 
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
@@ -279,6 +292,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
         return unavailableDishIds;
     }
+
 
     @Override
     public List<Reservation> getAllReservations(long restaurantId) {

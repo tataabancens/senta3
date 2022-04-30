@@ -42,11 +42,9 @@
                 </div>
                 <div>
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Comensales: <c:out value="${people}"/></form:label>
-                    <form:input type="hidden" disabled="true" path="qPeople" required="required" maxlength="50"/>
                 </div>
                 <div>
                     <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Hora: <c:out value="${hour}"/>hs</form:label>
-                    <form:input type="hidden" disabled="true" path="hour" required="required" maxlength="50"/>
                 </div>
                 <div class="submit center">
                     <input type="submit" value="Confirmar reserva!" class="continue-btn"/>

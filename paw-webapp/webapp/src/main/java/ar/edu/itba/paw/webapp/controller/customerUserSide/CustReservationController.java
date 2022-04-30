@@ -87,7 +87,7 @@ public class CustReservationController {
         controllerService.longParser(qPeopleP);
         long qPeople = Long.parseLong(qPeopleP);
         ModelAndView mav = new ModelAndView("reservation/createReservation_3_time");
-        mav.addObject("hours", res.getAvailableHours(1));
+        mav.addObject("hours", res.getAvailableHours(1, qPeople));
         mav.addObject("people", qPeople);
         return mav;
     }
@@ -125,7 +125,7 @@ public class CustReservationController {
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
         Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer, form.getHour(), form.getqPeople());
+                customer, (int) hour, (int) qPeople);
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
