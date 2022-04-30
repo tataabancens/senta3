@@ -31,7 +31,19 @@
     font-size: 2vw;
     margin: 0 auto;
 }
-
+.header{
+    background: black;
+    background: linear-gradient(90deg, white 7%, black 88%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: white;
+    min-height: 3%;
+    font-size: 30rem;
+    border-radius: 14px;
+    align-items: center;
+    margin: 15px 20px;
+}
 .title2{
     justify-content: center;
     font-size: 1.5vw;

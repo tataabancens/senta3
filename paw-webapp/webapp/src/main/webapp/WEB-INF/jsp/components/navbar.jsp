@@ -27,9 +27,6 @@
         <sec:authorize access="!hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/" class="logo">Inicio</a>
         </sec:authorize>
-        <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="#" class="logo">Restaurantes</a>
-        </sec:authorize>
         <sec:authorize access="hasRole('RESTAURANT')">
             <a href="${pageContext.request.contextPath}/restaurant=1/orders" class="logo">Ordenes</a>
         </sec:authorize>
@@ -46,59 +43,22 @@
             <a href="${pageContext.request.contextPath}/logout" class="logo right">Cerrar sesion</a>
         </sec:authorize>
     </div>
-    <!--
-    <div class="nav-wrapper navbar">
-        <div class="row">
-            <div class="col">
-                <sec:authorize access="hasRole('RESTAURANT')">
-                <a href="${pageContext.request.contextPath}/restaurant=1/menu">
-                    <span class="logo">Senta3</span>
-                </a>
-                </sec:authorize>
-
-                <sec:authorize access="!hasRole('RESTAURANT')">
-                <a href="${pageContext.request.contextPath}/">
-                    <span class="logo">Senta3</span>
-                </a>
-                </sec:authorize>
-
-            </div>
-            <sec:authorize access="hasRole('RESTAURANT')">
-                <div class="col right">
-                    <a href="${pageContext.request.contextPath}/logout">
-                        <p class="logo smaller">log out</p>
-                    </a>
-                </div>
-            </sec:authorize>
-            <sec:authorize access="!hasRole('RESTAURANT')">
-                <div class="col right">
-                    <a href="${pageContext.request.contextPath}/login">
-                        <p class="logo smaller">log in</p>
-                    </a>
-                </div>
-            </sec:authorize>
-
-        </div>
-    </div>-->
 </nav>
 </body>
 </html>
 
 <style>
-    body{
-        font-family: 'Goldplay-Bold',sans-serif;
-        background: white;
-
+    nav{
+        width: 100%;
     }
     .nav-wrapper{
         background-color: white;
         align-items: center;
-        color: #37A6E6;
     }
     nav a{
         font-size: 18px;
         text-transform: uppercase;
-        color: #37A6E6;
+        color: white;
         text-decoration: none;
         line-height: 50px;
         margin-top: 5px;
@@ -120,16 +80,11 @@
         width: 100px;
     }
     .logo{
-        color:  #37A6E6;
+        color:  black;
         margin-left: 2%;
         font-family: "Segoe UI", Arial, sans-serif;
         font-weight: bold;
         font-style: italic;
         font-size:1.25vw;
-    }
-
-
-    .smaller{
-        font-size: 25px;
     }
 </style>
