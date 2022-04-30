@@ -71,7 +71,7 @@
                     </div>
                 </form>
                 <div class="btn-row">
-                    <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/restaurant=${restaurantId}/menu"/>">Confirmar</a>
+                    <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/restaurant=${restaurantId}/menu"/>" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">Confirmar</a>
                 </div>
             </div>
     </div>

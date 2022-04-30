@@ -41,7 +41,7 @@
                     <form:input path="dishPrice" type="text"/>
                 </div>
                 <div class="submit center">
-                    <input type="submit" value="Confirmar" class="continue-btn"/>
+                    <input type="submit" value="Confirmar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
                 </div>
             </div>
         </form:form>

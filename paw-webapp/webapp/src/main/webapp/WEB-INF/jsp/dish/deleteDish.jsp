@@ -26,7 +26,7 @@
                 <span class="card-title text price center">Borraste el plato ${dish.dishName}, id:${dish.id}</span>
                 <div class="row margin-0">
                     <div class="col s12 center">
-                        <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
+                        <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">Volver al inicio</a>
                     </div>
                 </div>
 

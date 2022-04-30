@@ -47,7 +47,7 @@
                     <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Hora: <c:out value="${hour}"/>hs</form:label>
                 </div>
                 <div class="submit center">
-                    <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
+                    <input type="submit" value="Confirmar reserva!" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
                 </div>
             </div>
         </div>
