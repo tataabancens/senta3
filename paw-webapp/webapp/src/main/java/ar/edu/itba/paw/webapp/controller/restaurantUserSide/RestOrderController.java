@@ -43,11 +43,13 @@ public class RestOrderController {
 
         final ModelAndView mav = new ModelAndView("order/orders");
         List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.SEATED);
-        List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
-        List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
+
         for (Reservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
+        List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
+        List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
+
         mav.addObject("reservations", reservations);
         mav.addObject("incomingItems", incomingItems);
         mav.addObject("finishedItems", finishedItems);

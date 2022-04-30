@@ -22,7 +22,7 @@ public interface ReservationDao {
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status);
 
     List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 

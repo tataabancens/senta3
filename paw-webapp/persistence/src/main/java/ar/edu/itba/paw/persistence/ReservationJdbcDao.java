@@ -62,27 +62,7 @@ public class ReservationJdbcDao implements ReservationDao {
         return query.stream().findFirst();
     }
 
-    @Override
-    public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
-        // Building sql query
-        StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE reservationId = ? AND ");
-        Object[] params = new Object[statusList.size() + 1];
-        params[0] = id;
-        int i = 1;
-        query_string.append("( ");
-        for (ReservationStatus reservationStatus : statusList) {
-            if (i != 1) {
-                query_string.append("OR ");
-            }
-            query_string.append("reservationstatus = ? ");
-            params[i++] = reservationStatus.ordinal();
-        }
-        query_string.append(" )");
-        // Executing
-        List<Reservation> query = jdbcTemplate.query(query_string.toString(),
-                params, ROW_MAPPER_RESERVATION);
-        return query.stream().findFirst();
-    }
+
 
     @Override
     public List<Reservation> getReservationsByStatus(ReservationStatus status) {
@@ -131,9 +111,45 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ? AND reservationId = ?",
-                new Object[]{status.ordinal(), reservationId}, ROW_MAPPER_ORDER_ITEMS);
+    public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
+        // Building sql query
+        StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE reservationId = ? AND ");
+        Object[] params = new Object[statusList.size() + 1];
+        params[0] = id;
+        int i = 1;
+        query_string.append("( ");
+        for (ReservationStatus reservationStatus : statusList) {
+            if (i != 1) {
+                query_string.append("OR ");
+            }
+            query_string.append("reservationstatus = ? ");
+            params[i++] = reservationStatus.ordinal();
+        }
+        query_string.append(" )");
+        // Executing
+        List<Reservation> query = jdbcTemplate.query(query_string.toString(),
+                params, ROW_MAPPER_RESERVATION);
+        return query.stream().findFirst();
+    }
+
+    @Override
+    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> statusList) {
+        // Building sql query
+        StringBuilder query_string = new StringBuilder("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ? AND ");
+        Object[] params = new Object[statusList.size() + 1];
+        params[0] = reservationId;
+        int i = 1;
+        query_string.append("( ");
+        for (OrderItemStatus orderItemStatus : statusList) {
+            if (i != 1) {
+                query_string.append("OR ");
+            }
+            query_string.append("status = ? ");
+            params[i++] = orderItemStatus.ordinal();
+        }
+        query_string.append(" )");
+        List<FullOrderItem> query = jdbcTemplate.query(query_string.toString(),
+                params, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
 
