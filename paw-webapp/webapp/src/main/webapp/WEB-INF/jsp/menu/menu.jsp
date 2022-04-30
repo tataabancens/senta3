@@ -68,7 +68,12 @@
                     <c:forEach var="dish" items="${restaurant.dishes}">
                         <div class="card dish-card">
                             <div class="imageContainer">
-                               <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
+                                <c:if test="${dish.imageId > 0}">
+                                    <img class="dish-image" src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                </c:if>
+                                <c:if test="${dish.imageId == 0}">
+                                    <img class="dish-image" src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                </c:if>
                             </div>
                             <div class="dish-card-text">
                                 <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>

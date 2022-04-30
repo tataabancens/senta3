@@ -49,7 +49,12 @@
                     <c:if test="${unavailable.contains(dish.id)}">
                         <a disabled href="" class="selection-area">
                             <div class="imageContainer">
-                                <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
+                                <c:if test="${imageId > 0}">
+                                    <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                </c:if>
+                                <c:if test="${imageId == 0}">
+                                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                </c:if>
                             </div>
                             <div class="dish-card-text">
                                 <div class="dish-card-name">
@@ -65,7 +70,12 @@
                     <c:if test="${!unavailable.contains(dish.id)}">
                         <a href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}" class="selection-area">
                             <div class="imageContainer">
-                                <img class="dish-image" src="${pageContext.request.contextPath}/resources_/images/${dish.imageId}" alt="imagen del plato">
+                                <c:if test="${dish.imageId > 0}">
+                                    <img class="dish-image" src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                </c:if>
+                                <c:if test="${dish.imageId == 0}">
+                                    <img class="dish-image" src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                </c:if>
                             </div>
                             <div class="dish-card-text">
                                 <div class="dish-card-name">
