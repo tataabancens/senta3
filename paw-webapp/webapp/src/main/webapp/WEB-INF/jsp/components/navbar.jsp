@@ -18,74 +18,142 @@
 
 </head>
 <body>
+<button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
 <nav>
-    <div class="nav-wrapper">
+    <ul id="primary-navigation" data-visible="false" class="primary-navigation flex">
+        <div class="left-side">
+            <li>
+                <a href="${pageContext.request.contextPath}/">
+                    <span class="logo">Senta3</span>
+                </a>
+            </li>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <li class="active">
+                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/menu" >
+                        Inicio
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/orders">
+                        Ordenes
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/reservations">
+                        Reservas
+                    </a>
+                </li>
+            </sec:authorize>
+        </div>
+        <div class="right-side">
+            <sec:authorize access="!hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/login">
+                        Iniciar sesion
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/logout" >
+                        Cerrar sesion
+                    </a>
+                </li>
+            </sec:authorize>
+        </div>
 
-        <a href="<c:url value="/"/>" class="logo">Senta3</a>
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Inicio</a>
-        </sec:authorize>
-        <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/" class="logo">Inicio</a>
-        </sec:authorize>
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/restaurant=1/orders" class="logo">Ordenes</a>
-        </sec:authorize>
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/" class="logo">Restaurante</a>
-        </sec:authorize>
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/restaurant=1/reservations" class="logo">Reservas</a>
-        </sec:authorize>
-        <sec:authorize access="!hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/login" class="logo right">Iniciar sesion</a>
-        </sec:authorize>
-        <sec:authorize access="hasRole('RESTAURANT')">
-            <a href="${pageContext.request.contextPath}/logout" class="logo right">Cerrar sesion</a>
-        </sec:authorize>
-    </div>
+    </ul>
+
 </nav>
 </body>
 </html>
 
 <style>
+    body{
+        overflow-x: hidden;
+    }
     nav{
-        width: 100%;
+        background-color: black;
     }
-    .nav-wrapper{
-        background-color: white;
-        align-items: center;
+    .flex{
+        display: flex;
+        gap: var(--gap,1rem);
     }
-    nav a{
-        font-size: 18px;
-        text-transform: uppercase;
-        color: white;
-        text-decoration: none;
-        line-height: 50px;
-        margin-top: 5px;
-        margin-left: 20px;
-        margin-right: 20px;
-        position: relative;
-        z-index: 1;
-        display: inline-block;
-        text-align: center;
+    .primary-navigation{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        justify-content: space-between;
     }
-    a:nth-child(1){
-        width: 100px;
-    }
-
-    a:nth-child(2){
-        width: 100px;
-    }
-    a:nth-child(3){
-        width: 100px;
+    .mobile-nav-toggle{
+        display: none;
     }
     .logo{
-        color:  black;
-        margin-left: 2%;
-        font-family: "Segoe UI", Arial, sans-serif;
+        font-family: "Goldplay", sans-serif;
+        font-size: 1.9rem;
         font-weight: bold;
-        font-style: italic;
-        font-size:1.25vw;
+        color: #37A6E6;
+    }
+    .primary-navigation a{
+        color: whitesmoke;
+        font-family: "Goldplay", sans-serif;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .primary-navigation a > [aria-hidden="true"]{
+        font-weight: 700;
+        margin-inline-end: 0.5em;
+    }
+    .primary-navigation a.options:hover{
+        background-color: white;
+        color: black;
+    }
+    @media (max-width: 35em){
+        .primary-navigation{
+            position: fixed;
+            --gap: 2em;
+            inset: 0 0 0 55%;
+            z-index: 1000;
+            flex-direction: column;
+            padding: min(30vh,10rem) 2rem;
+            background: hsl(0 0% 100% / 0.1);
+            backdrop-filter: blur(1em);
+            transform: translateX(100%);
+            transition: transform 350ms ease-out;
+        }
+        .primary-navigation[data-visible="true"]{
+            transform: translateX(0%);
+        }
+        .mobile-nav-toggle{
+            display: block;
+            position: absolute;
+            z-index: 9999;
+            background: url("/resources/images/hamburger.png");
+            width: 3rem;
+            aspect-ratio: 1;
+            border: 0;
+            top: 2rem;
+            right: 2rem;
+        }
     }
 </style>
+<script type="text/javascript">
+    const primaryNav = document.querySelector(".primary-navigation");
+    const navToggle = document.querySelector(".mobile-nav-toggle");
+    const buttons = document.querySelector("a");
+    navToggle.addEventListener('click',() => {
+        const visibility = primaryNav.getAttribute('data-visible');
+        if (visibility=== "false"){
+            primaryNav.setAttribute('data-visible',true);
+            navToggle.setAttribute('aria-expanded',true);
+        }else if(visibility==="true"){
+            primaryNav.setAttribute('data-visible',false);
+            navToggle.setAttribute('aria-expanded',false);
+        }
+    })
+</script>
