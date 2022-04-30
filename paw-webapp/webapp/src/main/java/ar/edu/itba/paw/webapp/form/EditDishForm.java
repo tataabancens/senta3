@@ -1,16 +1,21 @@
 package ar.edu.itba.paw.webapp.form;
 
-import org.springframework.web.multipart.MultipartFile;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class EditDishForm {
 
+    @Size(min = 1, max = 100)
+    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String dishName;
 
+    @Size(min = 1, max = 200)
+    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String dishDesc;
 
-    private Double dishPrice;
-
-    private MultipartFile photo;
+    @Size(min = 1, max = 10)
+    @Pattern(regexp = "[1-9][0-9]+[.]?[0-9]?[0-9]?")
+    private String dishPrice;
 
     public String getDishName() {
         return dishName;
@@ -28,19 +33,11 @@ public class EditDishForm {
         this.dishDesc = dishDesc;
     }
 
-    public Double getDishPrice() {
+    public String getDishPrice() {
         return dishPrice;
     }
 
-    public void setDishPrice(Double dishPrice) {
+    public void setDishPrice(String dishPrice) {
         this.dishPrice = dishPrice;
-    }
-
-    public MultipartFile getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(MultipartFile photo) {
-        this.photo = photo;
     }
 }

@@ -73,7 +73,7 @@ public class DishController {
 
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
 
-        Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), createDishForm.getDishPrice(), 1);
+        Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 1);
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dish.getId());
 
@@ -122,23 +122,26 @@ public class DishController {
         long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("dish/editDish");
-        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
-        mav.addObject("restaurant", restaurant);
+        mav.addObject("restaurantId", restaurantId);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
 
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
-        form.setDishPrice((double) dish.getPrice());
+        form.setDishPrice(String.format("%.2f", (double) dish.getPrice()));
         return mav;
 
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.POST)
-    public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form,
+    public ModelAndView editDishForm(@Valid @ModelAttribute("editDishForm") final EditDishForm form,
+                                     final BindingResult errors,
                                  @PathVariable("dishId") final String dishIdP,
                                  @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        if (errors.hasErrors()) {
+            return editDishForm(restaurantIdP, form, dishIdP);
+        }
 
         controllerService.longParser(dishIdP, restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
@@ -153,7 +156,7 @@ public class DishController {
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
 
-        ds.updateDish(dishId, form.getDishName(), form.getDishDesc(), form.getDishPrice(), dish.getRestaurantId());
+        ds.updateDish(dishId, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()), dish.getRestaurantId());
 
         return mav;
     }
