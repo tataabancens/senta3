@@ -54,7 +54,7 @@ public class CustReservationController {
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
         Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer, form.getHour());
+                customer, form.getHour(), 2);
 
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
@@ -70,52 +70,41 @@ public class CustReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-1", method = RequestMethod.GET)
-    public ModelAndView createReservation_1(@ModelAttribute("peopleForm") final NumberForm form){
+    @RequestMapping(value = "/createReservation-1")
+    public ModelAndView createReservation_1(){
         ModelAndView mav = new ModelAndView("reservation/createReservation_1_people");
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-1", method = RequestMethod.POST)
-    public ModelAndView createReservation_1(@Valid @ModelAttribute("peopleForm") final NumberForm form, final BindingResult errors) {
-        /*
-        if (errors.hasErrors()){
-            return createForm(form);
-        }
-         */
+    @RequestMapping(value = "/createReservation-1/people={qPeople}")
+    public ModelAndView createReservation_2(@PathVariable("qPeople") final String qPeopleP) throws Exception {
 
-        final ModelAndView mav = new ModelAndView("reservation/createReservation_2_date");
-
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-
-
-        mav.addObject("dates", new int[]{ 1,2,3,4,5,6,7,8,9,10 } ); //acá iría un get dates o algo así
-
-
+        controllerService.longParser(qPeopleP);
+        long qPeople = Long.parseLong(qPeopleP);
+        ModelAndView mav = new ModelAndView("reservation/createReservation_3_time");
+        mav.addObject("hours", res.getAvailableHours(1));
+        mav.addObject("people", qPeople);
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-2", method = RequestMethod.GET)
-    public ModelAndView createReservation_2(@ModelAttribute("dayForm") final NumberForm form){
-        ModelAndView mav = new ModelAndView("reservation/createReservation_2_date");
+    @RequestMapping(value = "/createReservation-1/people={qPeople}/hour={hour}")//, method = RequestMethod.GET)
+    public ModelAndView createReservation_3(@PathVariable("qPeople") final String qPeopleP,
+                                            @PathVariable("hour") final String hourP,
+                                            @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
+
+        controllerService.longParser(qPeopleP);
+        long qPeople = Long.parseLong(qPeopleP);
+        controllerService.longParser(hourP);
+        long hour = Long.parseLong(hourP);
+
+        ModelAndView mav = new ModelAndView("reservation/createReservation_4_user");
+        mav.addObject("hour", hour);
+        mav.addObject("people", qPeople);
+        form.setqPeople((int) qPeople);
+        form.setHour((int) hour);
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-2", method = RequestMethod.POST)
-    public ModelAndView createReservation_2(@Valid @ModelAttribute("dayForm") final NumberForm form, final BindingResult errors) {
-        /*
-        if (errors.hasErrors()){
-            return createForm(form);
-        }
-         */
-
-        final ModelAndView mav = new ModelAndView("reservation/createReservation_2_date");
-
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
-
-
-        return mav;
-    }
 
 
     @RequestMapping(value = "/findReservation", method = RequestMethod.GET)

@@ -21,8 +21,8 @@ public class ReservationForm {
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
 
-
     private int hour;
+    private int qPeople;
 
     public String getPhone() {
         return phone;
@@ -53,5 +53,13 @@ public class ReservationForm {
     }
     public void setHour(int hour) {
         this.hour = hour;
+    }
+
+    public int getqPeople() {
+        return qPeople;
+    }
+
+    public void setqPeople(int qPeople) {
+        this.qPeople = qPeople;
     }
 }

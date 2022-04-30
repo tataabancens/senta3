@@ -9,13 +9,15 @@ public class Reservation {
     //private Timestamp reservationDate;
     private int reservationHour;
     private ReservationStatus reservationStatus;
+    private int qPeople;
 
-    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus){
+    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus, int qPeople){
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.reservationHour = reservationHour;
         this.customerId = customerId;
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
+        this.qPeople = qPeople;
     }
     public long getReservationId() {
         return reservationId;
@@ -55,5 +57,13 @@ public class Reservation {
 
     public void setReservationHour(int reservationHour) {
         this.reservationHour = reservationHour;
+    }
+
+    public int getqPeople() {
+        return qPeople;
+    }
+
+    public void setqPeople(int qPeople) {
+        this.qPeople = qPeople;
     }
 }

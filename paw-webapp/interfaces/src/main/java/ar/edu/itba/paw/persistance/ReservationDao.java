@@ -14,7 +14,7 @@ public interface ReservationDao {
 
     List<Reservation> getReservationsByStatus(ReservationStatus status);
 
-    Reservation createReservation(long restaurantId, long customerId, int reservationHour);
+    Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 

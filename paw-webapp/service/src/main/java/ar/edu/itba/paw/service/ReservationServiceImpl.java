@@ -5,7 +5,6 @@ import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,8 +51,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour) {
-        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(), reservationHour);
+    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
+        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(), reservationHour, qPeople);
     }
 
     @Override

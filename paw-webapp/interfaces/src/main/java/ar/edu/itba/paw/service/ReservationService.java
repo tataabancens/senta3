@@ -2,7 +2,6 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public interface ReservationService {
 
     List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
-    Reservation createReservation(Restaurant restaurant,Customer customer, int reservationHour);
+    Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople);
 
     float getTotal(List<FullOrderItem> orderItems);
 

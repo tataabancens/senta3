@@ -1,6 +1,5 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,32 +14,35 @@
 
     <title>Sentate-Registro</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
+
+    <script>
+        function validateSelect()
+        {
+            const sel = document.getElementById('hourSelect');
+            window.location.href = 'people=' + <c:out value="${people}"/> + "/hour=" + sel.value;
+        }
+    </script>
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="content">
     <c:url value="/createReservation-1" var="postPath"/>
-    <form:form modelAttribute="numberForm" action="${postPath}" method="post">
-        <div class="content-container">
-            <div class="card register-card">
-                <span class="main-title">Cuanta gente viene a comer?:</span>
+    <div class="content-container">
+        <div class="card register-card">
+            <span class="main-title">A que hora?</span>
 
-                <div class="input-field">
-                    <form:select path="number">
-                        <form:option value="1">1</form:option>
-                        <form:option value="2">2</form:option>
-                        <form:option value="3">3</form:option>
-                        <form:option value="4">4</form:option>
-                        <form:option value="5">5</form:option>
-                        <form:option value="6">5+</form:option>
-                    </form:select>
-                </div>
-                <div class="submit center">
-                    <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
-                </div>
+            <div class="input-field">
+                <select id="hourSelect" name="hourSelection">
+                    <c:forEach items="${hours}" var="eachHour">
+                        <option value=${eachHour}>${eachHour}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="submit center">
+                <input type="button" id="continueButton" value="Continuar" class="continue-btn" onclick="return validateSelect()"/>
             </div>
         </div>
-    </form:form>
+    </div>
 </div>
 
 </body>
@@ -65,10 +67,7 @@
         width: 100%;
         padding: 20px;
     }
-    form{
-        display: flex;
-        flex-wrap: wrap;
-    }
+
     .content{
         display: flex;
         justify-content: center;
