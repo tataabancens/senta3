@@ -37,6 +37,8 @@ public class CustReservationController {
         this.controllerService = controllerService;
     }
 
+
+    /*
     @RequestMapping(value = "/createReservation", method = RequestMethod.GET)
     public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
 
@@ -70,6 +72,9 @@ public class CustReservationController {
         return mav;
     }
 
+     */
+
+
     @RequestMapping(value = "/createReservation-1")
     public ModelAndView createReservation_1(){
         ModelAndView mav = new ModelAndView("reservation/createReservation_1_people");
@@ -87,7 +92,7 @@ public class CustReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-1/people={qPeople}/hour={hour}")//, method = RequestMethod.GET)
+    @RequestMapping(value = "/createReservation-1/people={qPeople}/hour={hour}", method = RequestMethod.GET)
     public ModelAndView createReservation_3(@PathVariable("qPeople") final String qPeopleP,
                                             @PathVariable("hour") final String hourP,
                                             @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
@@ -102,6 +107,35 @@ public class CustReservationController {
         mav.addObject("people", qPeople);
         form.setqPeople((int) qPeople);
         form.setHour((int) hour);
+        return mav;
+    }
+
+    @RequestMapping(value = "/createReservation-1/people={qPeople}/hour={hour}", method = RequestMethod.POST)
+    public ModelAndView createReservation_3(@PathVariable("qPeople") final String qPeopleP,
+                                            @PathVariable("hour") final String hourP,
+                                            @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
+        controllerService.longParser(qPeopleP);
+        long qPeople = Long.parseLong(qPeopleP);
+        controllerService.longParser(hourP);
+        long hour = Long.parseLong(hourP);
+
+        if (errors.hasErrors()){
+            return createReservation_3(qPeopleP, hourP, form);
+        }
+
+        Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
+        Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                customer, form.getHour(), form.getqPeople());
+
+
+        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                customer,reservation);
+
+        final ModelAndView mav = new ModelAndView("reservation/notifyCustomer");
+
+        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+
+        mav.addObject("reservation", reservation);
         return mav;
     }
 

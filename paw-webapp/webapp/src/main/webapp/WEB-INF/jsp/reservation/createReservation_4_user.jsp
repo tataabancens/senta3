@@ -19,7 +19,8 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation" var="postPath"/>
+    <c:url value="/createReservation-1/people=${qPeople}/hour=${hour}" var="postPath"/>
+
     <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
@@ -40,12 +41,12 @@
                     <form:input path="name" required="required" maxlength="50" type="text"/>
                 </div>
                 <div>
-                    <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text">Comensales: <c:out value="${people}"/></form:label>
-                    <form:input type="hidden" disabled="true" path="qPeople"/>
+                    <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Comensales: <c:out value="${people}"/></form:label>
+                    <form:input type="hidden" disabled="true" path="qPeople" required="required" maxlength="50"/>
                 </div>
                 <div>
-                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text">Hora: <c:out value="${hour}"/></form:label>
-                    <form:input type="hidden" disabled="true" path="hour"/>
+                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Hora: <c:out value="${hour}"/>hs</form:label>
+                    <form:input type="hidden" disabled="true" path="hour" required="required" maxlength="50"/>
                 </div>
                 <div class="submit center">
                     <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
