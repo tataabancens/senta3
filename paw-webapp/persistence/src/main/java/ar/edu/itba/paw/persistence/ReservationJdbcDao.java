@@ -148,7 +148,6 @@ public class ReservationJdbcDao implements ReservationDao {
             params[i++] = orderItemStatus.ordinal();
         }
         query_string.append(" )");
-        // Executing
         List<FullOrderItem> query = jdbcTemplate.query(query_string.toString(),
                 params, ROW_MAPPER_ORDER_ITEMS);
         return query;
