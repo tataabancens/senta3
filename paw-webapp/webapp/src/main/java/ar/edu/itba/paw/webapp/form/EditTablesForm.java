@@ -1,38 +1,43 @@
 package ar.edu.itba.paw.webapp.form;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class EditTablesForm {
 
-    int tableQty;
+    @Size(min = 1, max = 4)
+    @Pattern(regexp = "[1-9][0-9]+")
+    String tableQty;
 
-    @Size(max = 23)
-    int openHour;
-    @Size(max=23)
-    int closeHour;
+    @Size(min = 0, max = 2)
+    @Pattern(regexp = "[1]?[0-9]|[2][0-4]")
+    String openHour;
+    @Size(min = 0, max = 2)
+    @Pattern(regexp = "[1]?[0-9]|[2][0-4]")
+    String closeHour;
 
-    public int getTableQty() {
+    public String getTableQty() {
         return tableQty;
     }
 
-    public void setTableQty(int tableQty) {
+    public void setTableQty(String tableQty) {
         this.tableQty = tableQty;
     }
 
-    public int getOpenHour() {
+    public String getOpenHour() {
         return openHour;
     }
 
-    public void setOpenHour(int openHour) {
+    public void setOpenHour(String openHour) {
         this.openHour = openHour;
     }
 
-    public int getCloseHour() {
+    public String getCloseHour() {
         return closeHour;
     }
 
-    public void setCloseHour(int closeHour) {
+    public void setCloseHour(String closeHour) {
         this.closeHour = closeHour;
     }
 }

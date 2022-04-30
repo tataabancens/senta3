@@ -6,9 +6,11 @@ import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditTablesForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -81,22 +83,28 @@ public class RestController {
 
         mav.addObject("restaurant", restaurant);
 
-        form.setTableQty(restaurant.getTotalTables());
-        form.setOpenHour(restaurant.getOpenHour());
-        form.setCloseHour(restaurant.getCloseHour());
+        form.setTableQty(String.format("%d", restaurant.getTotalTables()));
+        form.setOpenHour(String.format("%d", restaurant.getOpenHour()));
+        form.setCloseHour(String.format("%d", restaurant.getCloseHour()));
         return mav;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.POST)
-    public ModelAndView editMenu(@ModelAttribute("editTablesForm") final EditTablesForm form,
+    public ModelAndView editMenu(@Valid @ModelAttribute("editTablesForm") final EditTablesForm form,
+                                 final BindingResult errors,
                                  @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        if (errors.hasErrors()) {
+            return editForm(restaurantIdP, form);
+        }
 
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
-        rs.updateRestaurantHourAndTables(restaurantId, form.getTableQty(), form.getOpenHour(), form.getCloseHour());
+        rs.updateRestaurantHourAndTables(restaurantId,  Integer.parseInt(form.getTableQty()),
+                                                        Integer.parseInt(form.getOpenHour()),
+                                                        Integer.parseInt(form.getCloseHour()));
 
         return mav;
     }
