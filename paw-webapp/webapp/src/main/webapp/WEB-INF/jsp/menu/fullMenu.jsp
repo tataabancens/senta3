@@ -12,11 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="<c:url value="https://fonts.googleapis.com/icon?family=Material+Icons"/>" rel="stylesheet">
 
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
@@ -68,7 +69,8 @@
                         </a>
                     </c:if>
                     <c:if test="${!unavailable.contains(dish.id)}">
-                        <a href="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}" class="selection-area">
+
+                        <a href="<c:url value="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>" class="selection-area">
                             <div class="imageContainer">
                                 <c:if test="${dish.imageId > 0}">
                                     <img class="dish-image" src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
@@ -96,13 +98,13 @@
             <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
                 <c:if test="${ordered > 0}">
 
-                    <a class="waves-effect waves-light btn confirm-btn" href="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cuenta</a>
+                    <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
                 </c:if>
                 <c:if test="${ordered == 0}">
                     <a disabled class="waves-effect waves-light btn confirm-btn" href="">Cuenta</a>
                 </c:if>
                 <div class="center div-padding">
-                    <a class="waves-effect waves-light btn confirm-btn red" href="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Cancelar Reserva</a>
+                    <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
                 </div>
             </div>
             <div class="orderList">

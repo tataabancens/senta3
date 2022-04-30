@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
@@ -39,7 +39,7 @@
                     <p class="title2 center">No te preocupes,</p>
                     <p class="title2 center">también te lo mandamos por mail!</p>
                     <div class="center">
-                        <a class="waves-effect waves-light btn confirm-btn center" href="menu?reservationId=${reservation.reservationId}">Continuar</a>
+                        <a class="waves-effect waves-light btn confirm-btn center" href="<c:url value="menu?reservationId=${reservation.reservationId}"/>">Continuar</a>
                     </div>
 
                 </div>

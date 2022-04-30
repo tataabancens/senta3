@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="stylesheet" href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
@@ -35,7 +36,8 @@
             <p class="title2">tu información no se perdió</p>
         </div>
         <div class="center">
-            <a class="waves-effect waves-light btn reservation-btn" href="${pageContext.request.contextPath}/">Volver</a>
+            <c:url value="/"/>
+            <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>">Volver</a>
         </div>
     </div>
         </div>

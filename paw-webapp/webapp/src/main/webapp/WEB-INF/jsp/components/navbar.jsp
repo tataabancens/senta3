@@ -12,7 +12,7 @@
     <!-- Materialize CSS -->
     <!-- <link rel="stylesheet" href="home"> -->
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="<c:url value="https://fonts.googleapis.com/icon?family=Material+Icons"/>" rel="stylesheet">
 
     <title>Hello, world!</title>
 
@@ -20,8 +20,11 @@
 <body>
 <nav>
     <div class="nav-wrapper">
-        <a href="${pageContext.request.contextPath}/" class="logo">Senta3</a>
+
+        <a href="<c:url value="/"/>" class="logo">Senta3</a>
         <sec:authorize access="hasRole('RESTAURANT')">
+            <c:url value="/resources/images/fotoDefault.png"/>
+
             <a href="${pageContext.request.contextPath}/restaurant=1/menu" class="logo">Inicio</a>
         </sec:authorize>
         <sec:authorize access="!hasRole('RESTAURANT')">
