@@ -49,7 +49,7 @@
 
     <div class="page-container">
             <div class="card confirm-card">
-                <span class="main-title text center">Agrega una foto!</span>
+                <span class="main-title text center">Selecciona una foto!</span>
                 <div class="img-visualizer">
                     <div class="card visualizer">
                         <img src="${pageContext.request.contextPath}/resources_/images/${imageId}" alt="La foto del plato">
