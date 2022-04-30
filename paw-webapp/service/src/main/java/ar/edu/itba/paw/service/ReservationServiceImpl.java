@@ -125,7 +125,12 @@ public class ReservationServiceImpl implements ReservationService {
                 notAvailable.add(set.getKey());
             }
         }
-        totalHours.removeAll(notAvailable);
+        if(qPeople > restaurant.getTotalTables()){
+            //totalHours = new ArrayList<>();
+            return null;
+        } else {
+            totalHours.removeAll(notAvailable);
+        }
         return totalHours;
     }
 
