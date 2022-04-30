@@ -10,7 +10,7 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationById(long id);
 
-    Optional<Reservation> getReservationByIdAndStatus(long id, ReservationStatus status);
+    Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> status);
 
     List<Reservation> getReservationsByStatus(ReservationStatus status);
 
@@ -22,7 +22,7 @@ public interface ReservationDao {
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status);
 
     List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
@@ -41,6 +41,4 @@ public interface ReservationDao {
     List<Long> getUnavailableItems(long reservationId);
 
     List<Reservation> getAllReservations(long restaurantId);
-
-    Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 }

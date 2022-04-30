@@ -1,9 +1,11 @@
-package ar.edu.itba.paw.webapp.controller;
+package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Image;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -106,6 +108,52 @@ public class DishController {
         ds.deleteDish(dishId);
 
         mav.addObject("dish", dish);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.GET)
+    public ModelAndView editDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                     @ModelAttribute("editDishForm") final EditDishForm form,
+                                     @PathVariable("dishId") final String dishIdP) throws Exception {
+
+        controllerService.longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
+
+        final ModelAndView mav = new ModelAndView("dish/editDish");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
+        mav.addObject("restaurant", restaurant);
+        Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("dish", dish);
+
+        form.setDishName(dish.getDishName());
+        form.setDishDesc(dish.getDishDescription());
+        form.setDishPrice((double) dish.getPrice());
+        return mav;
+
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.POST)
+    public ModelAndView editMenu(@ModelAttribute("editDishForm") final EditDishForm form,
+                                 @PathVariable("dishId") final String dishIdP,
+                                 @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        controllerService.longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
+
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
+        mav.addObject("restaurant", restaurant);
+
+        Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("dish", dish);
+
+        ds.updateDish(dishId, form.getDishName(), form.getDishDesc(), form.getDishPrice(), dish.getRestaurantId());
 
         return mav;
     }
