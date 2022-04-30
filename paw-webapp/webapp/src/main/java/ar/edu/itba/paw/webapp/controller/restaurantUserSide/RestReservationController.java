@@ -56,13 +56,13 @@ public class RestReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         ms.sendCancellationEmail(restaurant,customer,reservation);
-        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/menu");
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/cancelReservationConfirmation/id=" + reservationId);
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations")
@@ -81,7 +81,7 @@ public class RestReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}")
+    @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
                                      @PathVariable("reservationId") final String reservationIdP) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP);
@@ -90,12 +90,6 @@ public class RestReservationController {
 
         res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
 
-        final ModelAndView mav = new ModelAndView("reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        mav.addObject("restaurant", restaurant);
-
-        List<Reservation> reservations = res.getAllReservations(restaurantId);
-        mav.addObject("reservations", reservations);
-        return mav;
+        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
     }
 }

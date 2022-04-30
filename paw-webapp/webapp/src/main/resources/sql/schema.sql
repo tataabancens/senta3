@@ -58,8 +58,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 ALTER TABLE users ADD IF NOT EXISTS role varchar(100) default 'ROLE_RESTAURANT' NOT NULL;
 
-DROP TABLE orderItem;
-
 CREATE TABLE IF NOT EXISTS orderItem
 (
     id          serial PRIMARY KEY,
