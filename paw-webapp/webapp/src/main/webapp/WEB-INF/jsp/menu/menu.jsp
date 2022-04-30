@@ -44,7 +44,7 @@
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a class="waves-effect waves-light btn confirm-btn" href="createReservation">Reservar</a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="createReservation-1">Reservar</a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">

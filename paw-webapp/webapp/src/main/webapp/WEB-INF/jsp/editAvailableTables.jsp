@@ -39,7 +39,7 @@
             </div>
             <div class="input-field col s12 input">
               <form:errors path="tableQty" element="p" cssStyle="color:red"/>
-              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right">Mesas disponibles:</form:label>
+              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right">Sillas habilitadas:</form:label>
               <form:input path="tableQty" type="text"/>
             </div>
           </div>

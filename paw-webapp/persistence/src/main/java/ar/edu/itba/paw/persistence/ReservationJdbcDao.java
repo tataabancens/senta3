@@ -23,7 +23,8 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getLong("restaurantId"),
                     resultSet.getInt("reservationHour"),
                     resultSet.getLong("customerId"),
-                    resultSet.getInt("reservationStatus")));
+                    resultSet.getInt("reservationStatus"),
+                    resultSet.getInt("qPeople")));
 
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new FullOrderItem(resultSet.getLong("id"),
@@ -72,16 +73,17 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public Reservation createReservation(long restaurantId, long customerId, int reservationHour) {
+    public Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople) {
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationHour", reservationHour);
         reservationData.put("customerId", customerId);
         reservationData.put("reservationstatus", ReservationStatus.OPEN.ordinal());
+        reservationData.put("qPeople", qPeople);
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.OPEN.ordinal());
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.OPEN.ordinal(), qPeople);
 
         return newReservation;
     }
@@ -193,6 +195,17 @@ public class ReservationJdbcDao implements ReservationDao {
         jdbcTemplate.update("DELETE from orderitem where status = ? AND reservationId = ?", new Object[]{status.ordinal(), reservationId});
     }
 
+    /*
+    @Override
+    public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
+        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
+
+        return null;
+    }
+     */
+
+/*
     @Override
     public List<Integer> getAvailableHours(long restaurantId) {
 
@@ -247,11 +260,13 @@ public class ReservationJdbcDao implements ReservationDao {
         totalHours.removeAll(notAvailable);
         return totalHours;
     }
+ */
 
     @Override
     public void cancelReservation(long restaurantId, long reservationId){
         jdbcTemplate.update("DELETE FROM reservation WHERE reservationId = ?", new Object[]{reservationId});
     }
+
 
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
@@ -277,6 +292,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
         return unavailableDishIds;
     }
+
 
     @Override
     public List<Reservation> getAllReservations(long restaurantId) {

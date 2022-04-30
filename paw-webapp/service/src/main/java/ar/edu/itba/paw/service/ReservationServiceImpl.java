@@ -2,21 +2,21 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.persistance.ReservationDao;
+import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
     private ReservationDao reservationDao;
+    private RestaurantDao restaurantDao;
 
     @Autowired
-    public ReservationServiceImpl(final ReservationDao reservationDao) {
+    public ReservationServiceImpl(final ReservationDao reservationDao, final RestaurantDao restaurantDao) {
         this.reservationDao = reservationDao;
+        this.restaurantDao = restaurantDao;
     }
 
     @Override
@@ -52,8 +52,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour) {
-        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(), reservationHour);
+    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
+        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(), reservationHour, qPeople);
     }
 
     @Override
@@ -90,8 +90,43 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Integer> getAvailableHours(long restaurantId) {
-        return reservationDao.getAvailableHours(restaurantId);
+    public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
+        List<Reservation> reservations = reservationDao.getAllReservations(restaurantId);
+        Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
+
+        int openHour = restaurant.getOpenHour();
+        int closeHour = restaurant.getCloseHour();
+
+        List<Integer> totalHours = new ArrayList<>();
+        if (openHour < closeHour) {
+            for(int i = openHour; i < closeHour; i++) {
+                totalHours.add(i);
+            }
+        } else if( closeHour < openHour ) {
+            for (int i = openHour; i<24; i++) {
+                totalHours.add(i);
+            }
+            for (int i = 0; i < closeHour; i++) {
+                totalHours.add(i);
+            }
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for(Reservation reservation :reservations){
+            if(map.containsKey(reservation.getReservationHour())){
+                map.put(reservation.getReservationHour(), map.get(reservation.getReservationHour())+reservation.getqPeople());
+            } else {
+                map.put(reservation.getReservationHour(), reservation.getqPeople());
+            }
+        }
+        List<Integer> notAvailable = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> set :map.entrySet()){
+            if(set.getValue() + qPeople > restaurant.getTotalTables()){
+                notAvailable.add(set.getKey());
+            }
+        }
+        totalHours.removeAll(notAvailable);
+        return totalHours;
     }
 
     @Override

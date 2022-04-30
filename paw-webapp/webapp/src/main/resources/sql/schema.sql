@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     customerId      integer NOT NULL,
     reservationHour integer NOT NULL,
     reservationStatus integer,
+    qPeople integer default 1,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
@@ -47,6 +48,8 @@ CREATE TABLE IF NOT EXISTS reservation (
 ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
 
 ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT NULL;
+
+ALTER TABLE reservation ADD IF NOT EXISTS qPeople integer default 1;
 
 
 CREATE TABLE IF NOT EXISTS users (
