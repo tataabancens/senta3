@@ -24,7 +24,7 @@
             <div class="notificationContainer">
                 <div class="card">
                     <div>
-                        <span class="main-title">Sillas habilitadas: <c:out value=" ${restaurant.totalTables}"/></span>
+                        <span class="main-title">Sillas habilitadas: <c:out value=" ${restaurant.totalChairs}"/></span>
                         <span class="main-title">Horario: <c:out value=" ${restaurant.openHour}"/> a <c:out value=" ${restaurant.closeHour}"/></span>
                         <a class="waves-effect waves-light btn-floating btn-small plus-btn" href="editTables">  <i class="material-icons">edit</i></a>
                     </div>

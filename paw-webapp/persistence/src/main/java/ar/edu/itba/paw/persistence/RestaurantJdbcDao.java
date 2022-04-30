@@ -23,7 +23,7 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail"),
-                    resultSet.getInt("totalTables"),
+                    resultSet.getInt("totalChairs"),
                     resultSet.getInt("openHour"),
                     resultSet.getInt("closeHour")));
 
@@ -62,7 +62,7 @@ public class RestaurantJdbcDao implements RestaurantDao {
 
     @Override
     public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHOur) {
-        jdbcTemplate.update("UPDATE restaurant SET totalTables = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
+        jdbcTemplate.update("UPDATE restaurant SET totalChairs = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
             new Object[]{newMaxTables, newOpenHour, newCloseHOur, restaurantId});
     }
 

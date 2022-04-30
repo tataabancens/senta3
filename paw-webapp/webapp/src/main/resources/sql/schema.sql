@@ -10,10 +10,11 @@ CREATE TABLE IF NOT EXISTS restaurant (
   restaurantName varchar(100) NOT NULL,
   phone varchar(100) NOT NULL,
   Mail varchar(50) NOT NULL,
-  totalTables int NOT NULL
+  totalChairs int NOT NULL
 );
 
-ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS totalTables int DEFAULT 10 NOT NULL ;
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS totalChairs int DEFAULT 10 NOT NULL;
+ALTER TABLE restaurant DROP COLUMN IF EXISTS totalTables;
 ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS openHour int DEFAULT '0';
 ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS closeHour int DEFAULT '0';
 
