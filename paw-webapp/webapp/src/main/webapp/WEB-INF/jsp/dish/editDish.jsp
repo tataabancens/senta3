@@ -23,6 +23,7 @@
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
             <div class="card card-content">
                     <span class="main-title">Editar Plato</span>
+                    <a class="main-title" href="<c:url value="/restaurant=${restaurantId}/confirmDish=${dishId}"/>">Editar-Foto</a>
                     <span class="title2"><c:out value="${dish.dishName}"/></span>
                 <div class="disName">
                     <form:errors path="dishName" element="p" cssStyle="color:red"/>
