@@ -121,11 +121,16 @@ public class ReservationServiceImpl implements ReservationService {
         }
         List<Integer> notAvailable = new ArrayList<>();
         for(Map.Entry<Integer, Integer> set :map.entrySet()){
-            if(set.getValue() + qPeople > restaurant.getTotalTables()){
+            if(set.getValue() + qPeople > restaurant.getTotalChairs()){
                 notAvailable.add(set.getKey());
             }
         }
-        totalHours.removeAll(notAvailable);
+        if(qPeople > restaurant.getTotalChairs()){
+            //totalHours = new ArrayList<>();
+            return null;
+        } else {
+            totalHours.removeAll(notAvailable);
+        }
         return totalHours;
     }
 

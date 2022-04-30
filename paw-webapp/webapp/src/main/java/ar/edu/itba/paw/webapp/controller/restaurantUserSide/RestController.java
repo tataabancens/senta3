@@ -83,7 +83,7 @@ public class RestController {
 
         mav.addObject("restaurant", restaurant);
 
-        form.setTableQty(String.format("%d", restaurant.getTotalTables()));
+        form.setTableQty(String.format("%d", restaurant.getTotalChairs()));
         form.setOpenHour(String.format("%d", restaurant.getOpenHour()));
         form.setCloseHour(String.format("%d", restaurant.getCloseHour()));
         return mav;

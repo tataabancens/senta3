@@ -40,7 +40,7 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getString("restaurantName"),
                     resultSet.getString("phone"),
                     resultSet.getString("mail"),
-                    resultSet.getInt("totalTables"),
+                    resultSet.getInt("totalChairs"),
                     resultSet.getInt("openHour"),
                     resultSet.getInt("closeHour")));
 
@@ -217,7 +217,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
         Restaurant current = queryRestaurant.get(0);
 
-        int maxTables = current.getTotalTables();
+        int maxTables = current.gettotalChairs();
 
         List<Integer> occupied = new ArrayList<>();
         for (Reservation table:query) {

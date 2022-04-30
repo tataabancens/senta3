@@ -8,16 +8,16 @@ public class Restaurant {
     private String phone;
     private String mail;
     private List<Dish> dishes;
-    private int totalTables;
+    private int totalChairs;
     private int openHour;
     private int closeHour;
 
-    public Restaurant(long id, String restaurantName, String phone, String mail, int totalTables, int openHour, int closeHour) {
+    public Restaurant(long id, String restaurantName, String phone, String mail, int totalChairs, int openHour, int closeHour) {
         this.id = id;
         this.restaurantName = restaurantName;
         this.phone = phone;
         this.mail = mail;
-        this.totalTables = totalTables;
+        this.totalChairs = totalChairs;
         this.openHour = openHour;
         this.closeHour = closeHour;
     }
@@ -46,8 +46,8 @@ public class Restaurant {
         return dishes;
     }
 
-    public int getTotalTables() {
-        return totalTables;
+    public int getTotalChairs() {
+        return totalChairs;
     }
 
     public int getOpenHour() {
