@@ -21,7 +21,7 @@
         <%@ include file="../components/navbar.jsp" %>
 
         <div class="header">
-            <h1 class="presentation-text header-title">Inicio</h1>
+            <h1 class="presentation-text header-title">Menú</h1>
         </div>
         <div class="contentContainer">
             <div class="notificationContainer">
