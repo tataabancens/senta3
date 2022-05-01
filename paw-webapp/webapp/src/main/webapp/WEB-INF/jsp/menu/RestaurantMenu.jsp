@@ -20,6 +20,9 @@
     <body>
         <%@ include file="../components/navbar.jsp" %>
 
+        <div class="header">
+            <h1 class="presentation-text header-title">Inicio</h1>
+        </div>
         <div class="contentContainer">
             <div class="notificationContainer">
                 <div class="card">
@@ -28,21 +31,6 @@
                         <span class="main-title">Horario: <c:out value=" ${restaurant.openHour}"/> a <c:out value=" ${restaurant.closeHour}"/></span>
                         <a class="waves-effect waves-light btn-floating btn-small plus-btn" href="editTables">  <i class="material-icons">edit</i></a>
                     </div>
-
-                </div>
-                <div class="card reservations-card">
-                    <span class="main-title">Reservas abiertas</span>
-                    <c:forEach var="reservation" items="${reservations}">
-
-                            <div class="notification-item">
-                                <span class="title2">Hora: <c:out value="${reservation.reservationHour}"/>:00</span>
-                                <div>
-                                    <span class="title2">Id: <c:out value="${reservation.reservationId}"/></span>
-                                </div>
-                                <span class="title2">Estado: <c:out value="${reservation.reservationStatus}"/>
-                                <a class="waves-effect waves-light btn red confirm-btn" href="cancelReservationConfirmation/id=${reservation.reservationId}">Cancelar</a>
-                            </div>
-                    </c:forEach>
                 </div>
             </div>
 
@@ -85,9 +73,6 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
     a{
         margin: 5px;
     }

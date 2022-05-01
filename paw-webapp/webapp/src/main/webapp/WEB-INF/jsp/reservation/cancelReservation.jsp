@@ -59,11 +59,6 @@
 
 <style>
 
-
-
-    body{
-        background-color: #F0F0F0;
-    }
     .content-container{
         padding-left: 20px;
         padding-right: 20px;

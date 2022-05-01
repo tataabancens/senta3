@@ -22,34 +22,9 @@
 <div class="row">
     <%@ include file="../components/navbar.jsp" %>
 </div>
-
-    <!--<div class="col s4 offset-s3 card-margin">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title text price center">Creaste el plato!</span>
-                <span class="card-title text price center">Agregale una foto!</span>
-
-                <div class="row">
-                    <div class="input-field col s12 input">
-                        <c:url value="/restaurant=${restaurantId}/menu/dish=${dishId}/edit-photo" var="postPath"/>
-                        <form action="${postPath}" method="post" enctype="multipart/form-data">
-                            <input type="file" name="photo"/>
-                            <div class="col s12 center">
-                                <input type="submit" value="Cargar" class="continue-btn"/>
-                            </div>
-                        </form>
-                    </div>
-                    </div>
-                </div>
-            <img src="/resources/images/${imageId}" alt="La foto del plato">
-                <div class="row margin-0">
-                    <div class="col s12 center">
-                        <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu">Volver al inicio</a>
-                    </div>
-                </div>-->
-
     <div class="page-container">
             <div class="card confirm-card">
+                <h3>Un ultimo paso</h3>
                 <span class="main-title text center">Selecciona una foto!</span>
                 <div class="img-visualizer">
                     <div class="card visualizer">
@@ -81,11 +56,6 @@
 </html>
 
 <style>
-
-    body{
-        background-color: #F0F0F0;
-    }
-
 
     .card{
         border-radius: 16px;

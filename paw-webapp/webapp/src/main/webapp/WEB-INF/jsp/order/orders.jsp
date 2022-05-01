@@ -25,7 +25,7 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="header">
-    <span class="presentation-text title header-title"><h3>Pedidos realizados</h3></span>
+    <h1 class="presentation-text header-title">Pedidos</h1>
 </div>
 <div class="content-container">
     <div class="card incoming-orders">
@@ -78,24 +78,6 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
-    .header{
-        background: rgb(55,166,230);
-        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        color: white;
-        min-height: 150px;
-        max-height: 300px;
-        font-size: 25px;
-        border-radius: 20px;
-        align-items: center;
-        margin: 20px;
-        padding: 15px;
-    }
     .content-container{
         width: 100%;
         height: 100%;
