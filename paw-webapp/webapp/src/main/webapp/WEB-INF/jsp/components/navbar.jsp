@@ -28,7 +28,7 @@
                 </a>
             </li>
             <sec:authorize access="hasRole('RESTAURANT')">
-                <li class="active">
+                <li>
                     <a class="options" href="${pageContext.request.contextPath}/restaurant=1/menu" >
                         Inicio
                     </a>
@@ -77,7 +77,7 @@
         overflow-x: hidden;
     }
     nav{
-        background-color: black;
+        background-color: #171616;
     }
     .flex{
         display: flex;
@@ -111,7 +111,7 @@
     }
     .primary-navigation a.options:hover{
         background-color: white;
-        color: black;
+        color: #171616;
     }
     @media (max-width: 35em){
         .primary-navigation{

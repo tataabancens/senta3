@@ -22,8 +22,21 @@
         <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
             <div class="card card-content">
-                    <span class="main-title">Editar Plato</span>
-                    <a class="main-title" href="<c:url value="/restaurant=${restaurantId}/confirmDish=${dishId}"/>">Editar-Foto</a>
+                    <h3 class="main-title">Editar Plato</h3>
+                    <a href="<c:url value="/restaurant=${restaurantId}/confirmDish=${dishId}"/>" class="img-visualizer">
+                        <c:if test="${dish.imageId > 0}">
+                            <div class="container">
+                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                <i class="medium material-icons">edit</i>
+                            </div>
+                        </c:if>
+                        <c:if test="${dish.imageId == 0}">
+                            <div class="container">
+                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                <i class="medium material-icons">edit</i>
+                            </div>
+                        </c:if>
+                    </a>
                     <span class="title2"><c:out value="${dish.dishName}"/></span>
                 <div class="disName">
                     <form:errors path="dishName" element="p" cssStyle="color:red"/>
@@ -51,15 +64,40 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
     .form-container{
         display: flex;
         padding-top: 30px;
         justify-content: center;
     }
-
+    form{
+        min-width: 30%;
+    }
+    .container { position: relative; }
+    .container img{display: block}
+    .container .material-icons{
+        position: absolute;
+        bottom: 45px;
+        left: 65px;
+    }
+    .img-visualizer{
+        align-self: center;
+        width: 50%;
+    }
+    .container:hover img{
+        filter: blur(1.5px);
+    }
+    .container:hover .material-icons{
+        display: block;
+    }
+    img{
+        border-radius: 16px;
+        width: 100%;
+        height: 100%;
+    }
+    .material-icons{
+        display: none;
+        color: black;
+    }
     .card{
         border-radius: 16px;
         padding: 20px;
@@ -70,14 +108,9 @@
         flex-direction: column;
         align-content: center;
         font-family: "Segoe UI", Lato, sans-serif;
-        min-height: 500px;
-        height: 600px;
-        max-height: 800px;
-        min-width: 400px;
-        width: 500px;
-        max-width: 600px;
+        min-height: 20%;
+        min-width: 100%;
     }
-
     .card-description.text{
         font-family: "Goldplay", sans-serif;
         font-size: 25px;
