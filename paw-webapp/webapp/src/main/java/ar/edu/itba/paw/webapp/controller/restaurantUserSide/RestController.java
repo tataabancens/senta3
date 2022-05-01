@@ -61,8 +61,8 @@ public class RestController {
         restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
 
-        List<Reservation> reservations = res.getAllReservations(restaurantId);
-        for (Reservation reservation : reservations) {
+        List<FullReservation> reservations = res.getAllReservations(restaurantId);
+        for (FullReservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
         mav.addObject("reservations", reservations);

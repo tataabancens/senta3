@@ -26,6 +26,15 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("reservationStatus"),
                     resultSet.getInt("qPeople")));
 
+    private static final RowMapper<FullReservation> ROW_MAPPER_FULL_RESERVATION = ((resultSet, i) ->
+            new FullReservation(resultSet.getLong("reservationId"),
+                    resultSet.getLong("restaurantId"),
+                    resultSet.getLong("customerId"),
+                    resultSet.getInt("reservationHour"),
+                    resultSet.getInt("reservationStatus"),
+                    resultSet.getInt("qPeople"),
+                    resultSet.getString("customerName")));
+
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new FullOrderItem(resultSet.getLong("id"),
                     resultSet.getLong("reservationId"),
@@ -295,9 +304,9 @@ public class ReservationJdbcDao implements ReservationDao {
 
 
     @Override
-    public List<Reservation> getAllReservations(long restaurantId) {
-        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE restaurantId = ?",
-                new Object[]{restaurantId}, ROW_MAPPER_RESERVATION);
+    public List<FullReservation> getAllReservations(long restaurantId) {
+        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer WHERE restaurantId = ?",
+                new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
 
