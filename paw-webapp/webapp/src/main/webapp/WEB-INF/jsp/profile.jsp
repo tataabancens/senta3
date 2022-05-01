@@ -45,21 +45,21 @@
         <div class="restaurant-field">
             <span class="presentation-text">Nombre del restaurante: </span>
             <span class="text">${restaurant.restaurantName}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editName">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Telefono: </span>
             <span class="text">${restaurant.phone}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editPhone">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Email: </span>
             <span class="text">${restaurant.mail}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editMail">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
