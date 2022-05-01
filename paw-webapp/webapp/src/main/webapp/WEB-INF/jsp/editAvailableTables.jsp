@@ -9,6 +9,7 @@
 
   <!-- Materialize CSS -->
   <link rel="stylesheet" href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
+  <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
   <title>Sentate-Register</title>
 
@@ -56,10 +57,6 @@
 </html>
 
 <style>
-
-  body{
-    background-color: #F0F0F0;
-  }
   .text{
     color:  #707070;
   }

@@ -46,6 +46,10 @@ body{
     align-items: center;
     margin: 15px 20px;
 }
+.header-title{
+    color: #171616;
+    font-size: 4rem;
+}
 .title2{
     justify-content: center;
     font-size: 1.5vw;
@@ -66,7 +70,10 @@ body{
     font-size: 1.25vw;
     margin-left: 20%;
 }
-
+.presentation-text.header-title{
+    color: #171616;
+    font-size: 4rem;
+}
 .restaurant-card{
     display:flex;
     margin-left: 5%;

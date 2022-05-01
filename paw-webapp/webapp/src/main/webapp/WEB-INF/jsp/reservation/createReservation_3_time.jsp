@@ -12,14 +12,8 @@
 
     <title>Sentate-Registro</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
-    <script>
-        function validateSelect()
-        {
-            const sel = document.getElementById('hourSelect');
-            window.location.href = 'people=' + <c:out value="${people}"/> + "/hour=" + sel.value;
-        }
-    </script>
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
@@ -48,9 +42,6 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
     .card{
         border-radius: 16px;
         display: flex;
@@ -123,3 +114,10 @@
     }
 
 </style>
+<script>
+    function validateSelect()
+    {
+        const sel = document.getElementById('hourSelect');
+        window.location.href = 'people=' + <c:out value="${people}"/> + "/hour=" + sel.value;
+    }
+</script>

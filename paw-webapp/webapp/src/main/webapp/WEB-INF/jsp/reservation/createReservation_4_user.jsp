@@ -11,10 +11,11 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <link rel="stylesheet" href="styless.css">
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
     <title>Sentate-Registro</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
+
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
@@ -58,10 +59,6 @@
 </html>
 
 <style>
-
-    body{
-        background-color: #F0F0F0;
-    }
     .card{
         border-radius: 16px;
         display: flex;

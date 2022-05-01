@@ -30,7 +30,7 @@
                     </div>
                     <div>
                         <div class="presentation-text title restaurant-title">
-                            <span><c:out value="${restaurant.restaurantName}"/></span>
+                            <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
                         </div>
                         <div class="presentation-text restaurant-description">
                             <span>Telefono: </span>
@@ -90,9 +90,6 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
     .page-container{
         padding-left: 20px;
         padding-right: 20px;
@@ -106,7 +103,7 @@
     }
     .restaurant-header{
         background: rgb(55,166,230);
-        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
+        background: linear-gradient(70deg, rgb(245, 245, 245) 7%, rgb(23, 22, 22) 88%);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -125,19 +122,15 @@
         max-height: 300px;
     }
     .presentation-text.box-comments{
-        color: white;
+        color: #171616;
     }
     i{
-        color: white;
+        color: #171616;
         margin-right: 25px;
     }
-    .presentation-text.restaurant-title{
-        font-size: 30px;
-        color:white;
-    }
     .presentation-text.restaurant-description{
-        color: white;
-        font-size: 21px;
+        color: #171616;
+        font-size: 29px;
     }
 
     .reservation-action-btn{
@@ -162,7 +155,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        background-color: #37A6E6;
+        background-color: white;
         padding: 10px;
         min-height: 150px;
         max-height: 250px;

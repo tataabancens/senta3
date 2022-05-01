@@ -48,6 +48,16 @@ public class RestController {
 
         return new ModelAndView("aa_Trash/restaurantTest");
     }
+    @RequestMapping("/restaurant={restaurantId}/profile")
+    public ModelAndView restaurantProfile(@RequestParam(name = "userId", defaultValue = "1") final long userId,
+                                   @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+
+        controllerService.longParser(restaurantIdP);
+        Restaurant restaurant=rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);
+        ModelAndView mav=new ModelAndView("profile");
+        mav.addObject("restaurant",restaurant);
+        return mav;
+    }
 
 
     @RequestMapping("/restaurant={restaurantId}/menu")
