@@ -45,18 +45,30 @@
         <div class="restaurant-field">
             <span class="presentation-text">Nombre del restaurante: </span>
             <span class="text">${restaurant.restaurantName}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+                <i class="material-icons info-field">edit</i>
+            </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Telefono: </span>
             <span class="text">${restaurant.phone}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+                <i class="material-icons info-field">edit</i>
+            </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Email: </span>
             <span class="text">${restaurant.mail}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+                <i class="material-icons info-field">edit</i>
+            </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Contraseña: </span>
             <span class="text">restaurant no tiene el getter</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+                <i class="material-icons info-field">edit</i>
+            </a>
         </div>
     </div>
     <div class="imageContainer">
@@ -121,6 +133,18 @@
     }
     .tables-and-hours i{
         color: black;
+    }
+    .info-field{
+        display:none;
+    }
+    a .info-field{
+        background-color: white;
+    }
+    .info-field i{
+        color: black;
+    }
+    .restaurant-field:hover .info-field{
+        display: block;
     }
 </style>
 <script></script>
