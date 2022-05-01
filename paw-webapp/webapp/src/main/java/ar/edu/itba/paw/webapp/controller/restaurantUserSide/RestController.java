@@ -3,6 +3,9 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.EditREstaurantPhoneForm;
+import ar.edu.itba.paw.webapp.form.EditRestaurantEmailForm;
+import ar.edu.itba.paw.webapp.form.EditRestaurantNameForm;
 import ar.edu.itba.paw.webapp.form.EditTablesForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -119,5 +122,106 @@ public class RestController {
         return mav;
     }
 
+    @RequestMapping(value = "/restaurant={restaurantId}/editName", method = RequestMethod.GET)
+    public ModelAndView editNameForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                 @ModelAttribute("editNameForm") final EditRestaurantNameForm form) throws Exception {
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("editRestaurant/editRestaurantName");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        mav.addObject("restaurant", restaurant);
+
+        form.setName(restaurant.getRestaurantName());
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editName", method = RequestMethod.POST)
+    public ModelAndView editName(@Valid @ModelAttribute("editNameForm") final EditRestaurantNameForm form,
+                                 final BindingResult errors,
+                                 @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        if (errors.hasErrors()) {
+            return editNameForm(restaurantIdP, form);
+        }
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
+
+        rs.updateRestaurantName(form.getName(), restaurantId);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editPhone", method = RequestMethod.GET)
+    public ModelAndView editPhoneForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                     @ModelAttribute("editPhoneForm") final EditREstaurantPhoneForm form) throws Exception {
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("editRestaurant/editRestaurantPhone");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        mav.addObject("restaurant", restaurant);
+
+        form.setPhone(restaurant.getPhone());
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editPhone", method = RequestMethod.POST)
+    public ModelAndView editPhone(@Valid @ModelAttribute("editPhoneForm") final EditREstaurantPhoneForm form,
+                                 final BindingResult errors,
+                                 @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        if (errors.hasErrors()) {
+            return editPhoneForm(restaurantIdP, form);
+        }
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
+
+        rs.updatePhone(form.getPhone(), restaurantId);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editMail", method = RequestMethod.GET)
+    public ModelAndView editEmailForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                     @ModelAttribute("editEmailForm") final EditRestaurantEmailForm form) throws Exception {
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("editRestaurant/editRestaurantEmail");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        mav.addObject("restaurant", restaurant);
+
+        form.setMail(restaurant.getMail());
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/editMail", method = RequestMethod.POST)
+    public ModelAndView editEmail(@Valid @ModelAttribute("editEmailForm") final EditRestaurantEmailForm form,
+                                 final BindingResult errors,
+                                 @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        if (errors.hasErrors()) {
+            return editEmailForm(restaurantIdP, form);
+        }
+
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
+
+        rs.updateRestaurantEmail(form.getMail(), restaurantId);
+
+        return mav;
+    }
 
 }

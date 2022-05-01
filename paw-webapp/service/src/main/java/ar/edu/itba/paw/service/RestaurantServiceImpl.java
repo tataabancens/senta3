@@ -39,4 +39,19 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
     }
 
+    @Override
+    public void updateRestaurantName(String name, long restaurantId) {
+        restaurantDao.updateRestaurantName(name, restaurantId);
+    }
+
+    @Override
+    public void updateRestaurantEmail(String mail, long restaurantId) {
+        restaurantDao.updateRestaurantEmail(mail, restaurantId);
+    }
+
+    @Override
+    public void updatePhone(String phone, long restaurantId) {
+        restaurantDao.updatePhone(phone, restaurantId);
+    }
+
 }
