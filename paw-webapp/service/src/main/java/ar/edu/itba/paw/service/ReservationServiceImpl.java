@@ -91,7 +91,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
-        List<Reservation> reservations = reservationDao.getAllReservations(restaurantId);
+        List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
         Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
 
         int openHour = restaurant.getOpenHour();
@@ -112,7 +112,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         Map<Integer, Integer> map = new HashMap<>();
-        for(Reservation reservation :reservations){
+        for(FullReservation reservation :reservations){
             if(map.containsKey(reservation.getReservationHour())){
                 map.put(reservation.getReservationHour(), map.get(reservation.getReservationHour())+reservation.getqPeople());
             } else {
@@ -145,7 +145,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getAllReservations(long restaurantId) {
+    public List<FullReservation> getAllReservations(long restaurantId) {
         return reservationDao.getAllReservations(restaurantId);
     }
 

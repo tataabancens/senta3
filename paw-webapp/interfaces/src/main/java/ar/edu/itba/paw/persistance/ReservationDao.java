@@ -38,5 +38,5 @@ public interface ReservationDao {
 
     List<Long> getUnavailableItems(long reservationId);
 
-    List<Reservation> getAllReservations(long restaurantId);
+    List<FullReservation> getAllReservations(long restaurantId);
 }

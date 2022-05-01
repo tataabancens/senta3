@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.ReservationStatus;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -75,7 +72,7 @@ public class RestReservationController {
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
-        List<Reservation> reservations = res.getAllReservations(restaurantId);
+        List<FullReservation> reservations = res.getAllReservations(restaurantId);
         mav.addObject("reservations", reservations);
 
         return mav;
