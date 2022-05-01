@@ -167,9 +167,6 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
     .page-container{
         padding-top: 20px;
         padding-left: 20px;

@@ -43,9 +43,6 @@
 
 <style>
 
-    body{
-        background-color: #F0F0F0;
-    }
     .form-container{
         display: flex;
         padding-top: 30px;

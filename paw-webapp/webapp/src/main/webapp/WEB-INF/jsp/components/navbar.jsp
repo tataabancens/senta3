@@ -30,7 +30,7 @@
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/restaurant=1/menu" >
-                        Inicio
+                        Menú
                     </a>
                 </li>
             </sec:authorize>
@@ -54,6 +54,13 @@
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/login">
                         Iniciar sesion
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/profile" >
+                        Perfil
                     </a>
                 </li>
             </sec:authorize>

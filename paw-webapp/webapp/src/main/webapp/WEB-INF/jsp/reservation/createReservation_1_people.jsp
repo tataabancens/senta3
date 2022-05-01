@@ -12,14 +12,7 @@
 
     <title>Sentate-Registro</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
-
-<script>
-    function validateSelect()
-    {
-        const sel = document.getElementById('qPeople');
-        window.location.href = 'createReservation-1/people=' + sel.value;
-    }
-</script>
+    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
 <body>
 <%@ include file="../components/navbar.jsp" %>
@@ -56,10 +49,6 @@
 </html>
 
 <style>
-
-    body{
-        background-color: #F0F0F0;
-    }
     .card{
         border-radius: 16px;
         display: flex;
@@ -132,3 +121,11 @@
     }
 
 </style>
+
+<script>
+    function validateSelect()
+    {
+        const sel = document.getElementById('qPeople');
+        window.location.href = 'createReservation-1/people=' + sel.value;
+    }
+</script>

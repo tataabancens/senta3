@@ -15,7 +15,7 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="header">
-    <span class="presentation-text title header-title"><h2>Reservas</h2></span>
+    <h1 class="presentation-text header-title">Reservas</h1>
 </div>
 <div class="content-container">
     <table class="reservations">
@@ -61,11 +61,9 @@
 
 
 <style>
-    body{
-        background-color: black;
-    }
-    .header-title{
-        color: white;
+    .presentation-text.header-title{
+        color: #171616;
+        font-size: 4rem;
     }
     .content-container{
         padding: 0 2%;
