@@ -15,4 +15,10 @@ public interface RestaurantService {
     List<Dish> getRestaurantDishes(long id);
 
     void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int openHour, int closeHour);
+
+    void updateRestaurantName(String name, long restaurantId);
+
+    void updateRestaurantEmail(String mail, long restaurantId);
+
+    void updatePhone(String phone, long restaurantId);
 }
