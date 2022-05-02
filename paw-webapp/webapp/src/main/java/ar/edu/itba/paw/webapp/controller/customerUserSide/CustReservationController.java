@@ -80,57 +80,85 @@ public class CustReservationController {
 
 
     @RequestMapping(value = "/createReservation-1")
-    public ModelAndView createReservation_1(){
+    public ModelAndView createReservation_1(@ModelAttribute("qPeopleForm") final NumberForm form) {
+
         ModelAndView mav = new ModelAndView("reservation/createReservation_1_people");
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-1/people={qPeople}")
-    public ModelAndView createReservation_2(@PathVariable("qPeople") final String qPeopleP) throws Exception {
+    @RequestMapping(value = "/createReservation-1", method = RequestMethod.POST)
+    public ModelAndView createReservation_1_POST(@Valid @ModelAttribute("qPeopleForm") final NumberForm form,
+                                                 final BindingResult errors){
+        if (errors.hasErrors()){
+            return createReservation_1(form);
+        }
 
-        controllerService.longParser(qPeopleP);
-        long qPeople = Long.parseLong(qPeopleP);
+        Reservation reservation = res.createReservation(1, 1, 0, Integer.parseInt(form.getNumber()));
+        res.updateReservationStatus(reservation.getReservationId(), ReservationStatus.MAYBE_RESERVATION);
+
+        return new ModelAndView("redirect:/createReservation-2/" + reservation.getReservationId());
+    }
+
+    @RequestMapping(value = "/createReservation-2/{reservationId}")
+    public ModelAndView createReservation_2(@PathVariable("reservationId") final String reservationId,
+                                            @Valid @ModelAttribute("hourForm") final NumberForm form) throws Exception {
+
+        controllerService.longParser(reservationId);
+        long reservationIdP = Long.parseLong(reservationId);
+
+        Reservation reservation = res.getReservationById(reservationIdP).orElseThrow(ReservationNotFoundException::new);
         ModelAndView mav = new ModelAndView("reservation/createReservation_3_time");
-        mav.addObject("hours", res.getAvailableHours(1, qPeople));
-        mav.addObject("people", qPeople);
+        mav.addObject("hours", res.getAvailableHours(1, reservation.getqPeople()));
+        mav.addObject("people", reservation.getqPeople());
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-1/people={qPeople}/hour={hour}", method = RequestMethod.GET)
-    public ModelAndView createReservation_3(@PathVariable("qPeople") final String qPeopleP,
-                                            @PathVariable("hour") final String hourP,
+    @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
+                                                 @Valid @ModelAttribute("hourForm") final NumberForm form,
+                                                 final BindingResult errors) throws Exception {
+        if (errors.hasErrors()){
+            return createReservation_2(reservationIdP, form);
+        }
+        controllerService.longParser(reservationIdP, form.getNumber());
+        long reservationId = Long.parseLong(reservationIdP);
+        long hour = Long.parseLong(form.getNumber());
+
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        res.updateReservationById(reservationId, 1, hour, reservation.getqPeople());
+
+        return new ModelAndView("redirect:/createReservation-3/" + reservationId);
+    }
+
+    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.GET)
+    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
                                             @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
 
-        controllerService.longParser(qPeopleP);
-        long qPeople = Long.parseLong(qPeopleP);
-        controllerService.longParser(hourP);
-        long hour = Long.parseLong(hourP);
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         ModelAndView mav = new ModelAndView("reservation/createReservation_4_user");
-        mav.addObject("hour", hour);
-        mav.addObject("people", qPeople);
-        form.setqPeople((int) qPeople);
-        form.setHour((int) hour);
+        mav.addObject("reservation", reservation);
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-1/people={qPeople}/hour={hour}", method = RequestMethod.POST)
-    public ModelAndView createReservation_3(@PathVariable("qPeople") final String qPeopleP,
-                                            @PathVariable("hour") final String hourP,
-                                            @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
-        controllerService.longParser(qPeopleP);
-        long qPeople = Long.parseLong(qPeopleP);
-        controllerService.longParser(hourP);
-        long hour = Long.parseLong(hourP);
+    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
+                                            @Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
 
         if (errors.hasErrors()){
-            return createReservation_3(qPeopleP, hourP, form);
+            return createReservation_3(reservationIdP, form);
         }
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
-        Reservation reservation = res.createReservation(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer, (int) hour, (int) qPeople);
 
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
+        res.updateReservationStatus(reservationId, ReservationStatus.OPEN);
 
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                 customer,reservation);

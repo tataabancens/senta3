@@ -52,8 +52,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
-        return reservationDao.createReservation(restaurant.getId(),customer.getCustomerId(), reservationHour, qPeople);
+    public Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople) {
+        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople);
     }
 
     @Override
@@ -182,5 +182,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<FullReservation> getReservationsByCustomerId(long customerId) {
         return reservationDao.getReservationsByCustomerId(customerId);
+    }
+
+    @Override
+    public void updateReservationById(long reservationId, long customerId, long hour, int qPeople) {
+        reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
     }
 }

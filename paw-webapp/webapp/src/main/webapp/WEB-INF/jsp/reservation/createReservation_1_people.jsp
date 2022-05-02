@@ -1,5 +1,6 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,25 +23,15 @@
         <div class="content-container">
             <div class="card register-card">
                 <span class="main-title">Cuanta gente viene a comer?</span>
-
-                <div class="input-field">
-                    <select id="qPeople" name="qPeople">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                    </select>
-                </div>
-                <div class="submit center">
-                    <input type="button" id="continueButton" value="Continuar" class="continue-btn" onclick="return validateSelect()"/>
-                </div>
+                <c:url value="/createReservation-1" var="postPath"/>
+                <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
+                    <div class="input-field col s12 input">
+                        <form:errors path="number" element="p" cssStyle="color:red"/>
+                        <form:label path="number" class="helper-text" data-error="wrong" data-success="right"></form:label>
+                        <form:input path="number" type="text"/>
+                    </div>
+                    <input type="submit" value="Continuar" class="continue-btn"/>
+                </form:form>
             </div>
         </div>
 </div>
@@ -121,11 +112,3 @@
     }
 
 </style>
-
-<script>
-    function validateSelect()
-    {
-        const sel = document.getElementById('qPeople');
-        window.location.href = 'createReservation-1/people=' + sel.value;
-    }
-</script>
