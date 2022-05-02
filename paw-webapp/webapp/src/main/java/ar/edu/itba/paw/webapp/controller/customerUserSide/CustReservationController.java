@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
-import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.ReservationStatus;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class CustReservationController {
@@ -38,16 +36,17 @@ public class CustReservationController {
     }
 
 
-    /*
-    @RequestMapping(value = "/createReservation", method = RequestMethod.GET)
-    public ModelAndView createForm(@ModelAttribute("reservationForm") final ReservationForm form){
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public ModelAndView userHistory(@ModelAttribute("reservationForm") final ReservationForm form){
 
-        ModelAndView mav = new ModelAndView("reservation/createReservation_old");
-        mav.addObject("hours", res.getAvailableHours(1));
-
+        ModelAndView mav = new ModelAndView("reservation/history");
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        restaurant.setDishes(rs.getRestaurantDishes(1));
+        List<Dish> list = restaurant.getDishes();
+        mav.addObject("listToDisplay",list);
         return mav;
     }
-
+    /*
     @RequestMapping(value = "/createReservation", method = RequestMethod.POST)
     public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) {
         if (errors.hasErrors()){

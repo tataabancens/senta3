@@ -27,6 +27,13 @@
                     <span class="logo">Senta3</span>
                 </a>
             </li>
+            <sec:authorize access="!hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/history">
+                        Historial
+                    </a>
+                </li>
+            </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/restaurant=1/menu" >
