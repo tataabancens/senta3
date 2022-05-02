@@ -21,4 +21,6 @@ public interface RestaurantService {
     void updateRestaurantEmail(String mail, long restaurantId);
 
     void updatePhone(String phone, long restaurantId);
+
+    Optional<Restaurant> getRestaurantByUsername(String username);
 }
