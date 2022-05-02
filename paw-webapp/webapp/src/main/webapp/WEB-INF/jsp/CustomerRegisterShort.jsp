@@ -18,7 +18,7 @@
 <div class="content">
         <div class="card register-card">
             <span class="main-title">Registro</span>
-            <c:url value="/registerShort" var="postPath"/>
+            <c:url value="/registerShort/${customerId}/${reservationId}" var="postPath"/>
             <form:form modelAttribute="customerRegisterShortForm" action="${postPath}" method="post">
                 <div class="input-field col s12 input">
                     <div>

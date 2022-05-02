@@ -47,8 +47,8 @@
                     <p class="text">No te preocupes, también te lo mandamos por mail!</p>
                     <p class="text">Si te registras vas a poder juntar puntos para descuentos en tu proximas compras.</p>
                     <div class="center">
-                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort"/>">Registrarse</a>
-                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="../../../menu?reservationId=${reservation.reservationId}"/>">Continuar sin registrarse</a>
+                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>">Registrarse</a>
+                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar sin registrarse</a>
                     </div>
 
                 </div>

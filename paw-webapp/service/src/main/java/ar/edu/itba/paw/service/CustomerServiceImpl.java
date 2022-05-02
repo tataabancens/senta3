@@ -37,4 +37,14 @@ public class CustomerServiceImpl implements CustomerService {
     public void addPointsToCustomer(long customerId, float total) {
         customerDao.addPointsToCustomer(customerId, (int) total / 29);
     }
+
+    @Override
+    public Customer create(String customerName, String phone, String mail, long id) {
+        return customerDao.create(customerName, phone, mail, id);
+    }
+
+    @Override
+    public void linkCustomerToUserId(long customerId, long userId) {
+        customerDao.linkCustomerToUserId(customerId, userId);
+    }
 }

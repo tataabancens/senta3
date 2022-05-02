@@ -3,16 +3,26 @@ package ar.edu.itba.paw.model;
 public class Customer {
     private long customerId;
     private String customerName;
-    private String Phone;
-    private String Mail;
+    private String phone;
+    private String mail;
     private int points;
+    private long userId;
 
     public Customer(long customerId, String customerName, String phone, String mail, int points) {
         this.customerId = customerId;
         this.customerName = customerName;
-        Phone = phone;
-        Mail = mail;
+        this.phone = phone;
+        this.mail = mail;
         this.points = points;
+    }
+
+    public Customer(long customerId, String customerName, String phone, String mail, long userId, int points) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.phone = phone;
+        this.mail = mail;
+        this.points = points;
+        this.userId = userId;
     }
 
     public long getCustomerId() {
@@ -32,19 +42,19 @@ public class Customer {
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
+        this.phone = phone;
     }
 
     public String getMail() {
-        return Mail;
+        return mail;
     }
 
     public void setMail(String mail) {
-        Mail = mail;
+        this.mail = mail;
     }
 
     public int getPoints() {

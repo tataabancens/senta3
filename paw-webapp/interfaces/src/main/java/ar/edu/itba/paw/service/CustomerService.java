@@ -13,4 +13,7 @@ public interface CustomerService {
 
     void addPointsToCustomer(long customerId, float total);
 
+    Customer create(String customerName, String phone, String mail, long id);
+
+    void linkCustomerToUserId(long customerId, long userId);
 }

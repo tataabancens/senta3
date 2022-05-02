@@ -49,38 +49,8 @@ public class CustReservationController {
         mav.addObject("progressBarNumber", customer.getPoints());
         return mav;
     }
-    @RequestMapping(value = "/registerShort", method = RequestMethod.GET)
-    public ModelAndView userRegister(@ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form){
-
-        return new ModelAndView("CustomerRegisterShort");
-    }
-
-    @RequestMapping(value = "/registerShort", method = RequestMethod.POST)
-    public ModelAndView userRegister_POST(@Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
-                                                 final BindingResult errors){
-        if (errors.hasErrors()){
-            return userRegister(form);
-        }
 
 
-        return new ModelAndView("redirect:/" );
-    }
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
-
-        return new ModelAndView("CustomerRegister");
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
-                                          final BindingResult errors){
-        if (errors.hasErrors()){
-            return CustomerRegister(form);
-        }
-
-
-        return new ModelAndView("redirect:/" );
-    }
     /*
     @RequestMapping(value = "/createReservation", method = RequestMethod.POST)
     public ModelAndView checkout(@Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) {
@@ -256,7 +226,7 @@ public class CustReservationController {
 
         final ModelAndView mav = new ModelAndView("reservation/notifyCustomer");
 
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
 
