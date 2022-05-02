@@ -44,9 +44,9 @@ public class CustReservationController {
         ModelAndView mav = new ModelAndView("reservation/history");
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
-        List<Dish> list = restaurant.getDishes();
-        mav.addObject("listToDisplay",list);
+        List<FullReservation> reservations = res.getReservationsByCustomerId(customer.getCustomerId());
+
+        mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
         return mav;
     }

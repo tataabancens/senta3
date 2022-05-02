@@ -36,14 +36,14 @@
             <h3 class="presentation-text">Ultimas reservas:</h3>
         </div>
         <div class="reservationList">
-            <c:forEach var="item" items="${listToDisplay}">
+            <c:forEach var="item" items="${reservations}">
                 <div class="card horizontal">
-                    <div class="card-image">
-                        <img src="<c:url value="/resources_/images/${item.imageId}"/>">
-                    </div>
                     <div class="card-stacked">
                         <div class="card-content">
-                            <p>${item.dishDescription}</p>
+                            <p>${item.customerName}</p>
+                            <p>Personas: ${item.qPeople}</p>
+                            <p>En ${item.restaurantName}</p>
+                            <p>A las ${item.reservationHour}</p>
                         </div>
                     </div>
                 </div>

@@ -45,4 +45,6 @@ public interface ReservationService {
     List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId);
 
     List<FullOrderItem> getAllOrderItemsByReservationId(long reservationId);
+
+    List<FullReservation> getReservationsByCustomerId(long customerId);
 }

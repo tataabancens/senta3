@@ -178,4 +178,9 @@ public class ReservationServiceImpl implements ReservationService {
 
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, statusList);
     }
+
+    @Override
+    public List<FullReservation> getReservationsByCustomerId(long customerId) {
+        return reservationDao.getReservationsByCustomerId(customerId);
+    }
 }

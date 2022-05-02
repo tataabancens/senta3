@@ -33,7 +33,8 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("reservationHour"),
                     resultSet.getInt("reservationStatus"),
                     resultSet.getInt("qPeople"),
-                    resultSet.getString("customerName")));
+                    resultSet.getString("customerName"),
+                    resultSet.getString("restaurantName")));
 
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new FullOrderItem(resultSet.getLong("id"),
@@ -78,6 +79,14 @@ public class ReservationJdbcDao implements ReservationDao {
     public List<Reservation> getReservationsByStatus(ReservationStatus status) {
         List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationstatus = ?",
                 new Object[]{status.ordinal()}, ROW_MAPPER_RESERVATION);
+        return query;
+    }
+
+    @Override
+    public List<FullReservation> getReservationsByCustomerId(long customerId) {
+        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer cross join restaurant WHERE " +
+                                                                "customerId = ? and reservation.restaurantid = restaurant.restaurantid",
+                new Object[]{customerId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
 
@@ -305,7 +314,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public List<FullReservation> getAllReservations(long restaurantId) {
-        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer WHERE restaurantId = ?",
+        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurantId = ?",
                 new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
