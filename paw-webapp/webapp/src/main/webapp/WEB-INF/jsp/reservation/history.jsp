@@ -35,14 +35,14 @@
             <h3 class="presentation-text">Ultimas reservas:</h3>
         </div>
         <div class="reservationList">
-            <c:forEach var="item" items="${reservations}">
+            <c:forEach var="reservation" items="${reservations}">
                 <div class="card horizontal">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <p>${item.customerName}</p>
-                            <p>Personas: ${item.qPeople}</p>
-                            <p>En ${item.restaurantName}</p>
-                            <p>A las ${item.reservationHour}</p>
+                            <p>${reservation.customerName}</p>
+                            <p>Personas: ${reservation.qPeople}</p>
+                            <p>En ${reservation.restaurantName}</p>
+                            <p>A las ${reservation.reservationHour}</p>
                         </div>
                     </div>
                 </div>

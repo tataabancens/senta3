@@ -49,6 +49,15 @@ public class CustReservationController {
         mav.addObject("progressBarNumber", customer.getPoints());
         return mav;
     }
+    @RequestMapping(value = "/active-reservations", method = RequestMethod.GET)
+    public ModelAndView activeReservations(Principal principal){
+        ModelAndView mav = new ModelAndView("reservation/CustomerActiveReservations");
+        Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
+        List<FullReservation> reservations = res.getReservationsByCustomerId(customer.getCustomerId());
+
+        mav.addObject("reservations", reservations);
+        return mav;
+    }
 
 
     /*

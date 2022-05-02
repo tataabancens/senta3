@@ -44,7 +44,7 @@
                 <div>
                     <form:errors path="phone" element="p" cssStyle="color:red"/>
                     <form:label path="phone" class="helper-text" data-error="wrong" data-success="right">Telefono:</form:label>
-                    <form:input path="phone" type="password"/>
+                    <form:input path="phone" type="text"/>
                 </div>
             </div>
             <input type="submit" value="Continuar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
