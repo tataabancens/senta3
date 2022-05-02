@@ -314,7 +314,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public List<FullReservation> getAllReservations(long restaurantId) {
-        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurantId = ?",
+        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ?",
                 new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
