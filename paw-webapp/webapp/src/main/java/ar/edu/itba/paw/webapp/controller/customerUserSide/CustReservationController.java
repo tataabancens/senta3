@@ -44,6 +44,7 @@ public class CustReservationController {
         restaurant.setDishes(rs.getRestaurantDishes(1));
         List<Dish> list = restaurant.getDishes();
         mav.addObject("listToDisplay",list);
+        mav.addObject("progressBarNumber",200);
         return mav;
     }
     /*

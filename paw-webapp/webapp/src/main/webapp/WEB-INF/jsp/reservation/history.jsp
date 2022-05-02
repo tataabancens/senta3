@@ -27,10 +27,8 @@
         <div class="reservations-header">
             <h3 class="presentation-text">Puntaje:</h3>
         </div>
-        <div class="progress">
-            <div class="progress__fill"></div>
-            <span class="progress__text">0%</span>
-        </div>
+        <div class="progress-bar" style="--width:${progressBarNumber}"></div>
+        <span class="presentation-text">${progressBarNumber}%</span>
     </div>
     <div class="reservations">
         <div class="reservations-header">
@@ -88,41 +86,31 @@
     .presentation-text{
         color: white;
     }
-    .progress {
+    .progress-bar{
         position: relative;
-        width: 30%;
-        height: 40px;
-        background: #9cbab4;
-        border-radius: 5px;
-        overflow: hidden;
+        width: 40%;
+        height: 3em;
+        background-color: white;
+        border-radius: 1.5em;
+        color: white;
     }
-
-    .progress__fill {
-        width: 0;
-        height: 100%;
-        background: #009579;
-        transition: all 0.2s;
-    }
-
-    .progress__text {
+    .progress-bar::before{
+        content: attr(data-label);
+        display: flex;
+        align-items: center;
         position: absolute;
-        top: 50%;
-        right: 5px;
-        transform: translateY(-50%);
-        font: bold 14px "Quicksand", sans-serif;
-        color: #ffffff;
+        left: .5em;
+        top: .5em;
+        bottom: .5em;
+        width: calc(var(--width,0) * 1%);
+        min-width: 2rem;
+        max-width: calc(100% - 1em);
+        background-color: green;
+        border-radius: 1em;
+        padding: 1em;
     }
 </style>
 <script type="text/javascript">
-    function updateProgressBar(progressBar, value) {
-        value = Math.round(value);
-        progressBar.querySelector(".progress__fill").style.width = `${value}%`;
-        progressBar.querySelector(".progress__text").textContent = `${value}%`;
-    }
 
-    const myProgressBar = document.querySelector(".progress");
-
-    /* Example */
-    updateProgressBar(myProgressBar, 72);
 
 </script>
