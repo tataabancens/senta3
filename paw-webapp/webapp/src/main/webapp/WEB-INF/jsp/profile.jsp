@@ -64,6 +64,13 @@
             </a>
         </div>
         <div class="restaurant-field">
+            <span class="presentation-text">Nombre de usuario: </span>
+            <span class="text">${username}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+                <i class="material-icons info-field">edit</i>
+            </a>
+        </div>
+        <div class="restaurant-field">
             <span class="presentation-text">Contraseña: </span>
             <span class="text">restaurant no tiene el getter</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
