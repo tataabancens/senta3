@@ -59,7 +59,7 @@
         <div class="right-side">
             <sec:authorize access="!hasRole('RESTAURANT')">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/">
+                    <a class="options" href="${pageContext.request.contextPath}/register">
                         Registro
                     </a>
                 </li>

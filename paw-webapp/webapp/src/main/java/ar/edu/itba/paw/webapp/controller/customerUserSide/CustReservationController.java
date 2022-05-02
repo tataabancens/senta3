@@ -5,10 +5,7 @@ import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
-import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
-import ar.edu.itba.paw.webapp.form.FindReservationForm;
-import ar.edu.itba.paw.webapp.form.NumberForm;
-import ar.edu.itba.paw.webapp.form.ReservationForm;
+import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -62,6 +59,21 @@ public class CustReservationController {
                                                  final BindingResult errors){
         if (errors.hasErrors()){
             return userRegister(form);
+        }
+
+
+        return new ModelAndView("redirect:/" );
+    }
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
+
+        return new ModelAndView("CustomerRegister");
+    }
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
+                                          final BindingResult errors){
+        if (errors.hasErrors()){
+            return CustomerRegister(form);
         }
 
 
