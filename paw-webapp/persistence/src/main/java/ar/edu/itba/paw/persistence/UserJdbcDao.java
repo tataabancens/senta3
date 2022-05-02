@@ -33,7 +33,7 @@ public class UserJdbcDao implements UserDao {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName("Users")
-                .usingGeneratedKeyColumns("userId");
+                .usingGeneratedKeyColumns("userid");
     }
 
     @Override
@@ -43,13 +43,14 @@ public class UserJdbcDao implements UserDao {
     }
 
     @Override
-    public User create(String username, String password) {
+    public User create(String username, String password, Roles role) {
         final Map<String, Object> userData = new HashMap<>();
         userData.put("username", username);
         userData.put("password", password);
+        userData.put("role", role.getDescription());
 
-        int userId = jdbcInsert.execute(userData);
-        return new User(userId, username, password, Roles.ANONYMOUS.getDescription());
+        Number userId = jdbcInsert.executeAndReturnKey(userData);
+        return new User(userId.longValue(), username, password, Roles.ANONYMOUS.getDescription());
     }
 
     @Override

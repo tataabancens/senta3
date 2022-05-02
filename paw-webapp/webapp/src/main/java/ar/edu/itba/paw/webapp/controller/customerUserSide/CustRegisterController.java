@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
@@ -55,7 +56,7 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return userRegister(customerIdP, reservationIdP, form);
         }
-        User user = us.create(form.getUsername(), form.getPassword());
+        User user = us.create(form.getUsername(), form.getPassword(), Roles.CUSTOMER);
         cs.linkCustomerToUserId(customerId, user.getId());
 
         return new ModelAndView("redirect:/menu?reservationId=" +  reservationIdP);
@@ -73,7 +74,7 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return CustomerRegister(form);
         }
-        User user = us.create(form.getUsername(), form.getPassword());
+        User user = us.create(form.getUsername(), form.getPassword(), Roles.CUSTOMER);
         cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
 
 

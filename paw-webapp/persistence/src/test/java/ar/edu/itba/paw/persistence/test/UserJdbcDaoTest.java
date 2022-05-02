@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence.test;
 
+import ar.edu.itba.paw.model.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.UserJdbcDao;
 import org.hsqldb.jdbc.JDBCDriver;
@@ -51,7 +52,7 @@ public class UserJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
 
         // 2. Ejercitacion
-        User user = userDao.create(USERNAME, "pass");
+        User user = userDao.create(USERNAME, "pass", Roles.CUSTOMER);
 
         // 3. PostCondiciones
         Assert.assertNotNull(user);
