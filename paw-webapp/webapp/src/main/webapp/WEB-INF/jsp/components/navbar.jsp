@@ -59,6 +59,13 @@
         <div class="right-side">
             <sec:authorize access="!hasRole('RESTAURANT')">
                 <li>
+                    <a class="options" href="${pageContext.request.contextPath}/">
+                        Registro
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="!hasRole('RESTAURANT')">
+                <li>
                     <a class="options" href="${pageContext.request.contextPath}/login">
                         Iniciar sesion
                     </a>

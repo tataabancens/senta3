@@ -50,6 +50,31 @@ body{
     color: #171616;
     font-size: 4rem;
 }
+.restaurant-header{
+    background: linear-gradient(70deg, rgb(245, 245, 245) 7%, rgb(23, 22, 22) 88%);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: 150px;
+    max-height: 300px;
+    border-radius: 20px;
+    align-items: center;
+    padding: 15px;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+.restaurant-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 150px;
+    max-height: 300px;
+}
+.presentation-text.restaurant-description{
+    color: #171616;
+    font-size: 29px;
+}
 .title2{
     justify-content: center;
     font-size: 1.5vw;
