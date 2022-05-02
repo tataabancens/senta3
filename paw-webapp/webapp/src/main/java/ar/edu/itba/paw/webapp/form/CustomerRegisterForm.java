@@ -9,10 +9,10 @@ public class CustomerRegisterForm {
     @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String mail;
 
-    @Size(min = 1, max = 50)
-    @Pattern(regexp = "^[a-zA-Z ,.'-]+$")
     private String username;
 
+    @Size(min = 1, max = 50)
+    @Pattern(regexp = "^[a-zA-Z ,.'-]+$")
     private String customerName;
 
     private String phone;

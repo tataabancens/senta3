@@ -34,6 +34,13 @@
                     </a>
                 </li>
             </sec:authorize>
+            <sec:authorize access="hasRole('CUSTOMER')">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/active-reservations">
+                        Reservas
+                    </a>
+                </li>
+            </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/restaurant=1/menu" >

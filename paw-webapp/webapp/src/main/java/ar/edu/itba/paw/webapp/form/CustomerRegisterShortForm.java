@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 public class CustomerRegisterShortForm {
 
     @Size(min = 1, max = 50)
-    @Pattern(regexp = "^[a-zA-Z ,.'-]+$")
     private String username;
 
     private String Password;
