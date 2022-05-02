@@ -7,5 +7,13 @@ import java.util.Optional;
 public interface CustomerService {
     Optional<Customer> getUserByID(long id);
 
+    Optional<Customer> getCustomerByUsername(String username);
+
     Customer create(String customerName, String phone, String mail);
+
+    void addPointsToCustomer(long customerId, float total);
+
+    Customer create(String customerName, String phone, String mail, long id);
+
+    void linkCustomerToUserId(long customerId, long userId);
 }

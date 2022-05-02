@@ -20,15 +20,23 @@
     <div class="row">
         <%@ include file="../components/navbar.jsp" %>
     </div>
-
-    <div class="page-container">
-        <div class="restaurant-card card">
-            <div class="card-content white-text">
-                <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                <span class="text"><c:out value="${restaurant.phone}"/></span>
+    <div class="restaurant-header">
+        <div class="restaurant-info">
+            <div>
+                <i class="large material-icons">restaurant</i>
+            </div>
+            <div>
+                <div class="presentation-text title restaurant-title">
+                    <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
+                </div>
+                <div class="presentation-text restaurant-description">
+                    <span>Telefono: </span>
+                    <span><c:out value="${restaurant.phone}"/></span>
+                </div>
             </div>
         </div>
-
+    </div>
+    <div class="page-container">
         <div class="confirm-card">
             <div class="card">
                 <div class="card-content white-text center">
@@ -36,10 +44,11 @@
                     <div class="with-margin">
                         <span class="main-title text center"><c:out value="${reservation.reservationId}"/></span>
                     </div>
-                    <p class="title2 center">No te preocupes,</p>
-                    <p class="title2 center">también te lo mandamos por mail!</p>
+                    <p class="text">No te preocupes, también te lo mandamos por mail!</p>
+                    <p class="text">Si te registras vas a poder juntar puntos para descuentos en tu proximas compras.</p>
                     <div class="center">
-                        <a class="waves-effect waves-light btn confirm-btn center" href="<c:url value="../../../menu?reservationId=${reservation.reservationId}"/>">Continuar</a>
+                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>">Registrarse</a>
+                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar sin registrarse</a>
                     </div>
 
                 </div>
@@ -50,7 +59,10 @@
 </html>
 
 <style>
-
+    i{
+        color: #171616;
+        margin-right: 25px;
+    }
     .text{
         color:  #707070
     }
@@ -74,16 +86,18 @@
 
     .page-container {
         display: flex;
+        width: 100%;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        justify-content: center;
+        padding-top: 2%;
     }
 
 
     .confirm-card{
         display:flex;
         justify-content: center;
-        width: 40%;
-        max-width: 60%;
+        min-width: 40%;
+        max-width: 100%;
         margin-left: 5%;
         margin-right: 5%;
     }

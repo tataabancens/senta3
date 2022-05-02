@@ -1,5 +1,6 @@
 <%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -10,7 +11,7 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
 
-    <title>Sentate-Registro</title>
+    <title>Reserva</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
@@ -18,21 +19,18 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation-1" var="postPath"/>
     <div class="content-container">
         <div class="card register-card">
             <span class="main-title">A que hora?</span>
-
-            <div class="input-field">
-                <select id="hourSelect" name="hourSelection">
-                    <c:forEach items="${hours}" var="eachHour">
-                        <option value=${eachHour}>${eachHour}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="submit center">
-                <input type="button" id="continueButton" value="Continuar" class="continue-btn" onclick="return validateSelect()"/>
-            </div>
+            <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
+            <form:form modelAttribute="hourForm" action="${postPath}" method="post">
+                <div class="input-field">
+                    <form:select  path="number">
+                        <form:options items="${hours}"></form:options>
+                    </form:select>
+                </div>
+                <input type="submit" value="Continuar" class="continue-btn"/>
+            </form:form>
         </div>
     </div>
 </div>

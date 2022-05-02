@@ -54,6 +54,13 @@ public class RestaurantJdbcDao implements RestaurantDao {
     }
 
     @Override
+    public Optional<Restaurant> getRestaurantByUsername(String username) {
+        List<Restaurant> query = jdbcTemplate.query("SELECT * FROM restaurant NATURAL JOIN users WHERE username = ?",
+                new Object[]{username}, ROW_MAPPER_RESTAURANT);
+        return query.stream().findFirst();
+    }
+
+    @Override
     public List<Dish> getRestaurantDishes(long restaurantId) {
         List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? ORDER BY dishId",
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);

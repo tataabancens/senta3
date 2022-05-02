@@ -27,7 +27,7 @@
                     <span class="logo">Senta3</span>
                 </a>
             </li>
-            <sec:authorize access="!hasRole('RESTAURANT')">
+            <sec:authorize access="hasRole('CUSTOMER')">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/history">
                         Historial
@@ -57,7 +57,14 @@
             </sec:authorize>
         </div>
         <div class="right-side">
-            <sec:authorize access="!hasRole('RESTAURANT')">
+            <sec:authorize access="!isAuthenticated()">
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/register">
+                        Registro
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="!isAuthenticated()">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/login">
                         Iniciar sesion
@@ -71,7 +78,7 @@
                     </a>
                 </li>
             </sec:authorize>
-            <sec:authorize access="hasRole('RESTAURANT')">
+            <sec:authorize access="isAuthenticated()">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/logout" >
                         Cerrar sesion

@@ -23,8 +23,8 @@
     <h1 class="presentation-text header-title">Perfil</h1>
 </div>
 <div class="contentContainer">
-<sec:authorize access="hasRole('RESTAURANT')">
     <div class="info">
+        <sec:authorize access="hasRole('RESTAURANT')">
         <div class="restaurant-field icon-row">
             <div>
                 <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="editTables">
@@ -63,6 +63,14 @@
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
+        </sec:authorize>
+        <div class="restaurant-field">
+            <span class="presentation-text">Nombre de usuario: </span>
+            <span class="text">${username}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+                <i class="material-icons info-field">edit</i>
+            </a>
+        </div>
         <div class="restaurant-field">
             <span class="presentation-text">Contraseña: </span>
             <span class="text">restaurant no tiene el getter</span>
@@ -71,10 +79,11 @@
             </a>
         </div>
     </div>
+    <sec:authorize access="hasRole('RESTAURANT')">
     <div class="imageContainer">
         <img src="${pageContext.request.contextPath}/resources/images/masterchef.jpg" alt="imagen de restarante">
     </div>
-</sec:authorize>
+    </sec:authorize>
 </div>
 </body>
 </html>

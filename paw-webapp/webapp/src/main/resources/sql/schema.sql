@@ -5,6 +5,11 @@ CREATE TABLE IF NOT EXISTS customer (
   Mail varchar(50)
 );
 
+ALTER TABLE customer ADD COLUMN IF NOT EXISTS userId int;
+ALTER TABLE customer ADD COLUMN IF NOT EXISTS points int default 0;
+-- ALTER TABLE customer
+--     ADD CONSTRAINT IF NOT EXISTS fk_customer_users FOREIGN KEY (userId) REFERENCES users (userId);
+
 CREATE TABLE IF NOT EXISTS restaurant (
   restaurantId SERIAL PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
@@ -17,6 +22,9 @@ ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS totalChairs int DEFAULT 10 NOT N
 ALTER TABLE restaurant DROP COLUMN IF EXISTS totalTables;
 ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS openHour int DEFAULT '0';
 ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS closeHour int DEFAULT '0';
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS userId int DEFAULT 1;
+-- ALTER TABLE restaurant
+--     ADD CONSTRAINT IF NOT EXISTS fk_restaurant_users FOREIGN KEY (userId) REFERENCES users (userId);
 
 CREATE TABLE IF NOT EXISTS image
 (
@@ -73,5 +81,8 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
+
+-- INSERT INTO users(username, password, role)
+-- values('Juancho Capo', '12345678', 'ROLE_CUSTOMER');
 
 

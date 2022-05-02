@@ -9,9 +9,10 @@ public class FullReservation {
     private ReservationStatus reservationStatus;
     private int qPeople;
     private String customerName;
+    private String restaurantName;
 
     public FullReservation(long reservationId, long restaurantId, long customerId,
-                           int reservationHour, int reservationStatus, int qPeople, String customerName) {
+                           int reservationHour, int reservationStatus, int qPeople, String customerName, String restaurantName) {
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.customerId = customerId;
@@ -19,6 +20,15 @@ public class FullReservation {
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
         this.qPeople = qPeople;
         this.customerName = customerName;
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public String getCustomerName() {

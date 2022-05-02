@@ -54,4 +54,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantDao.updatePhone(phone, restaurantId);
     }
 
+    @Override
+    public Optional<Restaurant> getRestaurantByUsername(String username) {
+        return restaurantDao.getRestaurantByUsername(username);
+    }
 }

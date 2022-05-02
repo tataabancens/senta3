@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -53,12 +54,15 @@ public class RestController {
     }
     @RequestMapping("/restaurant={restaurantId}/profile")
     public ModelAndView restaurantProfile(@RequestParam(name = "userId", defaultValue = "1") final long userId,
-                                   @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+                                          @PathVariable("restaurantId") final String restaurantIdP,
+                                          Principal principal) throws Exception {
 
         controllerService.longParser(restaurantIdP);
         Restaurant restaurant=rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);
+
         ModelAndView mav=new ModelAndView("profile");
         mav.addObject("restaurant",restaurant);
+        mav.addObject("username", principal.getName());
         return mav;
     }
 
@@ -70,16 +74,9 @@ public class RestController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("menu/RestaurantMenu");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
-
-        List<FullReservation> reservations = res.getAllReservations(restaurantId);
-        for (FullReservation reservation : reservations) {
-            res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
-        }
-        mav.addObject("reservations", reservations);
-
 
         return mav;
     }
