@@ -27,9 +27,10 @@
         <div class="reservations-header">
             <h3 class="presentation-text">Puntaje:</h3>
         </div>
-        <!--<div class="meter">
-            <span style="width: 25%"></span>
-        </div>-->
+        <div class="progress">
+            <div class="progress__fill"></div>
+            <span class="progress__text">0%</span>
+        </div>
     </div>
     <div class="reservations">
         <div class="reservations-header">
@@ -57,15 +58,16 @@
 <style>
     .contentContainer{
         display: flex;
+        flex-direction: column;
         padding: 0 2% 0 2%;
     }
     .points{
-        width: 30%;
-        height: 100%;
+        width: 100%;
+        height: 30%;
     }
     .reservations{
-        width: 65%;
-        height: 100%;
+        width: 100%;
+        height: 70%;
     }
     .reservationList{
         display: flex;
@@ -86,4 +88,41 @@
     .presentation-text{
         color: white;
     }
+    .progress {
+        position: relative;
+        width: 30%;
+        height: 40px;
+        background: #9cbab4;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .progress__fill {
+        width: 0;
+        height: 100%;
+        background: #009579;
+        transition: all 0.2s;
+    }
+
+    .progress__text {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+        font: bold 14px "Quicksand", sans-serif;
+        color: #ffffff;
+    }
 </style>
+<script type="text/javascript">
+    function updateProgressBar(progressBar, value) {
+        value = Math.round(value);
+        progressBar.querySelector(".progress__fill").style.width = `${value}%`;
+        progressBar.querySelector(".progress__text").textContent = `${value}%`;
+    }
+
+    const myProgressBar = document.querySelector(".progress");
+
+    /* Example */
+    updateProgressBar(myProgressBar, 72);
+
+</script>
