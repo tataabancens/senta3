@@ -20,7 +20,7 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation-1/people=${qPeople}/hour=${hour}" var="postPath"/>
+    <c:url value="/createReservation-3/${reservation.reservationId}" var="postPath"/>
 
     <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
         <div class="content-container">
@@ -42,10 +42,10 @@
                     <form:input path="name" required="required" maxlength="50" type="text"/>
                 </div>
                 <div>
-                    <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Comensales: <c:out value="${people}"/></form:label>
+                    <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Comensales: <c:out value="${reservation.qPeople}"/></form:label>
                 </div>
                 <div>
-                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Hora: <c:out value="${hour}"/>hs</form:label>
+                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Hora: <c:out value="${reservation.reservationHour}"/>hs</form:label>
                 </div>
                 <div class="submit center">
                     <input type="submit" value="Confirmar reserva!" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>

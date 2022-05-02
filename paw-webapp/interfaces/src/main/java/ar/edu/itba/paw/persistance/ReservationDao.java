@@ -41,4 +41,6 @@ public interface ReservationDao {
     List<FullReservation> getAllReservations(long restaurantId);
 
     List<FullReservation> getReservationsByCustomerId(long customerId);
+
+    void updateReservationById(long reservationId, long customerId, long hour, int qPeople);
 }
