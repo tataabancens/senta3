@@ -32,6 +32,11 @@
                     <form:input path="username" type="text"/>
                 </div>
                 <div>
+                    <form:errors path="customerName" element="p" cssStyle="color:red"/>
+                    <form:label path="customerName" class="helper-text" data-error="wrong" data-success="right">Nombre:</form:label>
+                    <form:input path="customerName" type="text"/>
+                </div>
+                <div>
                     <form:errors path="password" element="p" cssStyle="color:red"/>
                     <form:label path="password" class="helper-text" data-error="wrong" data-success="right">Contraseña:</form:label>
                     <form:input path="password" type="password"/>

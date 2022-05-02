@@ -62,7 +62,7 @@ public class RestReservationController {
 
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         ms.sendCancellationEmail(restaurant,customer,reservation);
-        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/cancelReservationConfirmation/id=" + reservationId);
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/reservations");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations")
