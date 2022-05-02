@@ -5,6 +5,7 @@ import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
 import ar.edu.itba.paw.webapp.form.FindReservationForm;
 import ar.edu.itba.paw.webapp.form.NumberForm;
 import ar.edu.itba.paw.webapp.form.ReservationForm;
@@ -50,6 +51,12 @@ public class CustReservationController {
         mav.addObject("customer", customer);
         mav.addObject("progressBarNumber",200);
         return mav;
+    }
+    @RequestMapping(value = "/registerShort", method = RequestMethod.GET)
+    public ModelAndView userRegister(@ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
+                                    Principal principal){
+
+        return new ModelAndView("CustomerRegisterShort");
     }
     /*
     @RequestMapping(value = "/createReservation", method = RequestMethod.POST)

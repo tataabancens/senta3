@@ -11,7 +11,7 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
 
-    <title>Sentate-Registro</title>
+    <title>Reserva</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
