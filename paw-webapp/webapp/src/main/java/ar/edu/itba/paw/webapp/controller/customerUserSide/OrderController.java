@@ -170,6 +170,9 @@ public class OrderController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+
+        cs.addPointsToCustomer(customer.getCustomerId(), res.getTotal(orderItems));
 
         ms.sendReceiptEmail(restaurant, customer);
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);

@@ -46,7 +46,7 @@ public class CustReservationController {
 
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
-        mav.addObject("progressBarNumber",200);
+        mav.addObject("progressBarNumber", customer.getPoints());
         return mav;
     }
     @RequestMapping(value = "/registerShort", method = RequestMethod.GET)
@@ -54,6 +54,7 @@ public class CustReservationController {
 
         return new ModelAndView("CustomerRegisterShort");
     }
+
     @RequestMapping(value = "/registerShort", method = RequestMethod.POST)
     public ModelAndView userRegister_POST(@Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                                  final BindingResult errors){
@@ -69,6 +70,7 @@ public class CustReservationController {
 
         return new ModelAndView("CustomerRegister");
     }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
                                           final BindingResult errors){

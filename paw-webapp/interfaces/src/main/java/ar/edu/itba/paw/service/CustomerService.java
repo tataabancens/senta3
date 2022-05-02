@@ -10,4 +10,7 @@ public interface CustomerService {
     Optional<Customer> getCustomerByUsername(String username);
 
     Customer create(String customerName, String phone, String mail);
+
+    void addPointsToCustomer(long customerId, float total);
+
 }

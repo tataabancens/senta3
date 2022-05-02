@@ -41,7 +41,7 @@
                     <div class="img-row">
                         <input type="file" name="photo"/>
                         <div class="col s12 center">
-                            <input type="submit" value="Cargar" class="continue-btn"/>
+                            <input type="submit" value="Cargar" class="confirm-btn"/>
                         </div>
                     </div>
                 </form>

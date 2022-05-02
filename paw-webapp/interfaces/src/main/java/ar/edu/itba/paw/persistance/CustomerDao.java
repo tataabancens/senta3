@@ -11,4 +11,5 @@ public interface CustomerDao {
 
     Optional<Customer> getCustomerByUsername(String username);
 
+    void addPointsToCustomer(long customerId, int points);
 }
