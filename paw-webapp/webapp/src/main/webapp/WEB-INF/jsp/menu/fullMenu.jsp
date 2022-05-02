@@ -122,6 +122,7 @@
                                 <div class="order-field center"><span class="items-title "><c:out value="${orderItem.dishName}"/></span></div>
                                 <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.quantity}"/></span></div>
                                 <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span></div>
+                                <a href=""><i class="order-clear small material-icons">clear</i></a>
                             </div>
                             <hr class="solid-divider">
                         </c:forEach>
@@ -190,7 +191,11 @@
     }
     i{
         color: black;
+        align-self: center;
         margin-right: 25px;
+    }
+    .order-clear{
+        color: #707070;
     }
     .dishList{
         display: flex;
