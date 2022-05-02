@@ -53,10 +53,19 @@ public class CustReservationController {
         return mav;
     }
     @RequestMapping(value = "/registerShort", method = RequestMethod.GET)
-    public ModelAndView userRegister(@ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
-                                    Principal principal){
+    public ModelAndView userRegister(@ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form){
 
         return new ModelAndView("CustomerRegisterShort");
+    }
+    @RequestMapping(value = "/registerShort", method = RequestMethod.POST)
+    public ModelAndView userRegister_POST(@Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
+                                                 final BindingResult errors){
+        if (errors.hasErrors()){
+            return userRegister(form);
+        }
+
+
+        return new ModelAndView("redirect:/" );
     }
     /*
     @RequestMapping(value = "/createReservation", method = RequestMethod.POST)
