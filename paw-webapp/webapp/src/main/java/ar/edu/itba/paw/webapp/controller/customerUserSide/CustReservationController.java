@@ -48,6 +48,7 @@ public class CustReservationController {
 
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
+        mav.addObject("progressBarNumber",200);
         return mav;
     }
     /*

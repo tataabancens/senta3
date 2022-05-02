@@ -27,9 +27,8 @@
         <div class="reservations-header">
             <h3 class="presentation-text">Puntos: <c:out value="${customer.points}"></c:out></h3>
         </div>
-        <!--<div class="meter">
-            <span style="width: 25%"></span>
-        </div>-->
+        <div class="progress-bar" style="--width:${progressBarNumber}"></div>
+        <span class="presentation-text">${progressBarNumber}%</span>
     </div>
     <div class="reservations">
         <div class="reservations-header">
@@ -57,15 +56,16 @@
 <style>
     .contentContainer{
         display: flex;
+        flex-direction: column;
         padding: 0 2% 0 2%;
     }
     .points{
-        width: 30%;
-        height: 100%;
+        width: 100%;
+        height: 30%;
     }
     .reservations{
-        width: 65%;
-        height: 100%;
+        width: 100%;
+        height: 70%;
     }
     .reservationList{
         display: flex;
@@ -86,4 +86,31 @@
     .presentation-text{
         color: white;
     }
+    .progress-bar{
+        position: relative;
+        width: 40%;
+        height: 3em;
+        background-color: white;
+        border-radius: 1.5em;
+        color: white;
+    }
+    .progress-bar::before{
+        content: attr(data-label);
+        display: flex;
+        align-items: center;
+        position: absolute;
+        left: .5em;
+        top: .5em;
+        bottom: .5em;
+        width: calc(var(--width,0) * 1%);
+        min-width: 2rem;
+        max-width: calc(100% - 1em);
+        background-color: green;
+        border-radius: 1em;
+        padding: 1em;
+    }
 </style>
+<script type="text/javascript">
+
+
+</script>
