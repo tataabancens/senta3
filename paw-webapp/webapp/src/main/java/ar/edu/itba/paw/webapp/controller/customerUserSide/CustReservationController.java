@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -37,13 +38,16 @@ public class CustReservationController {
 
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
-    public ModelAndView userHistory(@ModelAttribute("reservationForm") final ReservationForm form){
+    public ModelAndView userHistory(@ModelAttribute("reservationForm") final ReservationForm form,
+                                    Principal principal){
 
         ModelAndView mav = new ModelAndView("reservation/history");
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
         List<Dish> list = restaurant.getDishes();
         mav.addObject("listToDisplay",list);
+        mav.addObject("customer", customer);
         return mav;
     }
     /*

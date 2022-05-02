@@ -24,7 +24,8 @@ public class CustomerJdbcDao implements CustomerDao {
             new Customer(resultSet.getLong("customerId"),
                     resultSet.getString("customerName"),
                     resultSet.getString("Phone"),
-                    resultSet.getString("Mail")));
+                    resultSet.getString("Mail"),
+                    resultSet.getInt("points")));
 
     @Autowired
     public CustomerJdbcDao(DataSource ds) {
@@ -48,6 +49,13 @@ public class CustomerJdbcDao implements CustomerDao {
         customerData.put("Mail", mail);
 
         Number customerId = jdbcInsert.executeAndReturnKey(customerData);
-        return new Customer(customerId.longValue(), customerName, phone, mail);
+        return new Customer(customerId.longValue(), customerName, phone, mail, 0);
+    }
+
+    @Override
+    public Optional<Customer> getCustomerByUsername(String username) {
+        List<Customer> query = jdbcTemplate.query("SELECT * FROM customer NATURAL JOIN users WHERE username = ?",
+                new Object[]{username}, ROW_MAPPER);
+        return query.stream().findFirst();
     }
 }

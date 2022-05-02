@@ -5,12 +5,14 @@ public class Customer {
     private String customerName;
     private String Phone;
     private String Mail;
+    private int points;
 
-    public Customer(long customerId, String customerName, String phone, String mail) {
+    public Customer(long customerId, String customerName, String phone, String mail, int points) {
         this.customerId = customerId;
         this.customerName = customerName;
         Phone = phone;
         Mail = mail;
+        this.points = points;
     }
 
     public long getCustomerId() {
@@ -43,5 +45,13 @@ public class Customer {
 
     public void setMail(String mail) {
         Mail = mail;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

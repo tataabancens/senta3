@@ -8,4 +8,7 @@ public interface CustomerDao {
     Optional<Customer> getCustomerById(long id);
 
     Customer create(String customerName, String phone, String mail);
+
+    Optional<Customer> getCustomerByUsername(String username);
+
 }

@@ -25,7 +25,7 @@
 <div class="contentContainer">
     <div class="points">
         <div class="reservations-header">
-            <h3 class="presentation-text">Puntaje:</h3>
+            <h3 class="presentation-text">Puntos: <c:out value="${customer.points}"></c:out></h3>
         </div>
         <!--<div class="meter">
             <span style="width: 25%"></span>
