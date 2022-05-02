@@ -155,7 +155,8 @@ public class CustReservationController {
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         res.updateReservationById(reservationId, 1, hour, reservation.getqPeople());
 
-        return new ModelAndView("redirect:/createReservation-3/" + reservationId);
+        return new ModelAndView("redirect:/createReservation-3/" + reservationId + "/redirect");
+
     }
 
     @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.GET)
@@ -191,15 +192,42 @@ public class CustReservationController {
         ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
                 customer,reservation);
 
-        final ModelAndView mav = new ModelAndView("reservation/notifyCustomer");
+        return new ModelAndView("redirect:/notify/" + reservationId);
+    }
 
-        mav.addObject("restaurant", rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new));
+    @RequestMapping(value = "/confirmReservation/{reservationId}", method = RequestMethod.GET)
+    public ModelAndView confirmReservation(@PathVariable("reservationId") final String reservationIdP,
+                                           Principal principal,
+                                           @ModelAttribute("confirmReservationForm") final ReservationForm form) throws Exception {
+
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+
+        final ModelAndView mav = new ModelAndView("reservation/confirmReservation");
 
         mav.addObject("reservation", reservation);
+        mav.addObject("customer", customer);
         return mav;
     }
 
+    @RequestMapping(value = "/confirmReservation/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView confirmReservationPost( @PathVariable("reservationId") final String reservationIdP,
+                                                Principal principal,
+                                                @Valid @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
 
+        Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+
+        res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
+        res.updateReservationStatus(reservationId, ReservationStatus.OPEN);
+
+        return new ModelAndView("redirect:/notify/" + reservationId);
+    }
 
     @RequestMapping(value = "/findReservation", method = RequestMethod.GET)
     public ModelAndView findReservation(@ModelAttribute("findReservationForm") final FindReservationForm form) {
