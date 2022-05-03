@@ -16,4 +16,6 @@ public interface CustomerDao {
     Customer create(String customerName, String phone, String mail, long id);
 
     void linkCustomerToUserId(long customerId, long userId);
+
+    void updatePoints(long customerId, int points);
 }

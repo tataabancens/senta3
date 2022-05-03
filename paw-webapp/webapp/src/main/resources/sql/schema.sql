@@ -58,6 +58,8 @@ ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
 
 ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT NULL;
 
+ALTER TABLE reservation ADD IF NOT EXISTS reservationDiscount boolean default false NOT NULL;
+
 ALTER TABLE reservation ADD IF NOT EXISTS qPeople integer default 1;
 
 

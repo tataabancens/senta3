@@ -1,14 +1,13 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
-import ar.edu.itba.paw.model.FullOrderItem;
-import ar.edu.itba.paw.model.OrderItemStatus;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,13 +20,16 @@ public class MenuController {
     private RestaurantService rs;
     private ReservationService res;
     private ControllerService controllerService;
+    private CustomerService cs;
 
 
     @Autowired
-    public MenuController(final RestaurantService rs, final ReservationService res, ControllerService controllerService) {
+    public MenuController(final RestaurantService rs, final ReservationService res,
+                          final ControllerService controllerService, final CustomerService cs) {
         this.rs = rs;
         this.res = res;
         this.controllerService = controllerService;
+        this.cs = cs;
     }
 
     @RequestMapping("/")
@@ -53,10 +55,11 @@ public class MenuController {
 
         //Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
         mav.addObject("restaurant", restaurant);
         mav.addObject("dish", rs.getRestaurantDishes(1));
+        mav.addObject("customer", customer);
 
         mav.addObject("reservation", reservation);
 
@@ -72,4 +75,25 @@ public class MenuController {
 
         return mav;
     }
+
+    @RequestMapping(value= "/menu/applyDiscount/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView applyDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
+
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        res.applyDiscount(reservationId);
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+    }
+
+    @RequestMapping(value= "/menu/cancelDiscount/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView cancelDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
+
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        res.cancelDiscount(reservationId);
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+    }
+
 }

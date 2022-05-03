@@ -6,6 +6,7 @@ import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RelationServiceNotRegisteredException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -16,11 +17,15 @@ import java.util.*;
 public class ReservationServiceImpl implements ReservationService {
     private ReservationDao reservationDao;
     private RestaurantDao restaurantDao;
+    private CustomerService customerService;
+    private static final int POINTS_TO_DISCOUNT = 100;
 
     @Autowired
-    public ReservationServiceImpl(final ReservationDao reservationDao, final RestaurantDao restaurantDao) {
+    public ReservationServiceImpl(final ReservationDao reservationDao, final RestaurantDao restaurantDao,
+                                    final CustomerService customerService) {
         this.reservationDao = reservationDao;
         this.restaurantDao = restaurantDao;
+        this.customerService = customerService;
     }
 
     @Override
@@ -237,6 +242,32 @@ public class ReservationServiceImpl implements ReservationService {
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
                 }
             }
+        }
+    }
+
+    @Override
+    public void applyDiscount(long reservationId) {
+        Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
+        if (maybeReservation.isPresent()) {
+            Reservation reservation = maybeReservation.get();
+            Customer customer = customerService.getUserByID(reservation.getCustomerId()).get();
+
+            if (customer.getPoints() >= POINTS_TO_DISCOUNT) {
+                customerService.updatePoints(customer.getCustomerId(), -POINTS_TO_DISCOUNT);
+                reservationDao.applyDiscount(reservationId);
+            }
+        }
+
+    }
+
+    @Override
+    public void cancelDiscount(long reservationId) {
+        Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
+        if (maybeReservation.isPresent()) {
+            Reservation reservation = maybeReservation.get();
+
+            customerService.updatePoints(reservation.getCustomerId(), POINTS_TO_DISCOUNT);
+            reservationDao.cancelDiscount(reservationId);
         }
     }
 }

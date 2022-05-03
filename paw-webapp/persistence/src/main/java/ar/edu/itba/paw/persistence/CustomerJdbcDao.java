@@ -80,4 +80,9 @@ public class CustomerJdbcDao implements CustomerDao {
     public void linkCustomerToUserId(long customerId, long userId) {
         jdbcTemplate.update("UPDATE customer SET userId = ? WHERE customerId = ?", new Object[]{userId, customerId});
     }
+
+    @Override
+    public void updatePoints(long customerId, int points) {
+        jdbcTemplate.update("UPDATE customer SET points = points + ? WHERE customerId = ?", new Object[]{points, customerId});
+    }
 }

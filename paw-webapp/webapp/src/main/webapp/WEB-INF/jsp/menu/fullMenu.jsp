@@ -106,6 +106,28 @@
                     <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
                 </div>
             </div>
+            <sec:authorize access="isAuthenticated()">
+                <c:if test="${!reservation.reservationDiscount}">
+                    <c:if test="${customer.points >= 100}">
+                        <div class="card client-actions">
+                            <span class="main-title center">Tenes un descuento a tu favor!</span>
+                            <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
+                            <form:form action="${postUrl_actDisc}" method="post">
+                                <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn">
+                            </form:form>
+                        </div>
+                    </c:if>
+                </c:if>
+                <c:if test="${reservation.reservationDiscount}">
+                    <div class="card client-actions">
+                        <span class="main-title center">Aplicaste un descuento del 15%!</span>
+                        <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
+                        <form:form action="${postUrl_undoDisc}" method="post">
+                            <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn">
+                        </form:form>
+                    </div>
+                </c:if>
+            </sec:authorize>
             <div class="orderList">
                 <div class="card order-card">
                     <span class="main-title">Resumen de tu pedido:</span>
