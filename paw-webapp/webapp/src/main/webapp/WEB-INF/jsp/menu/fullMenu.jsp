@@ -179,7 +179,7 @@
                         </div>
                         <div>
                             <c:if test="${selected > 0}">
-                                <a class="waves-effect waves-light btn confirm-btn green" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                                <a class="waves-effect waves-light btn confirm-btn green" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
                             </c:if>
                             <c:if test="${selected == 0}">
                                 <a disabled class="waves-effect waves-light btn confirm-btn green">Continuar</a>
