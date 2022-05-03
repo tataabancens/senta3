@@ -57,6 +57,7 @@ public class MenuController {
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("restaurant", restaurant);
         mav.addObject("dish", rs.getRestaurantDishes(1));
         mav.addObject("customer", customer);

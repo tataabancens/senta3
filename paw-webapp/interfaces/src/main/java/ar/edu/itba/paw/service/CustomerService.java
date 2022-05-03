@@ -18,4 +18,7 @@ public interface CustomerService {
     void linkCustomerToUserId(long customerId, long userId);
 
     void updatePoints(long customerId, int points);
+
+    public float getDiscountCoefficient();
+
 }

@@ -270,4 +270,13 @@ public class ReservationServiceImpl implements ReservationService {
             reservationDao.cancelDiscount(reservationId);
         }
     }
+
+    @Override
+    public float getDiscountCoefficient(long reservationId) {
+        Reservation reservation = reservationDao.getReservationById(reservationId).get();
+        if (reservation.isReservationDiscount()) {
+            return customerService.getDiscountCoefficient();
+        }
+        return 1f;
+    }
 }

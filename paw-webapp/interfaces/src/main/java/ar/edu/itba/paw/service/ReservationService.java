@@ -57,4 +57,6 @@ public interface ReservationService {
     void applyDiscount(long reservationId);
 
     void cancelDiscount(long reservationId);
+
+    float getDiscountCoefficient(long reservationId);
 }
