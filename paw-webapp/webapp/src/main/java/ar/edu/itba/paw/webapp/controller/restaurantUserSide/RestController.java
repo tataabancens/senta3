@@ -61,7 +61,7 @@ public class RestController {
         Restaurant restaurant=rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);
 
         ModelAndView mav=new ModelAndView("profile");
-        mav.addObject("restaurant",restaurant);
+        mav.addObject("restaurant", restaurant);
         mav.addObject("username", principal.getName());
         return mav;
     }

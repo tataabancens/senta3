@@ -84,7 +84,7 @@
             <sec:authorize access="isAuthenticated()">
                 <li>
 
-                    <a class="options" href="<c:url value="/restaurant=1/profile"/>" >
+                    <a class="options" href="<c:url value="/profile"/>" >
                         Perfil
                     </a>
                 </li>
