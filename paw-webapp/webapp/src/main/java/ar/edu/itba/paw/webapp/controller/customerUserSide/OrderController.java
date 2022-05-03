@@ -202,7 +202,7 @@ public class OrderController {
     }
 
     @RequestMapping(value= "/order/remove-dish", method = RequestMethod.POST)
-    public ModelAndView emptyCart(@RequestParam(name = "orderItemId") final String orderItemIdP,
+    public ModelAndView deleteOrderItemFromCart(@RequestParam(name = "orderItemId") final String orderItemIdP,
                                   @RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
         controllerService.longParser(reservationIdP);

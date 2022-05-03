@@ -78,6 +78,8 @@ public class RestReservationController {
         List<FullReservation> reservations = res.getAllReservations(restaurantId);
         mav.addObject("reservations", reservations);
 
+        res.checkReservationTime();
+
         return mav;
     }
 
@@ -92,4 +94,31 @@ public class RestReservationController {
 
         return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
     }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/finishCustomer={reservationId}", method = RequestMethod.POST)
+    public ModelAndView finishCustomer(@PathVariable("restaurantId") final String restaurantIdP,
+                                     @PathVariable("reservationId") final String reservationIdP) throws Exception {
+        controllerService.longParser(restaurantIdP, reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        res.updateReservationStatus(reservationId, ReservationStatus.FINISHED);
+
+        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/orderCheckCustomer={reservationId}", method = RequestMethod.POST)
+    public ModelAndView orderCheckCustomer(@PathVariable("restaurantId") final String restaurantIdP,
+                                       @PathVariable("reservationId") final String reservationIdP) throws Exception {
+        controllerService.longParser(restaurantIdP, reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
+
+        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
+    }
+
+
+
 }

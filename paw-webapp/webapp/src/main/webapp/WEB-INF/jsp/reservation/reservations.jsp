@@ -4,6 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <!-- Auto refresh each x seconds-->
+    <meta http-equiv="refresh" content="300">
+
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -21,56 +24,78 @@
 <div class="content-container">
     <table class="reservations">
         <thead>
-            <tr>
-                <th><h3 class="presentation-text">Reserva</h3></th>
-                <th><h3 class="presentation-text">Nombre</h3></th>
-                <th><h3 class="presentation-text">Personas</h3></th>
-                <th><h3 class="presentation-text">Hora</h3></th>
-                <th><h3 class="presentation-text">Estado</h3></th>
-                <th><h3 class="presentation-text">Confirmar</h3></th>
-                <th><h3 class="presentation-text">Cancelar</h3></th>
-            </tr>
+        <tr>
+            <th><h3 class="presentation-text">Reserva</h3></th>
+            <th><h3 class="presentation-text">Nombre</h3></th>
+            <th><h3 class="presentation-text">Personas</h3></th>
+            <th><h3 class="presentation-text">Hora</h3></th>
+            <th><h3 class="presentation-text">Estado</h3></th>
+            <th><h3 class="presentation-text">Confirmar</h3></th>
+            <th><h3 class="presentation-text">Cancelar</h3></th>
+        </tr>
         </thead>
         <tbody>
-            <c:forEach var="reservation" items="${reservations}">
-                <tr>
-                    <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
-                    <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
-                    <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
-                    <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
-                    <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
-                    <c:if test="${reservation.reservationStatus.name() == 'OPEN' }">
-                        <td data-label="Confirmar" class="table-cell">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <button type="submit" class="btn-floating large green">
-                                    <i class="material-icons">check_circle</i>
-                                </button>
-                            </form:form>
-                        </td>
-                        <td data-label="Cancelar" class="table-cell">
-                            <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn-floating large red">
-                                <i class="material-icons">cancel</i>
-                            </a>
-                        </td>
-                    </c:if>
-                    <c:if test="${reservation.reservationStatus.name() != 'OPEN' }">
-                        <td data-label="Confirmar" class="table-cell">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <button disabled type="submit" class="btn-floating large green action-btn">
-                                    <i class="material-icons">check_circle</i>
-                                </button>
-                            </form:form>
-                        </td>
-                        <td data-label="Cancelar" class="table-cell">
-                            <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn-floating large red action-btn">
-                                <i class="material-icons">cancel</i>
-                            </a>
-                        </td>
-                    </c:if>
-                </tr>
-            </c:forEach>
+        <c:forEach var="reservation" items="${reservations}">
+            <tr>
+                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
+                <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
+                <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
+                <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
+                <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
+                <c:if test="${reservation.reservationStatus.name() == 'OPEN' }">
+                    <td data-label="Confirmar" class="table-cell">
+                        <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <button type="submit" class="btn-floating large green">
+                                <i class="material-icons">check_circle</i>
+                            </button>
+                        </form:form>
+                    </td>
+                    <td data-label="Cancelar" class="table-cell">
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn-floating large red">
+                            <i class="material-icons">cancel</i>
+                        </a>
+                    </td>
+                </c:if>
+
+                <c:if test="${reservation.reservationStatus.name() == 'CHECK_ORDERED' }">
+                    <td data-label="Confirmar" class="table-cell">
+                        <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservation.reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <button type="submit" class="btn-floating large green">
+                                <i class="material-icons">check_circle</i>
+                            </button>
+                        </form:form>
+                    </td>
+                    <td data-label="Cancelar" class="table-cell">
+
+                    </td>
+                </c:if>
+
+                <c:if test="${reservation.reservationStatus.name() == 'SEATED' }">
+                    <td data-label="Confirmar" class="table-cell">
+                        <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <button type="submit" class="btn-floating large green">
+                                <i class="material-icons">check_circle</i>
+                            </button>
+                        </form:form>
+                    </td>
+                    <td data-label="Cancelar" class="table-cell">
+
+                    </td>
+                </c:if>
+
+                <c:if test="${reservation.reservationStatus.name() != 'OPEN' }">
+                    <td data-label="Confirmar" class="table-cell">
+
+                    </td>
+                    <td data-label="Cancelar" class="table-cell">
+
+                    </td>
+                </c:if>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
