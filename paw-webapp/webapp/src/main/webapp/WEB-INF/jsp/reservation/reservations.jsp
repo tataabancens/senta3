@@ -65,8 +65,8 @@
                     <td data-label="Confirmar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn-floating large green">
-                                <i class="material-icons">check_circle</i>
+                            <button type="submit" class="btn-floating large blue">
+                                <i class="material-icons">receipt</i>
                             </button>
                         </form:form>
                     </td>
@@ -140,6 +140,9 @@
     }
     .green{
         color: green;
+    }
+    .blue {
+        color: blue;
     }
     .red{
         color: red;

@@ -225,10 +225,6 @@ public class ReservationServiceImpl implements ReservationService {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        System.out.println("timetimetime");
-        System.out.println(now.getHour());
-        System.out.println(now.getMinute());
-
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
             if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
