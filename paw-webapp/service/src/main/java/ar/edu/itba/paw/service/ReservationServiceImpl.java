@@ -209,15 +209,15 @@ public class ReservationServiceImpl implements ReservationService {
 
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
-            if(now.getHour() > reservation.getReservationHour()+1 ||
-                    (now.getHour() == reservation.getReservationHour() && now.getMinute() > 30)) {
-                if(reservation.getReservationStatus() == ReservationStatus.OPEN ||
-                        reservation.getReservationStatus() == ReservationStatus.MAYBE_RESERVATION){
+            if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
+                if (reservation.getReservationStatus() == ReservationStatus.OPEN ||
+                        reservation.getReservationStatus() == ReservationStatus.MAYBE_RESERVATION) {
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
-
-                } else if(reservation.getReservationStatus() == ReservationStatus.SEATED ||
-                        reservation.getReservationStatus() == ReservationStatus.CHECK_ORDERED){
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.FINISHED);
+                }
+            }
+            if(now.getHour() > reservation.getReservationHour()+1) {
+                if(reservation.getReservationStatus() == ReservationStatus.SEATED){
+                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
                 }
             }
         }
