@@ -185,18 +185,22 @@ public class OrderController {
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
 
-        return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId);
+        return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId + "&points=" + cs.getPoints(res.getTotal(orderItems)));
     }
 
     @RequestMapping(value = "/order/send-receipt/confirmed")
-    public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+    public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP,
+                                              @RequestParam(name = "points") final String pointsP) throws Exception {
 
-        controllerService.longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP, pointsP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("order/receiptConfirmed");
         mav.addObject("restaurant", restaurant);
+        mav.addObject("points", pointsP);
+
         return mav;
     }
 

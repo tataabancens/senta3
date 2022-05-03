@@ -21,4 +21,5 @@ public interface CustomerService {
 
     public float getDiscountCoefficient();
 
+    int getPoints(float total);
 }

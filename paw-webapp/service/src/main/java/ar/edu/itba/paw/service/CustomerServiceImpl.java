@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private CustomerDao customerDao;
-    private static final int COEFFICIENT = 29;
+    private static final int COEFFICIENT = 71;
     private static final float DISCOUNT_COEFFICIENT = 0.90f;
 
     @Autowired
@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void addPointsToCustomer(long customerId, float total) {
-        customerDao.addPointsToCustomer(customerId, (int) total / COEFFICIENT);
+        customerDao.addPointsToCustomer(customerId, getPoints(total));
     }
 
     @Override
@@ -56,5 +56,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     public float getDiscountCoefficient() {
         return DISCOUNT_COEFFICIENT;
+    }
+
+    @Override
+    public int getPoints(float total) {
+        return (int) total / COEFFICIENT;
     }
 }

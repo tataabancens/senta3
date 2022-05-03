@@ -46,11 +46,15 @@
                     </div>
                     <p class="text">No te preocupes, también te lo mandamos por mail!</p>
                     <p class="text">Si te registras vas a poder juntar puntos para descuentos en tu proximas compras.</p>
-                    <div class="center">
-                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>">Registrarse</a>
-                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar sin registrarse</a>
-                    </div>
-
+                    <sec:authorize access="!isAuthenticated()">
+                        <div class="center">
+                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>">Registrarse</a>
+                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar sin registrarse</a>
+                        </div>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar</a>
+                    </sec:authorize>
                 </div>
             </div>
         </div>
