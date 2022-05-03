@@ -53,4 +53,10 @@ public interface ReservationService {
     void updateReservationById(long reservationId, long customerId, long hour, int getqPeople);
 
     void checkReservationTime();
+
+    void applyDiscount(long reservationId);
+
+    void cancelDiscount(long reservationId);
+
+    float getDiscountCoefficient(long reservationId);
 }

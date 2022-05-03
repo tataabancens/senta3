@@ -43,4 +43,9 @@ public interface ReservationDao {
     List<FullReservation> getReservationsByCustomerId(long customerId);
 
     void updateReservationById(long reservationId, long customerId, long hour, int qPeople);
+
+    void applyDiscount(long reservationId);
+
+    void cancelDiscount(long reservationId);
 }
+

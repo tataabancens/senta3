@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -61,10 +62,12 @@
                             <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
                         </div>
                         <div>
-                            <span class="items-title text">$<c:out value="${orderItem.unitPrice}"/></span>
+                            <fmt:formatNumber var="orderItemUnitPrice" type="number" value="${(orderItem.unitPrice * discountCoefficient)}" maxFractionDigits="2"/>
+                            <span class="items-title text">$<c:out value="${orderItemUnitPrice}"/></span>
                         </div>
                         <div>
-                            <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                            <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
+                            <span class="items-title text"><c:out value="${orderItemPrice}"/></span>
                         </div>
                     </div>
                 </c:forEach>
@@ -76,7 +79,8 @@
                         <p class="price">Total</p>
                     </div>
                     <div>
-                        <p class="price right "><c:out value="${total}"/></p>
+                        <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
+                        <p class="price right "><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
 
@@ -98,14 +102,7 @@
 </html>
 
 <style>
-
-    body{
-        background-color: #F0F0F0;
-    }
-    .text{
-        color:  #707070
-    }
-
+    
     .summary{
         margin-top: 20px;
         width: 100%;

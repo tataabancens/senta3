@@ -49,6 +49,7 @@ public class OrderController {
         final ModelAndView mav = new ModelAndView("order/orderItem");
 
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
@@ -109,7 +110,9 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
+
         final ModelAndView mav = new ModelAndView("order/completeOrder");
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
@@ -152,6 +155,7 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
 
         final ModelAndView mav = new ModelAndView("order/receipt");
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));

@@ -10,15 +10,26 @@ public class Reservation {
     private int reservationHour;
     private ReservationStatus reservationStatus;
     private int qPeople;
+    private boolean reservationDiscount;
 
-    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus, int qPeople){
+    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus, int qPeople, boolean reservationDiscount){
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.reservationHour = reservationHour;
         this.customerId = customerId;
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
         this.qPeople = qPeople;
+        this.reservationDiscount = reservationDiscount;
     }
+
+    public boolean isReservationDiscount() {
+        return reservationDiscount;
+    }
+
+    public void setReservationDiscount(boolean reservationDiscount) {
+        this.reservationDiscount = reservationDiscount;
+    }
+
     public long getReservationId() {
         return reservationId;
     }

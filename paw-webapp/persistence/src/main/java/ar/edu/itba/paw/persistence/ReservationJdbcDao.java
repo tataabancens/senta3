@@ -24,7 +24,8 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("reservationHour"),
                     resultSet.getLong("customerId"),
                     resultSet.getInt("reservationStatus"),
-                    resultSet.getInt("qPeople")));
+                    resultSet.getInt("qPeople"),
+                    resultSet.getBoolean("reservationDiscount")));
 
     private static final RowMapper<FullReservation> ROW_MAPPER_FULL_RESERVATION = ((resultSet, i) ->
             new FullReservation(resultSet.getLong("reservationId"),
@@ -98,10 +99,11 @@ public class ReservationJdbcDao implements ReservationDao {
         reservationData.put("customerId", customerId);
         reservationData.put("reservationstatus", ReservationStatus.OPEN.ordinal());
         reservationData.put("qPeople", qPeople);
+        reservationData.put("reservationdiscount", false);
 
         Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
 
-        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.OPEN.ordinal(), qPeople);
+        Reservation newReservation = new Reservation(reservationId.longValue(), restaurantId, reservationHour, customerId, ReservationStatus.OPEN.ordinal(), qPeople, false);
 
         return newReservation;
     }
@@ -191,6 +193,18 @@ public class ReservationJdbcDao implements ReservationDao {
 
         Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
         return new OrderItem(orderItemId.longValue(), dish.getId(), dish.getPrice(), quantity, OrderItemStatus.SELECTED.ordinal());
+    }
+
+    @Override
+    public void applyDiscount(long reservationId) {
+        jdbcTemplate.update("UPDATE reservation SET reservationDiscount = ? where reservationId = ?",
+                new Object[]{true, reservationId});
+    }
+
+    @Override
+    public void cancelDiscount(long reservationId) {
+        jdbcTemplate.update("UPDATE reservation SET reservationDiscount = ? where reservationId = ?",
+                new Object[]{false, reservationId});
     }
 
     @Override

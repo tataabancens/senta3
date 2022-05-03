@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,7 +28,8 @@
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
                     <div class ="orderItem">
                         <p class="title2"><c:out value="${dish.dishDescription}"/></p>
-                        <p class="price">$<c:out value="${dish.price}"/></p>
+                        <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                        <p class="price">$<c:out value="${dishPrice}"/></p>
                         <form:errors path="orderItem" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
                         <form:input path="orderItem.quantity" type="number" min="1" max="50" required="required" value="0" cssClass="center"/>

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import = "java.io.*,java.util.*" %>
 
@@ -64,13 +65,14 @@
                                     </div>
                                 </div>
                                 <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
-                                <span class="price dishName">$<c:out value="${dish.price}"/></span>
+                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                <span class="price dishName">$<c:out value="${dishPrice}"/></span>
                             </div>
                         </a>
                     </c:if>
                     <c:if test="${!unavailable.contains(dish.id)}">
 
-                        <a href="<c:url value="menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>" class="selection-area">
+                        <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>" class="selection-area">
                             <div class="imageContainer">
                                 <c:if test="${dish.imageId > 0}">
                                     <img class="dish-image" src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
@@ -86,7 +88,8 @@
                                     </div>
                                 </div>
                                 <span class="title2 dishName"><c:out value="${dish.dishDescription}"/></span>
-                                <span class="price dishName">$<c:out value="${dish.price}"/></span>
+                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                <span class="price dishName">$<c:out value="${dishPrice}"/></span>
                             </div>
                         </a>
                     </c:if>
@@ -106,6 +109,28 @@
                     <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
                 </div>
             </div>
+            <sec:authorize access="isAuthenticated()">
+                <c:if test="${!reservation.reservationDiscount}">
+                    <c:if test="${customer.points >= 100}">
+                        <div class="card client-actions">
+                            <span class="main-title center">Tenes un descuento a tu favor!</span>
+                            <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
+                            <form:form action="${postUrl_actDisc}" method="post">
+                                <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn">
+                            </form:form>
+                        </div>
+                    </c:if>
+                </c:if>
+                <c:if test="${reservation.reservationDiscount}">
+                    <div class="card client-actions">
+                        <span class="main-title center">Aplicaste un descuento del 15%!</span>
+                        <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
+                        <form:form action="${postUrl_undoDisc}" method="post">
+                            <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn">
+                        </form:form>
+                    </div>
+                </c:if>
+            </sec:authorize>
             <div class="orderList">
                 <div class="card order-card">
                     <span class="main-title">Resumen de tu pedido:</span>
@@ -120,13 +145,12 @@
                             <div class="order-item">
                                 <div class="order-field center"><span class="items-title "><c:out value="${orderItem.dishName}"/></span></div>
                                 <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.quantity}"/></span></div>
-                                <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span></div>
+                                <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
+                                <div class="order-field center"><span class="items-title center"><c:out value="${orderItemPrice}"/></span></div>
                                 <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
                                 <form:form action="${postUrl_remDish}" method="post">
                                     <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
                                 </form:form>
-
-
                             </div>
                             <hr class="solid-divider">
                         </c:forEach>
@@ -136,7 +160,9 @@
                             <p class="price">Total</p>
                         </div>
                         <div>
-                            <p class="price right"><c:out value="${total}"/></p>
+
+                            <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
+                            <p class="price right"><c:out value="${totalPrice}"/></p>
                         </div>
                     </div>
                     <div class="order-btn-row">
@@ -153,7 +179,7 @@
                         </div>
                         <div>
                             <c:if test="${selected > 0}">
-                                <a class="waves-effect waves-light btn confirm-btn green" href="order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}">Continuar</a>
+                                <a class="waves-effect waves-light btn confirm-btn green" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
                             </c:if>
                             <c:if test="${selected == 0}">
                                 <a disabled class="waves-effect waves-light btn confirm-btn green">Continuar</a>
