@@ -82,7 +82,7 @@ public class RestController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/editTables", method = RequestMethod.GET)
-    public ModelAndView editForm(@PathVariable ("restaurantId") final String restaurantIdP,
+    public ModelAndView editTablesForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                  @ModelAttribute("editTablesForm") final EditTablesForm form) throws Exception {
 
         controllerService.longParser(restaurantIdP);
@@ -104,19 +104,17 @@ public class RestController {
                                  final BindingResult errors,
                                  @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
         if (errors.hasErrors()) {
-            return editForm(restaurantIdP, form);
+            return editTablesForm(restaurantIdP, form);
         }
 
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
-
         rs.updateRestaurantHourAndTables(restaurantId,  Integer.parseInt(form.getTableQty()),
                                                         Integer.parseInt(form.getOpenHour()),
                                                         Integer.parseInt(form.getCloseHour()));
 
-        return mav;
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/editName", method = RequestMethod.GET)
@@ -146,11 +144,9 @@ public class RestController {
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
-
         rs.updateRestaurantName(form.getName(), restaurantId);
 
-        return mav;
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/editPhone", method = RequestMethod.GET)
@@ -180,11 +176,9 @@ public class RestController {
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
-
         rs.updatePhone(form.getPhone(), restaurantId);
 
-        return mav;
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/editMail", method = RequestMethod.GET)
@@ -214,11 +208,9 @@ public class RestController {
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
-
         rs.updateRestaurantEmail(form.getMail(), restaurantId);
 
-        return mav;
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
 
 }
