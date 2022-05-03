@@ -15,7 +15,7 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="header">
-    <h1 class="presentation-text header-title">Reservas</h1>
+    <h1 class="presentation-text header-title">Reservas activas</h1>
 </div>
 <div class="contentContainer">
     <div class="filter-box">

@@ -1,11 +1,21 @@
 package ar.edu.itba.paw.model;
 
 public enum ReservationStatus {
-    OPEN,
-    SEATED,
-    CHECK_ORDERED,
-    FINISHED,
-    CANCELED,
-    MAYBE_RESERVATION,
-    REMOVED
+    OPEN("OPEN"),
+    SEATED("SEATED"),
+    CHECK_ORDERED("CHECK_ORDERED"),
+    FINISHED("FINISHED"),
+    CANCELED("CANCELED"),
+    MAYBE_RESERVATION("MAYBE_RESERVATION"),
+    REMOVED("REMOVED");
+
+    private String name;
+
+    ReservationStatus(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
