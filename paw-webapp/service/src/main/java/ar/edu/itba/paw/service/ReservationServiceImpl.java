@@ -232,7 +232,7 @@ public class ReservationServiceImpl implements ReservationService {
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
                 }
             }
-            if(now.getHour() > reservation.getReservationHour()+1) {
+            if(now.getHour() > reservation.getReservationHour() + 1) {
                 if(reservation.getReservationStatus() == ReservationStatus.SEATED){
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
                 }
