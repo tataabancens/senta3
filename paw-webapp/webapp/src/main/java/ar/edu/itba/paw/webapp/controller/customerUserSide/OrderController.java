@@ -130,7 +130,10 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        ms.sendOrderEmail(restaurant, customer, orderItems);
+        new Thread(() -> {
+            ms.sendOrderEmail(restaurant, customer, orderItems);
+        }).start();
+
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
@@ -171,7 +174,10 @@ public class OrderController {
 
         cs.addPointsToCustomer(customer.getCustomerId(), res.getTotal(orderItems));
 
-        ms.sendReceiptEmail(restaurant, customer);
+        new Thread(() -> {
+            ms.sendReceiptEmail(restaurant, customer);
+        }).start();
+
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
 

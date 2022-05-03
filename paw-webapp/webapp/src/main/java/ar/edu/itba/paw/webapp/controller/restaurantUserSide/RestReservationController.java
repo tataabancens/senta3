@@ -61,7 +61,11 @@ public class RestReservationController {
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
-        ms.sendCancellationEmail(restaurant,customer,reservation);
+
+        new Thread(() -> {
+            ms.sendCancellationEmail(restaurant,customer,reservation);
+        }).start();
+
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/reservations");
     }
 
