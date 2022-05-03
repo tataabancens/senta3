@@ -48,7 +48,7 @@
             <c:forEach var="dish" items="${restaurant.dishes}">
                 <div class="card dish-card">
                     <c:if test="${unavailable.contains(dish.id)}">
-                        <a disabled href="" class="selection-area">
+                        <a disabled class="selection-area">
                             <div class="imageContainer">
                                 <c:if test="${imageId > 0}">
                                     <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>

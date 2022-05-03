@@ -150,7 +150,24 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
-        return reservationDao.getUnavailableItems(reservationId);
+        List<FullOrderItem> query = reservationDao.getOrderItemsByReservationId(reservationId);
+
+        List<Long> dishIds = new ArrayList<>();
+
+        for (FullOrderItem item:query){
+            dishIds.add(item.getDishId());
+        }
+
+        List<Long> unavailableDishIds = new ArrayList<>();
+
+        int count;
+        for(Long dishId:dishIds){
+            count = Collections.frequency(dishIds, dishId);
+            if(count > 3 && ! unavailableDishIds.contains(dishId)){
+                unavailableDishIds.add(dishId);
+            }
+        }
+        return unavailableDishIds;
     }
 
     @Override
