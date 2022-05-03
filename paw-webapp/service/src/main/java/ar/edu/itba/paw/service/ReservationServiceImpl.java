@@ -90,6 +90,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId) {
+        reservationDao.deleteOrderItemByReservationIdAndStatus(reservationId, status, orderItemId);
+    }
+
+    @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
         List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
         Restaurant restaurant = restaurantDao.getRestaurantById(1).get();

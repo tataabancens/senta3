@@ -97,7 +97,6 @@
             <div class="card client-actions">
             <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
                 <c:if test="${ordered > 0}">
-
                     <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
                 </c:if>
                 <c:if test="${ordered == 0}">
@@ -122,7 +121,12 @@
                                 <div class="order-field center"><span class="items-title "><c:out value="${orderItem.dishName}"/></span></div>
                                 <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.quantity}"/></span></div>
                                 <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span></div>
-                                <a href=""><i class="order-clear small material-icons">clear</i></a>
+                                <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
+                                <form:form action="${postUrl_remDish}" method="post">
+                                    <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
+                                </form:form>
+
+
                             </div>
                             <hr class="solid-divider">
                         </c:forEach>

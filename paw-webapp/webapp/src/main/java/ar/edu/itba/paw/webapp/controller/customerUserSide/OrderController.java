@@ -9,10 +9,7 @@ import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ar.edu.itba.paw.webapp.form.OrderForm;
 
@@ -201,6 +198,22 @@ public class OrderController {
 
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+    }
+
+    @RequestMapping(value= "/order/remove-dish", method = RequestMethod.POST)
+    public ModelAndView emptyCart(@RequestParam(name = "orderItemId") final String orderItemIdP,
+                                  @RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
+
+        controllerService.longParser(reservationIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+        controllerService.longParser(orderItemIdP);
+        long orderItemId = Long.parseLong(orderItemIdP);
+
+        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        //res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        res.deleteOrderItemByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED, orderItemId);
+
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
 }

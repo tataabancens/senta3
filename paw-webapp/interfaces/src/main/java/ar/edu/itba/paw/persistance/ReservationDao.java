@@ -34,6 +34,8 @@ public interface ReservationDao {
 
     void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
 
+    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
+
     void cancelReservation(long restaurantId, long reservationId);
 
     List<Long> getUnavailableItems(long reservationId);

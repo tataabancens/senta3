@@ -219,6 +219,11 @@ public class ReservationJdbcDao implements ReservationDao {
         jdbcTemplate.update("DELETE from orderitem where status = ? AND reservationId = ?", new Object[]{status.ordinal(), reservationId});
     }
 
+    @Override
+    public void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId) {
+        jdbcTemplate.update("DELETE from orderitem where status = ? AND reservationId = ? AND id = ?", new Object[]{status.ordinal(), reservationId, orderItemId});
+    }
+
     /*
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
