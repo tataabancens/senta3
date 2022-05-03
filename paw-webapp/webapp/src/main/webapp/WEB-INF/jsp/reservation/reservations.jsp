@@ -74,6 +74,22 @@
 
                     </c:if>
 
+                    <c:if test="${reservation.reservationStatus.name() == 'SEATED' }">
+
+                        <td data-label="Confirmar" class="table-cell">
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn-floating large green">
+                                    <i class="material-icons">check_circle</i>
+                                </button>
+                            </form:form>
+                        </td>
+                        <td data-label="Cancelar" class="table-cell">
+
+                        </td>
+
+                    </c:if>
+
                     <c:if test="${reservation.reservationStatus.name() != 'OPEN' }">
                         <td data-label="Confirmar" class="table-cell">
 
