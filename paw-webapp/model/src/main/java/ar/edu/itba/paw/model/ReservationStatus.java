@@ -6,5 +6,6 @@ public enum ReservationStatus {
     CHECK_ORDERED,
     FINISHED,
     CANCELED,
-    MAYBE_RESERVATION
+    MAYBE_RESERVATION,
+    REMOVED
 }

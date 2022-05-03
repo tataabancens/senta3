@@ -37,11 +37,14 @@
         <tbody>
         <c:forEach var="reservation" items="${reservations}">
             <tr>
+                <c:if test="${reservation.reservationStatus.name() != 'REMOVED' }">
                 <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
                 <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
                 <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
+                </c:if>
+
                 <c:if test="${reservation.reservationStatus.name() == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
@@ -86,14 +89,20 @@
                     </td>
                 </c:if>
 
-                <c:if test="${reservation.reservationStatus.name() != 'OPEN' }">
+                <c:if test="${reservation.reservationStatus.name() == 'CANCELED' }">
                     <td data-label="Confirmar" class="table-cell">
 
                     </td>
                     <td data-label="Cancelar" class="table-cell">
-
+                        <c:url value="/restaurant=${restaurantId}/removeCustomer=${reservation.reservationId}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <button type="submit" class="btn-floating large red">
+                                <i class="material-icons">cancel</i>
+                            </button>
+                        </form:form>
                     </td>
                 </c:if>
+
             </tr>
         </c:forEach>
         </tbody>
