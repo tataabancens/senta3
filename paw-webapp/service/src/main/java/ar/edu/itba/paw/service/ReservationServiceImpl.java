@@ -6,6 +6,10 @@ import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 import java.util.*;
 
 @Service
@@ -192,5 +196,30 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void updateReservationById(long reservationId, long customerId, long hour, int qPeople) {
         reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
+    }
+
+    @Override
+    public void checkReservationTime() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        System.out.println("timetimetime");
+        System.out.println(now.getHour());
+        System.out.println(now.getMinute());
+
+        List<FullReservation> allReservations = getAllReservations(1);
+        for(FullReservation reservation :allReservations){
+            if(now.getHour() > reservation.getReservationHour()+1 ||
+                    (now.getHour() == reservation.getReservationHour() && now.getMinute() > 30)) {
+                if(reservation.getReservationStatus() == ReservationStatus.OPEN ||
+                        reservation.getReservationStatus() == ReservationStatus.MAYBE_RESERVATION){
+                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+
+                } else if(reservation.getReservationStatus() == ReservationStatus.SEATED ||
+                        reservation.getReservationStatus() == ReservationStatus.CHECK_ORDERED){
+                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.FINISHED);
+                }
+            }
+        }
     }
 }

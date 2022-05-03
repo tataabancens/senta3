@@ -78,6 +78,8 @@ public class RestReservationController {
         List<FullReservation> reservations = res.getAllReservations(restaurantId);
         mav.addObject("reservations", reservations);
 
+        res.checkReservationTime();
+
         return mav;
     }
 
