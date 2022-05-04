@@ -34,6 +34,7 @@
             <div>
                 <label for="password">Contrasena: </label>
                 <input id="password" name="password" type="password"/>
+                <a href=""><span>Olvide mi contraseña</span></a>
             </div>
             <div class="rememberme">
                 <label>
