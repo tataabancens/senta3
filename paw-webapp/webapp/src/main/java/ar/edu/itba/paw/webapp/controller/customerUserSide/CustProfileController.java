@@ -5,7 +5,9 @@ import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
+import ar.edu.itba.paw.webapp.form.EditEmailForm;
 import ar.edu.itba.paw.webapp.form.EditNameForm;
+import ar.edu.itba.paw.webapp.form.EditPhoneForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -60,7 +62,7 @@ public class CustProfileController {
 
     @RequestMapping(value = "/profile/editName", method = RequestMethod.POST)
     public ModelAndView profileEditNamePost(Principal principal,
-                                            @ModelAttribute("editNameForm") final EditNameForm form,
+                                            @Valid @ModelAttribute("editNameForm") final EditNameForm form,
                                             final BindingResult errors){
         if (errors.hasErrors()) {
             return profileEditName(principal, form);
@@ -70,6 +72,65 @@ public class CustProfileController {
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
         cs.updateCustomerData(customer.getCustomerId(), form.getName(), customer.getPhone(), customer.getMail());
+
+        return new ModelAndView("redirect:/profile");
+    }
+    @RequestMapping(value = "/profile/editPhone", method = RequestMethod.GET)
+    public ModelAndView profileEditPhone(Principal principal,
+                                        @ModelAttribute("editPhoneForm") final EditPhoneForm form){
+
+        String username = principal.getName();
+
+        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
+
+        ModelAndView mav = new ModelAndView("custProfile/editCustomerPhone");
+        form.setPhone(customer.getPhone());
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/profile/editPhone", method = RequestMethod.POST)
+    public ModelAndView profileEditNamePost(Principal principal,
+                                            @Valid @ModelAttribute("editPhoneForm") final EditPhoneForm form,
+                                            final BindingResult errors){
+        if (errors.hasErrors()) {
+            return profileEditPhone(principal, form);
+        }
+
+        String username = principal.getName();
+
+        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
+        cs.updateCustomerData(customer.getCustomerId(), customer.getCustomerName(), form.getPhone(), customer.getMail());
+
+        return new ModelAndView("redirect:/profile");
+    }
+
+    @RequestMapping(value = "/profile/editMail", method = RequestMethod.GET)
+    public ModelAndView profileEditMail(Principal principal,
+                                         @ModelAttribute("editMailForm") final EditEmailForm form){
+
+        String username = principal.getName();
+
+        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
+
+        ModelAndView mav = new ModelAndView("custProfile/editCustomerMail");
+        form.setMail(customer.getMail());
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/profile/editMail", method = RequestMethod.POST)
+    public ModelAndView profileEditMailPost(Principal principal,
+                                            @Valid @ModelAttribute("editMailForm") final EditEmailForm form,
+                                            final BindingResult errors){
+        if (errors.hasErrors()) {
+            return profileEditMail(principal, form);
+        }
+
+        String username = principal.getName();
+
+        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
+        cs.updateCustomerData(customer.getCustomerId(), customer.getCustomerName(), customer.getPhone(), form.getMail());
 
         return new ModelAndView("redirect:/profile");
     }
