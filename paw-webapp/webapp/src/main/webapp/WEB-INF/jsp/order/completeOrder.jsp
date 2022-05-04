@@ -22,12 +22,6 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="page-container">
-    <div class="card restaurant-card">
-        <div class="card-content white-text">
-            <span class="text center main-title"><c:out value="${restaurant.restaurantName}"/></span>
-            <span class="text center title2"><c:out value="${restaurant.phone}"/></span>
-        </div>
-    </div>
 
     <div class="card confirm-card">
         <div class="card-content wider-content center">

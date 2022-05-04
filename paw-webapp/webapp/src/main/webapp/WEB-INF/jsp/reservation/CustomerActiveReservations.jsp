@@ -18,14 +18,6 @@
     <h1 class="presentation-text header-title">Reservas activas</h1>
 </div>
 <div class="contentContainer">
-    <div class="filter-box">
-        <span class="presentation-text">Filtros:</span>
-        <ul>
-            <li><span class="text">algo</span></li>
-            <li><span class="text">otro</span></li>
-            <li><span class="text">eso</span></li>
-        </ul>
-    </div>
     <div class="reservation-list">
         <c:forEach var="reservation" items="${reservations}">
             <div class="card horizontal">

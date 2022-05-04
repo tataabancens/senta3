@@ -48,6 +48,7 @@
         padding: 2%;
         min-width: 40%;
         max-width: 60%;
+        border-radius: .8rem;
     }
     .continue-btn{
         padding-inline: 7%;
