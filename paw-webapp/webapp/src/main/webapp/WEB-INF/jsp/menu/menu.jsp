@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -44,7 +45,10 @@
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a class="waves-effect waves-light btn confirm-btn" href="createReservation-1">Reservar</a>
+                                <c:url value="/createReservation-0" var="postUrl"/>
+                                <form:form action="${postUrl}" method="post">
+                                    <input type="submit" value="Reservar" class="waves-effect waves-light btn confirm-btn">
+                                </form:form>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">

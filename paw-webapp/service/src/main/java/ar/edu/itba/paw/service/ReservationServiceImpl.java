@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RelationServiceNotRegisteredException;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -34,19 +35,19 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
+    public List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(status);
-        return reservationDao.getReservationsByStatusList(statusList);
+        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
     }
 
     @Override
-    public List<Reservation> getReservationsSeated() {
+    public List<Reservation> getReservationsSeated(long restaurantId) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.CHECK_ORDERED);
         statusList.add(ReservationStatus.SEATED);
 
-        return reservationDao.getReservationsByStatusList(statusList);
+        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople) {
-        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople);
+        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()));
     }
 
     @Override
@@ -250,6 +251,15 @@ public class ReservationServiceImpl implements ReservationService {
                 }
             }
         }
+    }
+
+    @Override
+    public void cleanMaybeReservations(long restaurantId) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.MAYBE_RESERVATION);
+
+        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(restaurantId, statusList);
+
     }
 
     @Override

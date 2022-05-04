@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class ReservationJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
 
         // 2. Ejercitacion
-        Reservation maybeReservation = reservationDao.createReservation(1, 1, 1, 1 );
+        Reservation maybeReservation = reservationDao.createReservation(1, 1, 1, 1, null);
 
         // 3. PostCondiciones
         Assert.assertEquals(1, maybeReservation.getReservationId());

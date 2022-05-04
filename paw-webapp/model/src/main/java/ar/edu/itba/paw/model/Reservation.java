@@ -6,13 +6,13 @@ public class Reservation {
     private long reservationId;
     private long restaurantId;
     private long customerId;
-    //private Timestamp reservationDate;
+    private Timestamp startedAtTime;
     private int reservationHour;
     private ReservationStatus reservationStatus;
     private int qPeople;
     private boolean reservationDiscount;
 
-    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus, int qPeople, boolean reservationDiscount){
+    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus, int qPeople, boolean reservationDiscount, Timestamp startedAtTime){
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.reservationHour = reservationHour;
@@ -20,6 +20,7 @@ public class Reservation {
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
         this.qPeople = qPeople;
         this.reservationDiscount = reservationDiscount;
+        this.startedAtTime = startedAtTime;
     }
 
     public boolean isReservationDiscount() {

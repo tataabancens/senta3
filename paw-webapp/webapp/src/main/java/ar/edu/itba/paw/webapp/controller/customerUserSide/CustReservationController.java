@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -86,7 +87,13 @@ public class CustReservationController {
     }
 
      */
+    @RequestMapping(value = "/createReservation-0", method = RequestMethod.POST)
+    public ModelAndView createReservation_0_POST() {
 
+        res.cleanMaybeReservations(1);
+
+        return new ModelAndView("redirect:/createReservation-1");
+    }
 
     @RequestMapping(value = "/createReservation-1")
     public ModelAndView createReservation_1(@ModelAttribute("qPeopleForm") final NumberForm form) {
