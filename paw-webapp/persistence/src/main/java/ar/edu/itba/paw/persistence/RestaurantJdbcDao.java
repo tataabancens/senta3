@@ -62,7 +62,9 @@ public class RestaurantJdbcDao implements RestaurantDao {
 
     @Override
     public List<Dish> getRestaurantDishes(long restaurantId) {
-        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? ORDER BY dishId",
+        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ?" +
+                        " ORDER BY dishId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);
         return query;
     }
