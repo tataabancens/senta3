@@ -42,7 +42,7 @@ public class RestOrderController {
         long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("order/orders");
-        List<Reservation> reservations = res.getReservationsByStatus(ReservationStatus.SEATED);
+        List<Reservation> reservations = res.getReservationsSeated();
 
         for (Reservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);

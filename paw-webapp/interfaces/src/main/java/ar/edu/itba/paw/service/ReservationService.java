@@ -61,4 +61,6 @@ public interface ReservationService {
     float getDiscountCoefficient(long reservationId);
 
     boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
+
+    public List<Reservation> getReservationsSeated();
 }

@@ -76,12 +76,7 @@ public class ReservationJdbcDao implements ReservationDao {
 
 
 
-    @Override
-    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
-        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationstatus = ?",
-                new Object[]{status.ordinal()}, ROW_MAPPER_RESERVATION);
-        return query;
-    }
+
 
     @Override
     public List<FullReservation> getReservationsByCustomerId(long customerId) {
@@ -131,7 +126,24 @@ public class ReservationJdbcDao implements ReservationDao {
                 new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
-
+    @Override
+    public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
+        // Building sql query
+        StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE ");
+        Object[] params = new Object[statusList.size()];
+        int i = 0;
+        for (ReservationStatus reservationStatus : statusList) {
+            if (i != 0) {
+                query_string.append("OR ");
+            }
+            query_string.append("reservationstatus = ? ");
+            params[i++] = reservationStatus.ordinal();
+        }
+        // Executing
+        List<Reservation> query = jdbcTemplate.query(query_string.toString(),
+                params, ROW_MAPPER_RESERVATION);
+        return query;
+    }
     @Override
     public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
         // Building sql query

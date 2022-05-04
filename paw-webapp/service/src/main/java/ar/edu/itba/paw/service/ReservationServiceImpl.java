@@ -35,7 +35,18 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getReservationsByStatus(ReservationStatus status) {
-        return reservationDao.getReservationsByStatus(status);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+        return reservationDao.getReservationsByStatusList(statusList);
+    }
+
+    @Override
+    public List<Reservation> getReservationsSeated() {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+        statusList.add(ReservationStatus.SEATED);
+
+        return reservationDao.getReservationsByStatusList(statusList);
     }
 
     @Override
