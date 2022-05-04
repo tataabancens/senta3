@@ -12,7 +12,7 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> status);
 
-    List<Reservation> getReservationsByStatus(ReservationStatus status);
+    List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList);
 
     Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople);
 

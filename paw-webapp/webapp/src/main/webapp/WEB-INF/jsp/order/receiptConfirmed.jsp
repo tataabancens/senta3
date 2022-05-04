@@ -25,18 +25,21 @@
             <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
             <span class="title2"><c:out value="${restaurant.phone}"/></span>
         </div>
-    </div>
 
+    </div>
     <div class="card confirm-card">
         <div class="card-content white-text center">
             <span class="main-title text">Pediste la cuenta!</span>
-                <div class="center">
-                    <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/">Volver</a>
-                </div>
+            <div>
+                <span class="main-title text">Felicitaciones ganaste <c:out value="${points}"/> puntos!!</span>
+            </div>
+            <div class="center">
+                <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/"/>">Volver</a>
             </div>
         </div>
     </div>
 </div>
+
 
 </body>
 </html>

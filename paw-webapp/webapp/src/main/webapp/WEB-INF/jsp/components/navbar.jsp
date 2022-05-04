@@ -23,41 +23,44 @@
     <ul id="primary-navigation" data-visible="false" class="primary-navigation flex">
         <div class="left-side">
             <li>
-                <a href="${pageContext.request.contextPath}/">
+                <a href="<c:url value="/"/>">
                     <span class="logo">Senta3</span>
                 </a>
             </li>
             <sec:authorize access="hasRole('CUSTOMER')">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/history">
+
+                    <a class="options" href="<c:url value="/history"/>">
                         Historial
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasRole('CUSTOMER')">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/active-reservations">
+
+                    <a class="options" href="<c:url value="/active-reservations"/>">
                         Reservas
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/menu" >
+                    <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
                         Menú
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/orders">
+                    <a class="options" href="<c:url value="/restaurant=1/orders"/>">
                         Ordenes
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/reservations">
+
+                    <a class="options" href="<c:url value="/restaurant=1/reservations"/>">
                         Reservas
                     </a>
                 </li>
@@ -66,21 +69,22 @@
         <div class="right-side">
             <sec:authorize access="!isAuthenticated()">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/register">
+                    <a class="options" href="<c:url value="/register"/>">
                         Registro
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="!isAuthenticated()">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/login">
+                    <a class="options" href="<c:url value="/login"/>">
                         Iniciar sesion
                     </a>
                 </li>
             </sec:authorize>
-            <sec:authorize access="hasRole('RESTAURANT')">
+            <sec:authorize access="isAuthenticated()">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/restaurant=1/profile" >
+
+                    <a class="options" href="<c:url value="/profile"/>" >
                         Perfil
                     </a>
                 </li>

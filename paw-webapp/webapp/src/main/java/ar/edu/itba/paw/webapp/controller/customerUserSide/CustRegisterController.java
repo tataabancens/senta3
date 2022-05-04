@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class CustRegisterController {
@@ -82,6 +83,17 @@ public class CustRegisterController {
 
         return new ModelAndView("CustomerRegister");
     }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public ModelAndView Profile(Principal principal){
+
+
+        ModelAndView mav = new ModelAndView("profile");
+        mav.addObject("username", principal.getName());
+
+        return mav;
+    }
+
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
