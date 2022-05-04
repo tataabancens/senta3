@@ -24,7 +24,7 @@
         <div class="left-side">
             <li>
                 <a href="<c:url value="/"/>">
-                    <span class="logo">Senta3</span>
+                    <span class="logo" style="font-style: italic;">Senta3</span>
                 </a>
             </li>
             <sec:authorize access="hasRole('CUSTOMER')">

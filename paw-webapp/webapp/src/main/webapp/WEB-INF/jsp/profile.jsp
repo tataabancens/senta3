@@ -98,7 +98,7 @@
         width: fit-content;
     }
     .presentation-text{
-        color: white;
+        color: black;
         font-size: 2rem;
     }
     .info{
@@ -120,7 +120,7 @@
         height: 100%;
     }
     .text{
-        color: white;
+        color: black;
     }
     .restaurant-field{
         transition: 0.7s;

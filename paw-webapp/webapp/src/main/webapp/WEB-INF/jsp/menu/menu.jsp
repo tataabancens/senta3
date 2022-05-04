@@ -4,6 +4,9 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,6 +43,14 @@
         </div>
         <div class="page-container">
             <div class="restaurant-content">
+                <!--<div class="filter-box">
+                    <span class="presentation-text">Filtros:</span>
+                    <ul>
+                        <li><span class="text">algo</span></li>
+                        <li><span class="text">otro</span></li>
+                        <li><span class="text">eso</span></li>
+                    </ul>
+                </div>-->
                 <div class="card client-actions center">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
@@ -66,19 +77,19 @@
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
-                        <div class="card dish-card">
-                            <div class="imageContainer">
+                        <div class="dish-card">
+                            <div class="dish-img">
                                 <c:if test="${dish.imageId > 0}">
-                                    <img class="dish-image" src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                    <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
                                 </c:if>
                                 <c:if test="${dish.imageId == 0}">
-                                    <img class="dish-image" src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
                                 </c:if>
                             </div>
-                            <div class="dish-card-text">
-                                <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
-                                <span class="title2 dishText"><c:out value="${dish.dishDescription}"/></span>
-                                <span class="price">$<c:out value="${dish.price}"/></span>
+                            <div class="card-info">
+                                <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
+                                <p class="text description"><c:out value="${dish.dishDescription}"/></p>
+                                <span class="text price">$<c:out value="${dish.price}"/></span>
                             </div>
                         </div>
                     </c:forEach>
@@ -94,12 +105,60 @@
         padding-left: 20px;
         padding-right: 20px;
     }
+    .dish-card{
+        max-width: 38%;
+    }
     .restaurant-content{
         margin-top: 30px;
         display: flex;
         width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
+    }
+    .presentation-text{
+        font-family:'Nunito',sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+    .text.description{
+        font-family: 'Quicksand',sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    .text.price{
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+
+    @media screen and (max-width: 1068px){
+        .dish-card{
+            max-width: 80rem;
+        }
+        .dish-img{
+            min-width: 20rem;
+            max-height: 20rem;
+        }
+    }
+    @media screen and (max-width: 868px){
+        .dish-card{
+            padding: 2.5rem;
+            flex-direction: column;
+        }
+        .dish-img{
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 768px){
+        .dish-card{
+            padding: 2.5rem;
+            flex-direction: column;
+        }
+        .dish-img{
+            min-width: 90%;
+            max-width: 90%;
+        }
     }
     .presentation-text.box-comments{
         color: #171616;
@@ -127,30 +186,21 @@
         align-items: center;
     }
     .card.client-actions{
-        display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         background-color: white;
         padding: 10px;
         min-height: 150px;
         max-height: 250px;
-        min-width: 300px;
-        width: 25%;
-        margin-right: 50px;
-        max-width: 35%;
+        width: 15%;
     }
 
 
     .dishList{
         display: flex;
-        padding-right: 20px;
-        justify-self: flex-start;
-        justify-content: flex-start;
-        padding-left: 100px;
+        justify-content: center;
         flex-wrap: wrap;
-        min-width: 70%;
-        height: 100%;
-        max-width: 60%;
+        width: 85%;
     }
     
 

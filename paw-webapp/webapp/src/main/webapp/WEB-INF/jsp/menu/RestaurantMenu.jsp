@@ -3,6 +3,9 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,33 +29,31 @@
         <div class="contentContainer">
 
             <div class="dishList">
-                <div class="card dish-card">
-                    <a href="menu/create" class="add-card-link">
-                        <div class="add-card-content">
-                            <i class="large material-icons">add</i>
-                            <span class="main-title" style="color: rgba(183, 179, 179, 0.87); ">Crear Plato</span>
-                        </div>
-                    </a>
-                </div>
+                <a href="menu/create" class="dish-card dish-creation">
+                    <i class="large material-icons" style="color: rgba(183, 179, 179, 0.87); ">add</i>
+                    <span class="main-title" style="color: rgba(183, 179, 179, 0.87); ">Crear Plato</span>
+                </a>
                 <c:forEach var="dish" items="${restaurant.dishes}">
 
-                <div class="card dish-card">
+                <div class="dish-card">
                     <div class="btn-row-card">
                         <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
                         <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
                     </div>
-                    <div class="imageContainer">
-                        <c:if test="${dish.imageId > 0}">
-                            <img class="dish-image" src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                        </c:if>
-                        <c:if test="${dish.imageId == 0}">
-                            <img class="dish-image" src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                        </c:if>
-                    </div>
-                    <div class="dish-card-text">
-                        <span class="main-title dishText"><c:out value="${dish.dishName}"/></span>
-                        <span class="title2 dishText"><c:out value="${dish.dishDescription}"/></span>
-                        <span class="price">$<c:out value="${dish.price}"/></span>
+                    <div class="card-content">
+                        <div class="dish-img">
+                            <c:if test="${dish.imageId > 0}">
+                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                            </c:if>
+                            <c:if test="${dish.imageId == 0}">
+                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                            </c:if>
+                        </div>
+                        <div class="card-info">
+                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
+                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
+                            <span class="text price">$<c:out value="${dish.price}"/></span>
+                        </div>
                     </div>
                 </div>
                 </c:forEach>
@@ -73,26 +74,33 @@
         justify-content: space-evenly;
         padding: 25px;
     }
-    .notificationContainer{
-        display: flex;
+    .dish-card{
         flex-direction: column;
-        width: 20%;
+        width: 35%;
+        transition: 0.7s;
     }
-    .card{
-        border-radius: 16px;
+    .card-content{
         display: flex;
-        justify-content: center;
-        padding: 10px;
-        width: 100%;
     }
-    .add-card-content {
+    .presentation-text{
+        font-family:'Nunito',sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+    .text.description{
+        font-family: 'Quicksand',sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    .text.price{
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+    .dish-card.dish-creation{
         display: flex;
         flex-wrap: wrap;
         padding: 8px;
-        width: inherit;
-        height: inherit;
         justify-content: center;
-        color: rgba(183, 179, 179, 0.87);
         align-items: center;
     }
     .dishList{
@@ -100,50 +108,17 @@
         flex-direction: row;
         justify-content: space-evenly;
         flex-wrap: wrap;
-        width: 70%;
+        width: 90%;
         margin-left: 5%;
         margin-right: 5%;
     }
-    a.add-card-link{
-        width: 100%;
-        height: 100%;
+    .btn-row-card{
+        display: none;
+        justify-content: flex-end;
+        padding-right: 1.5%;
     }
-
-    .card-content{
-        height: 30%;
-        width: 100%;
-    }
-    .card-img{
-        position: relative;
-        top: 0;
-        height: 45%;
-        width: 100%;
-    }
-    .dish-image{
-        border-radius: 16px 16px 16px 16px;
-        height: 100%;
-        width: 100%;
-    }
-
-
-
-    .restaurant-btn{
-        border-radius: 16px;
-        background-color: #37A6E6;
-        opacity: 100%;
-    }
-
-    .dishName{
-        width: 90%;
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .reservations-card{
+    .dish-card:hover .btn-row-card{
         display: flex;
-        flex-direction: column;
     }
 
 </style>
