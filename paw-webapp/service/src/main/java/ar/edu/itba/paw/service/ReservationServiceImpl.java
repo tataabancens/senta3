@@ -120,6 +120,13 @@ public class ReservationServiceImpl implements ReservationService {
         List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
         Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
 
+        List<ReservationStatus> ignoreStatus = new ArrayList<>();
+        ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
+        ignoreStatus.add(ReservationStatus.CANCELED);
+        ignoreStatus.add(ReservationStatus.FINISHED);
+
+        reservations.removeIf(res -> ignoreStatus.contains(res.getReservationStatus()));
+
         int openHour = restaurant.getOpenHour();
         int closeHour = restaurant.getCloseHour();
 
