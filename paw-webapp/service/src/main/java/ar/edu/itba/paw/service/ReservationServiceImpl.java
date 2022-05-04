@@ -275,4 +275,9 @@ public class ReservationServiceImpl implements ReservationService {
         }
         return 1f;
     }
+
+    @Override
+    public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
+        return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
+    }
 }

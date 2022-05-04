@@ -57,6 +57,11 @@ public class MenuController {
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
+
+        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
+        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
+
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("restaurant", restaurant);
         mav.addObject("dish", rs.getRestaurantDishes(1));
@@ -64,13 +69,13 @@ public class MenuController {
 
         mav.addObject("reservation", reservation);
 
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+
         mav.addObject("orderItems", orderItems);
         mav.addObject("selected", orderItems.size());
         mav.addObject("total", res.getTotal(orderItems));
-        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
 
-        mav.addObject("ordered", res.getTotal(orderedItems));
+
+        mav.addObject("canOrderReceipt", canOrderReceipt);
 
         mav.addObject("unavailable", res.getUnavailableItems(reservationId));
 

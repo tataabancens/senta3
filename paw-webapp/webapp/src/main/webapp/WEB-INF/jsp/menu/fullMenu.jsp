@@ -99,14 +99,14 @@
         <div class="orders-and-info">
             <div class="card client-actions">
             <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
-                <c:if test="${ordered > 0}">
-                    <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
+                <c:if test="${canOrderReceipt}">
+                    <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
                 </c:if>
-                <c:if test="${ordered == 0}">
+                <c:if test="${!canOrderReceipt}">
                     <a disabled class="waves-effect waves-light btn confirm-btn" href="">Cuenta</a>
                 </c:if>
                 <div class="center div-padding">
-                    <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
+                    <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
                 </div>
             </div>
             <sec:authorize access="isAuthenticated()">

@@ -151,8 +151,9 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+        boolean canOrderReceipt = res.canOrderReceipt(reservation, orderItems.size() > 0);
 
         final ModelAndView mav = new ModelAndView("order/receipt");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
@@ -160,6 +161,7 @@ public class OrderController {
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
+        mav.addObject("canOrderReceipt", canOrderReceipt);
 
         return mav;
     }

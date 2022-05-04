@@ -90,10 +90,15 @@
                 </div>
                     <sec:authorize access="!hasRole('RESTAURANT')">
                         <div>
-                            <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn confirm-btn green right">
-                            </form:form>
+                            <c:if test="${canOrderReceipt}">
+                                <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                                <form:form action="${postUrl}" method="post">
+                                    <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn confirm-btn green right">
+                                </form:form>
+                            </c:if>
+                            <c:if test="${!canOrderReceipt}">
+                                <div disabled class="waves-effect waves-light btn confirm-btn right">Cuenta</a>
+                            </c:if>
                         </div>
                     </sec:authorize>
                 <sec:authorize access="hasRole('RESTAURANT')">

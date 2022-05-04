@@ -46,7 +46,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                     .antMatchers("/login", "/create").anonymous()
                     .antMatchers("/restaurant=1/**").hasRole("RESTAURANT")
-                    .antMatchers("/history").hasRole("CUSTOMER")
+                    .antMatchers("/history", "/active-reservations").hasRole("CUSTOMER")
                     .antMatchers("/**").permitAll()
                 .and().formLogin()
                     .usernameParameter("username")
