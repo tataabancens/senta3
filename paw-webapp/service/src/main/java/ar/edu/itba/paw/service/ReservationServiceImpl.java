@@ -211,6 +211,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<FullReservation> getReservationsByCustomerIdAndActive(long customerId) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.SEATED);
+        return reservationDao.getReservationsByCustomerIdAndStatus(customerId, statusList);
+    }
+
+    @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);

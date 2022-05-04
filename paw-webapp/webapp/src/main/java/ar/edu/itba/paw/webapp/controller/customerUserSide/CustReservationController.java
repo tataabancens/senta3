@@ -54,7 +54,7 @@ public class CustReservationController {
     public ModelAndView activeReservations(Principal principal){
         ModelAndView mav = new ModelAndView("reservation/CustomerActiveReservations");
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        List<FullReservation> reservations = res.getReservationsByCustomerId(customer.getCustomerId());
+        List<FullReservation> reservations = res.getReservationsByCustomerIdAndActive(customer.getCustomerId());
 
         mav.addObject("reservations", reservations);
         return mav;

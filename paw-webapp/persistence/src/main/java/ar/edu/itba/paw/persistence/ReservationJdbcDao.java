@@ -132,6 +132,7 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList) {
         // Building sql query
+
         StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE restaurantId = ? AND (");
         Object[] params = new Object[statusList.size() + 1];
         params[0] = restaurantId;
@@ -149,6 +150,28 @@ public class ReservationJdbcDao implements ReservationDao {
                 params, ROW_MAPPER_RESERVATION);
         return query;
     }
+
+    @Override
+    public List<FullReservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList) {
+        // Building sql query
+        StringBuilder query_string = new StringBuilder("SELECT * FROM reservation NATURAL JOIN customer cross join restaurant WHERE customerId = ? AND (");
+        Object[] params = new Object[statusList.size() + 1];
+        params[0] = customerId;
+        int i = 1;
+        for (ReservationStatus reservationStatus : statusList) {
+            if (i != 1) {
+                query_string.append("OR ");
+            }
+            query_string.append("reservationstatus = ? ");
+            params[i++] = reservationStatus.ordinal();
+        }
+        query_string.append(" )");
+        // Executing
+        List<FullReservation> query = jdbcTemplate.query(query_string.toString(),
+                params, ROW_MAPPER_FULL_RESERVATION);
+        return query;
+    }
+
     @Override
     public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
         // Building sql query
