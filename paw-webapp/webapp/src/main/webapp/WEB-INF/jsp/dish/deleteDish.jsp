@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -19,21 +20,22 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="row">
-
+    <c:url value="/restaurant=${restaurantId}/menu/edit/deleteDish=${dishId}" var="postPath"/>
+    <form:form action="${postPath}" method="post">
     <div class="col s4 offset-s3 card-margin">
         <div class="card dish-card">
             <div class="card-content white-text">
-                <span class="card-title text price center">Borraste el plato ${dish.dishName}, id:${dish.id}</span>
+                <span class="card-title text price center">Estás seguro que desea borrar el plato ${dish.dishName}?</span>
                 <div class="row margin-0">
                     <div class="col s12 center">
-                        <a class="waves-effect waves-light btn confirm-btn green " href="${pageContext.request.contextPath}/restaurant=${restaurantId}/menu" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">Volver al inicio</a>
+                        <input type="submit" value="Confirmar" class="continue-btn red"/>
                     </div>
                 </div>
-
             </div>
 
         </div>
     </div>
+    </form:form>
 </div>
 </div>
 </body>
@@ -75,6 +77,21 @@
     }
 
     .already-reserved-btn{
+    }
+
+    .continue-btn{
+        font-family: "Goldplay", sans-serif;
+        border-radius: 10px;
+        background-color: #37A6E6;
+        margin-top: 5%;
+        opacity: 57%;
+        padding: 2%;
+        color: white;
+    }
+    .continue-btn:hover{
+        background-color: #37A6E6;
+        color: white;
+        opacity: 100%;
     }
 
 </style>
