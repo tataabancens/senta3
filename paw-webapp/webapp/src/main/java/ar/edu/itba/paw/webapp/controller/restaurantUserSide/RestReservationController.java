@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.jws.WebParam;
 import java.security.Principal;
 
 import java.util.List;
@@ -97,6 +99,30 @@ public class RestReservationController {
         res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
 
         return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/showReceipt={reservationId}")
+    public ModelAndView showReceipt(@PathVariable("restaurantId") final String restaurantIdP,
+                                       @PathVariable("reservationId") final String reservationIdP) throws Exception {
+        controllerService.longParser(restaurantIdP, reservationIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+
+        ModelAndView mav = new ModelAndView("order/receipt");
+
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
+        mav.addObject("orderItems", orderItems);
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("total", res.getTotal(orderItems));
+        mav.addObject("reservationId", reservationId);
+        mav.addObject("customer", customer);
+
+        return mav;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/finishCustomer={reservationId}", method = RequestMethod.POST)

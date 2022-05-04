@@ -31,7 +31,12 @@
 
     <div class="card confirm-card">
         <div class="card-content wider-content center">
-            <span class="text main-title">Estas pidiendo la cuenta</span>
+            <sec:authorize access="!hasRole('RESTAURANT')">
+                <span class="text main-title">Estas pidiendo la cuenta</span>
+            </sec:authorize>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <span class="text main-title">La reserva <c:out value="${reservationId}"/> pide la cuenta</span>
+            </sec:authorize>
             <div class="with-margin">
                 <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
@@ -83,15 +88,27 @@
                         <p class="price right "><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
-
-
+                    <sec:authorize access="!hasRole('RESTAURANT')">
+                        <div>
+                            <c:if test="${canOrderReceipt}">
+                                <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                                <form:form action="${postUrl}" method="post">
+                                    <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn confirm-btn green right">
+                                </form:form>
+                            </c:if>
+                            <c:if test="${!canOrderReceipt}">
+                                <div disabled class="waves-effect waves-light btn confirm-btn right">Cuenta</a>
+                            </c:if>
+                        </div>
+                    </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
                     <div>
-                        <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                        <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="PEDIR CUENTA" class="waves-effect waves-light btn confirm-btn green right">
+                            <input type="submit" value="FINALIZAR RESERVA" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
-
+                </sec:authorize>
                 </div>
 
             </div>

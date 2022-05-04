@@ -151,8 +151,9 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+        boolean canOrderReceipt = res.canOrderReceipt(reservation, orderItems.size() > 0);
 
         final ModelAndView mav = new ModelAndView("order/receipt");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
@@ -160,6 +161,7 @@ public class OrderController {
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
+        mav.addObject("canOrderReceipt", canOrderReceipt);
 
         return mav;
     }
@@ -185,18 +187,22 @@ public class OrderController {
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
 
-        return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId);
+        return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId + "&points=" + cs.getPoints(res.getTotal(orderItems)));
     }
 
     @RequestMapping(value = "/order/send-receipt/confirmed")
-    public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
+    public ModelAndView orderReceiptConfirmed(@RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP,
+                                              @RequestParam(name = "points") final String pointsP) throws Exception {
 
-        controllerService.longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP, pointsP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("order/receiptConfirmed");
         mav.addObject("restaurant", restaurant);
+        mav.addObject("points", pointsP);
+
         return mav;
     }
 

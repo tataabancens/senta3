@@ -9,6 +9,7 @@ import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.FindReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -59,5 +60,17 @@ public class RedirectController {
             }
         }
         return new ModelAndView("redirect:/createReservation-3/" + reservationIdP);
+    }
+    @RequestMapping(value = "/profile")
+    public ModelAndView redirectProfile(Authentication authentication, Principal principal) {
+
+        String role = authentication.getAuthorities().stream().findFirst().get().getAuthority();
+        if (Objects.equals(role, "ROLE_RESTAURANT")) {
+            Restaurant restaurant = rs.getRestaurantByUsername(principal.getName()).orElseThrow(RestaurantNotFoundException::new);
+            return new ModelAndView("redirect:/restaurant=" + restaurant.getId() + "/profile");
+        } else if (Objects.equals(role, "ROLE_CUSTOMER")) {
+            return new ModelAndView("redirect:/profile");
+        }
+        return new ModelAndView("redirect:/");
     }
 }
