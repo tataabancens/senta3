@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.DeleteDishForm;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -105,9 +106,22 @@ public class DishController {
         final ModelAndView mav = new ModelAndView("dish/deleteDish");
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
+        mav.addObject("dish", dish);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.POST)
+    public ModelAndView deleteDishConfirmationPost(@PathVariable("dishId") final String dishIdP,
+                                               @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+        controllerService.longParser(dishIdP, restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long dishId = Long.parseLong(dishIdP);
+
+        Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         ds.deleteDish(dishId);
 
-        mav.addObject("dish", dish);
+        final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/menu");
 
         return mav;
     }

@@ -48,15 +48,6 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("status"),
                     resultSet.getString("dishname")));
 
-    private static final RowMapper<Restaurant> ROW_MAPPER_RESTAURANT = ((resultSet, i) ->
-            new Restaurant(resultSet.getLong("restaurantId"),
-                    resultSet.getString("restaurantName"),
-                    resultSet.getString("phone"),
-                    resultSet.getString("mail"),
-                    resultSet.getInt("totalChairs"),
-                    resultSet.getInt("openHour"),
-                    resultSet.getInt("closeHour")));
-
 
     @Autowired
     public ReservationJdbcDao(final DataSource ds) {
@@ -83,7 +74,8 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<FullReservation> getReservationsByCustomerId(long customerId) {
         List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer cross join restaurant WHERE " +
-                                                                "customerId = ? and reservation.restaurantid = restaurant.restaurantid",
+                                                                "customerId = ? and reservation.restaurantid = restaurant.restaurantid" +
+                " ORDER BY reservationId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{customerId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
@@ -125,7 +117,8 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public List<FullOrderItem> getOrderItemsByReservationId(long reservationId) {
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ?",
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ?" +
+                " ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{reservationId}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
@@ -145,6 +138,7 @@ public class ReservationJdbcDao implements ReservationDao {
             params[i++] = reservationStatus.ordinal();
         }
         query_string.append(" )");
+        query_string.append(" ORDER BY reservationId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
         // Executing
         List<Reservation> query = jdbcTemplate.query(query_string.toString(),
                 params, ROW_MAPPER_RESERVATION);
@@ -188,6 +182,7 @@ public class ReservationJdbcDao implements ReservationDao {
             params[i++] = reservationStatus.ordinal();
         }
         query_string.append(" )");
+        query_string.append(" ORDER BY reservationId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
         // Executing
         List<Reservation> query = jdbcTemplate.query(query_string.toString(),
                 params, ROW_MAPPER_RESERVATION);
@@ -210,6 +205,7 @@ public class ReservationJdbcDao implements ReservationDao {
             params[i++] = orderItemStatus.ordinal();
         }
         query_string.append(" )");
+        query_string.append(" ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
         List<FullOrderItem> query = jdbcTemplate.query(query_string.toString(),
                 params, ROW_MAPPER_ORDER_ITEMS);
         return query;
@@ -217,7 +213,8 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status) {
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ?",
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE status = ?" +
+                        "ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{status.ordinal()}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
@@ -286,15 +283,10 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public List<FullReservation> getAllReservations(long restaurantId) {
-        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ?",
+        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ? " +
+                        "ORDER BY reservationId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
 
-//    @Override
-//    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
-//        List<Reservation> query = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ? AND (reservationstatus = ? OR reservationstatus = ?)",
-//                new Object[]{reservationId, ReservationStatus.OPEN.ordinal(), ReservationStatus.SEATED.ordinal()}, ROW_MAPPER_RESERVATION);
-//        return query.stream().findFirst();
-//    }
 }

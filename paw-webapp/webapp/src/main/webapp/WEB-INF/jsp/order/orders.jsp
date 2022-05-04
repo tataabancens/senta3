@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Auto refresh each x seconds-->
-    <meta http-equiv="refresh" content="60">
+    <meta http-equiv="refresh" content="10">
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -51,7 +51,7 @@
         </div>
     </div>
     <div class="card finished-orders">
-        <span class="presentation-text title"><h5>Pedidos terminados</h5></span>
+        <span class="presentation-text title"><h5>Pedidos listos</h5></span>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
