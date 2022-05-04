@@ -128,6 +128,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         reservations.removeIf(res -> ignoreStatus.contains(res.getReservationStatus()));
 
+
         int openHour = restaurant.getOpenHour();
         int closeHour = restaurant.getCloseHour();
 
@@ -165,6 +166,7 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
+        totalHours.removeIf(hour -> hour<LocalDateTime.now().getHour());
         return totalHours;
     }
 
