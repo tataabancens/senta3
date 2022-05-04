@@ -150,7 +150,6 @@ hr.solid-divider {
 
 .dish-card{
     min-width: 20%;
-    max-width: 38%;
     background-color: white;
     box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
     transition: 0.8s;

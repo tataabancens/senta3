@@ -43,6 +43,14 @@
         </div>
         <div class="page-container">
             <div class="restaurant-content">
+                <!--<div class="filter-box">
+                    <span class="presentation-text">Filtros:</span>
+                    <ul>
+                        <li><span class="text">algo</span></li>
+                        <li><span class="text">otro</span></li>
+                        <li><span class="text">eso</span></li>
+                    </ul>
+                </div>-->
                 <div class="card client-actions center">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
@@ -97,6 +105,9 @@
         padding-left: 20px;
         padding-right: 20px;
     }
+    .dish-card{
+        max-width: 38%;
+    }
     .restaurant-content{
         margin-top: 30px;
         display: flex;
@@ -109,7 +120,7 @@
         font-weight: 700;
         font-size: 1.3rem;
     }
-    .text{
+    .text.description{
         font-family: 'Quicksand',sans-serif;
         font-weight: 600;
         font-size: 1rem;
