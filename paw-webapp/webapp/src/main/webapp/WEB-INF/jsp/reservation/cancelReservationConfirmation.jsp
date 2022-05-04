@@ -17,11 +17,8 @@
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
-
-<div class="row">
-
-    <div class="col s4 offset-s3 card-margin">
-        <div class="card dish-card">
+    <div class="form-container">
+        <div class="card">
             <div class="card-content white-text">
                 <span class="card-title text price center">Estas seguro de cancelar la reserva ${reservationId}</span>
                 <div class="row margin-0">
@@ -32,13 +29,9 @@
                         </form:form>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
-</div>
-</div>
 </body>
 </html>
 
@@ -47,35 +40,17 @@
         color:  #707070
     }
 
-    .summary{
-        margin-top: 20px;
-    }
-
-
-    .card{
-        border-radius: 16px;
-        display: grid;
-    }
-
-    .restaurant-card{
-    }
-
-
     .center{
         justify-content: center;
     }
 
-    .card-margin{
-        margin-top: 10%;
-    }
-
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
+    .card{
+        display: flex;
+        justify-self: center;
+        border-radius: 0.8rem;
+        justify-content: center;
+        padding: 1%;
+        width: 50%;
     }
 
 </style>

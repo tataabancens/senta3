@@ -63,12 +63,6 @@
 </html>
 
 <style>
-
-    .form-container{
-        display: flex;
-        padding-top: 30px;
-        justify-content: center;
-    }
     form{
         min-width: 30%;
     }
@@ -110,11 +104,6 @@
         font-family: "Segoe UI", Lato, sans-serif;
         min-height: 20%;
         min-width: 100%;
-    }
-    .card-description.text{
-        font-family: "Goldplay", sans-serif;
-        font-size: 25px;
-        margin-bottom: 15px;
     }
     .continue-btn{
         font-family: "Goldplay", sans-serif;

@@ -129,14 +129,14 @@
     }
     .reservations tbody tr td{
         padding: 0.3%;
-        border: 1px solid white;
+        border: 1px solid black;
     }
     .presentation-text{
-        color: white;
+        color: black;
     }
     .text{
         font-size: 1.25rem;
-        color:white;
+        color: black;
     }
     .green{
         color: green;
@@ -173,7 +173,7 @@
         }
         .reservations td:before{
             content: attr(data-label);
-            color: white;
+            color: black;
             border-color: white;
             font-family: "Goldplay", sans-serif;
             position: absolute;
