@@ -83,7 +83,6 @@
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li>
-
                     <a class="options" href="<c:url value="/profile"/>" >
                         Perfil
                     </a>

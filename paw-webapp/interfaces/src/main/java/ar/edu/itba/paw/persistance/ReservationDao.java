@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistance;
 
 import ar.edu.itba.paw.model.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +13,9 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> status);
 
-    List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList);
+    List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList);
 
-    Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople);
+    Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople, Timestamp startedAtTime);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
@@ -47,5 +48,7 @@ public interface ReservationDao {
     void applyDiscount(long reservationId);
 
     void cancelDiscount(long reservationId);
+
+    List<FullReservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList);
 }
 

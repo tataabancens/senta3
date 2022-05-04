@@ -85,4 +85,12 @@ public class CustomerJdbcDao implements CustomerDao {
     public void updatePoints(long customerId, int points) {
         jdbcTemplate.update("UPDATE customer SET points = points + ? WHERE customerId = ?", new Object[]{points, customerId});
     }
+
+    @Override
+    public void updateCustomerData(long customerId, String name, String phone, String mail) {
+        jdbcTemplate.update("UPDATE customer SET customername = ?," +
+                                                    " phone = ?," +
+                                                    " mail = ? WHERE customerId = ?",
+                            new Object[]{name, phone, mail, customerId});
+    }
 }

@@ -62,6 +62,8 @@ ALTER TABLE reservation ADD IF NOT EXISTS reservationDiscount boolean default fa
 
 ALTER TABLE reservation ADD IF NOT EXISTS qPeople integer default 1;
 
+ALTER TABLE reservation ADD IF NOT EXISTS startedAtTime timestamp default now();
+
 
 CREATE TABLE IF NOT EXISTS users (
   userId SERIAL PRIMARY KEY,

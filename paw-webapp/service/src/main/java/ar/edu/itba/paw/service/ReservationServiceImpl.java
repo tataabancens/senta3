@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RelationServiceNotRegisteredException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -34,19 +36,19 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
+    public List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(status);
-        return reservationDao.getReservationsByStatusList(statusList);
+        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
     }
 
     @Override
-    public List<Reservation> getReservationsSeated() {
+    public List<Reservation> getReservationsSeated(long restaurantId) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.CHECK_ORDERED);
         statusList.add(ReservationStatus.SEATED);
 
-        return reservationDao.getReservationsByStatusList(statusList);
+        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople) {
-        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople);
+        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()));
     }
 
     @Override
@@ -201,6 +203,22 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus status) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+
+        return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
+    }
+
+    @Override
+    public List<FullReservation> getReservationsByCustomerIdAndActive(long customerId) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.SEATED);
+        return reservationDao.getReservationsByCustomerIdAndStatus(customerId, statusList);
+    }
+
+    @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
@@ -253,6 +271,21 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public void cleanMaybeReservations(long restaurantId) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.MAYBE_RESERVATION);
+        LocalDateTime now = LocalDateTime.now();
+
+        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(restaurantId, statusList);
+        for (Reservation reservation : allMaybeReservations) {
+            LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
+            if (now.compareTo(tenMinutesLater) > 0) {
+                reservationDao.updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            }
+        }
+    }
+
+    @Override
     public void applyDiscount(long reservationId) {
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
         if (maybeReservation.isPresent()) {
@@ -291,4 +324,5 @@ public class ReservationServiceImpl implements ReservationService {
     public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
         return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
     }
+
 }

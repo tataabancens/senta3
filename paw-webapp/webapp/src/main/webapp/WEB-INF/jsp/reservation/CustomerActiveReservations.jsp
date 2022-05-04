@@ -24,7 +24,7 @@
                 <a href="<c:url value="menu/?reservationId=${reservation.reservationId}"/>">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <span class="text">${reservation.customerName}</span>
+                            <span class="text">${customer.customerName}</span>
                             <p>Personas: ${reservation.qPeople}</p>
                             <p>En ${reservation.restaurantName}</p>
                             <p>A las ${reservation.reservationHour}</p>

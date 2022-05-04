@@ -18,4 +18,6 @@ public interface CustomerDao {
     void linkCustomerToUserId(long customerId, long userId);
 
     void updatePoints(long customerId, int points);
+
+    void updateCustomerData(long customerId, String name, String phone, String mail);
 }
