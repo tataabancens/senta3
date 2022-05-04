@@ -47,7 +47,7 @@
     <div class="restaurant-content">
         <div class="dishList">
             <c:forEach var="dish" items="${restaurant.dishes}">
-                <div class="card dish-card">
+                <div class="dish-card">
                     <c:if test="${unavailable.contains(dish.id)}">
                         <a disabled class="selection-area">
                             <div class="imageContainer">
