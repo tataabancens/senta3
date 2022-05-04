@@ -66,4 +66,6 @@ public interface ReservationService {
     public List<Reservation> getReservationsSeated(long restaurantId);
 
     void cleanMaybeReservations(long restaurantId);
+
+    Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 }

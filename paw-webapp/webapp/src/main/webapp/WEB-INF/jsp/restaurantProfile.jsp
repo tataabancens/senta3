@@ -26,7 +26,7 @@
     <div class="info">
         <div class="restaurant-field icon-row">
             <div>
-                <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="editTables">
+                <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="<c:url value="/restaurant=${restaurantId}/editTables"/>">
                     <i class="material-icons table-and-hours">edit</i>
                 </a>
                 <span class="presentation-text">Mesas: </span>
@@ -44,35 +44,35 @@
         <div class="restaurant-field">
             <span class="presentation-text">Nombre del restaurante: </span>
             <span class="text">${restaurant.restaurantName}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editName">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/restaurant=${restaurantId}/editName"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Telefono: </span>
             <span class="text">${restaurant.phone}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editPhone">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/restaurant=${restaurantId}/editPhone"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Email: </span>
             <span class="text">${restaurant.mail}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editMail">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/restaurant=${restaurantId}/editMail"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Nombre de usuario: </span>
             <span class="text">${username}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editUsername"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Contraseña: </span>
             <span class="text">restaurant no tiene el getter</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>

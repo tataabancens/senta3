@@ -203,6 +203,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus status) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+
+        return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
+    }
+
+    @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
@@ -308,4 +316,5 @@ public class ReservationServiceImpl implements ReservationService {
     public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
         return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
     }
+
 }
