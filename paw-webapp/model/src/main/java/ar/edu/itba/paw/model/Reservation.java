@@ -23,6 +23,14 @@ public class Reservation {
         this.startedAtTime = startedAtTime;
     }
 
+    public Timestamp getStartedAtTime() {
+        return startedAtTime;
+    }
+
+    public void setStartedAtTime(Timestamp startedAtTime) {
+        this.startedAtTime = startedAtTime;
+    }
+
     public boolean isReservationDiscount() {
         return reservationDiscount;
     }

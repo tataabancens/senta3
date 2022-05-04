@@ -39,7 +39,7 @@ public class CustProfileController {
         this.controllerService = controllerService;
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @RequestMapping(value = "/customerProfile", method = RequestMethod.GET)
     public ModelAndView profile(Principal principal){
         String username = principal.getName();
 

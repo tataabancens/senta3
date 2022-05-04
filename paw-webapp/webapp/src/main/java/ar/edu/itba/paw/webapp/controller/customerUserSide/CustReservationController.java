@@ -111,6 +111,7 @@ public class CustReservationController {
 
         Reservation reservation = res.createReservation(1, 1, 0, Integer.parseInt(form.getNumber()));
         res.updateReservationStatus(reservation.getReservationId(), ReservationStatus.MAYBE_RESERVATION);
+        res.cleanMaybeReservations(1);
 
         return new ModelAndView("redirect:/createReservation-2/" + reservation.getReservationId());
     }
@@ -140,8 +141,10 @@ public class CustReservationController {
         long reservationId = Long.parseLong(reservationIdP);
         long hour = Long.parseLong(form.getNumber());
 
+
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         res.updateReservationById(reservationId, 1, hour, reservation.getqPeople());
+        res.cleanMaybeReservations(1);
 
         return new ModelAndView("redirect:/createReservation-3/" + reservationId + "/redirect");
 
@@ -170,8 +173,10 @@ public class CustReservationController {
         if (errors.hasErrors()){
             return createReservation_3(reservationIdP, form);
         }
+        res.cleanMaybeReservations(1);
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
+
 
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
@@ -210,6 +215,8 @@ public class CustReservationController {
                                                 @Valid @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
         controllerService.longParser(reservationIdP);
         long reservationId = Long.parseLong(reservationIdP);
+
+        res.cleanMaybeReservations(1);
 
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);

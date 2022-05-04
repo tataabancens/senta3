@@ -54,6 +54,7 @@ public class RedirectController {
         }
         return new ModelAndView("redirect:/createReservation-3/" + reservationIdP);
     }
+
     @RequestMapping(value = "/profile")
     public ModelAndView redirectProfile(Authentication authentication, Principal principal) {
 
@@ -62,7 +63,7 @@ public class RedirectController {
             Restaurant restaurant = rs.getRestaurantByUsername(principal.getName()).orElseThrow(RestaurantNotFoundException::new);
             return new ModelAndView("redirect:/restaurant=" + restaurant.getId() + "/profile");
         } else if (Objects.equals(role, "ROLE_CUSTOMER")) {
-            return new ModelAndView("restaurantProfile");
+            return new ModelAndView("redirect:/customerProfile");
         }
         return new ModelAndView("redirect:/");
     }

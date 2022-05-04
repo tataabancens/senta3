@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RelationServiceNotRegisteredException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -257,9 +258,15 @@ public class ReservationServiceImpl implements ReservationService {
     public void cleanMaybeReservations(long restaurantId) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.MAYBE_RESERVATION);
+        LocalDateTime now = LocalDateTime.now();
 
         List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(restaurantId, statusList);
-
+        for (Reservation reservation : allMaybeReservations) {
+            LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
+            if (now.compareTo(tenMinutesLater) > 0) {
+                reservationDao.updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            }
+        }
     }
 
     @Override
