@@ -22,4 +22,6 @@ public interface CustomerService {
     public float getDiscountCoefficient();
 
     int getPoints(float total);
+
+    void updateCustomerData(long customerId, String name, String phone, String mail);
 }

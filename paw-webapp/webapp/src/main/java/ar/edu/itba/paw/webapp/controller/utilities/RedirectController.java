@@ -1,22 +1,15 @@
 package ar.edu.itba.paw.webapp.controller.utilities;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
-import ar.edu.itba.paw.webapp.form.FindReservationForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
@@ -69,7 +62,7 @@ public class RedirectController {
             Restaurant restaurant = rs.getRestaurantByUsername(principal.getName()).orElseThrow(RestaurantNotFoundException::new);
             return new ModelAndView("redirect:/restaurant=" + restaurant.getId() + "/profile");
         } else if (Objects.equals(role, "ROLE_CUSTOMER")) {
-            return new ModelAndView("redirect:/profile");
+            return new ModelAndView("restaurantProfile");
         }
         return new ModelAndView("redirect:/");
     }

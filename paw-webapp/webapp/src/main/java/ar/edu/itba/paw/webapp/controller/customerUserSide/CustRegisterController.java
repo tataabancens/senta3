@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,16 +83,6 @@ public class CustRegisterController {
     public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
 
         return new ModelAndView("CustomerRegister");
-    }
-
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView Profile(Principal principal){
-
-
-        ModelAndView mav = new ModelAndView("profile");
-        mav.addObject("username", principal.getName());
-
-        return mav;
     }
 
 

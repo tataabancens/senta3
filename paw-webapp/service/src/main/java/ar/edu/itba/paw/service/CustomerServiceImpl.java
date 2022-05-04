@@ -62,4 +62,9 @@ public class CustomerServiceImpl implements CustomerService {
     public int getPoints(float total) {
         return (int) total / COEFFICIENT;
     }
+
+    @Override
+    public void updateCustomerData(long customerId, String name, String phone, String mail) {
+        customerDao.updateCustomerData(customerId, name, phone, mail);
+    }
 }
