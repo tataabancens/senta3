@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS dish (
 );
 
 ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
-ALTER TABLE dish ADD IF NOT EXISTS category varchar(50);
 
 
 CREATE TABLE IF NOT EXISTS reservation (
@@ -87,6 +86,8 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS dishCategories
 
 -- INSERT INTO users(username, password, role)
 -- values('Juancho Capo', '12345678', 'ROLE_CUSTOMER');

@@ -70,4 +70,6 @@ public interface ReservationService {
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
     List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
+
+    long getRecommendedDishId(long reservationId);
 }

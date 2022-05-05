@@ -50,5 +50,7 @@ public interface ReservationDao {
     void cancelDiscount(long reservationId);
 
     List<FullReservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList);
+
+    List<FullOrderItem> getAllOrderItems();
 }
 

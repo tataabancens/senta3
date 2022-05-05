@@ -167,6 +167,14 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
+    public List<FullOrderItem> getAllOrderItems() {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish" +
+                        " ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                new Object[]{}, ROW_MAPPER_ORDER_ITEMS);
+        return query;
+    }
+
+    @Override
     public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
         // Building sql query
         StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE reservationId = ? AND ");

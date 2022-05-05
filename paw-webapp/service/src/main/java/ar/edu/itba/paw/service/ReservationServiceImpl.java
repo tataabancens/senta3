@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -225,6 +226,35 @@ public class ReservationServiceImpl implements ReservationService {
         statusList.add(ReservationStatus.OPEN);
         statusList.add(ReservationStatus.SEATED);
         return reservationDao.getReservationsByCustomerIdAndStatus(customerId, statusList);
+    }
+
+    @Override
+    public long getRecommendedDishId(long reservationId) {
+        List<FullOrderItem> allOrderItems = reservationDao.getAllOrderItems();
+        //List<FullOrderItem> currentOrderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, Collections.singletonList(OrderItemStatus.SELECTED));
+        List<FullOrderItem> currentOrderItems = allOrderItems.stream().
+                filter(item -> item.getReservationId() == reservationId && item.getStatus() == OrderItemStatus.SELECTED).collect(Collectors.toList());
+
+        Map<Long, Integer> map = new HashMap<>(); // dishId, occurrences
+        for(FullOrderItem currentItem : currentOrderItems){
+            for(FullOrderItem allItem : allOrderItems){
+                if(allItem.getDishId() == currentItem.getDishId() && allItem.getReservationId() != currentItem.getReservationId()){
+                    //get other items from same reservationId
+                                //List<FullOrderItem> otherItemsFromSameReservation = reservationDao.getOrderItemsByReservationId(allItem.getReservationId());
+                    List<FullOrderItem> otherItemsFromSameReservation = allOrderItems.stream().
+                            filter(item -> item.getReservationId() == allItem.getReservationId() && item.getDishId()!= allItem.getDishId()).collect(Collectors.toList());
+
+                    for(FullOrderItem relatedItem : otherItemsFromSameReservation){
+                        if(map.containsKey(relatedItem.getDishId())){
+                            map.put(relatedItem.getDishId(), map.get(relatedItem.getDishId())+1);
+                        } else {
+                            map.put(relatedItem.getDishId(), 1);
+                        }
+                    }
+                }
+            }
+        }
+        return Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
     @Override
