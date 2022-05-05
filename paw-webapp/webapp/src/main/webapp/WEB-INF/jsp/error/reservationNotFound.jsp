@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
+    <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
     <link rel="stylesheet" href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
@@ -28,14 +29,14 @@
                     <p class="card-title title text price center">OOPS</p>
                 </div>
                 <div>
-                    <p class="card-title text">Error 500, algo salió mal</p>
+                    <p class="card-title text">Esa reserva no existe</p>
                 </div>
                 <div>
                     <p class="title2">No te preocupes,</p>
                     <p class="title2">tu información no se perdió</p>
                 </div>
                 <div class="center">
-
+                    <c:url value="/"/>
                     <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>">Volver</a>
                 </div>
             </div>
@@ -55,7 +56,6 @@
     .card{
         border-radius: 10px;
     }
-
 
     .reservation-btn{
         border-radius: 16px;
