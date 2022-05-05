@@ -1,0 +1,19 @@
+package ar.edu.itba.paw.webapp.controller.utilities;
+
+import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
+
+@ControllerAdvice
+public class ExceptionController {
+
+    @ExceptionHandler(ReservationNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView handleReservationNotFoundException(){
+        return new ModelAndView("error/error404");
+    }
+}
