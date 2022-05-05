@@ -31,10 +31,6 @@
         <div>
             <p class="card-title text">Error 404, página no encontrada</p>
         </div>
-        <div>
-            <p class="title2">No te preocupes,</p>
-            <p class="title2">tu información no se perdió</p>
-        </div>
         <div class="center">
             <c:url value="/"/>
             <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>">Volver</a>
