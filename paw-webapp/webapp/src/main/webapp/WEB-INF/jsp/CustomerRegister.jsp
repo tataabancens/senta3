@@ -5,6 +5,9 @@
 <html>
 <head>
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
@@ -17,7 +20,7 @@
 
 <div class="content">
     <div class="card register-card">
-        <span class="main-title">Registro</span>
+        <span class="presentation-text title">Registro</span>
         <c:url value="/register" var="postPath"/>
         <form:form modelAttribute="customerRegisterForm" action="${postPath}" method="post">
             <div class="input-field col s12 input">
@@ -73,7 +76,9 @@
         margin-top: 5%;
         opacity: 57%;
     }
-
+    .presentation-text.title{
+        font-size: 2rem;
+    }
     .continue-btn:hover{
         background-color: #37A6E6;
         color: white;
