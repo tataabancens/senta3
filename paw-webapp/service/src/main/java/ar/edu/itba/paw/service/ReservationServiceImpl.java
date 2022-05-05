@@ -166,7 +166,7 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
-        totalHours.removeIf(hour -> hour<LocalDateTime.now().getHour());
+        totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
     }
 
@@ -266,8 +266,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
             if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                if (reservation.getReservationStatus() == ReservationStatus.OPEN ||
-                        reservation.getReservationStatus() == ReservationStatus.MAYBE_RESERVATION) {
+                if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
                 }
             }
