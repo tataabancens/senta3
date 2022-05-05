@@ -182,10 +182,9 @@ public class CustReservationController {
         res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservationId, ReservationStatus.OPEN);
 
-        new Thread(() -> {
-            ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                    customer,reservation);
-        }).start();
+
+        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                customer,reservation);
 
 
         return new ModelAndView("redirect:/notify/" + reservationId);
@@ -290,9 +289,7 @@ public class CustReservationController {
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        new Thread(() -> {
-            ms.sendCancellationEmail(restaurant,customer,reservation);
-        }).start();
+        ms.sendCancellationEmail(restaurant,customer,reservation);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         return new ModelAndView("redirect:/");

@@ -64,9 +64,7 @@ public class RestReservationController {
 
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
 
-        new Thread(() -> {
-            ms.sendCancellationEmail(restaurant,customer,reservation);
-        }).start();
+        ms.sendCancellationEmail(restaurant,customer,reservation);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/reservations");
     }
