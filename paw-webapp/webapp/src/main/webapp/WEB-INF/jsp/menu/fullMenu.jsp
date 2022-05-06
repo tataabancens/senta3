@@ -60,6 +60,22 @@
                 <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
             </div>
         </div>
+        <div class="card client-actions">
+            <c:forEach var="category" items="${categories}">
+                <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                    <c:if test="${currentCategory.description == category.description}">
+                        <button class="waves-effect waves-light btn confirm-btn red">
+                            <c:out value="${category.spanishDescr}"></c:out>
+                        </button>
+                    </c:if>
+                    <c:if test="${currentCategory.description != category.description}">
+                        <button class="waves-effect waves-light btn confirm-btn green">
+                            <c:out value="${category.spanishDescr}"></c:out>
+                        </button>
+                    </c:if>
+                </a>
+            </c:forEach>
+        </div>
         <sec:authorize access="isAuthenticated()">
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
@@ -141,6 +157,9 @@
         </div>
     </div>
     <div class="dishList">
+        <div class="presentation-text title restaurant-title">
+            <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+        </div>
         <c:forEach var="dish" items="${restaurant.dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
                     <div class="dish-card">

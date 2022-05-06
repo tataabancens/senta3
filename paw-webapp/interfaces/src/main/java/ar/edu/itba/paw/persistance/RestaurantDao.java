@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistance;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.enums.DishCategory;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +24,7 @@ public interface RestaurantDao {
     void updatePhone(String phone, long restaurantId);
 
     Optional<Restaurant> getRestaurantByUsername(String username);
+
+    List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category);
+
 }

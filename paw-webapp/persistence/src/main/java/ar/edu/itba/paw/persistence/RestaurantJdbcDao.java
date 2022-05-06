@@ -72,6 +72,15 @@ public class RestaurantJdbcDao implements RestaurantDao {
     }
 
     @Override
+    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
+        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? AND category = ?" +
+                        " ORDER BY dishId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+
+                new Object[]{restaurantId, category.getDescription()}, ROW_MAPPER_DISH);
+        return query;
+    }
+
+    @Override
     public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHOur) {
         jdbcTemplate.update("UPDATE restaurant SET totalChairs = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
             new Object[]{newMaxTables, newOpenHour, newCloseHOur, restaurantId});
