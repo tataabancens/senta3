@@ -113,12 +113,9 @@
         margin-right: 5%;
     }
     .btn-row-card{
-        display: none;
+        display: flex;
         justify-content: flex-end;
         padding-right: 1.5%;
-    }
-    .dish-card:hover .btn-row-card{
-        display: flex;
     }
 
 </style>

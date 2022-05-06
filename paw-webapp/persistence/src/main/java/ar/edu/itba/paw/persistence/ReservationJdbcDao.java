@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

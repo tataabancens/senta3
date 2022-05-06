@@ -3,6 +3,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +42,11 @@
                         <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
                         <form:input path="dishPrice" type="text"/>
                     </div>
+                    <div class="input-field">
+                        <form:select  path="category">
+                            <form:options items="${categories}"></form:options>
+                        </form:select>
+                    </div>
                     <div class="col s12 center">
 
                         <input type="submit" value="Continuar" class="continue-btn"/>
@@ -74,6 +82,10 @@
         min-width: 400px;
         width: 500px;
         max-width: 600px;
+    }
+
+    select{
+        display: flex;
     }
 
     .image-upload{

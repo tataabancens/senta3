@@ -2,7 +2,9 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Dish;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
+import jdk.jfr.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -27,7 +29,9 @@ public class DishJdbcDao implements DishDao {
                     resultSet.getString("dishName"),
                     resultSet.getInt("price"),
                     resultSet.getString("dishdescription"),
-                    resultSet.getLong("imageId")));
+                    resultSet.getLong("imageId"),
+                    DishCategory.valueOf(resultSet.getString("category"))
+                    ));
 
 
     @Autowired
@@ -47,21 +51,22 @@ public class DishJdbcDao implements DishDao {
 
 
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId) {
+    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category) {
         final Map<String, Object> dishData = new HashMap<>();
         dishData.put("dishName", dishName);
         dishData.put("dishDescription", dishDescription);
         dishData.put("price", (int)price);
         dishData.put("restaurantId", restaurantId);
         dishData.put("imageId", imageId);
+        dishData.put("category", category);
 
         Number dishId = jdbcInsert.executeAndReturnKey(dishData);
-        return new Dish(dishId.longValue(), restaurantId, dishName, (int)price, dishDescription, imageId);
+        return new Dish(dishId.longValue(), restaurantId, dishName, (int)price, dishDescription, imageId, category);
     }
 
     @Override
-    public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
-        jdbcTemplate.update("UPDATE dish SET dishname= ?, dishdescription = ?, price = ? WHERE dishid = ?", new Object[]{dishName, dishDescription, price, dishId});
+    public void updateDish(long dishId, String dishName, String dishDescription, double price, DishCategory category, long restaurantId) {
+        jdbcTemplate.update("UPDATE dish SET dishname = ?, dishdescription = ?, price = ?, category = ? WHERE dishid = ?", new Object[]{dishName, dishDescription, price, category.getDescription(), dishId});
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Controller

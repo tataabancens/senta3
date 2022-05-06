@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.persistance;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import java.sql.Timestamp;
 import java.util.List;

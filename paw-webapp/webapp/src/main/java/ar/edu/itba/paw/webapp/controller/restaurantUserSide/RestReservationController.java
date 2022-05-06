@@ -1,21 +1,17 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.jws.WebParam;
-import java.security.Principal;
 
 import java.util.List;
 
