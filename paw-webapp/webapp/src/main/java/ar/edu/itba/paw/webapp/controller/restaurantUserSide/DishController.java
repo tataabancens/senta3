@@ -143,10 +143,11 @@ public class DishController {
         mav.addObject("restaurantId", restaurantId);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
+        mav.addObject("categories", DishCategory.getAsList());
 
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
-        form.setDishPrice(String.format("%.2f", (double) dish.getPrice()));
+        form.setDishPrice("" + dish.getPrice());
         return mav;
 
     }

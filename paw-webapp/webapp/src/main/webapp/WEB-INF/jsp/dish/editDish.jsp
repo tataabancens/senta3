@@ -56,6 +56,11 @@
                     <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
                     <form:input path="dishPrice" type="text"/>
                 </div>
+                <div class="input-field">
+                    <form:select  path="category">
+                        <form:options items="${categories}"></form:options>
+                    </form:select>
+                </div>
                 <div class="submit center">
                     <input type="submit" value="Confirmar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
                 </div>
@@ -66,6 +71,10 @@
 </html>
 
 <style>
+
+    select{
+        display: flex;
+    }
     form{
         min-width: 30%;
     }
