@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -182,10 +182,9 @@ public class CustReservationController {
         res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservationId, ReservationStatus.OPEN);
 
-        new Thread(() -> {
-            ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                    customer,reservation);
-        }).start();
+
+        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+                customer,reservation);
 
 
         return new ModelAndView("redirect:/notify/" + reservationId);
@@ -290,9 +289,7 @@ public class CustReservationController {
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        new Thread(() -> {
-            ms.sendCancellationEmail(restaurant,customer,reservation);
-        }).start();
+        ms.sendCancellationEmail(restaurant,customer,reservation);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
         return new ModelAndView("redirect:/");

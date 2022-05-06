@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 @Controller
 public class DishController {
@@ -58,8 +60,10 @@ public class DishController {
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
         controllerService.longParser(restaurantIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
+        ModelAndView mav = new ModelAndView("dish/createDish");
+        mav.addObject("categories", DishCategory.getAsList());
 
-        return new ModelAndView("dish/createDish");
+        return mav;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
@@ -74,7 +78,7 @@ public class DishController {
 
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
 
-        Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0);
+        Dish dish = ds.create(restaurantId, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, createDishForm.getCategory());
 
         final ModelAndView mav = new ModelAndView("redirect:/restaurant=1/confirmDish=" + dish.getId());
 
@@ -139,10 +143,11 @@ public class DishController {
         mav.addObject("restaurantId", restaurantId);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
+        mav.addObject("categories", DishCategory.getAsList());
 
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
-        form.setDishPrice(String.format("%.2f", (double) dish.getPrice()));
+        form.setDishPrice("" + dish.getPrice());
         return mav;
 
     }
@@ -170,7 +175,7 @@ public class DishController {
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
 
-        ds.updateDish(dishId, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()), dish.getRestaurantId());
+        ds.updateDish(dishId, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  form.getCategory(), dish.getRestaurantId());
 
         return mav;
     }

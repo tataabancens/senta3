@@ -60,6 +60,22 @@
                 <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
             </div>
         </div>
+        <div class="card client-actions">
+            <c:forEach var="category" items="${categories}">
+                <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                    <c:if test="${currentCategory.description == category.description}">
+                        <button class="waves-effect waves-light btn confirm-btn red">
+                            <c:out value="${category.spanishDescr}"></c:out>
+                        </button>
+                    </c:if>
+                    <c:if test="${currentCategory.description != category.description}">
+                        <button class="waves-effect waves-light btn confirm-btn green">
+                            <c:out value="${category.spanishDescr}"></c:out>
+                        </button>
+                    </c:if>
+                </a>
+            </c:forEach>
+        </div>
         <sec:authorize access="isAuthenticated()">
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
@@ -141,6 +157,9 @@
         </div>
     </div>
     <div class="dishList">
+        <div class="presentation-text title restaurant-title">
+            <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+        </div>
         <c:forEach var="dish" items="${restaurant.dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
                     <div class="dish-card">
@@ -155,8 +174,14 @@
                         <div class="card-info">
                             <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
                             <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                            <span class="text price">$<c:out value="${dishPrice}"/></span>
+                            <c:if test="${reservation.reservationDiscount}">
+                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                            </c:if>
+                            <c:if test="${!reservation.reservationDiscount}">
+                                <span class="text price">$<c:out value="${dish.price}"/></span>
+                            </c:if>
                         </div>
                     </div>
                 </c:if>
@@ -173,8 +198,14 @@
                         <div class="card-info">
                             <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
                             <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                            <span class="text price">$<c:out value="${dishPrice}"/></span>
+                            <c:if test="${reservation.reservationDiscount}">
+                                <span id="original-price" class="text price">$<c:out value="${(dish.price)}"/></span>
+                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                            </c:if>
+                            <c:if test="${!reservation.reservationDiscount}">
+                                <span class="text price">$<c:out value="${dish.price}"/></span>
+                            </c:if>
                         </div>
                     </a>
                 </c:if>
@@ -316,7 +347,12 @@
         width: 100%;
     }
 
-
+    #original-price{
+        text-decoration: line-through;
+    }
+    #discounted-price{
+        color: blue;
+    }
 
 
 </style>

@@ -1,12 +1,11 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Roles;
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sun.security.util.Password;
 
 import java.util.Optional;
 

@@ -7,6 +7,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
@@ -27,7 +30,7 @@
                 <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
                     <div class="input-field col s12 input">
                         <form:errors path="number" element="p" cssStyle="color:red"/>
-                        <form:label path="number" class="helper-text" data-error="wrong" data-success="right"></form:label>
+                        <form:label path="number" class="helper-text" data-error="wrong" data-success="right"/>
                         <form:input path="number" type="text"/>
                     </div>
                     <input type="submit" value="Continuar" class="continue-btn"/>

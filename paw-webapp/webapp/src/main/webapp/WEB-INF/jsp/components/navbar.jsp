@@ -108,7 +108,7 @@
         overflow-x: hidden;
     }
     nav{
-        background-color: #171616;
+        background-color: whitesmoke;
     }
     .flex{
         display: flex;
@@ -127,10 +127,10 @@
         font-family: "Goldplay", sans-serif;
         font-size: 1.9rem;
         font-weight: bold;
-        color: #37A6E6;
+        color: rgb(255, 68, 31);
     }
     .primary-navigation a{
-        color: whitesmoke;
+        color: rgb(255, 68, 31);
         font-family: "Goldplay", sans-serif;
         font-size: 1.3rem;
         font-weight: bold;
@@ -141,7 +141,7 @@
         margin-inline-end: 0.5em;
     }
     .primary-navigation a.options:hover{
-        background-color: white;
+        background-color: whitesmoke;
         color: #171616;
     }
     @media (max-width: 35em){

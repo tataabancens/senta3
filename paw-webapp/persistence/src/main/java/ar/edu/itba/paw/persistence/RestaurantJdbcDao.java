@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,7 +35,8 @@ public class RestaurantJdbcDao implements RestaurantDao {
                     resultSet.getString("dishName"),
                     resultSet.getInt("price"),
                     resultSet.getString("dishdescription"),
-                    resultSet.getLong("imageId")));
+                    resultSet.getLong("imageId"),
+                    DishCategory.valueOf(resultSet.getString("category"))));
 
 
     @Autowired
@@ -66,6 +68,15 @@ public class RestaurantJdbcDao implements RestaurantDao {
                         " ORDER BY dishId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
 
                 new Object[]{restaurantId}, ROW_MAPPER_DISH);
+        return query;
+    }
+
+    @Override
+    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
+        List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? AND category = ?" +
+                        " ORDER BY dishId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+
+                new Object[]{restaurantId, category.getDescription()}, ROW_MAPPER_DISH);
         return query;
     }
 

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.service;
 
-import ar.edu.itba.paw.model.Roles;
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 
 import java.util.Optional;

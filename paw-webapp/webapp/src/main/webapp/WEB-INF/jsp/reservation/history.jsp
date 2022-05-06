@@ -10,6 +10,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
@@ -28,7 +31,12 @@
             <h3 class="presentation-text">Puntos: <c:out value="${customer.points}"></c:out></h3>
         </div>
         <div class="progress-bar" style="--width:${progressBarNumber}"></div>
-        <span class="presentation-text">${progressBarNumber}%</span>
+        <c:if test="${progressBarNumber > 100}">
+            <span class="presentation-text">100%</span>
+        </c:if>
+        <c:if test="${progressBarNumber <= 100}">
+            <span class="presentation-text">${progressBarNumber}%</span>
+        </c:if>
     </div>
     <div class="reservations">
         <div class="reservations-header">
@@ -82,9 +90,6 @@
     }
     .reservations-header{
         justify-content: center;
-    }
-    .presentation-text{
-        color: white;
     }
     .progress-bar{
         position: relative;

@@ -1,6 +1,6 @@
 
 body{
-    background-color: #e5dada;
+    background-color: rgb(230, 235, 241);
 }
 .error {
     color: red;
@@ -12,30 +12,16 @@ body{
     color: #463f3f;
 }
 .presentation-text{
-    font-family: 'Goldplay-Bold',sans-serif;
-    color: #463f3f;
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 2vw;
+    font-family:'Nunito',sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
 }
-.text.title{
-    font-size: 28px;
-}
-
-.test-box {
-    background-color: orange;
-}
-
-.main-title{
-    font-family: 'Goldplay-Bold',sans-serif;
-    color: #463f3f;
-    font-size: 2vw;
-    margin: 0 auto;
+.row{
+    margin-bottom: 0;
 }
 .header{
     background: #e5dada;
-    background: linear-gradient(90deg, #e5dada 7%, #171616 88%);
+    background: linear-gradient(90deg, rgb(230, 235, 241) 7%, #171616 88%);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -46,34 +32,26 @@ body{
     align-items: center;
     margin: 15px 20px;
 }
-.header-title{
-    color: #171616;
-    font-size: 4rem;
-}
 .restaurant-header{
-    background: linear-gradient(70deg, rgb(229, 218, 218) 7%, rgb(23, 22, 22) 88%);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    min-height: 150px;
-    max-height: 300px;
+    min-height: 100px;
+    max-height: 150px;
     border-radius: 20px;
     align-items: center;
-    padding: 15px;
-    margin-left: 1%;
-    margin-top: 1%;
 }
 .restaurant-info{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    min-height: 150px;
-    max-height: 300px;
+    min-height: 100px;
+    max-height: 150px;
 }
 .presentation-text.restaurant-description{
-    color: #171616;
-    font-size: 29px;
+    color: rgb(255, 68, 31);
+    font-size: 1rem;
 }
 .title2{
     justify-content: center;
@@ -96,8 +74,8 @@ body{
     margin-left: 20%;
 }
 .presentation-text.header-title{
-    color: #171616;
-    font-size: 4rem;
+    color: rgb(255, 68, 31);
+    font-size: 2rem;
 }
 .restaurant-card{
     display:flex;

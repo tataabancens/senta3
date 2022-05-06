@@ -1,8 +1,9 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,4 +71,6 @@ public interface ReservationService {
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
     List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
+
+    long getRecommendedDishId(long reservationId);
 }

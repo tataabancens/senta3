@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -163,6 +165,14 @@ public class ReservationJdbcDao implements ReservationDao {
         // Executing
         List<FullReservation> query = jdbcTemplate.query(query_string.toString(),
                 params, ROW_MAPPER_FULL_RESERVATION);
+        return query;
+    }
+
+    @Override
+    public List<FullOrderItem> getAllOrderItems() {
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish" +
+                        " ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                new Object[]{}, ROW_MAPPER_ORDER_ITEMS);
         return query;
     }
 

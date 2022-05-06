@@ -3,14 +3,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Materialize CSS -->
+    <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
     <link rel="stylesheet" href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
@@ -31,14 +29,10 @@
                     <p class="card-title title text price center">OOPS</p>
                 </div>
                 <div>
-                    <p class="card-title text">Error 500, algo salió mal</p>
-                </div>
-                <div>
-                    <p class="title2">No te preocupes,</p>
-                    <p class="title2">tu información no se perdió</p>
+                    <p class="card-title text">Esa reserva no existe</p>
                 </div>
                 <div class="center">
-
+                    <c:url value="/"/>
                     <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>">Volver</a>
                 </div>
             </div>
@@ -58,7 +52,6 @@
     .card{
         border-radius: 10px;
     }
-
 
     .reservation-btn{
         border-radius: 16px;

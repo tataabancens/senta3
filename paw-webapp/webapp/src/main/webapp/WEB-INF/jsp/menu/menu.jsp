@@ -27,13 +27,13 @@
             <%@ include file="../components/navbar.jsp" %>
         </div>
         <div class="restaurant-header">
-            <div class="restaurant-info">
+            <div class="restaurant-info" style="background-color: rgb(255, 242, 229);">
                 <div>
-                    <i class="large material-icons">restaurant</i>
+                    <i class="medium material-icons">restaurant</i>
                 </div>
                 <div>
                     <div class="presentation-text title restaurant-title">
-                        <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
+                        <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
                     </div>
                     <div class="presentation-text restaurant-description">
                         <span>Telefono: </span>
@@ -109,6 +109,10 @@
         padding-left: 20px;
         padding-right: 20px;
     }
+    .restaurant-info{
+        width: 100%;
+        background-color: rgb(255, 242, 229);
+    }
     .dish-card{
         max-width: 38%;
     }
@@ -168,7 +172,7 @@
         color: #171616;
     }
     i{
-        color: #171616;
+        color: rgb(255, 68, 31);
         margin-right: 25px;
     }
     .reservation-action-btn{

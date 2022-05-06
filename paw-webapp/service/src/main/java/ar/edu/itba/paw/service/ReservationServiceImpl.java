@@ -1,19 +1,19 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RelationServiceNotRegisteredException;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -166,7 +166,7 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
-        totalHours.removeIf(hour -> hour<LocalDateTime.now().getHour());
+        totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
     }
 
@@ -228,6 +228,35 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public long getRecommendedDishId(long reservationId) {
+        List<FullOrderItem> allOrderItems = reservationDao.getAllOrderItems();
+        //List<FullOrderItem> currentOrderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, Collections.singletonList(OrderItemStatus.SELECTED));
+        List<FullOrderItem> currentOrderItems = allOrderItems.stream().
+                filter(item -> item.getReservationId() == reservationId && item.getStatus() == OrderItemStatus.SELECTED).collect(Collectors.toList());
+
+        Map<Long, Integer> map = new HashMap<>(); // dishId, occurrences
+        for(FullOrderItem currentItem : currentOrderItems){
+            for(FullOrderItem allItem : allOrderItems){
+                if(allItem.getDishId() == currentItem.getDishId() && allItem.getReservationId() != currentItem.getReservationId()){
+                    //get other items from same reservationId
+                                //List<FullOrderItem> otherItemsFromSameReservation = reservationDao.getOrderItemsByReservationId(allItem.getReservationId());
+                    List<FullOrderItem> otherItemsFromSameReservation = allOrderItems.stream().
+                            filter(item -> item.getReservationId() == allItem.getReservationId() && item.getDishId()!= allItem.getDishId()).collect(Collectors.toList());
+
+                    for(FullOrderItem relatedItem : otherItemsFromSameReservation){
+                        if(map.containsKey(relatedItem.getDishId())){
+                            map.put(relatedItem.getDishId(), map.get(relatedItem.getDishId())+1);
+                        } else {
+                            map.put(relatedItem.getDishId(), 1);
+                        }
+                    }
+                }
+            }
+        }
+        return Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
@@ -266,8 +295,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
             if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                if (reservation.getReservationStatus() == ReservationStatus.OPEN ||
-                        reservation.getReservationStatus() == ReservationStatus.MAYBE_RESERVATION) {
+                if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
                 }
             }

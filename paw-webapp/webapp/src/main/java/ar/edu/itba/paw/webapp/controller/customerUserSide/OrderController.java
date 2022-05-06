@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
@@ -133,9 +135,7 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        new Thread(() -> {
-            ms.sendOrderEmail(restaurant, customer, orderItems);
-        }).start();
+        ms.sendOrderEmail(restaurant, customer, orderItems);
 
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
@@ -180,9 +180,7 @@ public class OrderController {
 
         cs.addPointsToCustomer(customer.getCustomerId(), res.getTotal(orderItems));
 
-        new Thread(() -> {
-            ms.sendReceiptEmail(restaurant, customer);
-        }).start();
+        ms.sendReceiptEmail(restaurant, customer);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
