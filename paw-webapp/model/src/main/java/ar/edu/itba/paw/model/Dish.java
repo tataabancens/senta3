@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.model;
 
 
+import ar.edu.itba.paw.model.enums.DishCategory;
+
 public class Dish {
     private long id;
     private long restaurantId;
@@ -8,10 +10,11 @@ public class Dish {
     private int price;
     private String dishDescription;
     private long imageId;
+    private DishCategory category;
 
     public Dish(long id, long restaurantId, String dishName,
                 int price, String dishDescription,
-                long imageId) {
+                long imageId, DishCategory category) {
         super();
         this.id = id;
         this.restaurantId = restaurantId;
@@ -19,7 +22,9 @@ public class Dish {
         this.price = price;
         this.dishDescription = dishDescription;
         this.imageId = imageId;
+        this.category = category;
     }
+
 
     public long getImageId() {
         return imageId;

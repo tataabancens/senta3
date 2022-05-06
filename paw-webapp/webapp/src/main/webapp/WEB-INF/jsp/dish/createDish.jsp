@@ -42,6 +42,11 @@
                         <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
                         <form:input path="dishPrice" type="text"/>
                     </div>
+                    <div class="input-field">
+                        <form:select  path="category">
+                            <form:options items="${categories}"></form:options>
+                        </form:select>
+                    </div>
                     <div class="col s12 center">
 
                         <input type="submit" value="Continuar" class="continue-btn"/>
@@ -77,6 +82,10 @@
         min-width: 400px;
         width: 500px;
         max-width: 600px;
+    }
+
+    select{
+        display: flex;
     }
 
     .image-upload{

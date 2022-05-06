@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.FullOrderItem;
-import ar.edu.itba.paw.model.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
