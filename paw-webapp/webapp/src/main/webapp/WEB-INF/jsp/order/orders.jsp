@@ -28,11 +28,11 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="header">
-    <h1 class="presentation-text header-title">Pedidos</h1>
+    <h1 class="presentation-text header-title"><spring:message code="Kitchen.title"/></h1>
 </div>
 <div class="content-container">
     <div class="card incoming-orders">
-        <span class="presentation-text title"><h5>Nuevos pedidos</h5></span>
+        <span class="presentation-text title"><h5><spring:message code="Kitchen.new.orders.title"/></h5></span>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${incomingItems}">
@@ -40,8 +40,8 @@
                         <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
-                                <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
-                                <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
+                                <p class="description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
+                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservationId}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="card finished-orders">
-        <span class="presentation-text title"><h5>Pedidos listos</h5></span>
+        <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
@@ -62,8 +62,8 @@
                         <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
-                                <p class="description">Cantidad: <c:out value="${item.quantity}"/></p>
-                                <p class="description">Reserva: <c:out value="${item.reservationId}"/></p>
+                                <p class="description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
+                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservationId}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">

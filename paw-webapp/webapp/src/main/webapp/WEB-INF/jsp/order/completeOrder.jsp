@@ -28,26 +28,26 @@
 
     <div class="card confirm-card">
         <div class="card-content wider-content center">
-            <span class="text main-title">Estas realizando un pedido en</span>
+            <span class="text main-title"><spring:message code="Completeorder.restaurant"/></span>
             <div class="with-margin">
                 <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="center">
-                <span class="title2 text center">Resumen de tu pedido:</span>
+                <span class="title2 text center"><spring:message code="Order.title"/></span>
             </div>
             <div class="summary">
                 <div class="titles">
                     <div class="dishname">
-                        <span class="title2 text">Plato</span>
+                        <span class="title2 text"><spring:message code="Order.dish"/></span>
                     </div>
                     <div>
-                        <span class="title2 text">Cantidad</span>
+                        <span class="title2 text"><spring:message code="Order.qty"/></span>
                     </div>
                     <div>
-                        <span class="title2 text">Precio x U</span>
+                        <span class="title2 text"><spring:message code="Order.price"/></span>
                     </div>
                     <div>
-                        <span class="title2 text">Total</span>
+                        <span class="title2 text"><spring:message code="Order.total"/></span>
                     </div>
                 </div>
                 <hr class="solid-divider">
@@ -74,7 +74,7 @@
 
                 <div class="titles">
                     <div >
-                        <p class="price">Total</p>
+                        <p class="price"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>

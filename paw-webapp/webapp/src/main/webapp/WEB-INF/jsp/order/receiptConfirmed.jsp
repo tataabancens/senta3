@@ -32,12 +32,13 @@
     </div>
     <div class="card confirm-card">
         <div class="card-content white-text center">
-            <span class="main-title text">Pediste la cuenta!</span>
+            <span class="main-title text"><spring:message code="Receipt.finish"/></span>
             <div>
+                <!-- TODO CAMBIAR -->
                 <span class="main-title text">Felicitaciones ganaste <c:out value="${points}"/> puntos!!</span>
             </div>
             <div class="center">
-                <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/"/>">Volver</a>
+                <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
             </div>
         </div>
     </div>

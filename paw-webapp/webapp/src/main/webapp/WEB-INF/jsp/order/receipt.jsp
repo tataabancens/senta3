@@ -35,30 +35,30 @@
     <div class="card confirm-card">
         <div class="card-content wider-content center">
             <sec:authorize access="!hasRole('RESTAURANT')">
-                <span class="text main-title">Estas pidiendo la cuenta</span>
+                <span class="text main-title"><spring:message code="Receipt.subtitle"/></span>
             </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
-                <span class="text main-title">La reserva <c:out value="${reservationId}"/> pide la cuenta</span>
+                <span class="text main-title">La reserva <c:out value="${reservationId}"/> <spring:message code="Receipt.title"/></span>
             </sec:authorize>
             <div class="with-margin">
                 <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="center">
-                <span class="title2 text center">Resumen de tu pedido:</span>
+                <span class="title2 text center"><spring:message code="Order.title"/></span>
             </div>
             <div class="summary">
                 <div class="titles">
                     <div class="dishname">
-                        <span class="title2 text">Plato</span>
+                        <span class="title2 text"><spring:message code="Order.dish"/></span>
                     </div>
                     <div>
-                        <span class="title2 text">Cantidad</span>
+                        <span class="title2 text"><spring:message code="Order.qty"/></span>
                     </div>
                     <div>
-                        <span class="title2 text">Precio x U</span>
+                        <span class="title2 text"><spring:message code="Order.price"/></span>
                     </div>
                     <div>
-                        <span class="title2 text">Total</span>
+                        <span class="title2 text"><spring:message code="Order.total"/></span>
                     </div>
                 </div>
                 <c:forEach var="orderItem" items="${orderItems}">
@@ -84,7 +84,7 @@
 
                 <div class="titles">
                     <div >
-                        <p class="price">Total</p>
+                        <p class="price"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
@@ -100,7 +100,7 @@
                                 </form:form>
                             </c:if>
                             <c:if test="${!canOrderReceipt}">
-                                <div disabled class="waves-effect waves-light btn confirm-btn right">Cuenta</a>
+                                <div disabled class="waves-effect waves-light btn confirm-btn right"><spring:message code="Receipt.title"/></div>
                             </c:if>
                         </div>
                     </sec:authorize>
