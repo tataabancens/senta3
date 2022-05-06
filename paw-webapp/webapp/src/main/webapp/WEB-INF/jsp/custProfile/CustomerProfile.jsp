@@ -20,40 +20,40 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="header">
-    <h1 class="presentation-text header-title">Perfil</h1>
+    <h1 class="presentation-text header-title"><spring:message code="Customer.profile"/></h1>
 </div>
 <div class="contentContainer">
     <div class="info">
         <div class="restaurant-field">
-            <span class="presentation-text">Nombre y Apellido: </span>
+            <span class="presentation-text"><spring:message code="Customer.name"/> </span>
             <span class="text">${customer.customerName}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editName" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Telefono: </span>
+            <span class="presentation-text"><spring:message code="Customer.phone"/> </span>
             <span class="text">${customer.phone}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editPhone" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Email: </span>
+            <span class="presentation-text"><spring:message code="Customer.mail"/> </span>
             <span class="text">${customer.mail}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editMail" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Nombre de usuario: </span>
+            <span class="presentation-text"><spring:message code="Customer.user"/> </span>
             <span class="text">${username}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editUsername" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Cambiar contraseña</span>
+            <span class="presentation-text"><spring:message code="Customer.pass"/></span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editPassword" />">
                 <i class="material-icons info-field">edit</i>
             </a>

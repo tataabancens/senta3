@@ -22,7 +22,7 @@
     <c:url value="/profile/editMail" var="postPath"/>
     <form:form modelAttribute="editMailForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="main-title">Editar direccion de mail</span>
+            <span class="main-title"><spring:message code="Customer.edit.mail"/></span>
             <div class="disName">
                 <form:errors path="mail" element="p" cssStyle="color:red"/>
                 <form:input path="mail" type="text"/>

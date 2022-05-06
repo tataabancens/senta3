@@ -22,7 +22,7 @@
     <c:url value="/profile/editPhone" var="postPath"/>
     <form:form modelAttribute="editPhoneForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="main-title">Editar numero de telefono</span>
+            <span class="main-title"><spring:message code="Customer.edit.phone"/></span>
             <div class="disName">
                 <form:errors path="phone" element="p" cssStyle="color:red"/>
                 <form:input path="phone" type="text"/>
