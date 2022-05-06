@@ -26,21 +26,21 @@
     <c:url value="/restaurant=${restaurantId}/menu/create" var="postPath"/>
     <form:form modelAttribute="createDishForm" action="${postPath}" method="post">
         <div class="card card-content">
-                <span class="main-title">Crear Plato</span>
+                <span class="main-title"><spring:message code="Createdish.title"/></span>
                     <div class="disName">
                         <form:errors path="dishName" element="p" cssStyle="color:red"/>
-                        <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right">Nombre del Plato:</form:label>
-                        <form:input path="dishName" required="required"  type="text"/>
+                        <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
+                        <form:input path="dishName" type="text"/>
                     </div>
                     <div class="dishDesc">
                         <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
-                        <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right">Descripcion:</form:label>
-                        <form:input path="dishDesc" required="required" type="text"/>
+                        <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.description"/></form:label>
+                        <form:input path="dishDesc" type="text"/>
                     </div>
                     <div class="dishPrice">
                         <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
-                        <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
-                        <form:input path="dishPrice" required="required"  type="text"/>
+                        <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.price"/></form:label>
+                        <form:input path="dishPrice" type="text"/>
                     </div>
                     <div class="input-field">
                         <form:select  path="category">

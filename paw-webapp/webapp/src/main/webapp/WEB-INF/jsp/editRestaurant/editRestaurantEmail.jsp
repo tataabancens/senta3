@@ -17,7 +17,7 @@
 
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 
-    <title>Editar Plato</title>
+    <title></title>
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
@@ -25,7 +25,7 @@
     <c:url value="/restaurant=${restaurantId}/editMail" var="postPath"/>
     <form:form modelAttribute="editEmailForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="main-title">Editar mail del resaurant</span>
+            <span class="main-title"><spring:message code="Editrestaurant.mail"/></span>
             <div class="disName">
                 <form:errors path="mail" element="p" cssStyle="color:red"/>
                 <form:input path="mail" type="text"/>

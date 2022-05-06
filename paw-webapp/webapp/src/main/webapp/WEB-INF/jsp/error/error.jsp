@@ -28,18 +28,17 @@
         <div class="card restaurant-card">
             <div class="card-content white-text">
         <div>
-            <p class="card-title title text price center">OOPS</p>
+            <p class="card-title title text price center"><spring:message code="Error.title"/></p>
         </div>
         <div>
-            <p class="card-title text">Algo salió mal</p>
+            <p class="card-title text"><spring:message code="Error.wrong"/></p>
         </div>
         <div>
-            <p class="title2">No te preocupes,</p>
-            <p class="title2">tu información no se perdió</p>
+            <p class="title2"><spring:message code="Error.dontworry"/></p>
         </div>
         <div class="center">
 
-            <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>">Volver</a>
+            <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
         </div>
     </div>
         </div>

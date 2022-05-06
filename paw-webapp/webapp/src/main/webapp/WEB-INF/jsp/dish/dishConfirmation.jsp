@@ -27,7 +27,7 @@
 </div>
     <div class="page-container">
             <div class="card confirm-card">
-                <h3 class="main-title text center">Selecciona una foto!</h3>
+                <h3 class="main-title text center"><spring:message code="Dishconfirm.title"/></h3>
                 <div class="img-visualizer">
                     <div class="card visualizer">
                         <c:if test="${imageId > 0}">

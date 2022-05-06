@@ -17,7 +17,7 @@
 
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 
-    <title>Editar Plato</title>
+    <title></title>
 <body>
     <%@ include file="../components/navbar.jsp" %>
 
@@ -25,7 +25,7 @@
         <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
             <div class="card card-content">
-                    <h3 class="main-title">Editar Plato</h3>
+                    <h3 class="main-title"><spring:message code="Editdish.title"/></h3>
                     <a href="<c:url value="/restaurant=${restaurantId}/confirmDish=${dishId}"/>" class="img-visualizer">
                         <c:if test="${dish.imageId > 0}">
                             <div class="container">
@@ -43,17 +43,17 @@
                     <span class="title2"><c:out value="${dish.dishName}"/></span>
                 <div class="disName">
                     <form:errors path="dishName" element="p" cssStyle="color:red"/>
-                    <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right">Nombre del Plato:</form:label>
+                    <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
                     <form:input path="dishName" type="text"/>
                 </div>
                 <div class="dishDesc">
                     <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
-                    <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right">Descripcion:</form:label>
+                    <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.description"/></form:label>
                     <form:input path="dishDesc" type="text"/>
                 </div>
                 <div class="dishPrice">
                     <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
-                    <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
+                    <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.price"/></form:label>
                     <form:input path="dishPrice" type="text"/>
                 </div>
                 <div class="input-field">

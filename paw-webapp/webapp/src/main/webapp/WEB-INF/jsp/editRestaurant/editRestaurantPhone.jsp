@@ -25,7 +25,7 @@
 <c:url value="/restaurant=${restaurantId}/editPhone" var="postPath"/>
 <form:form modelAttribute="editPhoneForm" action="${postPath}" method="post">
     <div class="card card-content">
-        <span class="main-title">Telefono del restaurant</span>
+        <span class="main-title"><spring:message code="Editrestaurant.phone"/></span>
         <div class="dishName">
             <form:errors path="phone" element="p" cssStyle="color:red"/>
             <form:input path="phone" type="text"/>

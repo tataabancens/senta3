@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -31,7 +32,7 @@
                 <li>
 
                     <a class="options" href="<c:url value="/history"/>">
-                        Historial
+                        <spring:message code="Navbar.option.history"/>
                     </a>
                 </li>
             </sec:authorize>
@@ -39,21 +40,21 @@
                 <li>
 
                     <a class="options" href="<c:url value="/active-reservations"/>">
-                        Reservas
+                        <spring:message code="Navbar.option.reservations"/>
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
                     <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
-                        Menú
+                        <spring:message code="Navbar.option.menu"/>
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
                     <a class="options" href="<c:url value="/restaurant=1/orders"/>">
-                        Ordenes
+                        <spring:message code="Navbar.option.orders"/>
                     </a>
                 </li>
             </sec:authorize>
@@ -61,7 +62,7 @@
                 <li>
 
                     <a class="options" href="<c:url value="/restaurant=1/reservations"/>">
-                        Reservas
+                        <spring:message code="Navbar.option.reservations"/>
                     </a>
                 </li>
             </sec:authorize>
@@ -70,28 +71,28 @@
             <sec:authorize access="!isAuthenticated()">
                 <li>
                     <a class="options" href="<c:url value="/register"/>">
-                        Registro
+                        <spring:message code="Navbar.option.register"/>
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="!isAuthenticated()">
                 <li>
                     <a class="options" href="<c:url value="/login"/>">
-                        Iniciar sesion
+                        <spring:message code="Navbar.option.login"/>
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li>
                     <a class="options" href="<c:url value="/profile"/>" >
-                        Perfil
+                        <spring:message code="Navbar.option.profile"/>
                     </a>
                 </li>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li>
                     <a class="options" href="${pageContext.request.contextPath}/logout" >
-                        Cerrar sesion
+                        <spring:message code="Navbar.option.logout"/>
                     </a>
                 </li>
             </sec:authorize>
