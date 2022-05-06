@@ -4,7 +4,7 @@ import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
-import jdk.jfr.Category;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

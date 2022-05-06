@@ -25,7 +25,7 @@
     <form:form modelAttribute="numberForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title">Que día?</span>
+                <span class="main-title"><spring:message code="Createreservation.day.title"/></span>
 
                 <div class="input-field">
                     <form:select path="number">

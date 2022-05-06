@@ -25,7 +25,7 @@
     <c:url value="/createReservation-1" var="postPath"/>
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title">Cuanta gente viene a comer?</span>
+                <span class="main-title"><spring:message code="Createreservation.people.title"/></span>
                 <c:url value="/createReservation-1" var="postPath"/>
                 <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
                     <div class="input-field col s12 input">

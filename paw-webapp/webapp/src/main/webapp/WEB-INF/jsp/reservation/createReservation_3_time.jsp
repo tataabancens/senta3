@@ -24,7 +24,7 @@
 <div class="content">
     <div class="content-container">
         <div class="card register-card">
-            <span class="main-title">A que hora?</span>
+            <span class="main-title"><spring:message code="Createreservation.hour.title"/></span>
             <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
             <form:form modelAttribute="hourForm" action="${postPath}" method="post">
                 <div class="input-field">

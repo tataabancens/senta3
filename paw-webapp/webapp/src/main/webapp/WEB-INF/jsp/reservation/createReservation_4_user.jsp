@@ -28,27 +28,27 @@
     <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title">Para reservar vamos a necesitar algunos datos:</span>
+                <span class="main-title"><spring:message code="Createreservation.register.title"/></span>
                 <div class="input-field input">
                     <form:errors path="mail" element="p" cssStyle="color:red"/>
-                    <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Mail:</form:label>
+                    <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.mail"/></form:label>
                     <form:input path="mail"  required="required" maxlength="50" type="text"/>
                 </div>
                 <div class="input-field input">
                     <form:errors path="phone" element="p" cssStyle="color:red"/>
-                    <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Telefono:</form:label>
+                    <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.phone"/></form:label>
                     <form:input path="phone" required="required" maxlength="13" type="text"/>
                 </div>
                 <div class="input-field input">
                     <form:errors path="name" element="p" cssStyle="color: red"/>
-                    <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Nombre y Apellido:</form:label>
+                    <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.name"/></form:label>
                     <form:input path="name" required="required" maxlength="50" type="text"/>
                 </div>
                 <div>
-                    <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Comensales: <c:out value="${reservation.qPeople}"/></form:label>
+                    <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.people"/><c:out value="${reservation.qPeople}"/></form:label>
                 </div>
                 <div>
-                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right">Hora: <c:out value="${reservation.reservationHour}"/>hs</form:label>
+                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.hour"/><c:out value="${reservation.reservationHour}"/>hs</form:label>
                 </div>
                 <div class="submit center">
                     <input type="submit" value="Confirmar reserva!" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>

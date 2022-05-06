@@ -23,7 +23,7 @@
 <%@ include file="../components/navbar.jsp" %>
 <div class="form-container">
             <div class="card card-content">
-                <span class="main-title">Ingresa tu codigo de reserva</span>
+                <span class="main-title"><spring:message code="Findreservation.subtitle"/></span>
                 <c:url value="/findReservation" var="postUrl"/>
                 <form:form modelAttribute="findReservationForm" action="${postUrl}" method="post">
                     <div class="reservationId">

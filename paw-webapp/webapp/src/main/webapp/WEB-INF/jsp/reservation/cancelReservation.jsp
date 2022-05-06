@@ -38,7 +38,7 @@
                         <span><c:out value="${restaurant.restaurantName}"/></span>
                     </div>
                     <div class="presentation-text restaurant-description">
-                        <span>Telefono: </span>
+                        <span><spring:message code="Restaurant.phone"/> </span>
                         <span><c:out value="${restaurant.phone}"/></span>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
 
         <div class="confirm-card card">
             <div class="card-content white-text">
-                <span class="main-title text center">Estas por cancelar tu reserva</span>
+                <span class="main-title text center"><spring:message code="Cancel.subtitle"/></span>
                     <div class="center-btn">
                         <c:url value="/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">

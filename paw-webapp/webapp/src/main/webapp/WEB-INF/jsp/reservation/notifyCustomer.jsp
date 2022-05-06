@@ -33,7 +33,7 @@
                     <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
                 </div>
                 <div class="presentation-text restaurant-description">
-                    <span>Telefono: </span>
+                    <span><spring:message code="Restaurant.phone"/> </span>
                     <span><c:out value="${restaurant.phone}"/></span>
                 </div>
             </div>
@@ -43,20 +43,20 @@
         <div class="confirm-card">
             <div class="card">
                 <div class="card-content white-text center">
-                    <span class="main-title title text center">Tu código de reserva es:</span>
+                    <span class="main-title title text center"><spring:message code="Notifycustomer.subtitle"/></span>
                     <div class="with-margin">
                         <span class="main-title text center"><c:out value="${reservation.reservationId}"/></span>
                     </div>
-                    <p class="text">No te preocupes, también te lo mandamos por mail!</p>
-                    <p class="text">Si te registras vas a poder juntar puntos para descuentos en tu proximas compras.</p>
+                    <p class="text"><spring:message code="Notifycustomer.mail"/></p>
+                    <p class="text"><spring:message code="Notifycustomer.register"/></p>
                     <sec:authorize access="!isAuthenticated()">
                         <div class="center">
-                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>">Registrarse</a>
-                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar sin registrarse</a>
+                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
+                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.no.register"/></a>
                         </div>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>">Continuar</a>
+                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.continue"/></a>
                     </sec:authorize>
                 </div>
             </div>

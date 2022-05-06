@@ -33,7 +33,7 @@
 <div class="restaurant-header">
     <div class="restaurant-info">
         <div>
-            <i class="large material-icons"><spring:message code="Fullmenu.restaurant"/></i>
+            <i class="large material-icons">restaurant</i>
         </div>
         <div>
             <div class="presentation-text title restaurant-title">

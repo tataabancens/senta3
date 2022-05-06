@@ -29,7 +29,7 @@
         <div class="restaurant-header">
             <div class="restaurant-info" style="background-color: rgb(255, 242, 229);">
                 <div>
-                    <i class="medium material-icons"><spring:message code="Fullmenu.restaurant"/></i>
+                    <i class="medium material-icons">restaurant</i>
                 </div>
                 <div>
                     <div class="presentation-text title restaurant-title">

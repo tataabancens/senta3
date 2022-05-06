@@ -18,7 +18,7 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="header">
-    <h1 class="presentation-text header-title">Reservas activas</h1>
+    <h1 class="presentation-text header-title"><spring:message code="Reservation.active"/></h1>
 </div>
 <div class="contentContainer">
     <div class="reservation-list">
@@ -27,6 +27,7 @@
                 <a href="<c:url value="menu/?reservationId=${reservation.reservationId}"/>">
                     <div class="card-stacked">
                         <div class="card-content">
+                            <!-- TODO CAMBIAR -->
                             <span class="text">${customer.customerName}</span>
                             <p>Personas: ${reservation.qPeople}</p>
                             <p>En ${reservation.restaurantName}</p>

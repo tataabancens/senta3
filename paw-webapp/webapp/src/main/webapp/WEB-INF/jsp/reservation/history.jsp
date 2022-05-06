@@ -23,11 +23,12 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="header">
-    <h1 class="presentation-text header-title">Historial</h1>
+    <h1 class="presentation-text header-title"><spring:message code="History.title"></h1>
 </div>
 <div class="contentContainer">
     <div class="points">
         <div class="reservations-header">
+            <!-- TODO cambiar -->
             <h3 class="presentation-text">Puntos: <c:out value="${customer.points}"></c:out></h3>
         </div>
         <div class="progress-bar" style="--width:${progressBarNumber}"></div>
@@ -40,7 +41,7 @@
     </div>
     <div class="reservations">
         <div class="reservations-header">
-            <h3 class="presentation-text">Ultimas reservas:</h3>
+            <h3 class="presentation-text"><spring:message code="History.reservations"></h3>
         </div>
         <div class="reservationList">
             <c:forEach var="reservation" items="${reservations}">

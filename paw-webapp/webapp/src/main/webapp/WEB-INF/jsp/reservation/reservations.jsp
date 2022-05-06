@@ -22,19 +22,19 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 <div class="header">
-    <h1 class="presentation-text header-title">Reservas</h1>
+    <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
 <div class="content-container">
     <table class="reservations">
         <thead>
         <tr>
-            <th><h3 class="presentation-text">Reserva</h3></th>
-            <th><h3 class="presentation-text">Nombre</h3></th>
-            <th><h3 class="presentation-text">Personas</h3></th>
-            <th><h3 class="presentation-text">Hora</h3></th>
-            <th><h3 class="presentation-text">Estado</h3></th>
-            <th><h3 class="presentation-text">Confirmar</h3></th>
-            <th><h3 class="presentation-text">Cancelar</h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.confirm"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.cancel"/></h3></th>
         </tr>
         </thead>
         <tbody>

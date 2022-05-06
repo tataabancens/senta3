@@ -23,6 +23,7 @@
     <div class="form-container">
         <div class="card">
             <div class="card-content white-text">
+                <!-- TODO CAMBIAR -->
                 <span class="card-title text price center">Estas seguro de cancelar la reserva ${reservationId}</span>
                 <div class="row margin-0">
                     <div class="col s12 center">
