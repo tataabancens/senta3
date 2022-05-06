@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
 
--- CREATE TABLE IF NOT EXISTS dishCategories;
+--CREATE TABLE IF NOT EXISTS dishCategories
 
 -- INSERT INTO users(username, password, role)
 -- values('Juancho Capo', '12345678', 'ROLE_CUSTOMER');
