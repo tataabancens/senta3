@@ -156,12 +156,12 @@
                             <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
                             <p class="text description"><c:out value="${dish.dishDescription}"/></p>
                             <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price">$<c:out value="${(dish.price)}"/></span>
+                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
                                 <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
                                 <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
                             </c:if>
                             <c:if test="${!reservation.reservationDiscount}">
-                                <span class="text price">$<c:out value="${dishPrice}"/></span>
+                                <span class="text price">$<c:out value="${dish.price}"/></span>
                             </c:if>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                                 <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
                             </c:if>
                             <c:if test="${!reservation.reservationDiscount}">
-                                <span class="text price">$<c:out value="${dishPrice}"/></span>
+                                <span class="text price">$<c:out value="${dish.price}"/></span>
                             </c:if>
                         </div>
                     </a>

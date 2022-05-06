@@ -30,17 +30,17 @@
                     <div class="disName">
                         <form:errors path="dishName" element="p" cssStyle="color:red"/>
                         <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right">Nombre del Plato:</form:label>
-                        <form:input path="dishName" type="text"/>
+                        <form:input path="dishName" required="required"  type="text"/>
                     </div>
                     <div class="dishDesc">
                         <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
                         <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right">Descripcion:</form:label>
-                        <form:input path="dishDesc" type="text"/>
+                        <form:input path="dishDesc" required="required" type="text"/>
                     </div>
                     <div class="dishPrice">
                         <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
                         <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right">Precio:</form:label>
-                        <form:input path="dishPrice" type="text"/>
+                        <form:input path="dishPrice" required="required"  type="text"/>
                     </div>
                     <div class="col s12 center">
 
