@@ -33,14 +33,14 @@
 <div class="restaurant-header">
     <div class="restaurant-info">
         <div>
-            <i class="large material-icons">restaurant</i>
+            <i class="large material-icons"><spring:message code="Fullmenu.restaurant"/></i>
         </div>
         <div>
             <div class="presentation-text title restaurant-title">
                 <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
             </div>
             <div class="presentation-text restaurant-description">
-                <span>Telefono: </span>
+                <span><spring:message code="Fullmenu.phone"/> </span>
                 <span><c:out value="${restaurant.phone}"/></span>
             </div>
         </div>
@@ -49,15 +49,15 @@
 <div class="page-container">
     <div class="orders-and-info">
         <div class="card client-actions">
-            <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+            <span class="main-title center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
             <c:if test="${canOrderReceipt}">
-                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
+                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
             </c:if>
             <c:if test="${!canOrderReceipt}">
-                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Cuenta</a>
+                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Fullmenu.receipt"/></a>
             </c:if>
             <div class="center div-padding">
-                <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
+                <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
             </div>
         </div>
         <div class="card client-actions">
@@ -80,7 +80,7 @@
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
                     <div class="card client-actions">
-                        <span class="main-title center">Tenes un descuento a tu favor!</span>
+                        <span class="main-title center"><spring:message code="Fullmenu.discount"/></span>
                         <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
                             <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn">
@@ -90,7 +90,7 @@
             </c:if>
             <c:if test="${reservation.reservationDiscount}">
                 <div class="card client-actions">
-                    <span class="main-title center">Aplicaste un descuento del 15%!</span>
+                    <span class="main-title center"><spring:message code="Fullmenu.discount.apply"/></span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
                         <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn">
@@ -100,11 +100,11 @@
         </sec:authorize>
         <div class="orderList">
             <div class="card order-card">
-                <span class="main-title">Resumen de tu pedido:</span>
+                <span class="main-title"><spring:message code="Order.title"/></span>
                 <div class="order-headers">
-                    <span class="title2 dishname">Plato</span>
-                    <span class="title2">Cantidad</span>
-                    <span class="title2">Subtotal</span>
+                    <span class="title2 dishname"><spring:message code="Order.dish"/></span>
+                    <span class="title2"><spring:message code="Order.qty"/></span>
+                    <span class="title2"><spring:message code="Order.total"/></span>
                 </div>
                 <hr class="solid-divider">
                 <div class="order-info">
@@ -141,15 +141,15 @@
                             </form:form>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn red">Vaciar pedido</a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn red"><spring:message code="Order.empty"/></a>
                         </c:if>
                     </div>
                     <div>
                         <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
+                            <a class="waves-effect waves-light btn confirm-btn green" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn green">Continuar</a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn green"><spring:message code="Button.continue"/></a>
                         </c:if>
                     </div>
                 </div>

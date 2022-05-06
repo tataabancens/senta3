@@ -29,14 +29,14 @@
         <div class="restaurant-header">
             <div class="restaurant-info" style="background-color: rgb(255, 242, 229);">
                 <div>
-                    <i class="medium material-icons">restaurant</i>
+                    <i class="medium material-icons"><spring:message code="Fullmenu.restaurant"/></i>
                 </div>
                 <div>
                     <div class="presentation-text title restaurant-title">
                         <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
                     </div>
                     <div class="presentation-text restaurant-description">
-                        <span>Telefono: </span>
+                        <span><spring:message code="Fullmenu.phone"/> </span>
                         <span><c:out value="${restaurant.phone}"/></span>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     </ul>
                 </div>-->
                 <div class="card client-actions center">
-                        <span class="presentation-text box-comments">Para hacer una reserva:</span>
+                        <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
@@ -64,18 +64,18 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Reservar</a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.new"/></a>
                             </div>
                         </sec:authorize>
-                        <span class="presentation-text box-comments">Si ya tenes una:</span>
+                        <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                         <div class="enter-confirm-btn">
-                            <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
+                            <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
                         </div>
                         </sec:authorize>
                          <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
-                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Ingresar</a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.exists"/></a>
                             </div>
                         </sec:authorize>
                 </div>
