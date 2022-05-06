@@ -20,18 +20,18 @@
 
 <div class="content">
         <div class="card register-card">
-            <span class="main-title">Registro</span>
+            <span class="main-title"><spring:message code="Register.title"/></span>
             <c:url value="/registerShort/${customerId}/${reservationId}" var="postPath"/>
             <form:form modelAttribute="customerRegisterShortForm" action="${postPath}" method="post">
                 <div class="input-field col s12 input">
                     <div>
                         <form:errors path="username" element="p" cssStyle="color:red"/>
-                        <form:label path="username" class="helper-text" data-error="wrong" data-success="right">Usuario:</form:label>
+                        <form:label path="username" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.user"/></form:label>
                         <form:input path="username" type="text"/>
                     </div>
                     <div>
                         <form:errors path="password" element="p" cssStyle="color:red"/>
-                        <form:label path="password" class="helper-text" data-error="wrong" data-success="right">Contraseña:</form:label>
+                        <form:label path="password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
                         <form:input path="password" type="password"/>
                     </div>
                 </div>

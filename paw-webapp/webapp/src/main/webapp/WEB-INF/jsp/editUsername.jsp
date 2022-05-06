@@ -22,7 +22,7 @@
     <c:url value="/profile/editUsername" var="postPath"/>
     <form:form modelAttribute="editUsernameForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="main-title">Editar nombre de usuario</span>
+            <span class="main-title"><spring:message code="Editrestaurant.name"/></span>
             <div class="disName">
                 <form:errors path="name" element="p" cssStyle="color:red"/>
                 <form:input path="name" type="text"/>

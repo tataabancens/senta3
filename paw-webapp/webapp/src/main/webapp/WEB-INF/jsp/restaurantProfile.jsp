@@ -23,7 +23,7 @@
 <body>
 <%@ include file="components/navbar.jsp" %>
 <div class="header">
-    <h1 class="presentation-text header-title">Perfil</h1>
+    <h1 class="presentation-text header-title"><spring:message code="Restaurant.profile"/></h1>
 </div>
 <div class="contentContainer">
     <div class="info">
@@ -32,48 +32,48 @@
                 <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="<c:url value="/restaurant=${restaurantId}/editTables"/>">
                     <i class="material-icons table-and-hours">edit</i>
                 </a>
-                <span class="presentation-text">Mesas: </span>
+                <span class="presentation-text"><spring:message code="Restaurant.tables.qty"/> </span>
                 <span class="text">${restaurant.totalChairs}</span>
             </div>
             <div>
-                <span class="presentation-text">Hora de apertura: </span>
+                <span class="presentation-text"><spring:message code="Restaurant.hour.open"/> </span>
                 <span class="text">${restaurant.openHour}</span>
             </div>
             <div>
-                <span class="presentation-text">Hora de cierre: </span>
+                <span class="presentation-text"><spring:message code="Restaurant.hour.close"/> </span>
                 <span class="text">${restaurant.closeHour}</span>
             </div>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Nombre del restaurante: </span>
+            <span class="presentation-text"><spring:message code="Restaurant.name"/> </span>
             <span class="text">${restaurant.restaurantName}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/restaurant=${restaurantId}/editName"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Telefono: </span>
+            <span class="presentation-text"><spring:message code="Restaurant.phone"/> </span>
             <span class="text">${restaurant.phone}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/restaurant=${restaurantId}/editPhone"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Email: </span>
+            <span class="presentation-text"><spring:message code="Restaurant.mail"/> </span>
             <span class="text">${restaurant.mail}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/restaurant=${restaurantId}/editMail"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Nombre de usuario: </span>
+            <span class="presentation-text"><spring:message code="Register.user"/> </span>
             <span class="text">${username}</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editUsername"/>">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Contraseña: </span>
+            <span class="presentation-text"><spring:message code="Register.password"/> </span>
             <span class="text">restaurant no tiene el getter</span>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="">
                 <i class="material-icons info-field">edit</i>

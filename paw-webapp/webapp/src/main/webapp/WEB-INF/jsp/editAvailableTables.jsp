@@ -29,21 +29,21 @@
     <div class="col s6 center">
       <div class="card register-card">
         <div class="card-content white-text">
-          <span class="card-title text">Editar Mesas disponibles:</span>
+          <span class="card-title text"><spring:message code="Restaurant.tables"></span>
           <div class="row">
             <div class="input-field col s12 input">
               <form:errors path="openHour" element="p" cssStyle="color:red"/>
-              <form:label path="openHour" class="helper-text" data-error="wrong" data-success="right">Hora que abre el restaurant:</form:label>
+              <form:label path="openHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.open"></form:label>
               <form:input path="openHour" type="text"/>
             </div>
             <div class="input-field col s12 input">
               <form:errors path="closeHour" element="p" cssStyle="color:red"/>
-              <form:label path="closeHour" class="helper-text" data-error="wrong" data-success="right">Hora que cierra el restaurant:</form:label>
+              <form:label path="closeHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.close"></form:label>
               <form:input path="closeHour" type="text"/>
             </div>
             <div class="input-field col s12 input">
               <form:errors path="tableQty" element="p" cssStyle="color:red"/>
-              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right">Sillas habilitadas:</form:label>
+              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.chairs"></form:label>
               <form:input path="tableQty" type="text"/>
             </div>
           </div>
