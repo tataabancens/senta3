@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS dish (
 
 ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
 
+
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
@@ -61,6 +62,8 @@ ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT 
 ALTER TABLE reservation ADD IF NOT EXISTS reservationDiscount boolean default false NOT NULL;
 
 ALTER TABLE reservation ADD IF NOT EXISTS qPeople integer default 1;
+
+ALTER TABLE reservation ADD IF NOT EXISTS startedAtTime timestamp default now();
 
 
 CREATE TABLE IF NOT EXISTS users (
@@ -83,6 +86,8 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS dishCategories
 
 -- INSERT INTO users(username, password, role)
 -- values('Juancho Capo', '12345678', 'ROLE_CUSTOMER');

@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.form;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class EditREstaurantPhoneForm {
+public class EditPhoneForm {
 
     @Size(min = 9, max = 13)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")

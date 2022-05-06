@@ -84,6 +84,8 @@ public class MailingServiceImpl implements MailingService{
     private void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageText) {
 
+        new Thread(() -> {
+
         Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
@@ -105,7 +107,10 @@ public class MailingServiceImpl implements MailingService{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        }).start();
     }
+
+
     private Properties setProperties(){
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -116,4 +121,5 @@ public class MailingServiceImpl implements MailingService{
         properties.put("mail.smtp.port", "465");
         return properties;
     }
+
 }

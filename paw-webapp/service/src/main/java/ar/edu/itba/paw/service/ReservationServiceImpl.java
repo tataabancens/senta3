@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.RelationServiceNotRegisteredException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -34,19 +37,19 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsByStatus(ReservationStatus status) {
+    public List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(status);
-        return reservationDao.getReservationsByStatusList(statusList);
+        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
     }
 
     @Override
-    public List<Reservation> getReservationsSeated() {
+    public List<Reservation> getReservationsSeated(long restaurantId) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.CHECK_ORDERED);
         statusList.add(ReservationStatus.SEATED);
 
-        return reservationDao.getReservationsByStatusList(statusList);
+        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
     }
 
     @Override
@@ -73,7 +76,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople) {
-        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople);
+        return reservationDao.createReservation(restaurantId, customerId, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()));
     }
 
     @Override
@@ -119,6 +122,14 @@ public class ReservationServiceImpl implements ReservationService {
         List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
         Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
 
+        List<ReservationStatus> ignoreStatus = new ArrayList<>();
+        ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
+        ignoreStatus.add(ReservationStatus.CANCELED);
+        ignoreStatus.add(ReservationStatus.FINISHED);
+
+        reservations.removeIf(res -> ignoreStatus.contains(res.getReservationStatus()));
+
+
         int openHour = restaurant.getOpenHour();
         int closeHour = restaurant.getCloseHour();
 
@@ -156,6 +167,7 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
+        totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
     }
 
@@ -201,6 +213,51 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus status) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+
+        return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
+    }
+
+    @Override
+    public List<FullReservation> getReservationsByCustomerIdAndActive(long customerId) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.SEATED);
+        return reservationDao.getReservationsByCustomerIdAndStatus(customerId, statusList);
+    }
+
+    @Override
+    public long getRecommendedDishId(long reservationId) {
+        List<FullOrderItem> allOrderItems = reservationDao.getAllOrderItems();
+        //List<FullOrderItem> currentOrderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, Collections.singletonList(OrderItemStatus.SELECTED));
+        List<FullOrderItem> currentOrderItems = allOrderItems.stream().
+                filter(item -> item.getReservationId() == reservationId && item.getStatus() == OrderItemStatus.SELECTED).collect(Collectors.toList());
+
+        Map<Long, Integer> map = new HashMap<>(); // dishId, occurrences
+        for(FullOrderItem currentItem : currentOrderItems){
+            for(FullOrderItem allItem : allOrderItems){
+                if(allItem.getDishId() == currentItem.getDishId() && allItem.getReservationId() != currentItem.getReservationId()){
+                    //get other items from same reservationId
+                                //List<FullOrderItem> otherItemsFromSameReservation = reservationDao.getOrderItemsByReservationId(allItem.getReservationId());
+                    List<FullOrderItem> otherItemsFromSameReservation = allOrderItems.stream().
+                            filter(item -> item.getReservationId() == allItem.getReservationId() && item.getDishId()!= allItem.getDishId()).collect(Collectors.toList());
+
+                    for(FullOrderItem relatedItem : otherItemsFromSameReservation){
+                        if(map.containsKey(relatedItem.getDishId())){
+                            map.put(relatedItem.getDishId(), map.get(relatedItem.getDishId())+1);
+                        } else {
+                            map.put(relatedItem.getDishId(), 1);
+                        }
+                    }
+                }
+            }
+        }
+        return Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
+    @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
@@ -239,8 +296,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
             if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                if (reservation.getReservationStatus() == ReservationStatus.OPEN ||
-                        reservation.getReservationStatus() == ReservationStatus.MAYBE_RESERVATION) {
+                if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
                 }
             }
@@ -248,6 +304,21 @@ public class ReservationServiceImpl implements ReservationService {
                 if(reservation.getReservationStatus() == ReservationStatus.SEATED){
                     updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void cleanMaybeReservations(long restaurantId) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.MAYBE_RESERVATION);
+        LocalDateTime now = LocalDateTime.now();
+
+        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(restaurantId, statusList);
+        for (Reservation reservation : allMaybeReservations) {
+            LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
+            if (now.compareTo(tenMinutesLater) > 0) {
+                reservationDao.updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
             }
         }
     }
@@ -291,4 +362,5 @@ public class ReservationServiceImpl implements ReservationService {
     public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
         return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
     }
+
 }

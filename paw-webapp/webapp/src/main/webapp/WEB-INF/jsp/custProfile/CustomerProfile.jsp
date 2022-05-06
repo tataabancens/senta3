@@ -10,9 +10,6 @@
 --%>
 <html>
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <link href="<c:url value="https://fonts.googleapis.com/icon?family=Material+Icons"/>" rel="stylesheet">
@@ -21,72 +18,47 @@
 
 </head>
 <body>
-<%@ include file="components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 <div class="header">
     <h1 class="presentation-text header-title">Perfil</h1>
 </div>
 <div class="contentContainer">
     <div class="info">
-        <sec:authorize access="hasRole('RESTAURANT')">
-        <div class="restaurant-field icon-row">
-            <div>
-                <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="editTables">
-                    <i class="material-icons table-and-hours">edit</i>
-                </a>
-                <span class="presentation-text">Mesas: </span>
-                <span class="text">${restaurant.totalChairs}</span>
-            </div>
-            <div>
-                <span class="presentation-text">Hora de apertura: </span>
-                <span class="text">${restaurant.openHour}</span>
-            </div>
-            <div>
-                <span class="presentation-text">Hora de cierre: </span>
-                <span class="text">${restaurant.closeHour}</span>
-            </div>
-        </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Nombre del restaurante: </span>
-            <span class="text">${restaurant.restaurantName}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editName">
+            <span class="presentation-text">Nombre y Apellido: </span>
+            <span class="text">${customer.customerName}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editName" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Telefono: </span>
-            <span class="text">${restaurant.phone}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editPhone">
+            <span class="text">${customer.phone}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editPhone" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
             <span class="presentation-text">Email: </span>
-            <span class="text">${restaurant.mail}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editMail">
+            <span class="text">${customer.mail}</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editMail" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
-        </sec:authorize>
         <div class="restaurant-field">
             <span class="presentation-text">Nombre de usuario: </span>
             <span class="text">${username}</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editUsername" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
         <div class="restaurant-field">
-            <span class="presentation-text">Contraseña: </span>
-            <span class="text">restaurant no tiene el getter</span>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="editTables">
+            <span class="presentation-text">Cambiar contraseña</span>
+            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editPassword" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
     </div>
-    <sec:authorize access="hasRole('RESTAURANT')">
-    <div class="imageContainer">
-        <img src="${pageContext.request.contextPath}/resources/images/masterchef.jpg" alt="imagen de restarante">
-    </div>
-    </sec:authorize>
 </div>
 </body>
 </html>
@@ -101,7 +73,7 @@
         width: fit-content;
     }
     .presentation-text{
-        color: black;
+        color: white;
         font-size: 2rem;
     }
     .info{
@@ -123,7 +95,7 @@
         height: 100%;
     }
     .text{
-        color: black;
+        color: white;
     }
     .restaurant-field{
         transition: 0.7s;

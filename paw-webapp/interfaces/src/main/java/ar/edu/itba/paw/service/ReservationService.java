@@ -2,13 +2,14 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
 
-    List<Reservation> getReservationsByStatus(ReservationStatus status);
+    List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status);
 
     List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
@@ -62,5 +63,13 @@ public interface ReservationService {
 
     boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
 
-    public List<Reservation> getReservationsSeated();
+    public List<Reservation> getReservationsSeated(long restaurantId);
+
+    void cleanMaybeReservations(long restaurantId);
+
+    Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
+
+    List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
+
+    long getRecommendedDishId(long reservationId);
 }

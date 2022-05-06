@@ -59,6 +59,7 @@ public class CustomerJdbcDao implements CustomerDao {
         customerData.put("Phone", phone);
         customerData.put("Mail", mail);
         customerData.put("userId", userId);
+        customerData.put("points", 0);
 
         Number customerId = jdbcInsert.executeAndReturnKey(customerData);
         return new Customer(customerId.longValue(), customerName, phone, mail, userId, 0);
@@ -84,5 +85,13 @@ public class CustomerJdbcDao implements CustomerDao {
     @Override
     public void updatePoints(long customerId, int points) {
         jdbcTemplate.update("UPDATE customer SET points = points + ? WHERE customerId = ?", new Object[]{points, customerId});
+    }
+
+    @Override
+    public void updateCustomerData(long customerId, String name, String phone, String mail) {
+        jdbcTemplate.update("UPDATE customer SET customername = ?," +
+                                                    " phone = ?," +
+                                                    " mail = ? WHERE customerId = ?",
+                            new Object[]{name, phone, mail, customerId});
     }
 }
