@@ -66,7 +66,7 @@ public class DishJdbcDao implements DishDao {
     }
 
     @Override
-    public Dish getRecommendedDish(long reservationId) {
+    public Optional<Dish> getRecommendedDish(long reservationId) {
         List<Dish> query = jdbcTemplate.query("With CTE AS (\n" +
                         "         With currentOrderedCTE AS\n" +
                         "                  (select dishId, reservation.reservationid\n" +
@@ -101,7 +101,7 @@ public class DishJdbcDao implements DishDao {
                         "                            where defSum >= ALL (select defsum\n" +
                         "                                                from CTE))",
                 new Object[]{reservationId}, ROW_MAPPER);
-        return query.get(0);
+        return query.stream().findFirst();
     }
 
     @Override

@@ -17,5 +17,5 @@ public interface DishDao {
 
     void deleteDish(long dishId);
 
-    Dish getRecommendedDish(long reservationId);
+    Optional<Dish> getRecommendedDish(long reservationId);
 }
