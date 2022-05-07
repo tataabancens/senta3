@@ -100,13 +100,13 @@ body{
     justify-content: flex-start;
     align-items: center;
 }
-.filter-box{
+.card.filter-box{
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
     padding-top: 2%;
-    background-color: whitesmoke;
+    background-color: white;
     border-radius: .8rem;
 }
 .filter-option {

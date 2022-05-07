@@ -44,15 +44,8 @@
         </div>
         <div class="page-container">
             <div class="restaurant-content">
-                <!--<div class="filter-box">
-                    <span class="presentation-text">Filtros:</span>
-                    <ul>
-                        <li><span class="text">algo</span></li>
-                        <li><span class="text">otro</span></li>
-                        <li><span class="text">eso</span></li>
-                    </ul>
-                </div>-->
-                <div class="card client-actions center">
+                <div class="left-section">
+                    <div class="card client-actions center">
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
@@ -69,15 +62,53 @@
                         </sec:authorize>
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
-                        <div class="enter-confirm-btn">
-                            <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
-                        </div>
+                            <div class="enter-confirm-btn">
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
+                            </div>
                         </sec:authorize>
-                         <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.exists"/></a>
                             </div>
                         </sec:authorize>
+                    </div>
+                    <div class="card filter-box">
+                        <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
+                        <ul>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description"><spring:message code="FilterBox.option1"/></span>
+                                    </label>
+                                </form>
+                            </li>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description"><spring:message code="FilterBox.option2"/></span>
+                                    </label>
+                                </form>
+                            </li>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description"><spring:message code="FilterBox.option3"/></span>
+                                    </label>
+                                </form>
+                            </li>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description"><spring:message code="FilterBox.option4"/></span>
+                                    </label>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
@@ -200,10 +231,14 @@
         padding: 10px;
         min-height: 150px;
         max-height: 250px;
-        width: 15%;
+        width: 100%;
     }
 
-
+    .left-section{
+        display: flex;
+        flex-direction: column;
+        width: 15%;
+    }
     .dishList{
         display: flex;
         justify-content: center;
