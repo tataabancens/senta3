@@ -87,7 +87,8 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
-                                            @RequestParam(value = "direction", defaultValue = "ASC") final String direction) throws Exception {
+                                            @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
 
 
         controllerService.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
@@ -99,7 +100,7 @@ public class RestReservationController {
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
-        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction);
+        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus);
 
         mav.addObject("reservations", reservations);
 

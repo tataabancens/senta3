@@ -24,6 +24,16 @@
 <div class="header">
     <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
+<div>
+    <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+        <option value="">Filtrar por status</option>
+        <option value="?filterStatus=0">OPEN</option>
+        <option value="?filterStatus=1">SEATED</option>
+        <option value="?filterStatus=2">CHECK_ORDERED</option>
+        <option value="?filterStatus=3">FINISHED</option>
+        <option value="?filterStatus=4">CANCELED</option>
+    </select>
+</div>
 <div class="content-container">
     <table class="reservations">
         <thead>
@@ -183,6 +193,9 @@
             left: 0;
             width: 50%;
             padding-left: 2%;
+        }
+        select{
+            display: flex;
         }
     }
 </style>
