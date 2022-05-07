@@ -48,16 +48,55 @@
 </div>
 <div class="page-container">
     <div class="orders-and-info">
-        <div class="card client-actions">
-            <span class="main-title center">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
-            <c:if test="${canOrderReceipt}">
-                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
-            </c:if>
-            <c:if test="${!canOrderReceipt}">
-                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Cuenta</a>
-            </c:if>
-            <div class="center div-padding">
-                <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
+        <div class="card filter-box">
+            <div class="client-actions">
+                <span class="presentation-text">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+                <div>
+                    <c:if test="${canOrderReceipt}">
+                        <a class="waves-effect waves-light btn confirm-btn text description" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
+                    </c:if>
+                    <c:if test="${!canOrderReceipt}">
+                        <a disabled class="waves-effect waves-light btn confirm-btn text description" href="">Cuenta</a>
+                    </c:if>
+                    <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
+                </div>
+            </div>
+            <div>
+                <span class="presentation-text">Filtrar</span>
+                <ul>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Entradas</span>
+                            </label>
+                        </form>
+                    </li>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Plato principal</span>
+                            </label>
+                        </form>
+                    </li>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Postre</span>
+                            </label>
+                        </form>
+                    </li>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Opcion 4</span>
+                            </label>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
         <sec:authorize access="isAuthenticated()">
@@ -67,7 +106,7 @@
                         <span class="main-title center">Tenes un descuento a tu favor!</span>
                         <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
-                            <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn">
+                            <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn text description">
                         </form:form>
                     </div>
                 </c:if>
@@ -77,31 +116,31 @@
                     <span class="main-title center">Aplicaste un descuento del 15%!</span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
-                        <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn">
+                        <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn text description">
                     </form:form>
                 </div>
             </c:if>
         </sec:authorize>
         <div class="orderList">
             <div class="card order-card">
-                <span class="main-title">Resumen de tu pedido:</span>
+                <span class="presentation-text">Resumen de tu pedido:</span>
                 <div class="order-headers">
-                    <span class="title2 dishname">Plato</span>
-                    <span class="title2">Cantidad</span>
-                    <span class="title2">Subtotal</span>
+                    <span class="presentation-text">Plato</span>
+                    <span class="presentation-text">Cantidad</span>
+                    <span class="presentation-text">Subtotal</span>
                 </div>
                 <hr class="solid-divider">
                 <div class="order-info">
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="order-item">
-                            <div class="order-field center"><span class="items-title "><c:out value="${orderItem.dishName}"/></span></div>
-                            <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.quantity}"/></span></div>
+                            <div class="order-field center"><span class="items-title text description"><c:out value="${orderItem.dishName}"/></span></div>
+                            <div class="order-field center"><span class="items-title center text description"><c:out value="${orderItem.quantity}"/></span></div>
                             <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
-                            <div class="order-field center"><span class="items-title center"><c:out value="${orderItemPrice}"/></span></div>
+                            <div class="order-field center"><span class="items-title center text description"><c:out value="${orderItemPrice}"/></span></div>
                             <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
                                 <!--<a href=""><i class="material-icons clear-symbol">clear</i></a>-->
-                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
+                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red text description">
                             </form:form>
                         </div>
                         <hr class="solid-divider">
@@ -109,11 +148,11 @@
                 </div>
                 <div class="order-total">
                     <div>
-                        <p class="price">Total</p>
+                        <p class="price presentation-text">Total</p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price right"><c:out value="${totalPrice}"/></p>
+                        <p class="price right presentation-text"><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
                 <div class="order-btn-row">
@@ -121,19 +160,19 @@
                         <c:if test="${selected > 0}">
                             <c:url value="/order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn confirm-btn red">
+                                <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn confirm-btn red text description">
                             </form:form>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn red">Vaciar pedido</a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn red text description">Vaciar pedido</a>
                         </c:if>
                     </div>
                     <div>
                         <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
+                            <a class="waves-effect waves-light btn confirm-btn green text description" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn green">Continuar</a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn green text description">Continuar</a>
                         </c:if>
                     </div>
                 </div>
@@ -199,7 +238,15 @@
 </html>
 
 <style>
-
+    .card.filter-box{
+        width: 60%;
+    }
+    .client-actions{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5%;
+        align-items: center;
+    }
     .page-container{
         padding: 1%;
         display: flex;
@@ -208,7 +255,7 @@
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: 35%;
+        width: 26%;
         height: 100%;
     }
     .presentation-text{
@@ -240,24 +287,6 @@
         flex-wrap: wrap;
         width: 65%;
         height: 100%;
-    }
-    .card{
-        border-radius: 16px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .card.client-actions{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding: 10px;
-        min-height: 150px;
-        max-height: 250px;
-        min-width: 30%;
-        width: 100%;
     }
     .orderList{
         width: 100%;
@@ -316,9 +345,6 @@
     }
     .center{
         justify-self: center;
-    }
-    .div-padding{
-        padding: 8px;
     }
     .center{
         justify-content: center;

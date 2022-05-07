@@ -92,7 +92,26 @@ body{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
+.card{
+    display: flex;
+    border-radius: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+.filter-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding-top: 2%;
+    background-color: whitesmoke;
+    border-radius: .8rem;
+}
+.filter-option {
+    margin-bottom: 5%;
+}
 hr.solid-divider {
     border-top: 2px #707070;
     width: 100%;
@@ -100,7 +119,7 @@ hr.solid-divider {
 
 .confirm-btn{
     display: flex;
-    border-radius: 16px;
+    border-radius: 0.8rem;
     background-color: #37A6E6;
     margin-top: 5%;
     opacity: 90%;
@@ -114,16 +133,6 @@ hr.solid-divider {
     background-color: #37A6E6;
     color: white;
     opacity: 100%;
-}
-
-.plus-btn{
-    background-color: #37A6E6;
-    opacity: 90%;
-}
-
-.plus-btn:hover{
-    background-color: #37A6E6;
-    color: white;
 }
 
 .dish-card{

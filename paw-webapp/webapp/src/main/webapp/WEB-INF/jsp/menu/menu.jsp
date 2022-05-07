@@ -29,7 +29,7 @@
         <div class="restaurant-header">
             <div class="restaurant-info" style="background-color: rgb(255, 242, 229);">
                 <div>
-                    <i class="medium material-icons">restaurant</i>
+                    <i class="medium material-icons restaurant-icon">restaurant</i>
                 </div>
                 <div>
                     <div class="presentation-text title restaurant-title">
@@ -44,15 +44,8 @@
         </div>
         <div class="page-container">
             <div class="restaurant-content">
-                <!--<div class="filter-box">
-                    <span class="presentation-text">Filtros:</span>
-                    <ul>
-                        <li><span class="text">algo</span></li>
-                        <li><span class="text">otro</span></li>
-                        <li><span class="text">eso</span></li>
-                    </ul>
-                </div>-->
-                <div class="card client-actions center">
+                <div class="left-section">
+                    <div class="card client-actions center">
                         <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
@@ -69,15 +62,53 @@
                         </sec:authorize>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
-                        <div class="enter-confirm-btn">
-                            <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
-                        </div>
+                            <div class="enter-confirm-btn">
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
+                            </div>
                         </sec:authorize>
-                         <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href="">Ingresar</a>
                             </div>
                         </sec:authorize>
+                    </div>
+                    <div class="card filter-box">
+                        <span class="presentation-text">Filtrar</span>
+                        <ul>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description">Entradas</span>
+                                    </label>
+                                </form>
+                            </li>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description">Plato principal</span>
+                                    </label>
+                                </form>
+                            </li>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description">Postre</span>
+                                    </label>
+                                </form>
+                            </li>
+                            <li class="filter-option">
+                                <form action="">
+                                    <label>
+                                        <input type="checkbox" class="filled-in"  />
+                                        <span class="text description">Opcion 4</span>
+                                    </label>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="dishList">
                     <c:forEach var="dish" items="${restaurant.dishes}">
@@ -137,7 +168,6 @@
         font-weight: 600;
         font-size: 1.4rem;
     }
-
     @media screen and (max-width: 1068px){
         .dish-card{
             max-width: 80rem;
@@ -171,7 +201,7 @@
     .presentation-text.box-comments{
         color: #171616;
     }
-    i{
+    .restaurant-icon{
         color: rgb(255, 68, 31);
         margin-right: 25px;
     }
@@ -185,25 +215,20 @@
         justify-content: center;
         max-width: 200px;
     }
-    .card{
-        display: flex;
-        border-radius: 16px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: center;
-    }
     .card.client-actions{
         flex-direction: column;
         justify-content: space-evenly;
-        background-color: white;
+        background-color: whitesmoke;
         padding: 10px;
         min-height: 150px;
         max-height: 250px;
+        width: 100%;
+    }
+    .left-section{
+        display: flex;
+        flex-direction: column;
         width: 15%;
     }
-
-
     .dishList{
         display: flex;
         justify-content: center;
@@ -214,4 +239,20 @@
 
 
 </style>
-
+<script type="text/javascript" src="js/materialize.min.js">
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
