@@ -31,7 +31,7 @@
             <p class="card-title title text price center"><spring:message code="Error.title"/></p>
         </div>
         <div>
-            <p class="card-title text"><spring:message code="Error.notfound"/></p>
+            <p class="card-title text"><spring:message code="Error.500"/></p>
         </div>
         <div>
             <p class="title2"><spring:message code="Error.dontworry"/></p>

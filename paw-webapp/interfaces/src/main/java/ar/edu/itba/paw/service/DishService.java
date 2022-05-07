@@ -16,4 +16,6 @@ public interface DishService {
     void updateDishPhoto(long dishId, long imageId);
 
     void deleteDish(long dishId);
+
+    Dish getRecommendedDish(long reservationId);
 }

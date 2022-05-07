@@ -48,4 +48,9 @@ public class DishServiceImpl implements DishService{
     public void deleteDish(long dishId) {
         dishDao.deleteDish(dishId);
     }
+
+    @Override
+    public Dish getRecommendedDish(long reservationId) {
+        return dishDao.getRecommendedDish(reservationId);
+    }
 }

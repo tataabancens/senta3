@@ -203,6 +203,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus) {
+        return reservationDao.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus);
+    }
+
+    @Override
     public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.OPEN);

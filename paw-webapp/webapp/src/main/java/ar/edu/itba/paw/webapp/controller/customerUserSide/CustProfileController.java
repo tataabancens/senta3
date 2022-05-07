@@ -47,7 +47,7 @@ public class CustProfileController {
 
         SecurityContextHolder.getContext().getAuthentication().getCredentials();
 
-        ModelAndView mav = new ModelAndView("custProfile/CustomerProfile");
+        ModelAndView mav = new ModelAndView("customerViews/custProfile/CustomerProfile");
         mav.addObject("username", username);
         mav.addObject("customer", customer);
 
@@ -62,7 +62,7 @@ public class CustProfileController {
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
 
-        ModelAndView mav = new ModelAndView("custProfile/editCustomerName");
+        ModelAndView mav = new ModelAndView("customerViews/custProfile/editCustomerName");
         mav.addObject("username", username);
         form.setName(customer.getCustomerName());
 
@@ -91,7 +91,7 @@ public class CustProfileController {
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
 
-        ModelAndView mav = new ModelAndView("custProfile/editCustomerPhone");
+        ModelAndView mav = new ModelAndView("customerViews/custProfile/editCustomerPhone");
         form.setPhone(customer.getPhone());
 
         return mav;
@@ -120,7 +120,7 @@ public class CustProfileController {
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
 
-        ModelAndView mav = new ModelAndView("custProfile/editCustomerMail");
+        ModelAndView mav = new ModelAndView("customerViews/custProfile/editCustomerMail");
         form.setMail(customer.getMail());
 
         return mav;
@@ -147,7 +147,7 @@ public class CustProfileController {
 
         String username = principal.getName();
 
-        ModelAndView mav = new ModelAndView("editUsername");
+        ModelAndView mav = new ModelAndView("customerViews/custProfile/editUsername");
         form.setName(username);
 
         return mav;
