@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,35 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<Dish> getRestaurantDishes(long id) {
         return restaurantDao.getRestaurantDishes(id);
+    }
+
+    @Override
+    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
+        return restaurantDao.getRestaurantDishesByCategory(restaurantId, category);
+    }
+
+    @Override
+    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour) {
+        restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
+    }
+
+    @Override
+    public void updateRestaurantName(String name, long restaurantId) {
+        restaurantDao.updateRestaurantName(name, restaurantId);
+    }
+
+    @Override
+    public void updateRestaurantEmail(String mail, long restaurantId) {
+        restaurantDao.updateRestaurantEmail(mail, restaurantId);
+    }
+
+    @Override
+    public void updatePhone(String phone, long restaurantId) {
+        restaurantDao.updatePhone(phone, restaurantId);
+    }
+
+    @Override
+    public Optional<Restaurant> getRestaurantByUsername(String username) {
+        return restaurantDao.getRestaurantByUsername(username);
     }
 }

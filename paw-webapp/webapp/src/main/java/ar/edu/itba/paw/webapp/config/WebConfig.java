@@ -2,12 +2,17 @@ package ar.edu.itba.paw.webapp.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -18,8 +23,11 @@ import org.springframework.web.servlet.view.JstlView;
 import javax.sql.DataSource;
 import javax.swing.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @ImportResource
+@PropertySource(value= {"classpath:application.properties"})
 @ComponentScan({"ar.edu.itba.paw.webapp.controller",
                 "ar.edu.itba.paw.service",
                 "ar.edu.itba.paw.persistence"})
@@ -78,5 +86,39 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+
+    //this bean needed to resolve ${property.name} syntax
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    //Allows Controller to save multipart data and send it to Service
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("utf-8");
+        return resolver;
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(byteArrayHttpMessageConverter());
+    }
+
+    @Bean
+    public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
+        ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+        arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
+        return arrayHttpMessageConverter;
+    }
+
+    private List<MediaType> getSupportedMediaTypes() {
+        List<MediaType> list = new ArrayList<MediaType>();
+        list.add(MediaType.IMAGE_JPEG);
+        list.add(MediaType.IMAGE_PNG);
+        list.add(MediaType.APPLICATION_OCTET_STREAM);
+        return list;
     }
 }

@@ -1,21 +1,46 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.ReservationStatus;
+
 import java.sql.Timestamp;
 
 public class Reservation {
     private long reservationId;
     private long restaurantId;
     private long customerId;
-    private Timestamp reservationDate;
+    private Timestamp startedAtTime;
+    private int reservationHour;
     private ReservationStatus reservationStatus;
+    private int qPeople;
+    private boolean reservationDiscount;
 
-    public Reservation(long reservationId, long restaurantId, Timestamp reservationDate, long customerId, int reservationStatus){
+    public Reservation(long reservationId, long restaurantId, int reservationHour, long customerId, int reservationStatus, int qPeople, boolean reservationDiscount, Timestamp startedAtTime){
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
-        this.reservationDate = reservationDate;
+        this.reservationHour = reservationHour;
         this.customerId = customerId;
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
+        this.qPeople = qPeople;
+        this.reservationDiscount = reservationDiscount;
+        this.startedAtTime = startedAtTime;
     }
+
+    public Timestamp getStartedAtTime() {
+        return startedAtTime;
+    }
+
+    public void setStartedAtTime(Timestamp startedAtTime) {
+        this.startedAtTime = startedAtTime;
+    }
+
+    public boolean isReservationDiscount() {
+        return reservationDiscount;
+    }
+
+    public void setReservationDiscount(boolean reservationDiscount) {
+        this.reservationDiscount = reservationDiscount;
+    }
+
     public long getReservationId() {
         return reservationId;
     }
@@ -32,10 +57,6 @@ public class Reservation {
         this.restaurantId = restaurantId;
     }
 
-    public Timestamp getReservationDate() {
-        return reservationDate;
-    }
-
     public long getCustomerId() {
         return customerId;
     }
@@ -44,15 +65,27 @@ public class Reservation {
         this.customerId = customerId;
     }
 
-    public void setReservationDate(Timestamp reservationDate) {
-        this.reservationDate = reservationDate;
-    }
-
     public ReservationStatus getReservationStatus() {
         return reservationStatus;
     }
 
     public void setReservationStatus(ReservationStatus reservationStatus) {
         this.reservationStatus = reservationStatus;
+    }
+
+    public int getReservationHour() {
+        return reservationHour;
+    }
+
+    public void setReservationHour(int reservationHour) {
+        this.reservationHour = reservationHour;
+    }
+
+    public int getqPeople() {
+        return qPeople;
+    }
+
+    public void setqPeople(int qPeople) {
+        this.qPeople = qPeople;
     }
 }

@@ -16,7 +16,15 @@
   <url>http://www.example.com</url>
 
   <dependencies>
-
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.4</version>
+    </dependency>
   </dependencies>
 
   <build>

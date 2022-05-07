@@ -1,9 +1,3 @@
-drop table if exists customer cascade;
-drop table if exists restaurant cascade;
-drop table if exists dish cascade;
-drop table if exists reservation cascade;
-drop table if exists orderItem cascade;
-
 CREATE TABLE IF NOT EXISTS customer (
   customerId SERIAL PRIMARY KEY,
   customerName varchar(50) NOT NULL,
@@ -11,18 +5,32 @@ CREATE TABLE IF NOT EXISTS customer (
   Mail varchar(50)
 );
 
-INSERT INTO customer (customername, phone, Mail)
-VALUES('Juan el loco','110502517', 'uriel.mihuraa@gmail.com');
+ALTER TABLE customer ADD COLUMN IF NOT EXISTS userId int;
+ALTER TABLE customer ADD COLUMN IF NOT EXISTS points int default 0;
+-- ALTER TABLE customer
+--     ADD CONSTRAINT IF NOT EXISTS fk_customer_users FOREIGN KEY (userId) REFERENCES users (userId);
 
 CREATE TABLE IF NOT EXISTS restaurant (
   restaurantId SERIAL PRIMARY KEY,
   restaurantName varchar(100) NOT NULL,
   phone varchar(100) NOT NULL,
-  Mail varchar(50) NOT NULL
+  Mail varchar(50) NOT NULL,
+  totalChairs int NOT NULL
 );
 
-INSERT INTO restaurant (restaurantName, phone, Mail)
-VALUES('Pepito Masterchef','110502400', 'pepitococina@gmail.com');
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS totalChairs int DEFAULT 10 NOT NULL;
+ALTER TABLE restaurant DROP COLUMN IF EXISTS totalTables;
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS openHour int DEFAULT '0';
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS closeHour int DEFAULT '0';
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS userId int DEFAULT 1;
+-- ALTER TABLE restaurant
+--     ADD CONSTRAINT IF NOT EXISTS fk_restaurant_users FOREIGN KEY (userId) REFERENCES users (userId);
+
+CREATE TABLE IF NOT EXISTS image
+(
+    imageId serial PRIMARY KEY,
+    bitmap bytea
+);
 
 CREATE TABLE IF NOT EXISTS dish (
   dishId SERIAL PRIMARY KEY,
@@ -33,34 +41,40 @@ CREATE TABLE IF NOT EXISTS dish (
   FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
 );
 
-INSERT INTO dish (restaurantId, dishName, price, dishDescription)
-VALUES(1,'Milanesa napolitana', 890, 'Milanesa napolitana. Jamón, queso y tomate. Sin pasa de uva.');
-INSERT INTO dish (restaurantId, dishName, price, dishDescription)
-VALUES(1,'Pizza calabresa', 650, 'Pizza tipo italiana con MUCHA calabresa. Es un poquito picante.');
-INSERT INTO dish (restaurantId, dishName, price, dishDescription)
-VALUES(1,'Empanada de carne', 140, 'Empanada de carne cortada a cuchillo, sin aceitunas, sin pasas de uva y sin papa.');
-INSERT INTO dish (restaurantId, dishName, price, dishDescription)
-VALUES(1,'Flan con dulce de leche', 400, 'El mejor flan con dulce de leche de Buenos Aires.');
-INSERT INTO dish (restaurantId, dishName, price, dishDescription)
-VALUES(1,'Limonada', 350, 'Limonada bien fría con menta y gengibre, ideal para tomar si estás manejando.');
-INSERT INTO dish (restaurantId, dishName, price, dishDescription)
-VALUES(1,'Cerveza Amber Patagonia', 350, 'Una pinta de cerveza Patagonia Amber dulzona añejada en notas de nuez.');
+ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
+ALTER TABLE dish ADD IF NOT EXISTS category varchar(100) DEFAULT 'MAIN_DISH' NOT NULL;
+
 
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
     customerId      integer NOT NULL,
-    reservationDate timestamp,
+    reservationHour integer NOT NULL,
     reservationStatus integer,
+    qPeople integer default 1,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
 
+ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
+
+ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT NULL;
+
+ALTER TABLE reservation ADD IF NOT EXISTS reservationDiscount boolean default false NOT NULL;
+
+ALTER TABLE reservation ADD IF NOT EXISTS qPeople integer default 1;
+
+ALTER TABLE reservation ADD IF NOT EXISTS startedAtTime timestamp default now();
+
+
 CREATE TABLE IF NOT EXISTS users (
   userId SERIAL PRIMARY KEY,
-  username varchar(100),
-  password varchar(100)
+  username varchar(100) UNIQUE,
+  password varchar(100),
+  role varchar(100)
 );
+
+ALTER TABLE users ADD IF NOT EXISTS role varchar(100) default 'ROLE_RESTAURANT' NOT NULL;
 
 CREATE TABLE IF NOT EXISTS orderItem
 (
@@ -70,7 +84,13 @@ CREATE TABLE IF NOT EXISTS orderItem
     unitPrice     decimal(12,2) NOT NULL,
     quantity      integer NOT NULL,
     status        integer NOT NULL,
-    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
-    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
+    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
+    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
+
+--CREATE TABLE IF NOT EXISTS dishCategories
+
+-- INSERT INTO users(username, password, role)
+-- values('Juancho Capo', '12345678', 'ROLE_CUSTOMER');
+
 

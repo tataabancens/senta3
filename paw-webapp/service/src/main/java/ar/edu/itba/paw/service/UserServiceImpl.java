@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,10 +13,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(final UserDao userDao) {
+    public UserServiceImpl(final UserDao userDao, final PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,7 +27,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(String username, String password) {
-        return userDao.create(username, password);
+    public User create(String username, String password, Roles role) {
+        return userDao.create(username, passwordEncoder.encode(password), role);
+    }
+
+    @Override
+    public Optional<User> findByName(String username) {
+        return userDao.findByName(username);
+    }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        userDao.updatePassword(username, passwordEncoder.encode(newPassword));
+    }
+
+    @Override
+    public void updateUsername(String oldUsername, String newUsername) {
+        userDao.updateUsername(oldUsername, newUsername);
     }
 }

@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence.test;
 
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistence.UserJdbcDao;
-import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
@@ -10,9 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
@@ -51,7 +49,7 @@ public class UserJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
 
         // 2. Ejercitacion
-        User user = userDao.create(USERNAME, "pass");
+        User user = userDao.create(USERNAME, "pass", Roles.CUSTOMER);
 
         // 3. PostCondiciones
         Assert.assertNotNull(user);

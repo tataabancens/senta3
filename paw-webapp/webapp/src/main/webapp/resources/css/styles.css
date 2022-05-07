@@ -1,26 +1,194 @@
-.navbar{
-    background-color: pink;
-}
 
-.buttons{
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    justify-content: space-between;
-    margin-left: 30%;
-    margin-right: 30%;
+body{
+    background-color: rgb(230, 235, 241);
 }
-.card {
-    position: absolute;
-    top: 40%;
-    left: 40%;
-    margin: -25px 0 0 -25px;
-}
-
 .error {
     color: red;
 }
+.text{
+    font-family: "Segoe UI", Lato, sans-serif;
+    font-weight: normal;
+    font-size: 21px;
+    color: #463f3f;
+}
+.presentation-text{
+    font-family:'Nunito',sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+.row{
+    margin-bottom: 0;
+}
+.header{
+    background: #e5dada;
+    background: linear-gradient(90deg, rgb(230, 235, 241) 7%, #171616 88%);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    color: #e5dada;
+    min-height: 3%;
+    font-size: 30rem;
+    border-radius: 14px;
+    align-items: center;
+    margin: 15px 20px;
+}
+.restaurant-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: 100px;
+    max-height: 150px;
+    border-radius: 20px;
+    align-items: center;
+}
+.restaurant-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100px;
+    max-height: 150px;
+}
+.presentation-text.restaurant-description{
+    color: rgb(255, 68, 31);
+    font-size: 1rem;
+}
+.title2{
+    justify-content: center;
+    font-size: 1.5vw;
+    font-family: "Segoe UI", Lato, sans-serif;
+    font-weight: normal;
+    color: #463f3f;
+}
 
-.test-box {
-    background-color: orange;
+.price{
+    font-size: 2vw;
+    font-family: "Segoe UI", Lato, sans-serif;
+    font-weight: bold;
+    color: black;
+}
+
+.items-title{
+    color:  #707070;
+    font-size: 1.25vw;
+    margin-left: 20%;
+}
+.presentation-text.header-title{
+    color: rgb(255, 68, 31);
+    font-size: 2rem;
+}
+.restaurant-card{
+    display:flex;
+    margin-left: 5%;
+    width: 20%;
+    max-width: 40%;
+    margin-right: 5%;
+    height: 20%;
+}
+
+.dishname{
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+hr.solid-divider {
+    border-top: 2px #707070;
+    width: 100%;
+}
+
+.confirm-btn{
+    display: flex;
+    border-radius: 16px;
+    background-color: #37A6E6;
+    margin-top: 5%;
+    opacity: 90%;
+    font-size: 1vw;
+    width: fit-content;
+    text-align: center;
+    color:white
+}
+
+.confirm-btn:hover{
+    background-color: #37A6E6;
+    color: white;
+    opacity: 100%;
+}
+
+.plus-btn{
+    background-color: #37A6E6;
+    opacity: 90%;
+}
+
+.plus-btn:hover{
+    background-color: #37A6E6;
+    color: white;
+}
+
+.dish-card{
+    min-width: 20%;
+    background-color: white;
+    box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
+    transition: 0.8s;
+    border-radius: .8rem;
+    display: flex;
+    margin: 1%;
+}
+.dish-img{
+    width:30%;
+    padding: 0.5rem;
+    aspect-ratio: 1.1 / 1;
+    position: relative;
+}
+.dish-img img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: .8rem;
+    object-fit: fill;
+}
+.form-container{
+    display: flex;
+    padding-top: 30px;
+    justify-content: center;
+}
+.dish-img::before{
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: .8rem;
+}
+.card-info{
+    justify-items: center;
+    min-width:70%;
+    padding: 0.7rem;
+}
+.dish-card-text{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    align-items: flex-start;
+    width: 100%;
+    padding: 20px;
+}
+.imageContainer{
+    height: 55%;
+    width: 100%;
+}
+.dish-image{
+    width: 100%;
+    height: 100%;
+    border-radius: 16px 16px 0 0;
+}
+.dishText{
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 40%;
 }

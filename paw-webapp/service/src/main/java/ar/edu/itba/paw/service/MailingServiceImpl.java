@@ -18,6 +18,7 @@ public class MailingServiceImpl implements MailingService{
     private final String USERNAME="sentate.paw";
     private final String PASSWORD="xblgoodfhlnunfmq";
 
+    @Override
     public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
         Properties properties=setProperties();
         sendCustomerConfirmation(restaurant,customer,reservation,properties);
@@ -30,11 +31,33 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(props,customer.getMail(),subject, stringBuilder);
     }
 
-    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
+    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
         String subject="Un cliente realizo una reserva";
         String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
-                reservation.getReservationDate().toString()+'\n';
-        sendEmail(props,restaurant.getMail(),subject,message);
+                reservation.getReservationHour() +'\n';
+        sendEmail(properties,restaurant.getMail(),subject,message);
+    }
+
+    @Override
+    public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation){
+        Properties properties=setProperties();
+        sendCustomerCancellation(restaurant,customer,reservation,properties);
+        sendRestaurantCancellation(restaurant,customer,reservation,properties);
+    }
+
+    private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties){
+        String subject="Se cancelo tu reserva";
+        String message="La siguiente reserva fue cancelada:\n"+"fecha: "+reservation.getReservationHour()+'\n'
+                +"restaurante: "+restaurant.getRestaurantName()+'\n';
+        sendEmail(properties,customer.getMail(),subject,message);
+    }
+
+    private void sendRestaurantCancellation(Restaurant restaurant,Customer customer,Reservation reservation,Properties properties){
+        String subject="Una reserva fue cancelada";
+        String message="La siguiente reserva fue cancelada:\n"
+                +"cliente: "+customer.getCustomerName()+'\n'
+                +"fecha: "+reservation.getReservationHour() +'\n';
+        sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
     @Override
@@ -61,6 +84,8 @@ public class MailingServiceImpl implements MailingService{
     private void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageText) {
 
+        new Thread(() -> {
+
         Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
@@ -82,7 +107,10 @@ public class MailingServiceImpl implements MailingService{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        }).start();
     }
+
+
     private Properties setProperties(){
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -93,4 +121,5 @@ public class MailingServiceImpl implements MailingService{
         properties.put("mail.smtp.port", "465");
         return properties;
     }
+
 }

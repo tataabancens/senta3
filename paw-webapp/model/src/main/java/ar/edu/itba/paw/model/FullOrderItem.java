@@ -1,9 +1,10 @@
 package ar.edu.itba.paw.model;
 
-import java.util.Objects;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 
 public class FullOrderItem {
-    
+
+    private long orderItemId;
     private long reservationId;
     private long dishId;
     private float unitPrice;
@@ -11,7 +12,8 @@ public class FullOrderItem {
     private OrderItemStatus status;
     private String dishName;
 
-    public FullOrderItem(long reservationId, long dishId, float unitPrice, int quantity , int status, String dishName) {
+    public FullOrderItem(long orderItemId, long reservationId, long dishId, float unitPrice, int quantity , int status, String dishName) {
+        this.orderItemId = orderItemId;
         this.reservationId = reservationId;
         this.dishId = dishId;
         this.unitPrice = unitPrice;
@@ -64,5 +66,13 @@ public class FullOrderItem {
 
     public void setStatus(OrderItemStatus status) {
         this.status = status;
+    }
+
+    public long getOrderItemId() {
+        return orderItemId;
+    }
+
+    public void setOrderItemId(long orderItemId) {
+        this.orderItemId = orderItemId;
     }
 }

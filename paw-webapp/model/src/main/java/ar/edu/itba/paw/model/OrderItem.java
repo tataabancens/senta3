@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.model;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 
 import java.util.Objects;
 

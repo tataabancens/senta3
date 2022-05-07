@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.CustomValidator.DateConstraint;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 public class ReservationForm {
 
     @Size(min = 6, max = 50)
-    @Pattern(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")
+    @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String mail;
 
     @Size(min = 1, max = 50)
@@ -21,19 +20,9 @@ public class ReservationForm {
     @Size(min = 9, max = 13)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
-    @NotEmpty
-    @DateConstraint
-    private String timeAndDate;
 
-    public String getTimeAndDate() {
-        return timeAndDate;
-    }
-    public Timestamp getTimeStamp(){
-        return Timestamp.valueOf(LocalDateTime.parse(timeAndDate));
-    }
-    public void setTimeAndDate(String timeAndDate) {
-        this.timeAndDate = timeAndDate;
-    }
+    private int hour;
+    private int qPeople;
 
     public String getPhone() {
         return phone;
@@ -59,4 +48,18 @@ public class ReservationForm {
         return mail;
     }
 
+    public int getHour() {
+        return hour;
+    }
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getqPeople() {
+        return qPeople;
+    }
+
+    public void setqPeople(int qPeople) {
+        this.qPeople = qPeople;
+    }
 }
