@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.DeleteDishForm;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
@@ -44,7 +45,7 @@ public class DishController {
                                     @PathVariable("restaurantId") final String restaurantIdP,
                                     @PathVariable("dishId") final String dishIdP) throws Exception {
 
-        controllerService.longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -58,7 +59,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
     public ModelAndView createDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
-        controllerService.longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
         ModelAndView mav = new ModelAndView("dish/createDish");
         mav.addObject("categories", DishCategory.getAsList());
@@ -69,7 +70,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
     public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
                                    @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {
-        controllerService.longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         if (errors.hasErrors()){
@@ -90,7 +91,7 @@ public class DishController {
                                   @PathVariable ("dishId") final String dishIdP,
                                   @RequestParam CommonsMultipartFile photo) throws Exception {
 
-        controllerService.longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
@@ -103,7 +104,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)
     public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final String dishIdP,
                                                @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -118,7 +119,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.POST)
     public ModelAndView deleteDishConfirmationPost(@PathVariable("dishId") final String dishIdP,
                                                @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -135,7 +136,7 @@ public class DishController {
                                      @ModelAttribute("editDishForm") final EditDishForm form,
                                      @PathVariable("dishId") final String dishIdP) throws Exception {
 
-        controllerService.longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -162,7 +163,7 @@ public class DishController {
             return editDishForm(restaurantIdP, form, dishIdP);
         }
 
-        controllerService.longParser(dishIdP, restaurantIdP);
+        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 

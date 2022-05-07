@@ -35,7 +35,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
     public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
                                                       @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -49,7 +49,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
     public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
                                                           @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -67,7 +67,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/reservations")
     public ModelAndView reservations(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        controllerService.longParser(restaurantIdP);
+        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("reservation/reservations");
@@ -109,7 +109,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
                                      @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP);
+        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -121,7 +121,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/showReceipt={reservationId}")
     public ModelAndView showReceipt(@PathVariable("restaurantId") final String restaurantIdP,
                                        @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP);
+        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -145,7 +145,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/finishCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView finishCustomer(@PathVariable("restaurantId") final String restaurantIdP,
                                      @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP);
+        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -157,7 +157,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/orderCheckCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView orderCheckCustomer(@PathVariable("restaurantId") final String restaurantIdP,
                                        @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP);
+        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -169,7 +169,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/removeCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView removeCustomer(@PathVariable("restaurantId") final String restaurantIdP,
                                            @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP);
+        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 

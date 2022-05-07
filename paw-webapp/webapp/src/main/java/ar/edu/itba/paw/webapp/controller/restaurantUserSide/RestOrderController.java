@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.FullOrderItem;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ public class RestOrderController {
     public ModelAndView restaurantOrders(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                              @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP, restaurantIdP);
+        controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -59,7 +60,7 @@ public class RestOrderController {
     public ModelAndView OrderItemStatusFinished (@PathVariable("restaurantId") final String restaurantIdP,
                                                  @PathVariable("orderItemId") final String orderItemIdP) throws Exception {
 
-        controllerService.longParser(orderItemIdP, restaurantIdP);
+        controllerService.longParser(orderItemIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long orderItemId = Long.parseLong(orderItemIdP);
 
@@ -71,7 +72,7 @@ public class RestOrderController {
     public ModelAndView OrderItemStatusDelivered (@PathVariable("restaurantId") final String restaurantIdP,
                                                   @PathVariable("orderItemId") final String orderItemIdP) throws Exception {
 
-        controllerService.longParser(orderItemIdP, restaurantIdP);
+        controllerService.longParser(orderItemIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long orderItemId = Long.parseLong(orderItemIdP);
 

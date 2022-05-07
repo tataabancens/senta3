@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class CustRegisterController {
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
                                           HttpServletRequest request) throws Exception{
-        controllerService.longParser(customerIdP);
+        controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
         long customerId = Long.parseLong(customerIdP);
 
         if (errors.hasErrors()){
