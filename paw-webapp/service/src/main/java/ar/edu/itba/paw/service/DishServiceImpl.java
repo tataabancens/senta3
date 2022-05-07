@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,13 @@ public class DishServiceImpl implements DishService{
     }
 
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId){
-        return dishDao.create(restaurantId, dishName, dishDescription, price, imageId);
+    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category){
+        return dishDao.create(restaurantId, dishName, dishDescription, price, imageId, category);
     }
 
     @Override
-    public void updateDish(long dishId, String dishName, String dishDescription, double price, long restaurantId) {
-        dishDao.updateDish(dishId, dishName, dishDescription, price, restaurantId);
+    public void updateDish(long dishId, String dishName, String dishDescription, double price, DishCategory category, long restaurantId) {
+        dishDao.updateDish(dishId, dishName, dishDescription, price, category, restaurantId);
     }
 
     @Override
@@ -46,5 +47,10 @@ public class DishServiceImpl implements DishService{
     @Override
     public void deleteDish(long dishId) {
         dishDao.deleteDish(dishId);
+    }
+
+    @Override
+    public Dish getRecommendedDish(long reservationId) {
+        return dishDao.getRecommendedDish(reservationId);
     }
 }

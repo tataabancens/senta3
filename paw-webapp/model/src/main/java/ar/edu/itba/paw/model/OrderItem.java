@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+
 import java.util.Objects;
 
 public class OrderItem {

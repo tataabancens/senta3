@@ -1,8 +1,11 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +38,7 @@ public class MenuController {
     @RequestMapping("/")
     public ModelAndView helloWorld() {
 
-        final ModelAndView mav = new ModelAndView("menu/menu");
+        final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
@@ -44,14 +47,16 @@ public class MenuController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
+    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+                             @RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
 
-        controllerService.longParser(reservationIdP);
+        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("menu/fullMenu");
+        final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
+        List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
+        restaurant.setDishes(dishes);
 
         //Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
@@ -60,12 +65,15 @@ public class MenuController {
 
         List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
 
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("restaurant", restaurant);
-        mav.addObject("dish", rs.getRestaurantDishes(1));
+//        mav.addObject("dish", dishes);
         mav.addObject("customer", customer);
+        mav.addObject("categories", DishCategory.getAsList());
+        mav.addObject("currentCategory", DishCategory.valueOf(category));
 
         mav.addObject("reservation", reservation);
 
@@ -85,7 +93,7 @@ public class MenuController {
     @RequestMapping(value= "/menu/applyDiscount/{reservationId}", method = RequestMethod.POST)
     public ModelAndView applyDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP);
+        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.applyDiscount(reservationId);
@@ -95,7 +103,7 @@ public class MenuController {
     @RequestMapping(value= "/menu/cancelDiscount/{reservationId}", method = RequestMethod.POST)
     public ModelAndView cancelDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP);
+        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.cancelDiscount(reservationId);

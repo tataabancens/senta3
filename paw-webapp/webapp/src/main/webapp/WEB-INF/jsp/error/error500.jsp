@@ -27,21 +27,18 @@
     <div class="col s4 offset-s4 center margin-top">
         <div class="card restaurant-card">
             <div class="card-content white-text">
-                <div>
-                    <p class="card-title title text price center">OOPS</p>
-                </div>
-                <div>
-                    <p class="card-title text">Error 500, algo salió mal</p>
-                </div>
-                <div>
-                    <p class="title2">No te preocupes,</p>
-                    <p class="title2">tu información no se perdió</p>
-                </div>
-                <div class="center">
-
-                    <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>">Volver</a>
-                </div>
-            </div>
+        <div>
+            <p class="card-title title text price center"><spring:message code="Error.title"/></p>
+        </div>
+        <div>
+            <p class="card-title text"><spring:message code="Error.500"/></p>
+        </div>
+        <div>
+            <p class="title2"><spring:message code="Error.dontworry"/></p>
+        </div>
+        <div class="center">
+            <c:url value="/"/>
+            <a class="waves-effect waves-light btn reservation-btn" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
         </div>
     </div>
 

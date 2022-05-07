@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.ReservationStatus;
+
 import java.sql.Timestamp;
 
 public class Reservation {

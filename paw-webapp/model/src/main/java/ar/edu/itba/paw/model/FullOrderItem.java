@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.model;
 
-import java.util.Objects;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 
 public class FullOrderItem {
 

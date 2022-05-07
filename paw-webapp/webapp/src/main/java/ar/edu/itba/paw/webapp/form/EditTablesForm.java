@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class EditTablesForm {
 
     @Size(min = 1, max = 4)
-    @Pattern(regexp = "[1-9][0-9]+")
+    @Pattern(regexp = "[0-9]+")
     String tableQty;
 
     @Size(min = 0, max = 2)

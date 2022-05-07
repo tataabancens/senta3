@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,10 +68,6 @@ public class ReservationJdbcDao implements ReservationDao {
                                                     new Object[]{id}, ROW_MAPPER_RESERVATION);
         return query.stream().findFirst();
     }
-
-
-
-
 
     @Override
     public List<FullReservation> getReservationsByCustomerId(long customerId) {
@@ -292,7 +290,20 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<FullReservation> getAllReservations(long restaurantId) {
         List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ? " +
-                        "ORDER BY reservationId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                        "ORDER BY reservationStatus OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
+        return query;
+    }
+
+    @Override
+    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus) {
+        String filterStatusString = "";
+        if(!Objects.equals(filterStatus, "")){
+            filterStatusString = " AND reservationStatus = " + filterStatus;
+        }
+
+        List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ?" + filterStatusString +
+                        " ORDER BY " + orderBy + " " + direction + " OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }

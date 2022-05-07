@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS dish (
 );
 
 ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
+ALTER TABLE dish ADD IF NOT EXISTS category varchar(100) DEFAULT 'MAIN_DISH' NOT NULL;
 
 
 CREATE TABLE IF NOT EXISTS reservation (

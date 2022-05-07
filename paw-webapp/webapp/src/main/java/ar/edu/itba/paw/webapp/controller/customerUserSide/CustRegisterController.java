@@ -1,12 +1,12 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Roles;
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
-import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 public class CustRegisterController {
@@ -50,7 +49,7 @@ public class CustRegisterController {
                                      @PathVariable("reservationId") final String reservationIdP,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
-        ModelAndView mav = new ModelAndView("CustomerRegisterShort");
+        ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
         mav.addObject("customerId", customerIdP);
         mav.addObject("reservationId", reservationIdP);
 
@@ -63,7 +62,7 @@ public class CustRegisterController {
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
                                           HttpServletRequest request) throws Exception{
-        controllerService.longParser(customerIdP);
+        controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
         long customerId = Long.parseLong(customerIdP);
 
         if (errors.hasErrors()){
@@ -82,7 +81,7 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
 
-        return new ModelAndView("CustomerRegister");
+        return new ModelAndView("customerViews/CustomerRegister");
     }
 
 

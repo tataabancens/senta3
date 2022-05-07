@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<Dish> getRestaurantDishes(long id) {
         return restaurantDao.getRestaurantDishes(id);
+    }
+
+    @Override
+    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
+        return restaurantDao.getRestaurantDishesByCategory(restaurantId, category);
     }
 
     @Override

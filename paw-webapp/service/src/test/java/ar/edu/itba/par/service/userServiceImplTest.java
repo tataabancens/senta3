@@ -1,11 +1,10 @@
 package ar.edu.itba.par.service;
 
-import ar.edu.itba.paw.model.Roles;
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
 import ar.edu.itba.paw.service.UserServiceImpl;
 import org.junit.Assert;
-import org.junit.Before;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
