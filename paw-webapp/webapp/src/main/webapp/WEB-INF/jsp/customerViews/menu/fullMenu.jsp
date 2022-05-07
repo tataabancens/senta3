@@ -77,14 +77,6 @@
                                 </button>
                             </c:if>
                         </a>
-                        <!--<li class="filter-option">
-                            <form action="">
-                                <label>
-                                    <input type="checkbox" class="filled-in"  />
-                                    <span class="text description"><c:out value="${category.spanishDescr}"/></span>
-                                </label>
-                            </form>
-                        </li>-->
                     </c:forEach>
                 </ul>
             </div>
