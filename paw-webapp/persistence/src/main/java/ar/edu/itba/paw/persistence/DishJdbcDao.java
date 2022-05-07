@@ -96,7 +96,7 @@ public class DishJdbcDao implements DishDao {
                         "                           group by dishid, reservation.reservationid)\n" +
                         "          group by customersOrdered.dishId))\n" +
                         "select *\n" +
-                        "from dish where dishid = (SELECT defDishId\n" +
+                        "from dish where dishid = (SELECT max(defDishId)\n" +
                         "                            FROM CTE\n" +
                         "                            where defSum >= ALL (select defsum\n" +
                         "                                                from CTE))",
