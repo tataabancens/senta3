@@ -2,6 +2,8 @@ package ar.edu.itba.paw.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class ControllerServiceImpl implements ControllerService {
 
@@ -27,6 +29,13 @@ public class ControllerServiceImpl implements ControllerService {
             } catch (NumberFormatException e) {
                 throw new Exception(str[2] + " is not a number");
             }
+        }
+    }
+
+    @Override
+    public void orderByParser(String string) throws Exception {
+        if(!Objects.equals(string, "reservationid") && !Objects.equals(string, "customerid") && !Objects.equals(string, "qpeople") && !Objects.equals(string, "reservationhour")){
+            throw new Exception("cant order by " + string);
         }
     }
 

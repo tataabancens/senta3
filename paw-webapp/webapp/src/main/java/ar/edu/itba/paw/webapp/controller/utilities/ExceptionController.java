@@ -42,5 +42,12 @@ public class ExceptionController {
         return new ModelAndView("error/imageNotFound");
     }
 
+/*
+    @ExceptionHandler(OrderByException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView handleOrderByException(){
+        return new ModelAndView("error/imageNotFound");
+    }
+ */
 
 }

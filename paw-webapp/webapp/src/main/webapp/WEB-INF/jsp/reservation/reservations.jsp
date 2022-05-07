@@ -28,10 +28,10 @@
     <table class="reservations">
         <thead>
         <tr>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3><a href="?orderBy=reservationid">^</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3><a href="?orderBy=customerid">^</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3><a href="?orderBy=qpeople">^</a><a href="orderBy=qpeople">^</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3><a href="?orderBy=reservationhour">^</a></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.confirm"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.cancel"/></h3></th>

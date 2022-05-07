@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class RestReservationController {
 
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/reservations");
     }
-
+/*
     @RequestMapping(value = "/restaurant={restaurantId}/reservations")
     public ModelAndView reservations(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
@@ -76,6 +77,29 @@ public class RestReservationController {
         mav.addObject("restaurant", restaurant);
 
         List<FullReservation> reservations = res.getAllReservations(restaurantId);
+        mav.addObject("reservations", reservations);
+
+        res.checkReservationTime();
+
+        return mav;
+    }
+ */
+
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
+    public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
+                                            @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy) throws Exception {
+
+        controllerService.orderByParser(orderBy);
+        controllerService.longParser(restaurantIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("reservation/reservations");
+        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy);
+
         mav.addObject("reservations", reservations);
 
         res.checkReservationTime();

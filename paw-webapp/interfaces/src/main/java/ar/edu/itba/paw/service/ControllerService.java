@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface ControllerService {
 
     void longParser(Object... str) throws Exception;
+
+    void orderByParser(String string) throws Exception;
 }
