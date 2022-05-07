@@ -8,13 +8,22 @@ body{
 .text{
     font-family: "Segoe UI", Lato, sans-serif;
     font-weight: normal;
-    font-size: 21px;
+    font-size: clamp(0.1rem,.3rem,.8rem);
     color: #463f3f;
+}
+.text.description{
+    font-family: 'Quicksand',sans-serif;
+    font-weight: 600;
+    font-size: medium;
 }
 .presentation-text{
     font-family:'Nunito',sans-serif;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: clamp(0.7rem,1rem,1.3rem);
+}
+.text.price{
+    font-weight: 600;
+    font-size: clamp(0.7rem,1rem,1.4rem);
 }
 .row{
     margin-bottom: 0;

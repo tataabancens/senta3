@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,7 +145,7 @@
         background-color: rgb(255, 242, 229);
     }
     .dish-card{
-        max-width: 38%;
+        width: 38%;
     }
     .restaurant-content{
         margin-top: 30px;
@@ -154,20 +154,7 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-    .presentation-text{
-        font-family:'Nunito',sans-serif;
-        font-weight: 700;
-        font-size: 1.3rem;
-    }
-    .text.description{
-        font-family: 'Quicksand',sans-serif;
-        font-weight: 600;
-        font-size: 1rem;
-    }
-    .text.price{
-        font-weight: 600;
-        font-size: 1.4rem;
-    }
+
 
     @media screen and (max-width: 1068px){
         .dish-card{

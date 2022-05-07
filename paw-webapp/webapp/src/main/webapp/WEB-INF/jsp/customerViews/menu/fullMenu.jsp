@@ -65,30 +65,30 @@
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                 <ul>
                     <c:forEach var="category" items="${categories}">
-                        <li class="filter-option">
+                        <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                            <c:if test="${currentCategory.description == category.description}">
+                                <button class="waves-effect waves-light btn confirm-btn text description">
+                                    <c:out value="${category.spanishDescr}"/>
+                                </button>
+                            </c:if>
+                            <c:if test="${currentCategory.description != category.description}">
+                                <button class="waves-effect waves-light btn confirm-btn text description">
+                                    <c:out value="${category.spanishDescr}"/>
+                                </button>
+                            </c:if>
+                        </a>
+                        <!--<li class="filter-option">
                             <form action="">
                                 <label>
                                     <input type="checkbox" class="filled-in"  />
                                     <span class="text description"><c:out value="${category.spanishDescr}"/></span>
                                 </label>
                             </form>
-                        </li>
+                        </li>-->
                     </c:forEach>
                 </ul>
             </div>
         </div>
-        <!--<div class="card client-actions">
-            <span class="main-title center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
-            <c:if test="${canOrderReceipt}">
-                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
-            </c:if>
-            <c:if test="${!canOrderReceipt}">
-                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Fullmenu.receipt"/></a>
-            </c:if>
-            <div class="center div-padding">
-                <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
-            </div>
-        </div>-->
         <sec:authorize access="isAuthenticated()">
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
@@ -169,11 +169,12 @@
             </div>
         </div>
     </div>
-    <div class="dishList">
-        <div class="presentation-text title restaurant-title">
+    <div class="dish-categories">
+        <div>
             <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
         </div>
-        <c:forEach var="dish" items="${restaurant.dishes}">
+        <div class="dishList">
+            <c:forEach var="dish" items="${restaurant.dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
                     <div class="dish-card">
                         <div class="dish-img">
@@ -222,7 +223,8 @@
                         </div>
                     </a>
                 </c:if>
-        </c:forEach>
+            </c:forEach>
+        </div>
     </div>
 </div>
 
@@ -243,6 +245,11 @@
         width: 26%;
         height: 100%;
     }
+    .dish-categories{
+        display: flex;
+        flex-direction: column;
+        width: 74%;
+    }
     .client-actions{
         display: flex;
         flex-direction: column;
@@ -251,20 +258,6 @@
     }
     .card.filter-box{
         width: 60%;
-    }
-    .presentation-text{
-        font-family:'Nunito',sans-serif;
-        font-weight: 700;
-        font-size: 1.3rem;
-    }
-    .text.description{
-        font-family: 'Quicksand',sans-serif;
-        font-weight: 600;
-        font-size: 1rem;
-    }
-    .text.price{
-        font-weight: 600;
-        font-size: 1.4rem;
     }
     i{
         color: black;
@@ -276,10 +269,8 @@
     }
     .dishList{
         display: flex;
-        justify-self: flex-start;
-        justify-content: center;
         flex-wrap: wrap;
-        width: 65%;
+        width: 100%;
         height: 100%;
     }
     .card{
@@ -314,7 +305,6 @@
         min-height: 250px;
         padding: 20px;
         width: 100%;
-        margin: 8px;
     }
     .order-headers{
         display: flex;
@@ -348,7 +338,7 @@
         transform: scale(1.1);
     }
     .dish-card{
-        width:58%
+        width:38%;
     }
     .order-btn-row{
         width: 100%;
@@ -365,17 +355,42 @@
         justify-content: center;
     }
 
-    .order-card{
-        width: 100%;
-    }
-
     #original-price{
         text-decoration: line-through;
     }
     #discounted-price{
         color: blue;
     }
+    @media screen and (max-width: 1068px){
+        .dish-card{
+            max-width: 80rem;
+        }
+        .dish-img{
+            min-width: 20rem;
+            max-height: 20rem;
+        }
+    }
+    @media screen and (max-width: 868px){
+        .dish-card{
+            padding: 2.5rem;
+            flex-direction: column;
+        }
+        .dish-img{
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
 
+    @media screen and (max-width: 768px){
+        .dish-card{
+            padding: 2.5rem;
+            flex-direction: column;
+        }
+        .dish-img{
+            min-width: 90%;
+            max-width: 90%;
+        }
+    }
 
 </style>
 
