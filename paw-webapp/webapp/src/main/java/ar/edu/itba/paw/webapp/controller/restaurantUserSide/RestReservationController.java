@@ -39,7 +39,7 @@ public class RestReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("reservation/cancelReservationConfirmation");
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/cancelReservationConfirmation");
         mav.addObject("reservationId", reservationId);
         mav.addObject("restaurantId", restaurantId);
 
@@ -63,26 +63,6 @@ public class RestReservationController {
 
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/reservations");
     }
-/*
-    @RequestMapping(value = "/restaurant={restaurantId}/reservations")
-    public ModelAndView reservations(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        final ModelAndView mav = new ModelAndView("reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        mav.addObject("restaurant", restaurant);
-
-        List<FullReservation> reservations = res.getAllReservations(restaurantId);
-        mav.addObject("reservations", reservations);
-
-        res.checkReservationTime();
-
-        return mav;
-    }
- */
-
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
@@ -96,7 +76,7 @@ public class RestReservationController {
         controllerService.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("reservation/reservations");
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
@@ -133,7 +113,7 @@ public class RestReservationController {
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
-        ModelAndView mav = new ModelAndView("order/receipt");
+        ModelAndView mav = new ModelAndView("restaurantViews/order/receipt");
 
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("orderItems", orderItems);

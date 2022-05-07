@@ -49,7 +49,7 @@ public class CustRegisterController {
                                      @PathVariable("reservationId") final String reservationIdP,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
-        ModelAndView mav = new ModelAndView("CustomerRegisterShort");
+        ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
         mav.addObject("customerId", customerIdP);
         mav.addObject("reservationId", reservationIdP);
 
@@ -81,7 +81,7 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
 
-        return new ModelAndView("CustomerRegister");
+        return new ModelAndView("customerViews/CustomerRegister");
     }
 
 

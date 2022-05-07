@@ -41,7 +41,7 @@ public class RestOrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("order/orders");
+        final ModelAndView mav = new ModelAndView("restaurantViews/order/orders");
         List<Reservation> reservations = res.getReservationsSeated(restaurantId);
 
         for (Reservation reservation : reservations) {

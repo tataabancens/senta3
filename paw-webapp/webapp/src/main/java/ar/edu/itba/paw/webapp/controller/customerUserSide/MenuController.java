@@ -38,7 +38,7 @@ public class MenuController {
     @RequestMapping("/")
     public ModelAndView helloWorld() {
 
-        final ModelAndView mav = new ModelAndView("menu/menu");
+        final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
@@ -53,7 +53,7 @@ public class MenuController {
         controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("menu/fullMenu");
+        final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         restaurant.setDishes(dishes);

@@ -45,7 +45,7 @@ public class OrderController {
         long reservationId = Long.parseLong(reservationIdP);
         long dishId = Long.parseLong(dishIdP);
 
-        final ModelAndView mav = new ModelAndView("order/orderItem");
+        final ModelAndView mav = new ModelAndView("customerViews/order/orderItem");
 
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
@@ -85,7 +85,7 @@ public class OrderController {
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("order/order");
+        final ModelAndView mav = new ModelAndView("customerViews/order/order");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
@@ -110,7 +110,7 @@ public class OrderController {
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
 
-        final ModelAndView mav = new ModelAndView("order/completeOrder");
+        final ModelAndView mav = new ModelAndView("customerViews/order/completeOrder");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
@@ -152,7 +152,7 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderItems.size() > 0);
 
-        final ModelAndView mav = new ModelAndView("order/receipt");
+        final ModelAndView mav = new ModelAndView("restaurantViews/order/receipt");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
@@ -194,7 +194,7 @@ public class OrderController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
-        final ModelAndView mav = new ModelAndView("order/receiptConfirmed");
+        final ModelAndView mav = new ModelAndView("customerViews/order/receiptConfirmed");
         mav.addObject("restaurant", restaurant);
         mav.addObject("points", pointsP);
 
