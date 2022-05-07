@@ -28,21 +28,22 @@
         <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
             <div class="card card-content">
                 <div class="title">
-                    <span class="main-title">Iniciar sesion</span>
+                    <span class="main-title"><spring:message code="Register.login"/></span>
                 </div>
             <div>
-                <label for="username">Usuario: </label>
+                <label for="username"><spring:message code="Register.user"/> </label>
                 <input id="username" name="username" type="text"/>
             </div>
             <div>
-                <label for="password">Contrasena: </label>
+                <label for="password"><spring:message code="Register.password"/></label>
                 <input id="password" name="password" type="password"/>
-                <a href=""><span>Olvide mi contraseña</span></a>
+                <!-- TODO cambiar -->
+                <a href=""><span>OLVIDE</span></a>
             </div>
             <div class="rememberme">
                 <label>
                     <input type="checkbox" class="filled-in blue" name="rememberme"/>
-                    <span>Permanecer conectado</span>
+                    <span><spring:message code="Register.rememberme"/></span>
                 </label>
             </div>
             <div class="row center smaller">

@@ -73,4 +73,6 @@ public interface ReservationService {
     List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
 
     long getRecommendedDishId(long reservationId);
+
+    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus);
 }
