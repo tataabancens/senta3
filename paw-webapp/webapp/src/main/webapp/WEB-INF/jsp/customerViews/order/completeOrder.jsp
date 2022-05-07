@@ -25,62 +25,65 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="page-container">
-    <c:if test="${isPresent}">
-        <div class="dish-card">
-            <div class="dish-img">
-                <c:if test="${recommendedDish.imageId > 0}">
-                    <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
-                </c:if>
-                <c:if test="${recommendedDish.imageId == 0}">
-                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                </c:if>
+    <div class="recommendations">
+        <c:if test="${isPresent}">
+            <h3 class="summary presentation-text">Otras personas tambien pidieron:</h3>
+            <div class="dish-card">
+                <div class="dish-img">
+                    <c:if test="${recommendedDish.imageId > 0}">
+                        <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
+                    </c:if>
+                    <c:if test="${recommendedDish.imageId == 0}">
+                        <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                    </c:if>
+                </div>
+                <div class="card-info">
+                    <span class="presentation-text"><c:out value="${recommendedDish.dishName}"/></span>
+                    <p class="text description"><c:out value="${recommendedDish.dishDescription}"/></p>
+                    <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
+                </div>
             </div>
-            <div class="card-info">
-                <span class="presentation-text"><c:out value="${recommendedDish.dishName}"/></span>
-                <p class="text description"><c:out value="${recommendedDish.dishDescription}"/></p>
-                <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
-            </div>
-        </div>
-    </c:if>
+        </c:if>
+    </div>
     <div class="card confirm-card">
         <div class="card-content wider-content center">
-            <span class="text main-title"><spring:message code="Completeorder.restaurant"/></span>
+            <span class="summary presentation-text"><spring:message code="Completeorder.restaurant"/></span>
             <div class="with-margin">
-                <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
+                <span class="summary presentation-text center"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="center">
-                <span class="title2 text center"><spring:message code="Order.title"/></span>
+                <span class="summary presentation-text"><spring:message code="Order.title"/></span>
             </div>
             <div class="summary">
                 <div class="titles">
                     <div class="dishname">
-                        <span class="title2 text"><spring:message code="Order.dish"/></span>
+                        <span class="summary presentation-text"><spring:message code="Order.dish"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.qty"/></span>
+                        <span class="summary presentation-text"><spring:message code="Order.qty"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.price"/></span>
+                        <span class=" summary presentation-text"><spring:message code="Order.price"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.total"/></span>
+                        <span class="summary presentation-text"><spring:message code="Order.total"/></span>
                     </div>
                 </div>
                 <hr class="solid-divider">
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
                         <div >
-                            <span class="items-title text"><c:out value="${orderItem.dishName}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.dishName}"/></span>
                         </div>
                         <div>
-                            <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.quantity}"/></span>
                         </div>
                         <div>
                             <fmt:formatNumber var="orderItemUnitPrice" type="number" value="${(orderItem.unitPrice * discountCoefficient)}" maxFractionDigits="2"/>
-                            <span class="items-title text">$<c:out value="${orderItemUnitPrice}"/></span>
+                            <span class="summary text description">$<c:out value="${orderItemUnitPrice}"/></span>
                         </div>
                         <div>
-                            <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                         </div>
                     </div>
                     <hr class="solid-divider">
@@ -90,11 +93,11 @@
 
                 <div class="titles">
                     <div >
-                        <p class="price"><spring:message code="Order.total"/></p>
+                        <p class="summary presentation-text"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price right "><c:out value="${totalPrice}"/></p>
+                        <p class="summary presentation-text right "><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
 
@@ -124,13 +127,18 @@
         margin-top: 20px;
         width: 100%;
     }
-
-
-    .card{
-        border-radius: 16px;
+    .recommendations{
+        width:50%;
     }
-
-
+    .dish-card{
+        width: 57%;
+    }
+    .summary.presentation-text{
+        font-size: clamp(1rem,2rem + 1vw, 2rem);
+    }
+    summary.text.description{
+        font-size: 1.2rem;
+    }
     .center{
         justify-content: center;
     }
@@ -143,7 +151,8 @@
     .page-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        padding: 2%;
+        justify-content: space-between;
     }
 
     .titles{
@@ -152,13 +161,11 @@
         margin-right: 10px;
     }
 
-    .confirm-card{
+    .card.confirm-card{
         display:flex;
         justify-content: center;
         width: 40%;
         max-width: 60%;
-        margin-left: 5%;
-        margin-right: 5%;
     }
 
     .wider-content{
