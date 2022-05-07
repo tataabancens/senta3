@@ -69,10 +69,6 @@ public class ReservationJdbcDao implements ReservationDao {
         return query.stream().findFirst();
     }
 
-
-
-
-
     @Override
     public List<FullReservation> getReservationsByCustomerId(long customerId) {
         List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer cross join restaurant WHERE " +
@@ -294,7 +290,7 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<FullReservation> getAllReservations(long restaurantId) {
         List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ? " +
-                        "ORDER BY reservationId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                        "ORDER BY reservationStatus OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }

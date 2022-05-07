@@ -25,7 +25,23 @@
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="page-container">
-
+    <c:if test="${isPresent}">
+        <div class="dish-card">
+            <div class="dish-img">
+                <c:if test="${recommendedDish.imageId > 0}">
+                    <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
+                </c:if>
+                <c:if test="${recommendedDish.imageId == 0}">
+                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                </c:if>
+            </div>
+            <div class="card-info">
+                <span class="presentation-text"><c:out value="${recommendedDish.dishName}"/></span>
+                <p class="text description"><c:out value="${recommendedDish.dishDescription}"/></p>
+                <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
+            </div>
+        </div>
+    </c:if>
     <div class="card confirm-card">
         <div class="card-content wider-content center">
             <span class="text main-title">Estas realizando un pedido en</span>

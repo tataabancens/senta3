@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistance;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.enums.DishCategory;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface DishDao {
@@ -17,4 +16,6 @@ public interface DishDao {
     void updateDishPhoto(long dishId, long imageId);
 
     void deleteDish(long dishId);
+
+    Dish getRecommendedDish(long reservationId);
 }
