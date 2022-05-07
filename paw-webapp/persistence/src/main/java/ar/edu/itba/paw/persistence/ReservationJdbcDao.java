@@ -296,15 +296,15 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus) {
+    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
         String filterStatusString = "";
         if(!Objects.equals(filterStatus, "")){
             filterStatusString = " AND reservationStatus = " + filterStatus;
         }
 
         List<FullReservation> query = jdbcTemplate.query("SELECT * FROM reservation NATURAL JOIN customer CROSS JOIN RESTAURANT WHERE restaurant.restaurantId = ?" + filterStatusString +
-                        " ORDER BY " + orderBy + " " + direction + " OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
-                new Object[]{restaurantId}, ROW_MAPPER_FULL_RESERVATION);
+                        " ORDER BY " + orderBy + " " + direction + " OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY",
+                new Object[]{restaurantId, Math.abs((page-1)*10)}, ROW_MAPPER_FULL_RESERVATION);
         return query;
     }
 

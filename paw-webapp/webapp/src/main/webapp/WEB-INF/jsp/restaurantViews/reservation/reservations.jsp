@@ -121,6 +121,13 @@
         </tbody>
     </table>
 </div>
+<div class="row">
+    <div class="col"><a href="?page=1">1</a></div>
+    <div class="col"><a href="?page=2">2</a></div>
+    <div class="col"><a href="?page=3">3</a></div>
+    <div class="col"><a href="?page=4">4</a></div>
+</div>
+
 </body>
 </html>
 
