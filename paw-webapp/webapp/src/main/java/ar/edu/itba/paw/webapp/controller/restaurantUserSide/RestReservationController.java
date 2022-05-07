@@ -86,18 +86,20 @@ public class RestReservationController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
-                                            @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy) throws Exception {
+                                            @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                            @RequestParam(value = "direction", defaultValue = "ASC") final String direction) throws Exception {
 
 
         controllerService.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
         controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        controllerService.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("reservation/reservations");
         Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
-        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy);
+        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction);
 
         mav.addObject("reservations", reservations);
 

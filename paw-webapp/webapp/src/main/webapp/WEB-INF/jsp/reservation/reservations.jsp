@@ -28,11 +28,11 @@
     <table class="reservations">
         <thead>
         <tr>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3><a href="?orderBy=reservationid">^</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3><a href="?orderBy=customerid">^</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3><a href="?orderBy=qpeople">^</a><a href="orderBy=qpeople">^</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3><a href="?orderBy=reservationhour">^</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3><a href="?orderBy=reservationid&direction=DESC">↓</a>----------<a href="?orderBy=reservationid&direction=ASC">↑</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3><a href="?orderBy=customerid&direction=DESC">↓</a>----------<a href="?orderBy=customerid&direction=ASC">↑</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3><a href="?orderBy=qpeople&direction=DESC">↓</a>----------<a href="?orderBy=qpeople&direction=ASC">↑</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3><a href="?orderBy=reservationhour&direction=DESC">↓</a>----------<a href="?orderBy=reservationhour&direction=ASC">↑</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3><a href="?orderBy=reservationstatus&direction=DESC">↓</a>----------<a href="?orderBy=reservationstatus&direction=ASC">↑</a></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.confirm"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.cancel"/></h3></th>
         </tr>

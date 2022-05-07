@@ -55,6 +55,6 @@ public interface ReservationDao {
 
     List<FullOrderItem> getAllOrderItems();
 
-    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy);
+    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction);
 }
 
