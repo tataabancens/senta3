@@ -28,7 +28,7 @@
 </head>
 <body >
 <a id="full-menu"></a>
-<%@ include file="../../components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 
 <div class="restaurant-header">
     <div class="restaurant-info">
@@ -40,7 +40,7 @@
                 <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
             </div>
             <div class="presentation-text restaurant-description">
-                <span><spring:message code="Fullmenu.phone"/> </span>
+                <span>Telefono: </span>
                 <span><c:out value="${restaurant.phone}"/></span>
             </div>
         </div>
@@ -50,34 +50,52 @@
     <div class="orders-and-info">
         <div class="card filter-box">
             <div class="client-actions">
-                <span class="presentation-text"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
-                <c:if test="${canOrderReceipt}">
-                    <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
-                </c:if>
-                <c:if test="${!canOrderReceipt}">
-                    <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
-                </c:if>
-                <div class="center div-padding">
-                    <a class="waves-effect waves-light btn confirm-btn red text description " href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                <span class="presentation-text">Tu número de reserva es: <c:out value="${reservation.reservationId}"/></span>
+                <div>
+                    <c:if test="${canOrderReceipt}">
+                        <a class="waves-effect waves-light btn confirm-btn text description" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cuenta</a>
+                    </c:if>
+                    <c:if test="${!canOrderReceipt}">
+                        <a disabled class="waves-effect waves-light btn confirm-btn text description" href="">Cuenta</a>
+                    </c:if>
+                    <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Cancelar Reserva</a>
                 </div>
             </div>
             <div>
-                <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
+                <span class="presentation-text">Filtrar</span>
                 <ul>
-                    <c:forEach var="category" items="${categories}">
-                        <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
-                            <c:if test="${currentCategory.description == category.description}">
-                                <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
-                                </button>
-                            </c:if>
-                            <c:if test="${currentCategory.description != category.description}">
-                                <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
-                                </button>
-                            </c:if>
-                        </a>
-                    </c:forEach>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Entradas</span>
+                            </label>
+                        </form>
+                    </li>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Plato principal</span>
+                            </label>
+                        </form>
+                    </li>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Postre</span>
+                            </label>
+                        </form>
+                    </li>
+                    <li class="filter-option">
+                        <form action="">
+                            <label>
+                                <input type="checkbox" class="filled-in"  />
+                                <span class="text description">Opcion 4</span>
+                            </label>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -85,44 +103,44 @@
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
                     <div class="card client-actions">
-                        <span class="main-title center"><spring:message code="Fullmenu.discount"/></span>
+                        <span class="main-title center">Tenes un descuento a tu favor!</span>
                         <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
-                            <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn text description ">
+                            <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn text description">
                         </form:form>
                     </div>
                 </c:if>
             </c:if>
             <c:if test="${reservation.reservationDiscount}">
                 <div class="card client-actions">
-                    <span class="main-title center"><spring:message code="Fullmenu.discount.apply"/></span>
+                    <span class="main-title center">Aplicaste un descuento del 15%!</span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
-                        <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn text description ">
+                        <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn text description">
                     </form:form>
                 </div>
             </c:if>
         </sec:authorize>
         <div class="orderList">
             <div class="card order-card">
-                <span class="presentation-text"><spring:message code="Order.title"/></span>
+                <span class="presentation-text">Resumen de tu pedido:</span>
                 <div class="order-headers">
-                    <span class="presentation-text"><spring:message code="Order.dish"/></span>
-                    <span class="presentation-text"><spring:message code="Order.qty"/></span>
-                    <span class="presentation-text"><spring:message code="Order.total"/></span>
+                    <span class="presentation-text">Plato</span>
+                    <span class="presentation-text">Cantidad</span>
+                    <span class="presentation-text">Subtotal</span>
                 </div>
                 <hr class="solid-divider">
                 <div class="order-info">
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="order-item">
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dishName}"/></span></div>
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
+                            <div class="order-field center"><span class="items-title text description"><c:out value="${orderItem.dishName}"/></span></div>
+                            <div class="order-field center"><span class="items-title center text description"><c:out value="${orderItem.quantity}"/></span></div>
                             <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
+                            <div class="order-field center"><span class="items-title center text description"><c:out value="${orderItemPrice}"/></span></div>
                             <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
                                 <!--<a href=""><i class="material-icons clear-symbol">clear</i></a>-->
-                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
+                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red text description">
                             </form:form>
                         </div>
                         <hr class="solid-divider">
@@ -130,11 +148,11 @@
                 </div>
                 <div class="order-total">
                     <div>
-                        <p class="presentation-text">Total</p>
+                        <p class="price presentation-text">Total</p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="presentation-text right"><c:out value="${totalPrice}"/></p>
+                        <p class="price right presentation-text"><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
                 <div class="order-btn-row">
@@ -146,27 +164,23 @@
                             </form:form>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn red text description "><spring:message code="Order.empty"/></a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn red text description">Vaciar pedido</a>
                         </c:if>
                     </div>
                     <div>
                         <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green text description " href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
+                            <a class="waves-effect waves-light btn confirm-btn green text description" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn green text description "><spring:message code="Button.continue"/></a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn green text description">Continuar</a>
                         </c:if>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="dish-categories">
-        <div>
-            <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
-        </div>
-        <div class="dishList">
-            <c:forEach var="dish" items="${restaurant.dishes}">
+    <div class="dishList">
+        <c:forEach var="dish" items="${restaurant.dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
                     <div class="dish-card">
                         <div class="dish-img">
@@ -215,8 +229,7 @@
                         </div>
                     </a>
                 </c:if>
-            </c:forEach>
-        </div>
+        </c:forEach>
     </div>
 </div>
 
@@ -225,7 +238,15 @@
 </html>
 
 <style>
-
+    .card.filter-box{
+        width: 60%;
+    }
+    .client-actions{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5%;
+        align-items: center;
+    }
     .page-container{
         padding: 1%;
         display: flex;
@@ -237,19 +258,19 @@
         width: 26%;
         height: 100%;
     }
-    .dish-categories{
-        display: flex;
-        flex-direction: column;
-        width: 74%;
+    .presentation-text{
+        font-family:'Nunito',sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
     }
-    .client-actions{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 5%;
+    .text.description{
+        font-family: 'Quicksand',sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
     }
-    .card.filter-box{
-        width: 60%;
+    .text.price{
+        font-weight: 600;
+        font-size: 1.4rem;
     }
     i{
         color: black;
@@ -261,27 +282,11 @@
     }
     .dishList{
         display: flex;
+        justify-self: flex-start;
+        justify-content: center;
         flex-wrap: wrap;
-        width: 100%;
+        width: 65%;
         height: 100%;
-    }
-    .card{
-        border-radius: 16px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .card.client-actions{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding: 10px;
-        min-height: 150px;
-        max-height: 250px;
-        min-width: 30%;
-        width: 100%;
     }
     .orderList{
         width: 100%;
@@ -297,6 +302,7 @@
         min-height: 250px;
         padding: 20px;
         width: 100%;
+        margin: 8px;
     }
     .order-headers{
         display: flex;
@@ -330,7 +336,7 @@
         transform: scale(1.1);
     }
     .dish-card{
-        width:38%;
+        width:58%
     }
     .order-btn-row{
         width: 100%;
@@ -340,11 +346,12 @@
     .center{
         justify-self: center;
     }
-    .div-padding{
-        padding: 8px;
-    }
     .center{
         justify-content: center;
+    }
+
+    .order-card{
+        width: 100%;
     }
 
     #original-price{
@@ -353,36 +360,7 @@
     #discounted-price{
         color: blue;
     }
-    @media screen and (max-width: 1068px){
-        .dish-card{
-            max-width: 80rem;
-        }
-        .dish-img{
-            min-width: 20rem;
-            max-height: 20rem;
-        }
-    }
-    @media screen and (max-width: 868px){
-        .dish-card{
-            padding: 2.5rem;
-            flex-direction: column;
-        }
-        .dish-img{
-            min-width: 100%;
-            max-width: 100%;
-        }
-    }
 
-    @media screen and (max-width: 768px){
-        .dish-card{
-            padding: 2.5rem;
-            flex-direction: column;
-        }
-        .dish-img{
-            min-width: 90%;
-            max-width: 90%;
-        }
-    }
 
 </style>
 

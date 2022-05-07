@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html lang="es">
+<html lang="en">
     <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,19 +24,19 @@
     </head>
     <body>
         <div class="row">
-            <%@ include file="../../components/navbar.jsp" %>
+            <%@ include file="../components/navbar.jsp" %>
         </div>
         <div class="restaurant-header">
             <div class="restaurant-info" style="background-color: rgb(255, 242, 229);">
                 <div>
-                    <i class="medium material-icons">restaurant</i>
+                    <i class="medium material-icons restaurant-icon">restaurant</i>
                 </div>
                 <div>
                     <div class="presentation-text title restaurant-title">
                         <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
                     </div>
                     <div class="presentation-text restaurant-description">
-                        <span><spring:message code="Fullmenu.phone"/> </span>
+                        <span>Telefono: </span>
                         <span><c:out value="${restaurant.phone}"/></span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
             <div class="restaurant-content">
                 <div class="left-section">
                     <div class="card client-actions center">
-                        <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
+                        <span class="presentation-text box-comments">Para hacer una reserva:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
@@ -57,29 +57,29 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.new"/></a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Reservar</a>
                             </div>
                         </sec:authorize>
-                        <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
+                        <span class="presentation-text box-comments">Si ya tenes una:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
-                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
-                                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.exists"/></a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Ingresar</a>
                             </div>
                         </sec:authorize>
                     </div>
                     <div class="card filter-box">
-                        <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
+                        <span class="presentation-text">Filtrar</span>
                         <ul>
                             <li class="filter-option">
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option1"/></span>
+                                        <span class="text description">Entradas</span>
                                     </label>
                                 </form>
                             </li>
@@ -87,7 +87,7 @@
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option2"/></span>
+                                        <span class="text description">Plato principal</span>
                                     </label>
                                 </form>
                             </li>
@@ -95,7 +95,7 @@
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option3"/></span>
+                                        <span class="text description">Postre</span>
                                     </label>
                                 </form>
                             </li>
@@ -103,7 +103,7 @@
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option4"/></span>
+                                        <span class="text description">Opcion 4</span>
                                     </label>
                                 </form>
                             </li>
@@ -145,7 +145,7 @@
         background-color: rgb(255, 242, 229);
     }
     .dish-card{
-        width: 38%;
+        max-width: 38%;
     }
     .restaurant-content{
         margin-top: 30px;
@@ -154,8 +154,20 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-
-
+    .presentation-text{
+        font-family:'Nunito',sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+    .text.description{
+        font-family: 'Quicksand',sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    .text.price{
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
     @media screen and (max-width: 1068px){
         .dish-card{
             max-width: 80rem;
@@ -189,7 +201,7 @@
     .presentation-text.box-comments{
         color: #171616;
     }
-    i{
+    .restaurant-icon{
         color: rgb(255, 68, 31);
         margin-right: 25px;
     }
@@ -203,24 +215,15 @@
         justify-content: center;
         max-width: 200px;
     }
-    .card{
-        display: flex;
-        border-radius: 16px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: center;
-    }
     .card.client-actions{
         flex-direction: column;
         justify-content: space-evenly;
-        background-color: white;
+        background-color: whitesmoke;
         padding: 10px;
         min-height: 150px;
         max-height: 250px;
         width: 100%;
     }
-
     .left-section{
         display: flex;
         flex-direction: column;
@@ -236,4 +239,20 @@
 
 
 </style>
-
+<script type="text/javascript" src="js/materialize.min.js">
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>

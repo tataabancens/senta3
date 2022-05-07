@@ -203,8 +203,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus) {
-        return reservationDao.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus);
+    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
+        return reservationDao.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, page);
     }
 
     @Override
@@ -367,4 +367,10 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
     }
 
+    @Override
+    public boolean isFromOrder(String isFromOrderP) {
+        if (isFromOrderP.compareTo("true") == 0)
+            return true;
+        return false;
+    }
 }

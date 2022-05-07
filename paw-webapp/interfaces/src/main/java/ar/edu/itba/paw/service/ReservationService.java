@@ -74,5 +74,7 @@ public interface ReservationService {
 
     long getRecommendedDishId(long reservationId);
 
-    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus);
+    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
+
+    boolean isFromOrder(String isFromOrderP);
 }

@@ -43,8 +43,7 @@
             <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3><a href="?orderBy=qpeople&direction=DESC">↓</a>----------<a href="?orderBy=qpeople&direction=ASC">↑</a></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3><a href="?orderBy=reservationhour&direction=DESC">↓</a>----------<a href="?orderBy=reservationhour&direction=ASC">↑</a></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3><a href="?orderBy=reservationstatus&direction=DESC">↓</a>----------<a href="?orderBy=reservationstatus&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.confirm"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.cancel"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.actions"/></h3></th>
         </tr>
         </thead>
         <tbody>
@@ -66,8 +65,6 @@
                                 <i class="material-icons">check_circle</i>
                             </button>
                         </form:form>
-                    </td>
-                    <td data-label="Cancelar" class="table-cell">
                         <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn-floating large red">
                             <i class="material-icons">cancel</i>
                         </a>
@@ -83,9 +80,6 @@
                             </button>
                         </form:form>
                     </td>
-                    <td data-label="Cancelar" class="table-cell">
-
-                    </td>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
@@ -97,16 +91,10 @@
                             </button>
                         </form:form>
                     </td>
-                    <td data-label="Cancelar" class="table-cell">
-
-                    </td>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'CANCELED' }">
                     <td data-label="Confirmar" class="table-cell">
-
-                    </td>
-                    <td data-label="Cancelar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/removeCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <button type="submit" class="btn-floating large red">
@@ -121,6 +109,16 @@
         </tbody>
     </table>
 </div>
+<ul class="pagination">
+    <li class="disabled"><a href=""><i class="material-icons">chevron_left</i></a></li>
+    <li class="active"><a href="?page=1">1</a></li>
+    <li class="waves-effect"><a href="?page=2">2</a></li>
+    <li class="waves-effect"><a href="?page=3">3</a></li>
+    <li class="waves-effect"><a href="?page=4">4</a></li>
+    <li class="waves-effect"><a href="?page=5">5</a></li>
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+</ul>
+
 </body>
 </html>
 

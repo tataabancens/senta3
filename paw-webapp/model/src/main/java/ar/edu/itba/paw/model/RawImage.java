@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.model;
 
-import org.springframework.web.multipart.MultipartFile;
+//import org.springframework.web.multipart.MultipartFile;
 
 public class RawImage {
     private long imageId;
