@@ -367,4 +367,10 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
     }
 
+    @Override
+    public boolean isFromOrder(String isFromOrderP) {
+        if (isFromOrderP.compareTo("true") == 0)
+            return true;
+        return false;
+    }
 }

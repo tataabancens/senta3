@@ -39,26 +39,31 @@ public class OrderController {
     @RequestMapping(value = "/menu/orderItem", method = RequestMethod.GET)
     public ModelAndView addOrderItem(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                   @RequestParam(name = "dishId", defaultValue = "1") final String dishIdP,
+                                     @RequestParam(name = "isFromOrder", defaultValue = "false") final String isFromOrderP,
                                   @ModelAttribute("orderForm") final OrderForm form) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        controllerService.longParser(reservationIdP, dishIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
         long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("customerViews/order/orderItem");
 
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        boolean isFromOrder = res.isFromOrder(isFromOrderP);
+
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
         mav.addObject("reservationId", reservationId);
+        mav.addObject("isFromOrder", isFromOrder);
 
         return mav;
     }
     @RequestMapping(value = "/menu/orderItem", method = RequestMethod.POST)
     public ModelAndView addOrderItemForm(@RequestParam(name = "reservationId") final String reservationIdP,
                                             @RequestParam(name = "dishId") final String dishIdP,
+                                         @RequestParam(name = "isFromOrder", defaultValue = "false") final String isFromOrderP,
                                             @Valid @ModelAttribute("orderForm") final OrderForm form,
                                             final BindingResult errors) throws Exception {
         controllerService.longParser(reservationIdP, dishIdP).orElseThrow(() -> new LongParseException(""));
@@ -66,14 +71,17 @@ public class OrderController {
         long dishId = Long.parseLong(dishIdP);
 
         if (errors.hasErrors()) {
-            return addOrderItem(reservationIdP, dishIdP, form);
+            return addOrderItem(reservationIdP, dishIdP, isFromOrderP, form);
         }
-        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        boolean isFromOrder = res.isFromOrder(isFromOrderP);
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
 
         res.createOrderItemByReservationId(reservationId, dish, form.getOrderItem().getQuantity());
-        //Agregar a bd
 
+        if (isFromOrder) {
+            return new ModelAndView("redirect:/order/send-food?reservationId=" + reservationId + "&restaurantId=" + reservation.getRestaurantId());
+        }
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
 
@@ -107,7 +115,7 @@ public class OrderController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
-        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Dish recommendedDish = ds.getRecommendedDish(reservationId);
         boolean isPresent = ds.isPresent(recommendedDish);
 
@@ -117,7 +125,7 @@ public class OrderController {
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
-        mav.addObject("reservationId", reservationId);
+        mav.addObject("reservation", reservation);
         mav.addObject("isPresent", isPresent);
         mav.addObject("recommendedDish", recommendedDish);
 

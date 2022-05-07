@@ -26,7 +26,7 @@
 
 <div class="page-container">
     <c:if test="${isPresent}">
-        <div class="dish-card">
+        <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="dish-card">
             <div class="dish-img">
                 <c:if test="${recommendedDish.imageId > 0}">
                     <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
@@ -38,9 +38,16 @@
             <div class="card-info">
                 <span class="presentation-text"><c:out value="${recommendedDish.dishName}"/></span>
                 <p class="text description"><c:out value="${recommendedDish.dishDescription}"/></p>
-                <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
+                <c:if test="${reservation.reservationDiscount}">
+                    <span id="original-price" class="text price">$<c:out value="${(recommendedDish.price)}"/></span>
+                    <fmt:formatNumber var="dishPrice" type="number" value="${(recommendedDish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                    <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                </c:if>
+                <c:if test="${!reservation.reservationDiscount}">
+                    <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
+                </c:if>
             </div>
-        </div>
+        </a>
     </c:if>
     <div class="card confirm-card">
         <div class="card-content wider-content center">
@@ -130,6 +137,9 @@
         border-radius: 16px;
     }
 
+    .dish-card:hover{
+        transform: scale(1.1);
+    }
 
     .center{
         justify-content: center;
