@@ -3,9 +3,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
-import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,8 +88,9 @@ public class RestReservationController {
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy) throws Exception {
 
-        controllerService.orderByParser(orderBy);
-        controllerService.longParser(restaurantIdP);
+
+        controllerService.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("reservation/reservations");
