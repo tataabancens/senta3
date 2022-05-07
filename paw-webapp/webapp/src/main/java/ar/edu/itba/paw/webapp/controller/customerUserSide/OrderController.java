@@ -109,6 +109,7 @@ public class OrderController {
         List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Dish recommendedDish = ds.getRecommendedDish(reservationId);
+        boolean isPresent = ds.isPresent(recommendedDish);
 
 
         final ModelAndView mav = new ModelAndView("customerViews/order/completeOrder");
@@ -117,12 +118,8 @@ public class OrderController {
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
-        if(recommendedDish != null) {
-            mav.addObject("recommendedDish", recommendedDish);
-            mav.addObject("isPresent", true);
-        } else {
-            mav.addObject("isPresent", false);
-        }
+        mav.addObject("isPresent", isPresent);
+        mav.addObject("recommendedDish", recommendedDish);
 
         return mav;
     }
