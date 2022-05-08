@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
@@ -77,6 +78,7 @@ public class RestController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
         mav.addObject("restaurant", restaurant);
+        mav.addObject("categories", DishCategory.getAsList());
 
         return mav;
     }

@@ -43,6 +43,7 @@ public class MenuController {
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         restaurant.setDishes(rs.getRestaurantDishes(1));
         mav.addObject("restaurant", restaurant);
+        mav.addObject("categories", DishCategory.getAsList());
         return mav;
     }
 
