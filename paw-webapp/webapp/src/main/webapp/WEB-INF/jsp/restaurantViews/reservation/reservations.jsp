@@ -37,41 +37,41 @@
 <div class="filters-orderBy">
     <div class="filters">
         <div class="input-field">
-            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+            <select id="filterStatus">
                 <option value="" disabled selected>Filtrar por status</option>
-                <option value="?filterStatus=0">OPEN</option>
-                <option value="?filterStatus=1">SEATED</option>
-                <option value="?filterStatus=2">CHECK_ORDERED</option>
-                <option value="?filterStatus=3">FINISHED</option>
-                <option value="?filterStatus=4">CANCELED</option>
+                <option value="filterStatus=0">OPEN</option>
+                <option value="filterStatus=1">SEATED</option>
+                <option value="filterStatus=2">CHECK_ORDERED</option>
+                <option value="filterStatus=3">FINISHED</option>
+                <option value="filterStatus=4">CANCELED</option>
                 <option value="">ALL</option>
             </select>
         </div>
     </div>
     <div class="orderBy">
         <div class="input-field">
-            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+            <select id="orderBy">
                 <option value="" disabled selected>Ordenar por campo</option>
-                <option value="">Reserva</option>
-                <option value="">Nombre</option>
-                <option value="">Personas</option>
-                <option value="">Hora</option>
-                <option value="">Estado</option>
+                <option value="orderBy=reservationid">Reserva</option>
+                <option value="orderBy=customerid">Nombre</option>
+                <option value="orderBy=qpeople">Personas</option>
+                <option value="orderBy=reservationhour">Hora</option>
+                <option value="orderBy=reservationstatus">Estado</option>
             </select>
         </div>
     </div>
     <div class="order-orientation">
         <div class="input-field">
-            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+            <select id="orderDirection">
                 <option value="" disabled selected>Orden</option>
-                <option value="">Ascendente</option>
-                <option value="">Desecendete</option>
+                <option value="direction=ASC">Ascendente</option>
+                <option value="direction=DESC">Desecendete</option>
             </select>
         </div>
     </div>
     <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
         <button type="submit" class="btn waves-effect waves-light confirm-btn">
-            <span class="text description " style="font-size: 0.8rem;color: white">Aplicar</span>
+            <span class="text description " style="font-size: 0.8rem;color: white" onclick="applyFilters(${page})">Aplicar</span>
         </button>
     </div>
 </div>
@@ -79,11 +79,11 @@
     <table class="reservations" id="myTable">
         <thead>
         <tr>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3><a href="?orderBy=reservationid&direction=DESC">↓</a>----------<a href="?orderBy=reservationid&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3><a href="?orderBy=customerid&direction=DESC">↓</a>----------<a href="?orderBy=customerid&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3><a href="?orderBy=qpeople&direction=DESC">↓</a>----------<a href="?orderBy=qpeople&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3><a href="?orderBy=reservationhour&direction=DESC">↓</a>----------<a href="?orderBy=reservationhour&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3><a href="?orderBy=reservationstatus&direction=DESC">↓</a>----------<a href="?orderBy=reservationstatus&direction=ASC">↑</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.actions"/></h3></th>
         </tr>
         </thead>
@@ -91,11 +91,11 @@
         <c:forEach var="reservation" items="${reservations}">
             <tr>
                 <c:if test="${reservation.reservationStatus.name != 'REMOVED' }">
-                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
-                <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
-                <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
-                <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
-                <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
+                    <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
+                    <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
+                    <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
+                    <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
+                    <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
@@ -157,7 +157,11 @@
     </table>
 </div>
 <div class="pagination-indicator">
-    <ul class="pagination pager" id="myPager"></ul>
+    <c:if test="${page>1}">
+        <a onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></a>
+    </c:if>
+    <p>${page}</p>
+    <button onclick="changePage(${filterStatus}, ${orderBy}, ${direction}, ${page+1})" class="pagination"></button>
 </div>
 
 </body>
@@ -265,18 +269,28 @@
 </style>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('#myTable').pageMe({
-            pagerSelector:'#myPager',
-            activeColor: 'blue',
-            prevText:'Anterior',
-            nextText:'Siguiente',
-            showPrevNext:true,
-            hidePageNumbers:false,
-            perPage:10
-        });
-    });
+
     $(document).ready(function(){
         $('select').formSelect();
     });
+
+    function applyFilters(page) {
+        var selectFilterStatus= document.getElementById('filterStatus');
+        var selectOrderBy = document.getElementById('orderBy');
+        var selectOrderDirection = document.getElementById('orderDirection');
+
+        var value1 = selectFilterStatus.options[selectFilterStatus.selectedIndex].value;
+        var value2 = selectOrderBy.options[selectOrderBy.selectedIndex].value;
+        var value3 = selectOrderDirection.options[selectOrderDirection.selectedIndex].value;
+
+        var toRet = "?" + value1 + "&" + value2 + "&" + value3 + "&page=" + page;
+
+        window.location = toRet;
+    }
+
+    function changePage(filterStatus, orderBy, direction, pageN) {
+        var value1 = filterStatus;
+        var toRet = "?" + "filterstatus=" + value1 + "&orderBy=" + orderBy + "&direction=" + direction + "&page=" + pageN;
+        window.location = toRet;
+    }
 </script>

@@ -68,7 +68,7 @@ public class RestReservationController {
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
+                                            @RequestParam(value = "filterStatus", defaultValue = "ALL") final String filterStatus,
                                             @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
 
 
@@ -85,6 +85,10 @@ public class RestReservationController {
         List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, Integer.parseInt(page));
 
         mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("filterStatus", filterStatus);
+        mav.addObject("page", Integer.parseInt(page));
 
         res.checkReservationTime();
 
