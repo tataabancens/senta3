@@ -38,20 +38,20 @@
     <div class="filters">
         <div class="input-field">
             <select id="filterStatus">
-                <option value="" disabled selected>Filtrar por status</option>
+                <option value="" selected></option>
                 <option value="filterStatus=0">OPEN</option>
                 <option value="filterStatus=1">SEATED</option>
                 <option value="filterStatus=2">CHECK_ORDERED</option>
                 <option value="filterStatus=3">FINISHED</option>
                 <option value="filterStatus=4">CANCELED</option>
-                <option value="">ALL</option>
+                <option value="filterStatus=ALL">ALL</option>
             </select>
         </div>
     </div>
     <div class="orderBy">
         <div class="input-field">
             <select id="orderBy">
-                <option value="" disabled selected>Ordenar por campo</option>
+                <option value="" selected>Ordenar por campo</option>
                 <option value="orderBy=reservationid">Reserva</option>
                 <option value="orderBy=customerid">Nombre</option>
                 <option value="orderBy=qpeople">Personas</option>
@@ -63,7 +63,7 @@
     <div class="order-orientation">
         <div class="input-field">
             <select id="orderDirection">
-                <option value="" disabled selected>Orden</option>
+                <option value="" selected>Orden</option>
                 <option value="direction=ASC">Ascendente</option>
                 <option value="direction=DESC">Desecendete</option>
             </select>
@@ -158,10 +158,10 @@
 </div>
 <div class="pagination-indicator">
     <c:if test="${page>1}">
-        <a onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></a>
+        <button onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></button>
     </c:if>
     <p>${page}</p>
-    <button onclick="changePage(${filterStatus}, ${orderBy}, ${direction}, ${page+1})" class="pagination"></button>
+    <button onclick="changePage(${page+1})" class="pagination"><i class="material-icons">chevron_right</i></button>
 </div>
 
 </body>
@@ -288,9 +288,9 @@
         window.location = toRet;
     }
 
-    function changePage(filterStatus, orderBy, direction, pageN) {
+    function changePage(pageN) {
         var value1 = filterStatus;
-        var toRet = "?" + "filterstatus=" + value1 + "&orderBy=" + orderBy + "&direction=" + direction + "&page=" + pageN;
+        var toRet = "?" + "filterstatus=" + "<c:out value="${filterStatus}"/>" + "&orderBy=" + "<c:out value="${orderBy}"/>" + "&direction=" + "<c:out value="${direction}"/>" + "&page=" + pageN;
         window.location = toRet;
     }
 </script>
