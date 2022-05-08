@@ -122,9 +122,9 @@
                                 </c:if>
                             </div>
                             <div class="card-info">
-                                <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                                <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                                <span class="text price">$<c:out value="${dish.price}"/></span>
+                                <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                                <span class="text price info">$<c:out value="${dish.price}"/></span>
                             </div>
                         </div>
                     </c:forEach>
@@ -156,13 +156,21 @@
     }
 
 
-    @media screen and (max-width: 1068px){
+    @media screen and (max-width: 1920px){
         .dish-card{
-            max-width: 80rem;
+            width: 30%;
         }
         .dish-img{
-            min-width: 20rem;
-            max-height: 20rem;
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1.3rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 868px){

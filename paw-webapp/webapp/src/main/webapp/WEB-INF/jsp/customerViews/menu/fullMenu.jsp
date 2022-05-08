@@ -178,15 +178,15 @@
                             </c:if>
                         </div>
                         <div class="card-info">
-                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
+                            <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                            <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
                             <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                <span id="original-price" class="text price info">$<c:out value="${dish.price}"/></span>
                                 <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
                                 <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
                             </c:if>
                             <c:if test="${!reservation.reservationDiscount}">
-                                <span class="text price">$<c:out value="${dish.price}"/></span>
+                                <span class="text price info">$<c:out value="${dish.price}"/></span>
                             </c:if>
                         </div>
                     </div>
@@ -330,7 +330,8 @@
         transform: scale(1.1);
     }
     .dish-card{
-        width:38%;
+        width:25%;
+        max-height: 30%;
     }
     .order-btn-row{
         width: 100%;
@@ -346,26 +347,40 @@
     .center{
         justify-content: center;
     }
-
+    p{
+        line-height: 1.3;
+    }
+    .text.description{
+        font-size: 1rem;
+    }
     #original-price{
         text-decoration: line-through;
     }
     #discounted-price{
         color: blue;
     }
-    @media screen and (max-width: 1068px){
+    @media screen and (max-width: 1920px){
         .dish-card{
-            max-width: 80rem;
+            width: 30%;
         }
         .dish-img{
-            min-width: 20rem;
-            max-height: 20rem;
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 868px){
         .dish-card{
             padding: 2.5rem;
             flex-direction: column;
+            max-height: none;
         }
         .dish-img{
             min-width: 100%;
