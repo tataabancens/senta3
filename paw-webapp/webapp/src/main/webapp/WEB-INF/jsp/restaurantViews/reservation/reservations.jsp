@@ -60,6 +60,20 @@
             </select>
         </div>
     </div>
+    <div class="order-orientation">
+        <div class="input-field">
+            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="" disabled selected>Orden</option>
+                <option value="">Ascendente</option>
+                <option value="">Desecendete</option>
+            </select>
+        </div>
+    </div>
+    <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
+        <button type="submit" class="btn waves-effect waves-light confirm-btn">
+            <span class="text description " style="font-size: 0.8rem;color: white">Aplicar</span>
+        </button>
+    </div>
 </div>
 <div class="content-container">
     <table class="reservations" id="myTable">
@@ -86,12 +100,14 @@
 
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
-                        <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
-                                <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
-                            </button>
-                        </form:form>
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
+                                    <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
+                                </button>
+                            </form:form>
+                        </div>
                         <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn waves-effect waves-light red">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> Rechazar</span>
                         </a>
@@ -100,23 +116,27 @@
 
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">
                     <td data-label="Confirmar" class="table-cell">
-                        <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light blue">
-                                <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
-                            </button>
-                        </form:form>
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn waves-effect waves-light blue">
+                                    <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
+                                </button>
+                            </form:form>
+                        </div>
                     </td>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
                     <td data-label="Confirmar" class="table-cell">
-                        <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light blue">
-                                <span class="text description " style="font-size: 0.8rem;color: white">Ver Cuenta</span>
-                            </button>
-                        </form:form>
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn waves-effect waves-light blue">
+                                    <span class="text description " style="font-size: 0.8rem;color: white">Ver Cuenta</span>
+                                </button>
+                            </form:form>
+                        </div>
                     </td>
                 </c:if>
 
@@ -156,6 +176,12 @@
         align-items: center;
         justify-content: center;
         margin-left: 1%;
+    }
+    .order-orientation{
+        display: flex;
+        align-items: center;
+        margin-left: 2%;
+        margin-right: 2%;
     }
     .filters{
         display: flex;
@@ -204,7 +230,7 @@
     .table-cell.status{
         display: flex;
         justify-content: space-evenly;
-        align-content: center;
+        align-items: center;
     }
     @media (max-width: 768px) {
         .reservations thead{
