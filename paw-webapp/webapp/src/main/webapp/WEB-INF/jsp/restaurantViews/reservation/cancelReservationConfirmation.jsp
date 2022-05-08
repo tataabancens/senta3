@@ -22,16 +22,13 @@
 <%@ include file="../../components/navbar.jsp" %>
     <div class="form-container">
         <div class="card">
-            <div class="card-content white-text">
-                <span class="card-title text price center"><spring:message code="Cancelreservation.confirm" arguments="${reservationId}"/> </span>
-                <div class="row margin-0">
-                    <div class="col s12 center">
-                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="CANCELAR RESERVA" class="waves-effect waves-light btn plus-btn red" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">
-                        </form:form>
-                    </div>
-                </div>
+            <span class="presentation-text"><spring:message code="Cancelreservation.confirm" arguments="${reservationId}"/> </span>
+            <div class="btn-row">
+                <a href="<c:url value="/restaurant=${restaurantId}/reservations"/>" class="btn plus-btn" style="background-color: #37A6E6;margin-right: 2rem; ">Volver</a>
+                <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>
+                <form:form action="${postUrl}" method="post">
+                    <input type="submit" value="CANCELAR RESERVA" class="waves-effect waves-light btn plus-btn red" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">
+                </form:form>
             </div>
         </div>
     </div>
@@ -39,21 +36,21 @@
 </html>
 
 <style>
-    .text{
-        color:  #707070
-    }
-
-    .center{
+    .btn-row{
+        display:flex ;
+        margin-top: 3rem;
+        width: 100%;
         justify-content: center;
     }
 
     .card{
         display: flex;
+        flex-direction: column;
         justify-self: center;
         border-radius: 0.8rem;
         justify-content: center;
         padding: 1%;
-        width: 50%;
+        width: fit-content;
     }
 
 </style>

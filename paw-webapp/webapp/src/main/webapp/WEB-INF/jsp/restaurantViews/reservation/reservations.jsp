@@ -133,7 +133,7 @@
                             <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <button type="submit" class="btn waves-effect waves-light blue">
-                                    <span class="text description " style="font-size: 0.8rem;color: white">Ver Cuenta</span>
+                                    <span class="text description " style="font-size: 0.8rem;color: white">Pedir Cuenta</span>
                                 </button>
                             </form:form>
                         </div>

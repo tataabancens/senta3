@@ -75,38 +75,20 @@
                     <div class="card filter-box">
                         <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                         <ul>
-                            <li class="filter-option">
-                                <form action="">
-                                    <label>
-                                        <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option1"/></span>
-                                    </label>
-                                </form>
-                            </li>
-                            <li class="filter-option">
-                                <form action="">
-                                    <label>
-                                        <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option2"/></span>
-                                    </label>
-                                </form>
-                            </li>
-                            <li class="filter-option">
-                                <form action="">
-                                    <label>
-                                        <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option3"/></span>
-                                    </label>
-                                </form>
-                            </li>
-                            <li class="filter-option">
-                                <form action="">
-                                    <label>
-                                        <input type="checkbox" class="filled-in"  />
-                                        <span class="text description"><spring:message code="FilterBox.option4"/></span>
-                                    </label>
-                                </form>
-                            </li>
+                            <c:forEach var="category" items="${categories}">
+                                <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                                    <c:if test="${currentCategory.description == category.description}">
+                                        <button class="waves-effect waves-light btn confirm-btn text description">
+                                            <c:out value="${category.spanishDescr}"/>
+                                        </button>
+                                    </c:if>
+                                    <c:if test="${currentCategory.description != category.description}">
+                                        <button class="waves-effect waves-light btn confirm-btn text description">
+                                            <c:out value="${category.spanishDescr}"/>
+                                        </button>
+                                    </c:if>
+                                </a>
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>
