@@ -12,7 +12,6 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
-    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
@@ -43,12 +42,12 @@
         <div class="confirm-card">
             <div class="card">
                 <div class="card-content white-text center">
-                    <span class="main-title title text center"><spring:message code="Notifycustomer.subtitle"/></span>
+                    <span class="text description"><spring:message code="Notifycustomer.subtitle"/></span>
                     <div class="with-margin">
-                        <span class="main-title text center"><c:out value="${reservation.reservationId}"/></span>
+                        <span class="text description"><c:out value="${reservation.reservationId}"/></span>
                     </div>
-                    <p class="text"><spring:message code="Notifycustomer.mail"/></p>
-                    <p class="text"><spring:message code="Notifycustomer.register"/></p>
+                    <p class="text description"><spring:message code="Notifycustomer.mail"/></p>
+                    <p class="text description"><spring:message code="Notifycustomer.register"/></p>
                     <sec:authorize access="!isAuthenticated()">
                         <div class="center">
                             <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
@@ -69,9 +68,6 @@
     i{
         color: #171616;
         margin-right: 25px;
-    }
-    .text{
-        color:  #707070
     }
 
 

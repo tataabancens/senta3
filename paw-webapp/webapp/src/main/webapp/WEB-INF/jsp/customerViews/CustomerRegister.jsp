@@ -20,10 +20,10 @@
 
 <div class="content">
     <div class="card register-card">
-        <span class="presentation-text title"><spring:message code="Register.title"/></span>
-        <c:url value="/register" var="postPath"/>
-        <form:form modelAttribute="customerRegisterForm" action="${postPath}" method="post">
-            <div class="input-field col s12 input">
+        <div><span class="presentation-text title"><spring:message code="Register.title"/></span></div>
+        <div>
+            <c:url value="/register" var="postPath"/>
+            <form:form modelAttribute="customerRegisterForm" action="${postPath}" method="post">
                 <div>
                     <form:errors path="mail" element="p" cssStyle="color:red"/>
                     <form:label path="mail" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.mail"/></form:label>
@@ -49,9 +49,9 @@
                     <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
                     <form:input path="phone" type="text"/>
                 </div>
-            </div>
-            <input type="submit" value="Continuar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
-        </form:form>
+                <input type="submit" value="Continuar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
+            </form:form>
+        </div>
     </div>
 </div>
 </body>
@@ -63,9 +63,11 @@
         margin-top: 5%;
     }
     .card.register-card{
-        padding: 2%;
-        min-width: 40%;
-        max-width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1%;
+        min-width: 25%;
         border-radius: .8rem;
     }
     .continue-btn{

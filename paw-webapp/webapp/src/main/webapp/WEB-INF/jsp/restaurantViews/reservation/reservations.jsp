@@ -11,6 +11,12 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src="https://cdn.rawgit.com/Dogfalo/materialize/fc44c862/dist/js/materialize.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Auto refresh each x seconds-->
     <meta http-equiv="refresh" content="300">
 
@@ -28,14 +34,40 @@
 <div class="header">
     <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
-<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+<div class="filters-orderBy">
+    <div class="filters">
+        <div class="input-field">
+            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="" disabled selected>Filtrar por status</option>
+                <option value="?filterStatus=0">OPEN</option>
+                <option value="?filterStatus=1">SEATED</option>
+                <option value="?filterStatus=2">CHECK_ORDERED</option>
+                <option value="?filterStatus=3">FINISHED</option>
+                <option value="?filterStatus=4">CANCELED</option>
+            </select>
+        </div>
+    </div>
+    <div class="orderBy">
+        <div class="input-field">
+            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="" disabled selected>Ordenar por campo</option>
+                <option value="">Reserva</option>
+                <option value="">Nombre</option>
+                <option value="">Personas</option>
+                <option value="">Hora</option>
+                <option value="">Estado</option>
+            </select>
+        </div>
+    </div>
+</div>
+<!--<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
     <option value="">Filtrar por status</option>
     <option value="?filterStatus=0">OPEN</option>
     <option value="?filterStatus=1">SEATED</option>
     <option value="?filterStatus=2">CHECK_ORDERED</option>
     <option value="?filterStatus=3">FINISHED</option>
     <option value="?filterStatus=4">CANCELED</option>
-</select>
+</select>-->
 <div class="content-container">
     <table class="reservations" id="myTable">
         <thead>
@@ -60,15 +92,15 @@
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
-                    <td data-label="Confirmar" class="table-cell">
+                    <td data-label="Confirmar" class="table-cell status">
                         <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light green">
-                                <span class="text description" style="font-size: 0.8rem">Aceptar</span>
+                            <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
+                                <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
                             </button>
                         </form:form>
                         <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn waves-effect waves-light red">
-                            <span class="text description" style="font-size: 0.8rem"> Rechazar</span>
+                            <span class="text description" style="font-size: 0.8rem;color: white;"> Rechazar</span>
                         </a>
                     </td>
                 </c:if>
@@ -78,7 +110,7 @@
                         <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <button type="submit" class="btn waves-effect waves-light blue">
-                                <span class="text description" style="font-size: 0.8rem">Ver Cuenta</span>
+                                <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
                             </button>
                         </form:form>
                     </td>
@@ -88,8 +120,8 @@
                     <td data-label="Confirmar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn-floating large green">
-                                <i class="material-icons">check_circle</i>
+                            <button type="submit" class="btn waves-effect waves-light blue">
+                                <span class="text description " style="font-size: 0.8rem;color: white">Ver Cuenta</span>
                             </button>
                         </form:form>
                     </td>
@@ -99,8 +131,8 @@
                     <td data-label="Confirmar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/removeCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn-floating large red">
-                                <span class="text description" style="font-size: 0.8rem">Eliminar</span>
+                            <button type="submit" class="btn waves-effect waves-light red">
+                                <span class="text description" style="font-size: 0.8rem; color: white;">Eliminar</span>
                             </button>
                         </form:form>
                     </td>
@@ -124,9 +156,27 @@
         color: #171616;
         font-size: 4rem;
     }
+    .filters-orderBy{
+        display: flex;
+        width: fit-content;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-left: 1%;
+    }
+    .filters{
+        display: flex;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    .orderBy{
+        display: flex;
+        align-items: center;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
     .content-container{
         padding: 0 2%;
-        margin: 40px auto 0;
         display: flex;
     }
     table{
@@ -135,7 +185,6 @@
     }
     .reservations tbody tr td{
         padding: 0.3%;
-        border: 1px solid black;
     }
     .presentation-text{
         color: black;
@@ -159,10 +208,10 @@
         right: 50%;
         bottom: 0;
     }
-    .table-cell{
-        text-align: center;
-        margin-bottom: 1.25rem;
-        margin-top: 1.25rem;
+    .table-cell.status{
+        display: flex;
+        justify-content: space-evenly;
+        align-content: center;
     }
     @media (max-width: 768px) {
         .reservations thead{
@@ -196,7 +245,7 @@
     }
 </style>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function(){
         $('#myTable').pageMe({
             pagerSelector:'#myPager',
@@ -205,7 +254,10 @@
             nextText:'Siguiente',
             showPrevNext:true,
             hidePageNumbers:false,
-            perPage:5
+            perPage:10
         });
+    });
+    $(document).ready(function(){
+        $('select').formSelect();
     });
 </script>

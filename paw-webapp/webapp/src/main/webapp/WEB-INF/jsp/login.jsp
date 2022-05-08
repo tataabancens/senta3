@@ -37,8 +37,6 @@
             <div>
                 <label for="password"><spring:message code="Register.password"/></label>
                 <input id="password" name="password" type="password"/>
-                <!-- TODO cambiar -->
-                <a href=""><span>OLVIDE</span></a>
             </div>
             <div class="rememberme">
                 <label>
