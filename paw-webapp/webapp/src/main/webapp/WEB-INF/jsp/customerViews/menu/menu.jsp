@@ -144,9 +144,6 @@
         width: 100%;
         background-color: rgb(255, 242, 229);
     }
-    .dish-card{
-        width: 38%;
-    }
     .restaurant-content{
         margin-top: 30px;
         display: flex;
@@ -154,7 +151,6 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-
 
     @media screen and (max-width: 1920px){
         .dish-card{
@@ -164,10 +160,45 @@
             width: 30%;
         }
         .presentation-text.info{
-            font-size: 1.3rem;
+            font-size: 1rem;
         }
         .text.description.info{
             font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
+        }
+    }
+    @media screen and (max-width: 1350px){
+        .dish-card{
+            height: 40%;
+        }
+        .dish-img{
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
+        }
+    }
+    @media screen and (max-width: 1080px){
+        .dish-card{
+            width: 70%;
+            height: clamp(5%,9%,20%);
+        }
+        p{
+            margin-block-start: 0.1em;
+        }
+        .dish-img{
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
         }
         .text.price.info{
             font-size: 0.8rem;
