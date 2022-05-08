@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/Dogfalo/materialize/fc44c862/dist/css/materialize.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://cdn.rawgit.com/Dogfalo/materialize/fc44c862/dist/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
     <!-- Auto refresh each x seconds-->
     <meta http-equiv="refresh" content="300">
 
@@ -24,18 +28,16 @@
 <div class="header">
     <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
-<div>
-    <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-        <option value="">Filtrar por status</option>
-        <option value="?filterStatus=0">OPEN</option>
-        <option value="?filterStatus=1">SEATED</option>
-        <option value="?filterStatus=2">CHECK_ORDERED</option>
-        <option value="?filterStatus=3">FINISHED</option>
-        <option value="?filterStatus=4">CANCELED</option>
-    </select>
-</div>
+<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+    <option value="">Filtrar por status</option>
+    <option value="?filterStatus=0">OPEN</option>
+    <option value="?filterStatus=1">SEATED</option>
+    <option value="?filterStatus=2">CHECK_ORDERED</option>
+    <option value="?filterStatus=3">FINISHED</option>
+    <option value="?filterStatus=4">CANCELED</option>
+</select>
 <div class="content-container">
-    <table class="reservations">
+    <table class="reservations" id="myTable">
         <thead>
         <tr>
             <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3><a href="?orderBy=reservationid&direction=DESC">↓</a>----------<a href="?orderBy=reservationid&direction=ASC">↑</a></th>
@@ -61,12 +63,12 @@
                     <td data-label="Confirmar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn-floating large green">
-                                <i class="material-icons">check_circle</i>
+                            <button type="submit" class="btn waves-effect waves-light green">
+                                <span class="text description" style="font-size: 0.8rem">Aceptar</span>
                             </button>
                         </form:form>
-                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn-floating large red">
-                            <i class="material-icons">cancel</i>
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn waves-effect waves-light red">
+                            <span class="text description" style="font-size: 0.8rem"> Rechazar</span>
                         </a>
                     </td>
                 </c:if>
@@ -75,8 +77,8 @@
                     <td data-label="Confirmar" class="table-cell">
                         <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn-floating large blue">
-                                <i class="material-icons">receipt</i>
+                            <button type="submit" class="btn waves-effect waves-light blue">
+                                <span class="text description" style="font-size: 0.8rem">Ver Cuenta</span>
                             </button>
                         </form:form>
                     </td>
@@ -98,7 +100,7 @@
                         <c:url value="/restaurant=${restaurantId}/removeCustomer=${reservation.reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <button type="submit" class="btn-floating large red">
-                                <i class="material-icons">cancel</i>
+                                <span class="text description" style="font-size: 0.8rem">Eliminar</span>
                             </button>
                         </form:form>
                     </td>
@@ -109,15 +111,9 @@
         </tbody>
     </table>
 </div>
-<ul class="pagination">
-    <li class="disabled"><a href=""><i class="material-icons">chevron_left</i></a></li>
-    <li class="active"><a href="?page=1">1</a></li>
-    <li class="waves-effect"><a href="?page=2">2</a></li>
-    <li class="waves-effect"><a href="?page=3">3</a></li>
-    <li class="waves-effect"><a href="?page=4">4</a></li>
-    <li class="waves-effect"><a href="?page=5">5</a></li>
-    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-</ul>
+<div class="pagination-indicator">
+    <ul class="pagination pager" id="myPager"></ul>
+</div>
 
 </body>
 </html>
@@ -136,7 +132,6 @@
     table{
         width: 100%;
         justify-content: space-evenly;
-        border-collapse: collapse;
     }
     .reservations tbody tr td{
         padding: 0.3%;
@@ -150,16 +145,19 @@
         color: black;
     }
     .green{
-        color: green;
+        background-color: green;
     }
     .blue {
-        color: blue;
+        background-color: blue;
     }
     .red{
-        color: red;
+        background-color: red;
     }
-    .action-btn{
-        display: none;
+    .pagination-indicator{
+        display: flex;
+        position: fixed;
+        right: 50%;
+        bottom: 0;
     }
     .table-cell{
         text-align: center;
@@ -197,3 +195,17 @@
         }
     }
 </style>
+
+<script>
+    $(document).ready(function(){
+        $('#myTable').pageMe({
+            pagerSelector:'#myPager',
+            activeColor: 'blue',
+            prevText:'Anterior',
+            nextText:'Siguiente',
+            showPrevNext:true,
+            hidePageNumbers:false,
+            perPage:5
+        });
+    });
+</script>
