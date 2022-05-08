@@ -44,6 +44,7 @@
                 <option value="?filterStatus=2">CHECK_ORDERED</option>
                 <option value="?filterStatus=3">FINISHED</option>
                 <option value="?filterStatus=4">CANCELED</option>
+                <option value="">ALL</option>
             </select>
         </div>
     </div>
@@ -60,14 +61,6 @@
         </div>
     </div>
 </div>
-<!--<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-    <option value="">Filtrar por status</option>
-    <option value="?filterStatus=0">OPEN</option>
-    <option value="?filterStatus=1">SEATED</option>
-    <option value="?filterStatus=2">CHECK_ORDERED</option>
-    <option value="?filterStatus=3">FINISHED</option>
-    <option value="?filterStatus=4">CANCELED</option>
-</select>-->
 <div class="content-container">
     <table class="reservations" id="myTable">
         <thead>

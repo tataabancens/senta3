@@ -50,7 +50,7 @@
     <div class="orders-and-info">
         <div class="card filter-box">
             <div class="client-actions">
-                <span class="presentation-text"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
+                <span class="presentation-text text-center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
                 <c:if test="${canOrderReceipt}">
                     <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
@@ -121,8 +121,9 @@
                             <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
                             <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
-                                <!--<a href=""><i class="material-icons clear-symbol">clear</i></a>-->
-                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
+                                <button type="submit" class="small btn-floating" style="background-color: #757575">
+                                    <i class="material-icons clear-symbol">clear</i>
+                                </button>
                             </form:form>
                         </div>
                         <hr class="solid-divider">
@@ -237,6 +238,9 @@
         width: 26%;
         height: 100%;
     }
+    .presentation-text.text-center{
+        text-align: center;
+    }
     .dish-categories{
         display: flex;
         flex-direction: column;
@@ -251,13 +255,20 @@
     .card.filter-box{
         width: 60%;
     }
+    .btn-floating{
+        width: 25px;
+        height: 25px;
+    }
+    .btn-floating i{
+        line-height: 25px;
+    }
     i{
         color: black;
         align-self: center;
         margin-right: 25px;
     }
     .material-icons.clear-symbol{
-        color: #707070;
+        color: white;
     }
     .dishList{
         display: flex;
@@ -311,9 +322,13 @@
         width: 100%;
         justify-content: space-evenly;
     }
+    .orders-and-info{
+        margin-right: 5%;
+    }
     .order-item{
         display: flex;
         width: 100%;
+        align-items: center;
         justify-content: space-evenly;
     }
     .order-field{

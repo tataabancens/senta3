@@ -133,6 +133,7 @@ hr.solid-divider {
     opacity: 90%;
     font-size: 1vw;
     width: fit-content;
+    max-width: 100%;
     text-align: center;
     color:white
 }

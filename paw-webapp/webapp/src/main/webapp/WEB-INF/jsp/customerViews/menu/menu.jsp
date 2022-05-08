@@ -225,7 +225,6 @@
         background-color: white;
         padding: 10px;
         min-height: 150px;
-        max-height: 250px;
         width: 100%;
     }
 
