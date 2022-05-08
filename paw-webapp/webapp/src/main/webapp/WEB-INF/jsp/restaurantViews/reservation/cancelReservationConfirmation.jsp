@@ -23,8 +23,7 @@
     <div class="form-container">
         <div class="card">
             <div class="card-content white-text">
-                <!-- TODO CAMBIAR -->
-                <span class="card-title text price center">Estas seguro de cancelar la reserva ${reservationId}</span>
+                <span class="card-title text price center"><spring:message code="Cancelreservation.confirm" arguments="${reservationId}"/> </span>
                 <div class="row margin-0">
                     <div class="col s12 center">
                         <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>

@@ -28,8 +28,7 @@
 <div class="contentContainer">
     <div class="points">
         <div class="reservations-header">
-            <!-- TODO cambiar -->
-            <h3 class="presentation-text">Puntos: <c:out value="${customer.points}"/></h3>
+            <h3 class="presentation-text"><spring:message code="History.points" arguments="${customer.points}"/></h3>
         </div>
         <div class="progress-bar" style="--width:${progressBarNumber}"></div>
         <c:if test="${progressBarNumber > 100}">

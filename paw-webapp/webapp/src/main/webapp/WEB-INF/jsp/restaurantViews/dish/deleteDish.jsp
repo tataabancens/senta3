@@ -28,7 +28,7 @@
     <div class="col s4 offset-s3 card-margin">
         <div class="card dish-card">
             <div class="card-content white-text">
-                <span class="card-title text price center"><spring:message code="Deletedish.sure"/> </span> // TODO VER ARGUMENTOS
+                <span class="card-title text price center"><spring:message code="Deletedish.sure" arguments="${dish.dishName}"/> </span>
                 <div class="row margin-0">
                     <div class="col s12 center">
                         <input type="submit" value="Confirmar" class="continue-btn red"/>
