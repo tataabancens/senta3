@@ -106,7 +106,8 @@
                         <span class="main-title center">Tenes un descuento a tu favor!</span>
                         <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
-                            <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn text description">
+                            <spring:message code="Button.activate" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description">
                         </form:form>
                     </div>
                 </c:if>
@@ -116,7 +117,8 @@
                     <span class="main-title center">Aplicaste un descuento del 15%!</span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
-                        <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn text description">
+                        <spring:message code="Button.cancel" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description">
                     </form:form>
                 </div>
             </c:if>
@@ -160,19 +162,20 @@
                         <c:if test="${selected > 0}">
                             <c:url value="/order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn confirm-btn red text description">
+                                <spring:message code="Order.empty" var="label"/>
+                                <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red text description">
                             </form:form>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn red text description">Vaciar pedido</a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn red text description"><spring:message code="Order.empty"/></a>
                         </c:if>
                     </div>
                     <div>
                         <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green text description" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>">Continuar</a>
+                            <a class="waves-effect waves-light btn confirm-btn green text description" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn green text description">Continuar</a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Button.continue"/></a>
                         </c:if>
                     </div>
                 </div>

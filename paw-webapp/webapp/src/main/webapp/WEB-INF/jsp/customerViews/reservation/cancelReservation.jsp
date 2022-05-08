@@ -51,7 +51,8 @@
                     <div class="center-btn">
                         <c:url value="/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn confirm-btn red center">
+                            <spring:message code="Button.confirm" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red center">
                         </form:form>
                     </div>
             </div>

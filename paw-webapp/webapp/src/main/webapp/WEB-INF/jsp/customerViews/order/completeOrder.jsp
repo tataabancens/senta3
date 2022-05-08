@@ -111,7 +111,8 @@
                     <div >
                         <c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn confirm-btn green right">
+                            <spring:message code="Button.confirm" var="label"/>
+                            <input type="submit" value="${lebel}" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
 

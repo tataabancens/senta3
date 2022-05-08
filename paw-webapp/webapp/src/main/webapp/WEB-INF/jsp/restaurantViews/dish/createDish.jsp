@@ -48,8 +48,8 @@
                         </form:select>
                     </div>
                     <div class="col s12 center">
-
-                        <input type="submit" value="Continuar" class="continue-btn"/>
+                        <spring:message code="Button.continue" var="label"/>
+                        <input type="submit" value="${label}" class="continue-btn"/>
 
                     </div>
                 </div>

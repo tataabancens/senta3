@@ -36,7 +36,7 @@
                         <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
                     </div>
                     <div class="presentation-text restaurant-description">
-                        <span>Telefono: </span>
+                        <span><spring:message code="Restaurant.phone"/> </span>
                         <span><c:out value="${restaurant.phone}"/></span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
             <div class="restaurant-content">
                 <div class="left-section">
                     <div class="card client-actions center">
-                        <span class="presentation-text box-comments">Para hacer una reserva:</span>
+                        <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
@@ -57,29 +57,29 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
-                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Reservar</a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Button.reserve"/></a>
                             </div>
                         </sec:authorize>
                         <span class="presentation-text box-comments">Si ya tenes una:</span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
-                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}">Ingresar</a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Button.login"/></a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
-                                <a disabled class="waves-effect waves-light btn confirm-btn" href="">Ingresar</a>
+                                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Button.login"/></a>
                             </div>
                         </sec:authorize>
                     </div>
                     <div class="card filter-box">
-                        <span class="presentation-text">Filtrar</span>
+                        <span class="presentation-text"><spring:message code="FilterBox.filter"/></span>
                         <ul>
                             <li class="filter-option">
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description">Entradas</span>
+                                        <span class="text description"><spring:message code="FilterBox.option5"/></span>
                                     </label>
                                 </form>
                             </li>
@@ -87,7 +87,7 @@
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description">Plato principal</span>
+                                        <span class="text description"><spring:message code="FilterBox.option2"/></span>
                                     </label>
                                 </form>
                             </li>
@@ -95,7 +95,7 @@
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description">Postre</span>
+                                        <span class="text description"><spring:message code="FilterBox.option6"/></span>
                                     </label>
                                 </form>
                             </li>
@@ -103,7 +103,7 @@
                                 <form action="">
                                     <label>
                                         <input type="checkbox" class="filled-in"  />
-                                        <span class="text description">Opcion 4</span>
+                                        <span class="text description"><spring:message code="FilterBox.option1"/></span>
                                     </label>
                                 </form>
                             </li>

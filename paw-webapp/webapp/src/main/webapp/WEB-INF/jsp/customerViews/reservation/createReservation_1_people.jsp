@@ -33,7 +33,8 @@
                         <form:label path="number" class="helper-text" data-error="wrong" data-success="right"/>
                         <form:input path="number" type="text"/>
                     </div>
-                    <input type="submit" value="Continuar" class="continue-btn"/>
+                    <spring:message code="Button.confirm" var="label"/>
+                    <input type="submit" value="${label}" class="continue-btn"/>
                 </form:form>
             </div>
         </div>

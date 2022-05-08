@@ -51,7 +51,8 @@
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
-                                    <input type="submit" value="Reservar" class="waves-effect waves-light btn confirm-btn">
+                                    <spring:message code="Button.reserve" var="label"/>
+                                    <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn">
                                 </form:form>
                             </div>
                         </sec:authorize>
