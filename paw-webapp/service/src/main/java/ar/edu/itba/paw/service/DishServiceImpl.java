@@ -51,6 +51,12 @@ public class DishServiceImpl implements DishService{
 
     @Override
     public Dish getRecommendedDish(long reservationId) {
-        return dishDao.getRecommendedDish(reservationId);
+        Optional<Dish> maybeDish = dishDao.getRecommendedDish(reservationId);
+        return maybeDish.orElse(null);
+    }
+
+    @Override
+    public boolean isPresent(Dish recommendedDish) {
+        return recommendedDish != null;
     }
 }
