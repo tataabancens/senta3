@@ -163,7 +163,7 @@
         display: flex;
         flex-wrap: wrap;
         width: fit-content;
-        min-width: 40rem;
+        min-width: 50rem;
         flex-direction: row;
         align-items: center;
         justify-content: center;

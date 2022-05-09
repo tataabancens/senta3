@@ -36,12 +36,12 @@
                 <span class="text description">${restaurant.totalChairs}</span>
             </div>
             <div>
-                <span class="presentation-text"><spring:message code="Restaurant.hour.open"/> </span>
-                <span class="text description">${restaurant.openHour}</span>
+                <span class="presentation-text"><spring:message code="Restaurant.hour.open"/></span>
+                <span class="text description">${restaurant.openHour}:00</span>
             </div>
             <div>
-                <span class="presentation-text"><spring:message code="Restaurant.hour.close"/> </span>
-                <span class="text description">${restaurant.closeHour}</span>
+                <span class="presentation-text"><spring:message code="Restaurant.hour.close"/></span>
+                <span class="text description">${restaurant.closeHour}:00</span>
             </div>
         </div>
         <div class="profile-field" style="display: flex; align-items:center; width: fit-content">
