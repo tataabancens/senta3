@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <spring:message code="Button.continue" var="label"/>
-                <input type="submit" value="${label}" class="continue-btn"/>
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
             </form:form>
         </div>
 </div>
