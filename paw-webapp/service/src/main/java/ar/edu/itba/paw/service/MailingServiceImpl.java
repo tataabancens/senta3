@@ -1,14 +1,12 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -81,10 +79,10 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(properties,restaurant.getMail(),subject,stringBuilder.toString());
     }
 
-    private void sendEmail(Properties properties, String toEmailAddress,
+    @Async
+    @Override
+    public void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageText) {
-
-        new Thread(() -> {
 
         Session session = Session.getInstance(properties,
                 new Authenticator() {
@@ -107,7 +105,6 @@ public class MailingServiceImpl implements MailingService{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        }).start();
     }
 
 
