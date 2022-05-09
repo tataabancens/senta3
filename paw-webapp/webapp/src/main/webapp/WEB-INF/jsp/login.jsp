@@ -28,7 +28,7 @@
         <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
             <div class="card card-content">
                 <div class="title">
-                    <span class="main-title"><spring:message code="Register.login"/></span>
+                    <span class="presentation-text"><spring:message code="Register.login"/></span>
                 </div>
             <div>
                 <label for="username"><spring:message code="Register.user"/> </label>
@@ -45,7 +45,7 @@
                 </label>
             </div>
             <div class="row center smaller">
-                <input class="confirm-btn center" type="submit" value="Ingresar"/>
+                <input class="btn confirm-btn center" type="submit" value="Ingresar"/>
             </div>
             </div>
         </form>
@@ -67,7 +67,7 @@
         display: flex;
     }
     .card.card-content{
-        justify-content: center;
+        justify-content: space-evenly;
         flex-direction: column;
         align-content: center;
         font-family: "Segoe UI", Lato, sans-serif;

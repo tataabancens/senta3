@@ -27,7 +27,7 @@
     <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title"><spring:message code="Createreservation.register.title"/></span>
+                <span class="presentation-text"><spring:message code="Createreservation.register.title"/></span>
                 <div class="input-field input">
                     <form:errors path="mail" element="p" cssStyle="color:red"/>
                     <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.mail"/></form:label>
@@ -52,7 +52,7 @@
                 <div class="submit center">
                     <spring:message code="Button.confirm" var="label"/>
                     <spring:message code="Button.loading" var="label2"/>
-                    <input type="submit" value="${label}" class="continue-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2};"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn center" onclick="this.form.submit(); this.disabled=true;this.value=${label2};"/>
                 </div>
             </div>
         </div>
@@ -97,22 +97,6 @@
     }
     select{
         display: flex;
-    }
-
-
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
     }
 
     .back-btn{

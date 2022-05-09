@@ -25,16 +25,16 @@
     <c:url value="/createReservation-1" var="postPath"/>
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title"><spring:message code="Createreservation.people.title"/></span>
+                <span class="presentation-text"><spring:message code="Createreservation.people.title"/></span>
                 <c:url value="/createReservation-1" var="postPath"/>
                 <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
-                    <div class="input-field col s12 input">
+                    <div class="input-field">
                         <form:errors path="number" element="p" cssStyle="color:red"/>
                         <form:label path="number" class="helper-text" data-error="wrong" data-success="right"/>
                         <form:input path="number" type="text"/>
                     </div>
                     <spring:message code="Button.confirm" var="label"/>
-                    <input type="submit" value="${label}" class="continue-btn"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn center"/>
                 </form:form>
             </div>
         </div>
@@ -49,7 +49,7 @@
         display: flex;
         flex-wrap: wrap;
         margin: 10px;
-        justify-content: center;
+        justify-content: space-evenly;
         align-content: center;
         flex-direction: column;
         min-height: 300px;
@@ -58,41 +58,18 @@
         width: 100%;
         padding: 20px;
     }
-
     .content{
         display: flex;
         justify-content: center;
         padding: 20px;
         align-content: center;
     }
-    span{
-        font-family: "Segoe UI", Lato, sans-serif;
-        font-size: 23px;
-    }
-    input{
-        font-family: "Segoe UI", Lato, sans-serif;
-        font-size: 20px;
+    .btn.confirm-btn{
+        margin-left: 20%;
     }
     select{
         display: flex;
     }
-
-
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
-    }
-
     .back-btn{
         border-radius: 16px;
         margin-top: 5%;

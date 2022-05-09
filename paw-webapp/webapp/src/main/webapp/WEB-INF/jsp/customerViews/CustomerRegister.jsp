@@ -51,7 +51,7 @@
                 </div>
                 <spring:message code="Button.continue" var="label"/>
                 <spring:message code="Button.loading" var="label2"/>
-                <input type="submit" value="${label}" class="continue-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
+                <input type="submit" value="${label}" class="btn confirm-btn center" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
             </form:form>
         </div>
     </div>
@@ -72,20 +72,10 @@
         min-width: 25%;
         border-radius: .8rem;
     }
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
     .presentation-text.title{
         font-size: 2rem;
     }
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
+    .center{
+        align-items: center;
     }
 </style>

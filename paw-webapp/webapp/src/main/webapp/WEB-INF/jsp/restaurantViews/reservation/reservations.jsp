@@ -143,7 +143,7 @@
 </div>
 <div class="pagination-indicator">
     <c:if test="${page>1}">
-        <a onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></a>
+        <button onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></button>
     </c:if>
     <p>${page}</p>
     <button onclick="changePage(${page+1})" class="pagination"></button>

@@ -25,7 +25,7 @@
     <form:form modelAttribute="numberForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title"><spring:message code="Createreservation.day.title"/></span>
+                <span class="presentation-text"><spring:message code="Createreservation.day.title"/></span>
 
                 <div class="input-field">
                     <form:select path="number">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="submit center">
                     <spring:message code="Button.confirm" var="label"/>
-                    <input type="submit" value="${label}" class="continue-btn"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn"/>
                 </div>
             </div>
         </div>
@@ -79,22 +79,6 @@
     }
     select{
         display: flex;
-    }
-
-
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
     }
 
     .back-btn{

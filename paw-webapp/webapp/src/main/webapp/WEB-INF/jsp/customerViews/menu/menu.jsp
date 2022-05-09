@@ -125,7 +125,7 @@
     }
     .restaurant-info{
         width: 100%;
-        background-color: rgb(255, 242, 229);
+        background-color: rgb(16, 24, 28);
     }
     .restaurant-content{
         margin-top: 30px;
@@ -134,7 +134,14 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-
+    .categories{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn.text.description{
+        color: white;
+    }
     @media screen and (max-width: 1920px){
         .dish-card{
             width: 30%;

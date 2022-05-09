@@ -127,24 +127,6 @@ hr.solid-divider {
     width: 100%;
 }
 
-.confirm-btn{
-    display: flex;
-    border-radius: 0.8rem;
-    background-color: #37A6E6;
-    margin-top: 5%;
-    opacity: 90%;
-    font-size: 1vw;
-    min-width: fit-content;
-    text-align: center;
-    color:white
-}
-
-.confirm-btn:hover{
-    background-color: #37A6E6;
-    color: white;
-    opacity: 100%;
-}
-
 .dish-card{
     min-width: 20%;
     background-color: white;
@@ -171,6 +153,15 @@ hr.solid-divider {
     display: flex;
     padding-top: 30px;
     justify-content: center;
+}
+.btn.confirm-btn{
+    background-color: #37A6E6;
+    font-size: clamp(0.7rem,0.8vw,3rem);
+    min-height: 40px;
+    min-width: 48px;
+    border-radius: .8rem;
+    font-family: 'Quicksand',sans-serif;
+    font-weight: 600;
 }
 .dish-img::before{
     content: '';
