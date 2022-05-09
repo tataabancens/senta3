@@ -103,7 +103,7 @@ public class RestReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/reservations", method = RequestMethod.POST) //?orderBy=String
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations", method = RequestMethod.POST)
     public ModelAndView reservationsOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
                                             @ModelAttribute("filterForm") final FilterForm form) throws Exception {
@@ -173,17 +173,6 @@ public class RestReservationController {
         return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/removeCustomer={reservationId}", method = RequestMethod.POST)
-    public ModelAndView removeCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                           @PathVariable("reservationId") final String reservationIdP) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
-
-        res.updateReservationStatus(reservationId, ReservationStatus.REMOVED);
-
-        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
-    }
 
 
 
