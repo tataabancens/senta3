@@ -65,7 +65,7 @@
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
-                        <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                        <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>" style="margin: 0.2vw">
                             <c:if test="${currentCategory.description == category.description}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
                                     <c:out value="${category.spanishDescr}"/>
@@ -96,7 +96,7 @@
             </c:if>
             <c:if test="${reservation.reservationDiscount}">
                 <div class="card client-actions">
-                    <span class="main-title center"><spring:message code="Fullmenu.discount.apply"/></span>
+                    <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
                         <spring:message code="Button.cancel" var="label"/>
@@ -257,6 +257,9 @@
     }
     .card.filter-box{
         width: 60%;
+    }
+    .btn.confirm-btn{
+        color: white;
     }
     .btn-floating{
         width: 25px;

@@ -231,7 +231,7 @@
         justify-content: flex-start;
     }
     a{
-        padding: 5px;
+        margin: 0.2vw;
         justify-content: center;
         max-width: 200px;
     }
