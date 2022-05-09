@@ -47,10 +47,10 @@
                 <div class="card horizontal">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <p>${reservation.customerName}</p>
-                            <p>Personas: ${reservation.qPeople}</p>
-                            <p>En ${reservation.restaurantName}</p>
-                            <p>A las ${reservation.reservationHour}</p>
+                            <p class="presentation-text">${reservation.customerName}</p>
+                            <p class="text description">Personas: ${reservation.qPeople}</p>
+                            <p class="text description">En ${reservation.restaurantName}</p>
+                            <p  class="text description">A las ${reservation.reservationHour}</p>
                         </div>
                     </div>
                 </div>
@@ -79,14 +79,13 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
     }
     .card.horizontal{
-        margin: 4%;
+        margin: 1%;
         min-width: 20%;
         max-width: 30%;
-        border-radius: 10px;
-        font-family: "Segoe UI", Lato, sans-serif;
+        border-radius: .8rem;
     }
     .reservations-header{
         justify-content: center;

@@ -161,7 +161,9 @@
     }
     .filters-orderBy{
         display: flex;
+        flex-wrap: wrap;
         width: fit-content;
+        min-width: 40rem;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -189,6 +191,7 @@
         display: flex;
     }
     .text.description.page-number{
+        font-size: 1rem;
         color: white;
     }
     .page-background{

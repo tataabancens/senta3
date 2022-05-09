@@ -46,37 +46,42 @@
                     </c:forEach>
                 </ul>
             </div>
-            <div class="dishList">
-                <a href="menu/create" class="dish-card dish-creation">
-                    <i class="large material-icons" style="color: rgba(183, 179, 179, 0.87); ">add</i>
-                    <span class="main-title" style="color: rgba(183, 179, 179, 0.87); "><spring:message code="Restaurant.createdish"/></span>
-                </a>
-                <c:forEach var="dish" items="${restaurant.dishes}">
-
-                <div class="dish-card">
-                    <div class="card-content">
-                        <div class="dish-img">
-                            <c:if test="${dish.imageId > 0}">
-                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                            </c:if>
-                            <c:if test="${dish.imageId == 0}">
-                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                            </c:if>
-                        </div>
-                        <div class="card-info">
-                            <div class="btn-row-card">
-                                <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
-                                <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
-                            </div>
-                            <span class="presentation-text dish-title"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <span class="text price">$<c:out value="${dish.price}"/></span>
-                        </div>
-                    </div>
+            <div class="dish-categories">
+                <div>
+                    <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
                 </div>
-                </c:forEach>
+                <div class="dishList">
+                    <a href="menu/create" class="dish-card dish-creation">
+                        <i class="large material-icons" style="color: rgba(183, 179, 179, 0.87); ">add</i>
+                        <span class="main-title" style="color: rgba(183, 179, 179, 0.87); "><spring:message code="Restaurant.createdish"/></span>
+                    </a>
+                    <c:forEach var="dish" items="${restaurant.dishes}">
+
+                        <div class="dish-card">
+                            <div class="card-content">
+                                <div class="dish-img">
+                                    <c:if test="${dish.imageId > 0}">
+                                        <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                    </c:if>
+                                    <c:if test="${dish.imageId == 0}">
+                                        <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                    </c:if>
+                                </div>
+                                <div class="card-info">
+                                    <div class="btn-row-card">
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
+                                    </div>
+                                    <span class="presentation-text dish-title"><c:out value="${dish.dishName}"/></span>
+                                    <p class="text description"><c:out value="${dish.dishDescription}"/></p>
+                                    <span class="text price">$<c:out value="${dish.price}"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
             </div>
-        </div>
+            </div>
     </body>
 </html>
 
@@ -153,6 +158,9 @@
         flex-direction: row;
         justify-content: space-evenly;
         flex-wrap: wrap;
+        width: 100%;
+    }
+    .dish-categories{
         width: 85%;
     }
     .btn-row-card{
