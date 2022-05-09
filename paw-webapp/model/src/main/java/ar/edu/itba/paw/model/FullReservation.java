@@ -2,19 +2,22 @@ package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
+import java.sql.Timestamp;
+
 public class FullReservation {
 
     private long reservationId;
     private long restaurantId;
     private long customerId;
     private int reservationHour;
+    private Timestamp startedAtTime;
     private ReservationStatus reservationStatus;
     private int qPeople;
     private String customerName;
     private String restaurantName;
 
     public FullReservation(long reservationId, long restaurantId, long customerId,
-                           int reservationHour, int reservationStatus, int qPeople, String customerName, String restaurantName) {
+                           int reservationHour, int reservationStatus, int qPeople, String customerName, String restaurantName, Timestamp startedAtTime) {
         this.reservationId = reservationId;
         this.restaurantId = restaurantId;
         this.customerId = customerId;
@@ -23,6 +26,15 @@ public class FullReservation {
         this.qPeople = qPeople;
         this.customerName = customerName;
         this.restaurantName = restaurantName;
+        this.startedAtTime = startedAtTime;
+    }
+
+    public Timestamp getStartedAtTime() {
+        return startedAtTime;
+    }
+
+    public void setStartedAtTime(Timestamp startedAtTime) {
+        this.startedAtTime = startedAtTime;
     }
 
     public String getRestaurantName() {
