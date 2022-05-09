@@ -39,7 +39,7 @@
                         <div class="submit center">
                             <spring:message code="Button.confirm" var="label"/>
                             <spring:message code="Button.loading" var="label2"/>
-                            <input type="submit" value="${label}" class="waves-effect waves-light btn continue-btn" onclick="this.disabled=true;this.value=${label2}; this.form.submit();">
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn continue-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; ">
                         </div>
                     </div>
                 </form:form>

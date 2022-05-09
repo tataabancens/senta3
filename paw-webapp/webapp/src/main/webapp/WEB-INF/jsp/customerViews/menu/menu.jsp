@@ -77,7 +77,7 @@
                         <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                         <ul>
                             <c:forEach var="category" items="${categories}">
-                                <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                                <a href="<c:url value="/?category=${category}"/>">
                                     <c:if test="${currentCategory.description == category.description}">
                                         <button class="waves-effect waves-light btn confirm-btn text description">
                                             <c:out value="${category.spanishDescr}"/>

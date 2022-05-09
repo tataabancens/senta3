@@ -29,7 +29,7 @@
                         <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.cancel" var="label"/>
-                            <input type="submit" value="${label}" class="waves-effect waves-light btn plus-btn red" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn plus-btn red" onclick="this.form.submit(); this.disabled=true;this.value='procesando'; ">
                         </form:form>
                     </div>
                 </div>
