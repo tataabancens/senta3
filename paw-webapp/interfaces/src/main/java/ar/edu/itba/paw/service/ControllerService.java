@@ -11,4 +11,7 @@ public interface ControllerService {
     Optional<Integer> orderByParser(String string) throws Exception;
 
     Optional<Integer> directionParser(String direction);
+
+    Optional<Integer> filterStatusParser(String filterStatus);
+
 }

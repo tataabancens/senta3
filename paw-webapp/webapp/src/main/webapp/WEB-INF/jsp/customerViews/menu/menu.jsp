@@ -51,7 +51,8 @@
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
-                                    <input type="submit" value="Reservar" class="waves-effect waves-light btn confirm-btn">
+                                    <spring:message code="Button.reserve" var="label"/>
+                                    <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn">
                                 </form:form>
                             </div>
                         </sec:authorize>
@@ -74,24 +75,22 @@
                     </div>
                     <div class="card filter-box">
                         <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
-                        <div>
-                            <ul class="categories">
-                                <c:forEach var="category" items="${categories}">
-                                    <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
-                                        <c:if test="${currentCategory.description == category.description}">
-                                            <button class="waves-effect waves-light btn confirm-btn text description">
-                                                <c:out value="${category.spanishDescr}"/>
-                                            </button>
-                                        </c:if>
-                                        <c:if test="${currentCategory.description != category.description}">
-                                            <button class="waves-effect waves-light btn confirm-btn text description">
-                                                <c:out value="${category.spanishDescr}"/>
-                                            </button>
-                                        </c:if>
-                                    </a>
-                                </c:forEach>
-                            </ul>
-                        </div>
+                        <ul>
+                            <c:forEach var="category" items="${categories}">
+                                <a href="<c:url value="/?category=${category}"/>">
+                                    <c:if test="${currentCategory.description == category.description}">
+                                        <button class="waves-effect waves-light btn confirm-btn text description">
+                                            <c:out value="${category.spanishDescr}"/>
+                                        </button>
+                                    </c:if>
+                                    <c:if test="${currentCategory.description != category.description}">
+                                        <button class="waves-effect waves-light btn confirm-btn text description">
+                                            <c:out value="${category.spanishDescr}"/>
+                                        </button>
+                                    </c:if>
+                                </a>
+                            </c:forEach>
+                        </ul>
                     </div>
                 </div>
                 <div class="dishList">

@@ -36,14 +36,16 @@ public class MenuController {
     }
 
     @RequestMapping("/")
-    public ModelAndView helloWorld() {
+    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category ) {
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
+        List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
+        restaurant.setDishes(dishes);
         mav.addObject("restaurant", restaurant);
         mav.addObject("categories", DishCategory.getAsList());
+        mav.addObject("currentCategory", DishCategory.valueOf(category));
         return mav;
     }
 

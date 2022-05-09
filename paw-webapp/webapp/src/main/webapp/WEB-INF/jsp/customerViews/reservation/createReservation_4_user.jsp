@@ -1,4 +1,3 @@
-<%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -51,7 +50,9 @@
                     <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.hour"/><c:out value="${reservation.reservationHour}"/>hs</form:label>
                 </div>
                 <div class="submit center">
-                    <input type="submit" value="Confirmar reserva!" class="btn confirm-btn center" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
+                    <spring:message code="Button.confirm" var="label"/>
+                    <spring:message code="Button.loading" var="label2"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn center" onclick="this.form.submit(); this.disabled=true;this.value=${label2};"/>
                 </div>
             </div>
         </div>

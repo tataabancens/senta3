@@ -298,7 +298,7 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
         String filterStatusString = "";
-        if(!Objects.equals(filterStatus, "ALL")){
+        if(!Objects.equals(filterStatus, "")){
             filterStatusString = " AND reservationStatus = " + filterStatus;
         }
 

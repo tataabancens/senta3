@@ -35,45 +35,45 @@
     <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
 <div class="filters-orderBy">
-    <div class="filters">
-        <div class="input-field">
-            <select id="filterStatus">
-                <option value="" selected></option>
-                <option value="filterStatus=0">OPEN</option>
-                <option value="filterStatus=1">SEATED</option>
-                <option value="filterStatus=2">CHECK_ORDERED</option>
-                <option value="filterStatus=3">FINISHED</option>
-                <option value="filterStatus=4">CANCELED</option>
-                <option value="filterStatus=ALL">ALL</option>
-            </select>
+    <c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
+    <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
+        <div class="filters">
+            <div class="input-field">
+                <form:select id="filterStatus" path="filterStatus">
+                    <form:option value="0" label="OPEN"></form:option>
+                    <form:option value="1" label="SEATED"></form:option>
+                    <form:option value="2" label="CHECK_ORDERED"></form:option>
+                    <form:option value="3" label="FINISHED"></form:option>
+                    <form:option value="4" label="CANCELED"></form:option>
+                    <form:option value="" label="ALL"></form:option>
+                </form:select>
+            </div>
         </div>
-    </div>
-    <div class="orderBy">
-        <div class="input-field">
-            <select id="orderBy">
-                <option value="" selected>Ordenar por campo</option>
-                <option value="orderBy=reservationid">Reserva</option>
-                <option value="orderBy=customerid">Nombre</option>
-                <option value="orderBy=qpeople">Personas</option>
-                <option value="orderBy=reservationhour">Hora</option>
-                <option value="orderBy=reservationstatus">Estado</option>
-            </select>
+        <div class="orderBy">
+            <div class="input-field">
+                <form:select id="orderBy" path="orderBy">
+                    <form:option value="reservationid">Reserva</form:option>
+                    <form:option value="customerid">Nombre</form:option>
+                    <form:option value="qpeople">Personas</form:option>
+                    <form:option value="reservationhour">Hora</form:option>
+                    <form:option value="reservationstatus">Estado</form:option>
+                </form:select>
+            </div>
         </div>
-    </div>
-    <div class="order-orientation">
-        <div class="input-field">
-            <select id="orderDirection">
-                <option value="" selected>Orden</option>
-                <option value="direction=ASC">Ascendente</option>
-                <option value="direction=DESC">Desecendete</option>
-            </select>
+        <div class="order-orientation">
+            <div class="input-field">
+                <form:select id="orderDirection" path="direction">
+                    <form:option value="ASC">Ascendente</form:option>
+                    <form:option value="DESC">Desecendete</form:option>
+                </form:select>
+            </div>
         </div>
-    </div>
-    <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
-        <button type="submit" class="btn waves-effect waves-light confirm-btn">
-            <span class="text description " style="font-size: 0.8rem;color: white" onclick="applyFilters(${page})">Aplicar</span>
-        </button>
-    </div>
+        <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
+            <button type="submit" class="btn waves-effect waves-light confirm-btn">
+                <span class="text description " style="font-size: 0.8rem;color: white">Aplicar</span>
+            </button>
+        </div>
+    </form:form>
 </div>
 <div class="content-container">
     <table class="reservations" id="myTable">
@@ -90,14 +90,11 @@
         <tbody>
         <c:forEach var="reservation" items="${reservations}">
             <tr>
-                <c:if test="${reservation.reservationStatus.name != 'REMOVED' }">
-                    <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
-                    <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
-                    <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
-                    <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
-                    <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
-                </c:if>
-
+                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
+                <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
+                <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
+                <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
+                <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
                         <div style="margin-top: 15px">
@@ -139,18 +136,6 @@
                         </div>
                     </td>
                 </c:if>
-
-                <c:if test="${reservation.reservationStatus.name == 'CANCELED' }">
-                    <td data-label="Confirmar" class="table-cell">
-                        <c:url value="/restaurant=${restaurantId}/removeCustomer=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light red">
-                                <span class="text description" style="font-size: 0.8rem; color: white;">Eliminar</span>
-                            </button>
-                        </form:form>
-                    </td>
-                </c:if>
-
             </tr>
         </c:forEach>
         </tbody>
@@ -161,7 +146,7 @@
         <button onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></button>
     </c:if>
     <p>${page}</p>
-    <button onclick="changePage(${page+1})" class="pagination"><i class="material-icons">chevron_right</i></button>
+    <button onclick="changePage(${page+1})" class="pagination"></button>
 </div>
 
 </body>
@@ -274,23 +259,8 @@
         $('select').formSelect();
     });
 
-    function applyFilters(page) {
-        var selectFilterStatus= document.getElementById('filterStatus');
-        var selectOrderBy = document.getElementById('orderBy');
-        var selectOrderDirection = document.getElementById('orderDirection');
-
-        var value1 = selectFilterStatus.options[selectFilterStatus.selectedIndex].value;
-        var value2 = selectOrderBy.options[selectOrderBy.selectedIndex].value;
-        var value3 = selectOrderDirection.options[selectOrderDirection.selectedIndex].value;
-
-        var toRet = "?" + value1 + "&" + value2 + "&" + value3 + "&page=" + page;
-
-        window.location = toRet;
-    }
-
     function changePage(pageN) {
-        var value1 = filterStatus;
-        var toRet = "?" + "filterstatus=" + "<c:out value="${filterStatus}"/>" + "&orderBy=" + "<c:out value="${orderBy}"/>" + "&direction=" + "<c:out value="${direction}"/>" + "&page=" + pageN;
+        let toRet = "?" + "filterStatus=" + "<c:out value="${filterForm.filterStatus}"/>" + "&orderBy=" + "<c:out value="${filterForm.orderBy}"/>" + "&direction=" + "<c:out value="${filterForm.direction}"/>" + "&page=" + pageN;
         window.location = toRet;
     }
 </script>

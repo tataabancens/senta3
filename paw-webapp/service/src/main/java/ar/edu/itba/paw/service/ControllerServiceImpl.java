@@ -38,6 +38,14 @@ public class ControllerServiceImpl implements ControllerService {
     }
 
     @Override
+    public Optional<Integer> filterStatusParser(String filterStatus) {
+        if(Objects.equals(filterStatus, "")) {
+            return Optional.of(1);
+        }
+        return longParser(filterStatus);
+    }
+
+    @Override
     public Optional<Integer> orderByParser(String string) {
         if(!Objects.equals(string, "reservationid") && !Objects.equals(string, "customerid") && !Objects.equals(string, "qpeople") && !Objects.equals(string, "reservationhour") && !Objects.equals(string, "reservationstatus")){
             return Optional.empty();

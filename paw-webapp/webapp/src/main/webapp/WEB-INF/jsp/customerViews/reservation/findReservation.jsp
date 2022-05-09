@@ -34,7 +34,8 @@
                         </div>
                     </div>
                     <div class="submit center">
-                        <input type="submit" value="Buscar" class="btn confirm-btn">
+                        <spring:message code="Button.search" var="label"/>
+                        <input type="submit" value="${label}" class="btn confirm-btn">
                     </div>
                 </form:form>
             </div>

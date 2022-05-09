@@ -32,7 +32,8 @@
                         <form:options items="${hours}"></form:options>
                     </form:select>
                 </div>
-                <input type="submit" value="Continuar" class="btn confirm-btn center"/>
+                <spring:message code="Button.continue" var="label"/>
+                <input type="submit" value="${label}" class="btn confirm-btn center"/>
             </form:form>
         </div>
     </div>

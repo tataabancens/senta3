@@ -33,7 +33,8 @@
                     </form:select>
                 </div>
                 <div class="submit center">
-                    <input type="submit" value="Confirmar reserva!" class="btn confirm-btn"/>
+                    <spring:message code="Button.confirm" var="label"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn"/>
                 </div>
             </div>
         </div>

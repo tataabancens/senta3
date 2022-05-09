@@ -27,11 +27,10 @@
                 <a href="<c:url value="menu/?reservationId=${reservation.reservationId}"/>">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <!-- TODO CAMBIAR -->
                             <span class="text">${customer.customerName}</span>
-                            <p>Personas: ${reservation.qPeople}</p>
-                            <p>En ${reservation.restaurantName}</p>
-                            <p>A las ${reservation.reservationHour}</p>
+                            <p><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
+                            <p><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurantName}"/></p>
+                            <p><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/></p>
                         </div>
                     </div>
                 </a>

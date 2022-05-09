@@ -31,7 +31,8 @@
                 <form:input path="mail" type="text"/>
             </div>
             <div class="submit center">
-                <input type="submit" value="Confirmar" class="btn confirm-btn"/>
+                <spring:message code="Button.confirm" var="label"/>
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
             </div>
         </div>
     </form:form>

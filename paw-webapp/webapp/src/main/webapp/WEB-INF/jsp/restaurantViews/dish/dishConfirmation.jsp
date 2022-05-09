@@ -43,12 +43,13 @@
                     <div class="img-row">
                         <input type="file" name="photo"/>
                         <div class="col s12 center">
-                            <input type="submit" value="Cargar" class="confirm-btn"/>
+                            <spring:message code="Button.load" var="label"/>
+                            <input type="submit" value="${label}" class="confirm-btn"/>
                         </div>
                     </div>
                 </form>
                 <div class="btn-row">
-                    <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/restaurant=${restaurantId}/menu"/>" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">Confirmar</a>
+                    <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/restaurant=${restaurantId}/menu"/>" onclick="this.form.submit(); this.disabled=true;this.value='procesando'; "><spring:message code="Button.confirm" var="label"/><spring:message code="Button.confirm"/></a>
                 </div>
             </div>
     </div>

@@ -31,7 +31,9 @@
                 <form:input path="mail" type="text"/>
             </div>
             <div class="submit center">
-                <input type="submit" value="Confirmar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
+                <spring:message code="Button.confirm" var="label"/>
+                <spring:message code="Button.loading" var="label2"/>
+                <input type="submit" value="${label}" class="continue-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
             </div>
         </div>
     </form:form>
