@@ -80,7 +80,7 @@ public class RestReservationController {
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
+                                            @RequestParam(value = "filterStatus", defaultValue = "0") final String filterStatus,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
                                             @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
 
