@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService{
 
-    private OrderDao orderDao;
+    private final OrderDao orderDao;
 
     @Autowired
     public  OrderServiceImpl(final OrderDao orderDao){
