@@ -354,7 +354,7 @@
     }
     .dish-card{
         width:25%;
-        max-height: 30%;
+        max-height: 25%;
     }
     .order-btn-row{
         width: 100%;

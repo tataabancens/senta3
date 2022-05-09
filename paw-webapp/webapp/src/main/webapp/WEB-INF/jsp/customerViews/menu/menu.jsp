@@ -142,6 +142,9 @@
     .btn.text.description{
         color: white;
     }
+    .dish-card {
+        max-height: 25%;
+    }
     @media screen and (max-width: 1920px){
         .dish-card{
             width: 30%;
