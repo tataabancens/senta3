@@ -33,7 +33,11 @@ public class RestReservationController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
     public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
-                                                      @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+                                                      @PathVariable("restaurantId") final String restaurantIdP,
+                                                      @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                                      @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                                      @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
+                                                      @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
         controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
@@ -41,13 +45,21 @@ public class RestReservationController {
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/cancelReservationConfirmation");
         mav.addObject("reservationId", reservationId);
         mav.addObject("restaurantId", restaurantId);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("filterStatus", filterStatus);
+        mav.addObject("page", Integer.parseInt(page));
 
         return mav;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
     public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
-                                                          @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+                                                          @PathVariable("restaurantId") final String restaurantIdP,
+                                                          @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                                          @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                                          @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
+                                                          @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
         controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
@@ -60,7 +72,8 @@ public class RestReservationController {
 
         ms.sendCancellationEmail(restaurant,customer,reservation);
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/reservations");
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+                "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
@@ -115,19 +128,27 @@ public class RestReservationController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                     @PathVariable("reservationId") final String reservationIdP) throws Exception {
+                                     @PathVariable("reservationId") final String reservationIdP,
+                                     @RequestParam(value = "page", defaultValue = "1") final String page,
+                                     @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                     @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
 
-        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+                "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/showReceipt={reservationId}")
     public ModelAndView showReceipt(@PathVariable("restaurantId") final String restaurantIdP,
-                                       @PathVariable("reservationId") final String reservationIdP) throws Exception {
+                                       @PathVariable("reservationId") final String reservationIdP,
+                                    @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                    @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                    @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
@@ -151,26 +172,37 @@ public class RestReservationController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/finishCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView finishCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                     @PathVariable("reservationId") final String reservationIdP) throws Exception {
+                                     @PathVariable("reservationId") final String reservationIdP,
+                                       @RequestParam(value = "page", defaultValue = "1") final String page,
+                                       @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                       @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                       @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.FINISHED);
 
-        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+                "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/orderCheckCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView orderCheckCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                       @PathVariable("reservationId") final String reservationIdP) throws Exception {
+                                       @PathVariable("reservationId") final String reservationIdP,
+                                           @RequestParam(value = "page", defaultValue = "1") final String page,
+                                           @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                           @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                           @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus
+                                           ) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
 
-        return new ModelAndView("redirect:/restaurant="+ restaurantId +"/reservations");
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+                "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
 
