@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS restaurant (
     FOREIGN KEY (userId) REFERENCES users (userId)
     );
 
+INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
+VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
 
 
 -- CREATE TABLE IF NOT EXISTS image
@@ -55,7 +57,6 @@ CREATE TABLE IF NOT EXISTS dish (
     );
 
 
-
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
@@ -68,7 +69,6 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
     );
-
 
 
 CREATE TABLE IF NOT EXISTS orderItem
