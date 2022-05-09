@@ -67,7 +67,7 @@ public class RestReservationController {
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                            @RequestParam(value = "filterStatus", defaultValue = "0") final String filterStatus,
+                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
                                             @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
 
@@ -76,7 +76,7 @@ public class RestReservationController {
         controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         controllerService.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
         controllerService.longParser(page).orElseThrow(() -> new LongParseException(page));
-        controllerService.longParser(filterStatus).orElseThrow(() -> new LongParseException(filterStatus));
+        controllerService.filterStatusParser(filterStatus).orElseThrow(() -> new LongParseException(filterStatus));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");

@@ -45,7 +45,7 @@
                     <form:option value="2" label="CHECK_ORDERED"></form:option>
                     <form:option value="3" label="FINISHED"></form:option>
                     <form:option value="4" label="CANCELED"></form:option>
-                    <form:option value="">ALL</form:option>
+                    <form:option value="" label="ALL"></form:option>
                 </form:select>
             </div>
         </div>
