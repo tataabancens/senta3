@@ -22,17 +22,16 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
-<div class="row">
-    <div class="col offset"></div>
-    <div class="card">
+<div class="pageContainer">
+    <div class="card restaurant-card">
         <div>
-            <span class="presentation-text"><spring:message code="Error.title"/></span>
+            <p class="presentation-text center"><spring:message code="Error.title"/></p>
         </div>
         <div>
-            <span class="text description"><spring:message code="Error.404"/></span>
+            <p class="text description"><spring:message code="Error.404"/></p>
         </div>
         <div>
-            <span class="text description"><spring:message code="Error.dontworry"/></span>
+            <p class="text description"><spring:message code="Error.dontworry"/></p>
         </div>
         <div class="center">
             <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
@@ -44,22 +43,36 @@
 
 <style>
 
-    .page-container{
+    .card{
+        border-radius: .8rem;
+    }
+    .pageContainer{
         display: flex;
         justify-content: center;
-        align-content: center;
-    }
-    .card{
-        display: flex;
-        flex-direction: column;
-        width: fit-content;
-        height: 60%;
-        flex-wrap: wrap;
-        border-radius: 10px;
+        align-items: center;
     }
     .center{
         justify-content: center;
     }
+    .text.description{
+        font-size: clamp(1rem,1vw,3rem);
+    }
+    .card.restaurant-card{
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .btn.confirm-btn{
+        margin-bottom: 2em;
+    }
 
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/restaurant-background.jpg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
 </style>

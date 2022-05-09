@@ -143,12 +143,13 @@
 </div>
 <div class="pagination-indicator">
     <c:if test="${page>1}">
-        <button onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></button>
+        <button onclick="changePage(${page-1})" class="pagination"><i class="small material-icons">chevron_left</i></button>
     </c:if>
-    <p>${page}</p>
-    <button onclick="changePage(${page+1})" class="pagination"></button>
+    <div class="page-background">
+        <p class=" text description page-number">${page}</p>
+    </div>
+    <button onclick="changePage(${page+1})" class="pagination"><i class="small material-icons">chevron_right</i></button>
 </div>
-
 </body>
 </html>
 
@@ -160,7 +161,9 @@
     }
     .filters-orderBy{
         display: flex;
+        flex-wrap: wrap;
         width: fit-content;
+        min-width: 40rem;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -187,6 +190,25 @@
         padding: 0 2%;
         display: flex;
     }
+    .text.description.page-number{
+        font-size: 1rem;
+        color: white;
+    }
+    .page-background{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.7rem;
+        width: 2rem;
+        height: 2rem;
+        background-color: #37A6E6;
+    }
+    .pagination{
+        background-color: transparent;
+        border: none;
+        height: fit-content;
+        width: fit-content;
+    }
     table{
         width: 100%;
         justify-content: space-evenly;
@@ -212,9 +234,10 @@
     }
     .pagination-indicator{
         display: flex;
-        position: fixed;
-        right: 50%;
-        bottom: 0;
+        justify-content: center;
+        align-items: center;
+        align-self: end;
+        margin-top: 2rem;
     }
     .table-cell.status{
         display: flex;
