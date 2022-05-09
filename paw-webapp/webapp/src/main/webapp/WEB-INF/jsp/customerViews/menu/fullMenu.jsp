@@ -63,7 +63,7 @@
             </div>
             <div>
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
-                <ul>
+                <ul class="categories">
                     <c:forEach var="category" items="${categories}">
                         <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
                             <c:if test="${currentCategory.description == category.description}">
@@ -278,6 +278,11 @@
         flex-wrap: wrap;
         width: 100%;
         height: 100%;
+    }
+    .categories{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .card{
         border-radius: 16px;

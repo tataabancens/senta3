@@ -75,7 +75,7 @@
                     </div>
                     <div class="card filter-box">
                         <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
-                        <ul>
+                        <ul class="categories">
                             <c:forEach var="category" items="${categories}">
                                 <a href="<c:url value="/?category=${category}"/>">
                                     <c:if test="${currentCategory.description == category.description}">

@@ -34,9 +34,9 @@
 <div class="header">
     <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
-<div class="filters-orderBy">
-    <c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
-    <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
+<c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
+<form:form method="post" action="${postUrl}" modelAttribute="filterForm">
+    <div class="filters-orderBy">
         <div class="filters">
             <div class="input-field">
                 <form:select id="filterStatus" path="filterStatus">
@@ -73,8 +73,8 @@
                 <span class="text description " style="font-size: 0.8rem;color: white">Aplicar</span>
             </button>
         </div>
-    </form:form>
-</div>
+    </div>
+</form:form>
 <div class="content-container">
     <table class="reservations" id="myTable">
         <thead>
