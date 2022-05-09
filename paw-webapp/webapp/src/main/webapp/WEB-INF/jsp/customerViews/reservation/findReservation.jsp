@@ -23,7 +23,7 @@
 <%@ include file="../../components/navbar.jsp" %>
 <div class="form-container">
             <div class="card card-content">
-                <span class="main-title"><spring:message code="Findreservation.subtitle"/></span>
+                <span class="presentation-text"><spring:message code="Findreservation.subtitle"/></span>
                 <c:url value="/findReservation" var="postUrl"/>
                 <form:form modelAttribute="findReservationForm" action="${postUrl}" method="post">
                     <div class="reservationId">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="submit center">
-                        <input type="submit" value="Buscar" class="continue-btn">
+                        <input type="submit" value="Buscar" class="btn confirm-btn">
                     </div>
                 </form:form>
             </div>
@@ -56,7 +56,7 @@
         display: flex;
     }
     .card.card-content{
-        justify-content: center;
+        justify-content: space-evenly;
         flex-direction: column;
         font-family: "Segoe UI", Lato, sans-serif;
         min-height: 150px;
@@ -65,23 +65,6 @@
         min-width: 400px;
         width: 500px;
         max-width: 600px;
-    }
-
-
-    .continue-btn{
-        font-family: "Goldplay", sans-serif;
-        border-radius: 10px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        padding: 2%;
-        color: white;
-    }
-
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
     }
 
 

@@ -74,22 +74,24 @@
                     </div>
                     <div class="card filter-box">
                         <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
-                        <ul>
-                            <c:forEach var="category" items="${categories}">
-                                <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
-                                    <c:if test="${currentCategory.description == category.description}">
-                                        <button class="waves-effect waves-light btn confirm-btn text description">
-                                            <c:out value="${category.spanishDescr}"/>
-                                        </button>
-                                    </c:if>
-                                    <c:if test="${currentCategory.description != category.description}">
-                                        <button class="waves-effect waves-light btn confirm-btn text description">
-                                            <c:out value="${category.spanishDescr}"/>
-                                        </button>
-                                    </c:if>
-                                </a>
-                            </c:forEach>
-                        </ul>
+                        <div>
+                            <ul class="categories">
+                                <c:forEach var="category" items="${categories}">
+                                    <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
+                                        <c:if test="${currentCategory.description == category.description}">
+                                            <button class="waves-effect waves-light btn confirm-btn text description">
+                                                <c:out value="${category.spanishDescr}"/>
+                                            </button>
+                                        </c:if>
+                                        <c:if test="${currentCategory.description != category.description}">
+                                            <button class="waves-effect waves-light btn confirm-btn text description">
+                                                <c:out value="${category.spanishDescr}"/>
+                                            </button>
+                                        </c:if>
+                                    </a>
+                                </c:forEach>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="dishList">
@@ -124,7 +126,7 @@
     }
     .restaurant-info{
         width: 100%;
-        background-color: rgb(255, 242, 229);
+        background-color: rgb(16, 24, 28);
     }
     .restaurant-content{
         margin-top: 30px;
@@ -133,7 +135,14 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-
+    .categories{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn.text.description{
+        color: white;
+    }
     @media screen and (max-width: 1920px){
         .dish-card{
             width: 30%;

@@ -20,7 +20,7 @@
 
 <div class="content">
         <div class="card register-card">
-            <span class="main-title"><spring:message code="Register.title"/></span>
+            <span class="presentation-text"><spring:message code="Register.title"/></span>
             <c:url value="/registerShort/${customerId}/${reservationId}" var="postPath"/>
             <form:form modelAttribute="customerRegisterShortForm" action="${postPath}" method="post">
                 <div class="input-field col s12 input">
@@ -47,24 +47,15 @@
         justify-content: center;
         margin-top: 5%;
     }
+    .presentation-text{
+        font-size: clamp(1.3rem,2.5em,9rem);
+    }
     .card.register-card{
+        display: flex;
+        flex-direction: column;
         padding: 2%;
-        min-width: 40%;
-        max-width: 60%;
+        margin: 2%;
+        width: clamp(10em,28em,30em);
         border-radius: .8rem;
-    }
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
     }
 </style>

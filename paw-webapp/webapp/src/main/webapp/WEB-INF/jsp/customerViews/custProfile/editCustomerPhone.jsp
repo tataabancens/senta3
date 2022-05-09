@@ -3,6 +3,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,13 +25,13 @@
     <c:url value="/profile/editPhone" var="postPath"/>
     <form:form modelAttribute="editPhoneForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="main-title"><spring:message code="Customer.edit.phone"/></span>
+            <span class="presentation-text"><spring:message code="Customer.edit.phone"/></span>
             <div class="disName">
                 <form:errors path="phone" element="p" cssStyle="color:red"/>
                 <form:input path="phone" type="text"/>
             </div>
             <div class="submit center">
-                <input type="submit" value="Confirmar" class="continue-btn"/>
+                <input type="submit" value="Confirmar" class="btn confirm-btn"/>
             </div>
         </div>
     </form:form>
@@ -46,7 +49,6 @@
     form{
         min-width: 30%;
     }
-    .container { position: relative; }
     .container img{display: block}
     .container .material-icons{
         position: absolute;

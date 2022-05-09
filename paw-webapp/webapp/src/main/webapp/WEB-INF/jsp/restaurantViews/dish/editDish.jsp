@@ -25,7 +25,7 @@
         <c:url value="/restaurant=${restaurantId}/menu/edit/dishId=${dishId}" var="postPath"/>
         <form:form modelAttribute="editDishForm" action="${postPath}" method="post">
             <div class="card card-content">
-                    <h3 class="main-title"><spring:message code="Editdish.title"/></h3>
+                    <h3 class="presentation-text"><spring:message code="Editdish.title"/></h3>
                     <a href="<c:url value="/restaurant=${restaurantId}/confirmDish=${dishId}"/>" class="img-visualizer">
                         <c:if test="${dish.imageId > 0}">
                             <div class="container">

@@ -49,7 +49,9 @@
                     <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
                     <form:input path="phone" type="text"/>
                 </div>
-                <input type="submit" value="Continuar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
+                <div class="center">
+                    <input type="submit" value="Registrarse" class="btn confirm-btn center" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
+                </div>
             </form:form>
         </div>
     </div>
@@ -70,20 +72,10 @@
         min-width: 25%;
         border-radius: .8rem;
     }
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
     .presentation-text.title{
         font-size: 2rem;
     }
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
+    .center{
+        align-items: center;
     }
 </style>
