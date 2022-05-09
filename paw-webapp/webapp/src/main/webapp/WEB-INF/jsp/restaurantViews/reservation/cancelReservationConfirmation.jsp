@@ -40,21 +40,21 @@
 </html>
 
 <style>
-    .text{
-        color:  #707070
-    }
-
-    .center{
+    .btn-row{
+        display:flex ;
+        margin-top: 3rem;
+        width: 100%;
         justify-content: center;
     }
 
     .card{
         display: flex;
+        flex-direction: column;
         justify-self: center;
         border-radius: 0.8rem;
         justify-content: center;
         padding: 1%;
-        width: 50%;
+        width: fit-content;
     }
 
 </style>

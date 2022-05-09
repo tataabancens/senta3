@@ -50,7 +50,7 @@
     <div class="orders-and-info">
         <div class="card filter-box">
             <div class="client-actions">
-                <span class="presentation-text"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
+                <span class="presentation-text text-center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
                 <c:if test="${canOrderReceipt}">
                     <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
@@ -123,8 +123,9 @@
                             <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
                             <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
-                                <!--<a href=""><i class="material-icons clear-symbol">clear</i></a>-->
-                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
+                                <button type="submit" class="small btn-floating" style="background-color: #757575">
+                                    <i class="material-icons clear-symbol">clear</i>
+                                </button>
                             </form:form>
                         </div>
                         <hr class="solid-divider">
@@ -181,10 +182,10 @@
                             </c:if>
                         </div>
                         <div class="card-info">
-                            <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
+                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
                             <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price info">$<c:out value="${dish.price}"/></span>
+                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
                                 <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
                                 <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
                             </c:if>
@@ -240,6 +241,9 @@
         width: 26%;
         height: 100%;
     }
+    .presentation-text.text-center{
+        text-align: center;
+    }
     .dish-categories{
         display: flex;
         flex-direction: column;
@@ -254,13 +258,20 @@
     .card.filter-box{
         width: 60%;
     }
+    .btn-floating{
+        width: 25px;
+        height: 25px;
+    }
+    .btn-floating i{
+        line-height: 25px;
+    }
     i{
         color: black;
         align-self: center;
         margin-right: 25px;
     }
     .material-icons.clear-symbol{
-        color: #707070;
+        color: white;
     }
     .dishList{
         display: flex;
@@ -314,9 +325,13 @@
         width: 100%;
         justify-content: space-evenly;
     }
+    .orders-and-info{
+        margin-right: 5%;
+    }
     .order-item{
         display: flex;
         width: 100%;
+        align-items: center;
         justify-content: space-evenly;
     }
     .order-field{
@@ -339,6 +354,7 @@
     .order-btn-row{
         width: 100%;
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-around;
     }
     .center{
@@ -364,7 +380,45 @@
     }
     @media screen and (max-width: 1920px){
         .dish-card{
+            width: 45%;
+        }
+        .dish-img{
             width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
+        }
+    }
+    @media screen and (max-width: 1350px){
+        .dish-card{
+            height: 40%;
+        }
+        .dish-img{
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
+        }
+    }
+    @media screen and (max-width: 1080px){
+        .dish-card{
+            width: 100%;
+            height: clamp(10%,15%,20%);
+        }
+        p{
+            margin-block-start: 0.1em;
         }
         .dish-img{
             width: 30%;
@@ -381,9 +435,12 @@
     }
     @media screen and (max-width: 868px){
         .dish-card{
-            padding: 2.5rem;
+            padding: 1rem;
             flex-direction: column;
             max-height: none;
+        }
+        .text.price{
+            bottom: 0;
         }
         .dish-img{
             min-width: 100%;

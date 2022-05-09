@@ -35,48 +35,55 @@
     <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
 </div>
 <div class="filters-orderBy">
-    <div class="filters">
-        <div class="input-field">
-            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                <option value="" disabled selected>Filtrar por status</option>
-                <option value="?filterStatus=0">OPEN</option>
-                <option value="?filterStatus=1">SEATED</option>
-                <option value="?filterStatus=2">CHECK_ORDERED</option>
-                <option value="?filterStatus=3">FINISHED</option>
-                <option value="?filterStatus=4">CANCELED</option>
-            </select>
+    <c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
+    <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
+        <div class="filters">
+            <div class="input-field">
+                <form:select id="filterStatus" path="filterStatus">
+                    <form:option value="0" label="OPEN"></form:option>
+                    <form:option value="1" label="SEATED"></form:option>
+                    <form:option value="2" label="CHECK_ORDERED"></form:option>
+                    <form:option value="3" label="FINISHED"></form:option>
+                    <form:option value="4" label="CANCELED"></form:option>
+                    <form:option value="" label="ALL"></form:option>
+                </form:select>
+            </div>
         </div>
-    </div>
-    <div class="orderBy">
-        <div class="input-field">
-            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                <option value="" disabled selected>Ordenar por campo</option>
-                <option value="">Reserva</option>
-                <option value="">Nombre</option>
-                <option value="">Personas</option>
-                <option value="">Hora</option>
-                <option value="">Estado</option>
-            </select>
+        <div class="orderBy">
+            <div class="input-field">
+                <form:select id="orderBy" path="orderBy">
+                    <form:option value="reservationid">Reserva</form:option>
+                    <form:option value="customerid">Nombre</form:option>
+                    <form:option value="qpeople">Personas</form:option>
+                    <form:option value="reservationhour">Hora</form:option>
+                    <form:option value="reservationstatus">Estado</form:option>
+                </form:select>
+            </div>
         </div>
-    </div>
+        <div class="order-orientation">
+            <div class="input-field">
+                <form:select id="orderDirection" path="direction">
+                    <form:option value="ASC">Ascendente</form:option>
+                    <form:option value="DESC">Desecendete</form:option>
+                </form:select>
+            </div>
+        </div>
+        <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
+            <button type="submit" class="btn waves-effect waves-light confirm-btn">
+                <span class="text description " style="font-size: 0.8rem;color: white">Aplicar</span>
+            </button>
+        </div>
+    </form:form>
 </div>
-<!--<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-    <option value="">Filtrar por status</option>
-    <option value="?filterStatus=0">OPEN</option>
-    <option value="?filterStatus=1">SEATED</option>
-    <option value="?filterStatus=2">CHECK_ORDERED</option>
-    <option value="?filterStatus=3">FINISHED</option>
-    <option value="?filterStatus=4">CANCELED</option>
-</select>-->
 <div class="content-container">
     <table class="reservations" id="myTable">
         <thead>
         <tr>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3><a href="?orderBy=reservationid&direction=DESC">↓</a>----------<a href="?orderBy=reservationid&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3><a href="?orderBy=customerid&direction=DESC">↓</a>----------<a href="?orderBy=customerid&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3><a href="?orderBy=qpeople&direction=DESC">↓</a>----------<a href="?orderBy=qpeople&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3><a href="?orderBy=reservationhour&direction=DESC">↓</a>----------<a href="?orderBy=reservationhour&direction=ASC">↑</a></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3><a href="?orderBy=reservationstatus&direction=DESC">↓</a>----------<a href="?orderBy=reservationstatus&direction=ASC">↑</a></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.actions"/></h3></th>
         </tr>
         </thead>
@@ -84,21 +91,23 @@
         <c:forEach var="reservation" items="${reservations}">
             <tr>
                 <c:if test="${reservation.reservationStatus.name != 'REMOVED' }">
-                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
-                <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
-                <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
-                <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
-                <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
+                    <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
+                    <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
+                    <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
+                    <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
+                    <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
-                        <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
-                                <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
-                            </button>
-                        </form:form>
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
+                                    <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
+                                </button>
+                            </form:form>
+                        </div>
                         <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn waves-effect waves-light red">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> Rechazar</span>
                         </a>
@@ -107,23 +116,27 @@
 
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">
                     <td data-label="Confirmar" class="table-cell">
-                        <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light blue">
-                                <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
-                            </button>
-                        </form:form>
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn waves-effect waves-light blue">
+                                    <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
+                                </button>
+                            </form:form>
+                        </div>
                     </td>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
                     <td data-label="Confirmar" class="table-cell">
-                        <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
-                        <form:form action="${postUrl}" method="post">
-                            <button type="submit" class="btn waves-effect waves-light blue">
-                                <span class="text description " style="font-size: 0.8rem;color: white">Ver Cuenta</span>
-                            </button>
-                        </form:form>
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post">
+                                <button type="submit" class="btn waves-effect waves-light blue">
+                                    <span class="text description " style="font-size: 0.8rem;color: white">Pedir Cuenta</span>
+                                </button>
+                            </form:form>
+                        </div>
                     </td>
                 </c:if>
 
@@ -144,7 +157,11 @@
     </table>
 </div>
 <div class="pagination-indicator">
-    <ul class="pagination pager" id="myPager"></ul>
+    <c:if test="${page>1}">
+        <a onclick="changePage(${page-1})" class="pagination"><i class="material-icons">chevron_left</i></a>
+    </c:if>
+    <p>${page}</p>
+    <button onclick="changePage(${page+1})" class="pagination"></button>
 </div>
 
 </body>
@@ -163,6 +180,12 @@
         align-items: center;
         justify-content: center;
         margin-left: 1%;
+    }
+    .order-orientation{
+        display: flex;
+        align-items: center;
+        margin-left: 2%;
+        margin-right: 2%;
     }
     .filters{
         display: flex;
@@ -211,7 +234,7 @@
     .table-cell.status{
         display: flex;
         justify-content: space-evenly;
-        align-content: center;
+        align-items: center;
     }
     @media (max-width: 768px) {
         .reservations thead{
@@ -246,18 +269,13 @@
 </style>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('#myTable').pageMe({
-            pagerSelector:'#myPager',
-            activeColor: 'blue',
-            prevText:'Anterior',
-            nextText:'Siguiente',
-            showPrevNext:true,
-            hidePageNumbers:false,
-            perPage:10
-        });
-    });
+
     $(document).ready(function(){
         $('select').formSelect();
     });
+
+    function changePage(pageN) {
+        let toRet = "?" + "filterStatus=" + "<c:out value="${filterForm.filterStatus}"/>" + "&orderBy=" + "<c:out value="${filterForm.orderBy}"/>" + "&direction=" + "<c:out value="${filterForm.direction}"/>" + "&page=" + pageN;
+        window.location = toRet;
+    }
 </script>
