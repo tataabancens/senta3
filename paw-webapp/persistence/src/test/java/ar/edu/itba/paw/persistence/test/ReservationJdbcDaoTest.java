@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,9 +64,9 @@ public class ReservationJdbcDaoTest {
     @Test
     public void testGetOrderItemsByReservationIdExists() {
         // 1. Precondiciones
-        List<OrderItem> testList = new ArrayList<>();
-        testList.add(new OrderItem(1, 1, 890, 3, 0));
-        testList.add(new OrderItem(1, 2, 650, 3, 0));
+        List<FullOrderItem> testList = new ArrayList<>();
+        testList.add(new FullOrderItem(1, 1, 3, 890, 3, 0, "Pizza"));
+        testList.add(new FullOrderItem(1, 2, 2, 650, 3, 0, "Milanesa"));
 
         // 2. Ejercitacion
         List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
@@ -75,7 +74,7 @@ public class ReservationJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertFalse(maybeList.isEmpty());
         for (int i = 0; i < maybeList.size(); i++) {
-            Assert.assertTrue(testList.get(i).equals(maybeList.get(i)));
+            Assert.assertEquals(testList.get(i), maybeList.get(i));
         }
     }
 
