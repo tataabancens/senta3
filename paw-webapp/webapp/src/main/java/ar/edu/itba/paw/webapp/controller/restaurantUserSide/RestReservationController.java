@@ -4,12 +4,11 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
+import ar.edu.itba.paw.webapp.form.EditNameForm;
+import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -68,14 +67,16 @@ public class RestReservationController {
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                            @RequestParam(value = "filterStatus", defaultValue = "ALL") final String filterStatus,
-                                            @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
+                                            @RequestParam(value = "filterStatus", defaultValue = "0") final String filterStatus,
+                                            @RequestParam(value = "page", defaultValue = "1") final String page,
+                                            @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
 
 
         controllerService.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
         controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         controllerService.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
         controllerService.longParser(page).orElseThrow(() -> new LongParseException(page));
+        controllerService.longParser(filterStatus).orElseThrow(() -> new LongParseException(filterStatus));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");
@@ -83,6 +84,13 @@ public class RestReservationController {
         mav.addObject("restaurant", restaurant);
 
         List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, Integer.parseInt(page));
+
+
+        filterForm.setFilterStatus(filterStatus);
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+
+        mav.addObject("ReservationStatus", ReservationStatus.values());
 
         mav.addObject("reservations", reservations);
         mav.addObject("orderBy", orderBy);
@@ -93,6 +101,16 @@ public class RestReservationController {
         res.checkReservationTime();
 
         return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations", method = RequestMethod.POST) //?orderBy=String
+    public ModelAndView reservationsOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                            @RequestParam(value = "page", defaultValue = "1") final String page,
+                                            @ModelAttribute("filterForm") final FilterForm form) throws Exception {
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&filterStatus=" + form.getFilterStatus() + "&page=" + page);
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}", method = RequestMethod.POST)
