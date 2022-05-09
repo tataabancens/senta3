@@ -11,6 +11,13 @@ CREATE TABLE IF NOT EXISTS users (
     role varchar(100) default 'ROLE_RESTAURANT'
     );
 
+INSERT INTO users (username, password)
+VALUES ('Pepito', '123');
+
+INSERT INTO users (username, password)
+VALUES ('Juancho', '123');
+
+
 CREATE TABLE IF NOT EXISTS customer (
     customerId SERIAL PRIMARY KEY,
     customerName varchar(50) NOT NULL,
@@ -20,6 +27,10 @@ CREATE TABLE IF NOT EXISTS customer (
     points int default 0,
     FOREIGN KEY (userId) REFERENCES users (userId)
     );
+
+INSERT INTO customer (customerName, Phone, Mail, userId)
+VALUES ('Juancho', 541124557633, 'juan@gmail.com', 2);
+
 
 CREATE TABLE IF NOT EXISTS restaurant (
     restaurantId SERIAL PRIMARY KEY,
@@ -32,6 +43,9 @@ CREATE TABLE IF NOT EXISTS restaurant (
     userId int default 1,
     FOREIGN KEY (userId) REFERENCES users (userId)
     );
+
+INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
+VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1)
 
 -- CREATE TABLE IF NOT EXISTS image
 -- (
@@ -50,6 +64,12 @@ CREATE TABLE IF NOT EXISTS dish (
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
     );
 
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES (1, 'Milanesa', 100, 'descripicón de milanesa');
+
+INSERT INTO dish (restaurantId, dishName, price, dishDescription)
+VALUES (1, 'Empanada', 200, 'descripicón de empanada sin pasas de uva');
+
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
@@ -63,6 +83,14 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
     );
 
+INSERT INTO reservation (restaurantId, customerId, reservationHour, reservationStatus)
+VALUES (1, 1, 12, 1);
+INSERT INTO reservation (restaurantId, customerId, reservationHour, reservationStatus)
+VALUES (1, 1, 12, 2);
+INSERT INTO reservation (restaurantId, customerId, reservationHour, reservationStatus)
+VALUES (1, 1, 12, 3);
+INSERT INTO reservation (restaurantId, customerId, reservationHour, reservationStatus)
+VALUES (1, 1, 12, 4);
 
 
 CREATE TABLE IF NOT EXISTS orderItem
@@ -76,4 +104,9 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
     );
+
+INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
+VALUES (1, 1, 100, 1, 1);
+INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
+VALUES (2, 1, 200, 1, 1);
 

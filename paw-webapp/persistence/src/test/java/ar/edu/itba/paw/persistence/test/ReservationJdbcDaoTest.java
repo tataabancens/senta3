@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistence.ReservationJdbcDao;
+import org.hsqldb.jdbc.JDBCDriver;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,16 +13,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@Rollback
 public class ReservationJdbcDaoTest {
 
     private static final String RESERVATION_TABLE = "reservation";
@@ -30,7 +36,7 @@ public class ReservationJdbcDaoTest {
 //    private static final String RESTAURANT_TABLE = "restaurant";
 //    private static final String DISH_TABLE = "dish";
 
-    private ReservationDao reservationDao ;
+    private ReservationJdbcDao reservationDao;
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsertReservation;
     private SimpleJdbcInsert jdbcInsertOrderItem;
@@ -40,6 +46,9 @@ public class ReservationJdbcDaoTest {
 
     @Autowired
     private DataSource ds;
+
+
+    //private ReservationJdbcDao reservationDao = new ReservationJdbcDao(null);
 
     @Before
     public void setUp(){
@@ -65,8 +74,24 @@ public class ReservationJdbcDaoTest {
     public void testGetOrderItemsByReservationIdExists() {
         // 1. Precondiciones
         List<FullOrderItem> testList = new ArrayList<>();
-        testList.add(new FullOrderItem(1, 1, 3, 890, 3, 0, "Pizza"));
-        testList.add(new FullOrderItem(1, 2, 2, 650, 3, 0, "Milanesa"));
+        testList.add(new FullOrderItem(1, 1, 1, 100, 1, 1, "Milanesa"));
+        testList.add(new FullOrderItem(2, 1, 2, 200, 1, 1, "Empanada"));
+/*
+        final Map<String, Object> orderItemData = new HashMap<>();
+        orderItemData.put("dishid", 3);
+        orderItemData.put("reservationid", 1);
+        orderItemData.put("unitprice", 890);
+        orderItemData.put("quantity", 3);
+        orderItemData.put("status", 0);
+        final Map<String, Object> orderItemData2 = new HashMap<>();
+        orderItemData.put("dishid", 2);
+        orderItemData.put("reservationid", 1);
+        orderItemData.put("unitprice", 650);
+        orderItemData.put("quantity", 3);
+        orderItemData.put("status", 0);
+        jdbcInsertOrderItem.execute(orderItemData);
+        jdbcInsertOrderItem.execute(orderItemData2);
+ */
 
         // 2. Ejercitacion
         List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
@@ -95,11 +120,10 @@ public class ReservationJdbcDaoTest {
         // 1. Precondiciones
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
         List<OrderItem> testList = new ArrayList<>();
-        testList.add(new OrderItem(1, 1, 890, 3, 0));
-        testList.add(new OrderItem(1, 2, 650, 3, 0));
+        testList.add(new OrderItem(1, 1, 100, 3, 0));
+        testList.add(new OrderItem(1, 2, 200, 3, 0));
 
         // 2. Ejercitacion
-
         reservationDao.addOrderItemsByReservationId(testList);
 
         // 3. PostCondiciones
