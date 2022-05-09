@@ -28,7 +28,8 @@
                 <form:input path="phone" type="text"/>
             </div>
             <div class="submit center">
-                <input type="submit" value="Confirmar" class="continue-btn"/>
+                <spring:message code="Button.confirm" var="label"/>
+                <input type="submit" value="${label}" class="continue-btn"/>
             </div>
         </div>
     </form:form>

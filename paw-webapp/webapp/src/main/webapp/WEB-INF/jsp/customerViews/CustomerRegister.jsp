@@ -49,7 +49,9 @@
                     <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
                     <form:input path="phone" type="text"/>
                 </div>
-                <input type="submit" value="Continuar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
+                <spring:message code="Button.continue" var="label"/>
+                <spring:message code="Button.loading" var="label2"/>
+                <input type="submit" value="${label}" class="continue-btn" onclick="this.disabled=true;this.value=${label2}; this.form.submit();"/>
             </form:form>
         </div>
     </div>

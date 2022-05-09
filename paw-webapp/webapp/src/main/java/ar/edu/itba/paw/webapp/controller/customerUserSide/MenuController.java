@@ -36,7 +36,7 @@ public class MenuController {
     }
 
     @RequestMapping("/")
-    public ModelAndView helloWorld() {
+    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category ) {
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
 
@@ -44,6 +44,7 @@ public class MenuController {
         restaurant.setDishes(rs.getRestaurantDishes(1));
         mav.addObject("restaurant", restaurant);
         mav.addObject("categories", DishCategory.getAsList());
+        mav.addObject("currentCategory", DishCategory.valueOf(category));
         return mav;
     }
 

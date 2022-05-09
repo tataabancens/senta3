@@ -31,7 +31,8 @@
                 <span class="card-title text price center"><spring:message code="Deletedish.sure" arguments="${dish.dishName}"/> </span>
                 <div class="row margin-0">
                     <div class="col s12 center">
-                        <input type="submit" value="Confirmar" class="continue-btn red"/>
+                        <spring:message code="Button.confirm" var="label"/>
+                        <input type="submit" value="${label}" class="continue-btn red"/>
                     </div>
                 </div>
             </div>

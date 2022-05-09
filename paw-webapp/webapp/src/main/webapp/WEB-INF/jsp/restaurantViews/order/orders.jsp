@@ -45,7 +45,8 @@
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Terminado" class="waves-effect waves-light btn confirm-btn blue center">
+                                <spring:message code="Button.finish" var="label"/>
+                                <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn blue center">
                             </form:form>
                         </div>
                     </c:if>
@@ -67,7 +68,8 @@
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Entregado" class="waves-effect waves-light btn blue center confirm-btn">
+                                <spring:message code="Button.deliver" var="label"/>
+                                <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
                             </form:form>
                         </div>
                     </c:if>
