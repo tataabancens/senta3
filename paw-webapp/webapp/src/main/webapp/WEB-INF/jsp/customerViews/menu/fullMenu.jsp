@@ -84,8 +84,8 @@
         <sec:authorize access="isAuthenticated()">
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
-                    <div class="card client-actions">
-                        <span class="main-title center"><spring:message code="Fullmenu.discount"/></span>
+                    <div class="card client-actions discounts">
+                        <span class="presentation-text discounts"><spring:message code="Fullmenu.discount"/></span>
                         <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
                             <spring:message code="Button.activate" var="label"/>
@@ -95,7 +95,7 @@
                 </c:if>
             </c:if>
             <c:if test="${reservation.reservationDiscount}">
-                <div class="card client-actions">
+                <div class="card client-actions discounts">
                     <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
@@ -209,9 +209,11 @@
                             <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
                             <p class="text description"><c:out value="${dish.dishDescription}"/></p>
                             <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price">$<c:out value="${(dish.price)}"/></span>
-                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                <div class="discounted-price">
+                                    <span id="original-price" class="text price">$<c:out value="${(dish.price)}"/></span>
+                                    <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                    <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                </div>
                             </c:if>
                             <c:if test="${!reservation.reservationDiscount}">
                                 <span class="text price">$<c:out value="${dish.price}"/></span>
@@ -248,6 +250,12 @@
         display: flex;
         flex-direction: column;
         width: 74%;
+    }
+    .card.client-actions.discounts{
+        max-width: 60%;
+    }
+    .presentation-text.discounts{
+        font-size: 1.18rem;
     }
     .client-actions{
         display: flex;
@@ -385,6 +393,7 @@
     }
     #discounted-price{
         color: blue;
+        margin-left: 12%;
     }
     @media screen and (max-width: 1920px){
         .dish-card{

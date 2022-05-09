@@ -93,24 +93,29 @@
                         </ul>
                     </div>
                 </div>
-                <div class="dishList">
-                    <c:forEach var="dish" items="${restaurant.dishes}">
-                        <div class="dish-card">
-                            <div class="dish-img">
-                                <c:if test="${dish.imageId > 0}">
-                                    <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                                </c:if>
-                                <c:if test="${dish.imageId == 0}">
-                                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                                </c:if>
+                <div class="dish-categories">
+                    <div>
+                        <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+                    </div>
+                    <div class="dishList">
+                        <c:forEach var="dish" items="${restaurant.dishes}">
+                            <div class="dish-card">
+                                <div class="dish-img">
+                                    <c:if test="${dish.imageId > 0}">
+                                        <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                    </c:if>
+                                    <c:if test="${dish.imageId == 0}">
+                                        <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                    </c:if>
+                                </div>
+                                <div class="card-info">
+                                    <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                    <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                                    <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                </div>
                             </div>
-                            <div class="card-info">
-                                <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
-                                <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
-                                <span class="text price info">$<c:out value="${dish.price}"/></span>
-                            </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,11 +262,16 @@
         flex-direction: column;
         width: 15%;
     }
+    .dish-categories{
+        padding: 0 2em;
+        width: 85%;
+    }
     .dishList{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         flex-wrap: wrap;
-        width: 85%;
+        width: 100%;
+        height: fit-content;
     }
     
 
