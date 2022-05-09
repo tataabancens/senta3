@@ -97,23 +97,6 @@ public class ReservationJdbcDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems) {
-        Map<String, ?>[] maps = new Map[orderItems.size()];
-        for (int i = 0; i < maps.length; i++) {
-            final Map<String, Object> orderItemData = new HashMap<>();
-            orderItemData.put("dishId", orderItems.get(i).getDishId());
-            orderItemData.put("reservationId", orderItems.get(i).getReservationId());
-            orderItemData.put("unitPrice", orderItems.get(i).getUnitPrice());
-            orderItemData.put("quantity", orderItems.get(i).getQuantity());
-            orderItemData.put("Status", orderItems.get(i).getStatus());
-
-            maps[i] = orderItemData;
-        }
-        jdbcInsertOrderItem.executeBatch(maps);
-        return orderItems;
-    }
-
-    @Override
     public List<FullOrderItem> getOrderItemsByReservationId(long reservationId) {
         List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ?" +
                 " ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
@@ -280,12 +263,6 @@ public class ReservationJdbcDao implements ReservationDao {
     public void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId) {
         jdbcTemplate.update("DELETE from orderitem where status = ? AND reservationId = ? AND id = ?", new Object[]{status.ordinal(), reservationId, orderItemId});
     }
-
-    @Override
-    public void cancelReservation(long restaurantId, long reservationId){
-        jdbcTemplate.update("DELETE FROM reservation WHERE reservationId = ?", new Object[]{reservationId});
-    }
-
 
     @Override
     public List<FullReservation> getAllReservations(long restaurantId) {

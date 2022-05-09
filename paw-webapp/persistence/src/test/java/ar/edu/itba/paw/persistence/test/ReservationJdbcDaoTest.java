@@ -124,7 +124,7 @@ public class ReservationJdbcDaoTest {
         testList.add(new OrderItem(1, 2, 200, 3, 0));
 
         // 2. Ejercitacion
-        reservationDao.addOrderItemsByReservationId(testList);
+        reservationDao.;
 
         // 3. PostCondiciones
         Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));

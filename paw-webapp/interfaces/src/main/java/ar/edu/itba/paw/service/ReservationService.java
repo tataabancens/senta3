@@ -13,8 +13,6 @@ public interface ReservationService {
 
     List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status);
 
-    List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
-
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
@@ -38,8 +36,6 @@ public interface ReservationService {
     void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
 
     List<Integer> getAvailableHours(long restaurantId, long qPeople);
-
-    void cancelReservation(long restaurantId, long reservationId);
 
     List<Long> getUnavailableItems(long reservationId);
 
@@ -72,8 +68,6 @@ public interface ReservationService {
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
     List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
-
-    long getRecommendedDishId(long reservationId);
 
     List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
