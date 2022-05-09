@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
-    private RestaurantDao restaurantDao;
+    private final RestaurantDao restaurantDao;
 
     @Autowired
     public RestaurantServiceImpl(final RestaurantDao restaurantDao) {

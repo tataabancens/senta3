@@ -65,8 +65,6 @@ public class CustReservationController {
     @RequestMapping(value = "/createReservation-0", method = RequestMethod.POST)
     public ModelAndView createReservation_0_POST() {
 
-        res.cleanMaybeReservations(1);
-
         return new ModelAndView("redirect:/createReservation-1");
     }
 
@@ -83,7 +81,6 @@ public class CustReservationController {
         if (errors.hasErrors()){
             return createReservation_1(form);
         }
-        res.cleanMaybeReservations(1);
         Reservation reservation = res.createReservation(1, 1, 0, Integer.parseInt(form.getNumber()));
         res.updateReservationStatus(reservation.getReservationId(), ReservationStatus.MAYBE_RESERVATION);
 
@@ -115,7 +112,6 @@ public class CustReservationController {
         controllerService.longParser(reservationIdP, form.getNumber()).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
         long hour = Long.parseLong(form.getNumber());
-        res.cleanMaybeReservations(1);
 
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
@@ -148,7 +144,6 @@ public class CustReservationController {
         if (errors.hasErrors()){
             return createReservation_3(reservationIdP, form);
         }
-        res.cleanMaybeReservations(1);
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
 
@@ -189,8 +184,6 @@ public class CustReservationController {
                                                 @Valid @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
         controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
-
-        res.cleanMaybeReservations(1);
 
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);

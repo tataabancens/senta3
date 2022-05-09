@@ -6,7 +6,9 @@ import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
@@ -17,9 +19,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
-    private ReservationDao reservationDao;
-    private RestaurantDao restaurantDao;
-    private CustomerService customerService;
+    private final ReservationDao reservationDao;
+    private final RestaurantDao restaurantDao;
+    private final CustomerService customerService;
     private static final int POINTS_TO_DISCOUNT = 100;
 
     @Autowired
@@ -292,6 +294,8 @@ public class ReservationServiceImpl implements ReservationService {
         reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
     }
 
+    @Scheduled(cron = "0 0/30 * * * ?")
+    @Transactional
     @Override
     public void checkReservationTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -315,13 +319,15 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
+    @Scheduled(cron = "0 0/5 * * * ?")
+    @Transactional
     @Override
-    public void cleanMaybeReservations(long restaurantId) {
+    public void cleanMaybeReservations() {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.MAYBE_RESERVATION);
         LocalDateTime now = LocalDateTime.now();
 
-        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(restaurantId, statusList);
+        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(1, statusList);
         for (Reservation reservation : allMaybeReservations) {
             LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
             if (now.compareTo(tenMinutesLater) > 0) {
@@ -329,6 +335,8 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
     }
+
+
 
     @Override
     public void applyDiscount(long reservationId) {
@@ -367,13 +375,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
-        return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
+        return Objects.equals(reservation.getReservationStatus().getName(), "SEATED") && hasOrdered;
     }
 
     @Override
     public boolean isFromOrder(String isFromOrderP) {
-        if (isFromOrderP.compareTo("true") == 0)
-            return true;
-        return false;
+        return isFromOrderP.compareTo("true") == 0;
     }
 }

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,8 @@ public interface ReservationService {
 
     void checkReservationTime();
 
+    void cleanMaybeReservations();
+
     void applyDiscount(long reservationId);
 
     void cancelDiscount(long reservationId);
@@ -65,8 +68,6 @@ public interface ReservationService {
     boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
 
     public List<Reservation> getReservationsSeated(long restaurantId);
-
-    void cleanMaybeReservations(long restaurantId);
 
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 

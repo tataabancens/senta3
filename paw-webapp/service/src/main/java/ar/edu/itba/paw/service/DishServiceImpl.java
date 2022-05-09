@@ -12,8 +12,8 @@ import java.util.Optional;
 @Service
 public class DishServiceImpl implements DishService{
 
-    private DishDao dishDao;
-    private ImageDao imageDao;
+    private final DishDao dishDao;
+    private final ImageDao imageDao;
 
     @Autowired
     public  DishServiceImpl(final DishDao dishDao, final ImageDao imageDao){
@@ -38,11 +38,15 @@ public class DishServiceImpl implements DishService{
 
     @Override
     public void updateDishPhoto(long dishId, long imageId) {
-        Dish dish = dishDao.getDishById(dishId).get();
-        if(dish.getImageId() > 1) {
-            imageDao.deleteImageById(dish.getImageId());
+        Optional<Dish> maybeDish = dishDao.getDishById(dishId);
+        if(maybeDish.isPresent()) {
+            Dish dish = maybeDish.get();
+            if(dish.getImageId() > 1) {
+                imageDao.deleteImageById(dish.getImageId());
+            }
+            dishDao.updateDishPhoto(dishId, imageId);
         }
-        dishDao.updateDishPhoto(dishId, imageId);
+
     }
     @Override
     public void deleteDish(long dishId) {
