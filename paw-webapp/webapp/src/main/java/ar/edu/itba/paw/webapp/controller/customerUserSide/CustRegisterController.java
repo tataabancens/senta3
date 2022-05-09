@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
@@ -49,6 +50,11 @@ public class CustRegisterController {
                                      @PathVariable("reservationId") final String reservationIdP,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
+        controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
+        Customer customer = cs.getUserByID(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
+
+        form.setMail(customer.getMail());
+
         ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
         mav.addObject("customerId", customerIdP);
         mav.addObject("reservationId", reservationIdP);
@@ -68,10 +74,10 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return userRegister(customerIdP, reservationIdP, form);
         }
-        User user = us.create(form.getUsername(), form.getPassword(), Roles.CUSTOMER);
+        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
         cs.linkCustomerToUserId(customerId, user.getId());
 
-        authenticateUserAndSetSession(form.getUsername(), form.getPassword(), request, authenticationManager);
+        authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
         return new ModelAndView("redirect:/menu?reservationId=" +  reservationIdP);
     }
@@ -92,12 +98,12 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return CustomerRegister(form);
         }
-        User user = us.create(form.getUsername(), form.getPassword(), Roles.CUSTOMER);
+        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
         Customer customer = cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
 
         cs.linkCustomerToUserId(customer.getCustomerId(), user.getId());
 
-        authenticateUserAndSetSession(form.getUsername(), form.getPassword(), request, authenticationManager);
+        authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
         return new ModelAndView("redirect:/" );
     }

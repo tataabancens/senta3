@@ -171,6 +171,10 @@ public class CustReservationController {
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
 
+        form.setName(customer.getCustomerName());
+        form.setPhone(customer.getPhone());
+        form.setMail(customer.getMail());
+
         final ModelAndView mav = new ModelAndView("customerViews/reservation/confirmReservation");
 
         mav.addObject("reservation", reservation);
@@ -181,7 +185,10 @@ public class CustReservationController {
     @RequestMapping(value = "/confirmReservation/{reservationId}", method = RequestMethod.POST)
     public ModelAndView confirmReservationPost( @PathVariable("reservationId") final String reservationIdP,
                                                 Principal principal,
-                                                @Valid @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
+                                                @Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
+        if (errors.hasErrors()){
+            return confirmReservation(reservationIdP, principal, form);
+        }
         controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 

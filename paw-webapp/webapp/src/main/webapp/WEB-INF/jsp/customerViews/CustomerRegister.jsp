@@ -25,9 +25,19 @@
             <c:url value="/register" var="postPath"/>
             <form:form modelAttribute="customerRegisterForm" action="${postPath}" method="post">
                 <div>
+                    <form:errors path="customerName" element="p" cssStyle="color:red"/>
+                    <form:label path="customerName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.name"/></form:label>
+                    <form:input path="customerName" type="text"/>
+                </div>
+                <div>
                     <form:errors path="mail" element="p" cssStyle="color:red"/>
                     <form:label path="mail" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.mail"/></form:label>
                     <form:input path="mail" type="text"/>
+                </div>
+                <div>
+                    <form:errors path="phone" element="p" cssStyle="color:red"/>
+                    <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
+                    <form:input path="phone" type="text"/>
                 </div>
                 <div>
                     <form:errors path="username" element="p" cssStyle="color:red"/>
@@ -35,19 +45,14 @@
                     <form:input path="username" type="text"/>
                 </div>
                 <div>
-                    <form:errors path="customerName" element="p" cssStyle="color:red"/>
-                    <form:label path="customerName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.name"/></form:label>
-                    <form:input path="customerName" type="text"/>
+                    <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                    <form:label path="psPair.password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                    <form:input path="psPair.password" type="password"/>
                 </div>
                 <div>
-                    <form:errors path="password" element="p" cssStyle="color:red"/>
-                    <form:label path="password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
-                    <form:input path="password" type="password"/>
-                </div>
-                <div>
-                    <form:errors path="phone" element="p" cssStyle="color:red"/>
-                    <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
-                    <form:input path="phone" type="text"/>
+                    <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                    <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                    <form:input path="psPair.checkPassword" type="password"/>
                 </div>
                 <spring:message code="Button.continue" var="label"/>
                 <spring:message code="Button.loading" var="label2"/>

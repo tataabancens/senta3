@@ -24,15 +24,25 @@
             <c:url value="/registerShort/${customerId}/${reservationId}" var="postPath"/>
             <form:form modelAttribute="customerRegisterShortForm" action="${postPath}" method="post">
                 <div class="input-field col s12 input">
+                    <div class="input-field input" style="margin-bottom: 1%">
+                        <form:errors path="mail" element="p" cssStyle="color:red"/>
+                        <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.mail"/></form:label>
+                        <form:input path="mail"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
+                    </div>
                     <div>
                         <form:errors path="username" element="p" cssStyle="color:red"/>
                         <form:label path="username" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.user"/></form:label>
                         <form:input path="username" type="text"/>
                     </div>
                     <div>
-                        <form:errors path="password" element="p" cssStyle="color:red"/>
-                        <form:label path="password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
-                        <form:input path="password" type="password"/>
+                        <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                        <form:label path="psPair.password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                        <form:input path="psPair.password" type="password"/>
+                    </div>
+                    <div>
+                        <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                        <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                        <form:input path="psPair.checkPassword" type="password"/>
                     </div>
                 </div>
                 <spring:message code="Button.continue" var="label"/>

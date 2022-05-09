@@ -29,13 +29,20 @@
             <div class="card register-card">
                 <span class="presentation-text"><spring:message code="Reservation.confirm.check"/></span>
                 <div class="input-field input" style="margin-bottom: 1%">
-                    <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.mail" arguments="${customer.mail}"/></form:label>
+                    <form:errors path="mail" element="p" cssStyle="color:red"/>
+                    <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.mail"/></form:label>
+                    <form:input path="mail"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
                 </div>
                 <div class="input-field input" style="margin-bottom: 1%">
-                    <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.phone" arguments="${customer.phone}"/></form:label>
+                    <form:errors path="phone" element="p" cssStyle="color:red"/>
+                    <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.phone"/></form:label>
+                    <form:input path="phone"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
+
                 </div>
                 <div class="input-field input" style="margin-bottom: 8%">
-                    <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.name" arguments="${customer.customerName}"/></form:label>
+                    <form:errors path="name" element="p" cssStyle="color:red"/>
+                    <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.name"/></form:label>
+                    <form:input path="name"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
                 </div>
                 <div style="margin-bottom: 1%">
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.people" arguments="${reservation.qPeople}"/></form:label>
