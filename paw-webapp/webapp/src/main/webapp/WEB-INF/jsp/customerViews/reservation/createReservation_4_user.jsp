@@ -1,4 +1,3 @@
-<%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -53,7 +52,7 @@
                 <div class="submit center">
                     <spring:message code="Button.confirm" var="label"/>
                     <spring:message code="Button.loading" var="label2"/>
-                    <input type="submit" value="${label}" class="continue-btn" onclick="this.disabled=true;this.value=${label2}; this.form.submit();"/>
+                    <input type="submit" value="${label}" class="continue-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2};"/>
                 </div>
             </div>
         </div>
