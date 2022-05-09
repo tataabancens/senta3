@@ -39,7 +39,8 @@ public class ReservationJdbcDao implements ReservationDao {
                     resultSet.getInt("reservationStatus"),
                     resultSet.getInt("qPeople"),
                     resultSet.getString("customerName"),
-                    resultSet.getString("restaurantName")));
+                    resultSet.getString("restaurantName"),
+                    resultSet.getTimestamp("startedAtTime")));
 
     private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
             new FullOrderItem(resultSet.getLong("id"),

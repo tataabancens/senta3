@@ -32,11 +32,13 @@
           <span class="card-title text"><spring:message code="Restaurant.tables"/></span>
           <div class="row">
             <div class="input-field col s12 input">
+              <form:errors path="" element="p" cssStyle="color:red"/>
               <form:errors path="openHour" element="p" cssStyle="color:red"/>
               <form:label path="openHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.open"/></form:label>
               <form:input path="openHour" type="text"/>
             </div>
             <div class="input-field col s12 input">
+              <form:errors path="" element="p" cssStyle="color:red"/>
               <form:errors path="closeHour" element="p" cssStyle="color:red"/>
               <form:label path="closeHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.close"/></form:label>
               <form:input path="closeHour" type="text"/>

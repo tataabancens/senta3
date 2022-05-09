@@ -58,6 +58,7 @@ public class CustReservationController {
         List<FullReservation> reservations = res.getReservationsByCustomerIdAndActive(customer.getCustomerId());
 
         mav.addObject("reservations", reservations);
+        mav.addObject("customer", customer);
         return mav;
     }
 
@@ -194,6 +195,8 @@ public class CustReservationController {
 
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
+        ms.sendConfirmationEmail(restaurant, customer, reservation);
 
         res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservationId, ReservationStatus.OPEN);

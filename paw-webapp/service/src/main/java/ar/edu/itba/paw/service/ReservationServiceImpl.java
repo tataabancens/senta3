@@ -294,7 +294,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 1/31 * * * ?")
     @Transactional
     @Override
     public void checkReservationTime() {
@@ -303,17 +303,23 @@ public class ReservationServiceImpl implements ReservationService {
 
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
-            if(now.getHour() > reservation.getReservationHour()){
-                if(reservation.getReservationStatus() == ReservationStatus.SEATED){
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
+            if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
+                updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            } else if (reservation.getStartedAtTime().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()){
+                updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            } else {
+                if(now.getHour() > reservation.getReservationHour()){
+                    if(reservation.getReservationStatus() == ReservationStatus.SEATED){
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
+                    }
+                    if(reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED && reservation.getReservationStatus() != ReservationStatus.FINISHED){
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                    }
                 }
-                if(reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED && reservation.getReservationStatus() != ReservationStatus.FINISHED){
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
-                }
-            }
-            if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
+                    if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                    }
                 }
             }
         }

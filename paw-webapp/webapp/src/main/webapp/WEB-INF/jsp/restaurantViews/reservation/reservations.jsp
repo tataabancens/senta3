@@ -98,14 +98,14 @@
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
+                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
                                     <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
                                 </button>
                             </form:form>
                         </div>
-                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}"/>" class="btn waves-effect waves-light red">
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> Rechazar</span>
                         </a>
                     </td>
@@ -114,8 +114,8 @@
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
+                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}??orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
                                     <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
                                 </button>
@@ -127,8 +127,8 @@
                 <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
                                     <span class="text description " style="font-size: 0.8rem;color: white">Pedir Cuenta</span>
                                 </button>
