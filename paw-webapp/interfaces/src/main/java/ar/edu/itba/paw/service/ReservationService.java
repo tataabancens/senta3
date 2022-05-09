@@ -11,8 +11,6 @@ import java.util.Optional;
 public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
 
-    List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status);
-
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
