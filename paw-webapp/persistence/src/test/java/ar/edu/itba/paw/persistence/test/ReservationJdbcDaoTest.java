@@ -1,8 +1,12 @@
 package ar.edu.itba.paw.persistence.test;
 
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.FullOrderItem;
 import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistence.ReservationJdbcDao;
 import org.hsqldb.jdbc.JDBCDriver;
@@ -20,10 +24,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static ar.edu.itba.paw.model.enums.DishCategory.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -32,17 +35,20 @@ public class ReservationJdbcDaoTest {
 
     private static final String RESERVATION_TABLE = "reservation";
     private static final String ORDER_ITEM_TABLE = "orderItem";
-//    private static final String CUSTOMER_TABLE = "customer";
-//    private static final String RESTAURANT_TABLE = "restaurant";
-//    private static final String DISH_TABLE = "dish";
+    private static final String CUSTOMER_TABLE = "customer";
+    private static final String RESTAURANT_TABLE = "restaurant";
+    private static final String DISH_TABLE = "dish";
 
     private ReservationJdbcDao reservationDao;
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsertReservation;
     private SimpleJdbcInsert jdbcInsertOrderItem;
-//    private SimpleJdbcInsert jdbcInsertCustomer;
-//    private SimpleJdbcInsert jdbcInsertRestaurant;
-//    private SimpleJdbcInsert jdbcInsertDish;
+    private SimpleJdbcInsert jdbcInsertCustomer;
+    private SimpleJdbcInsert jdbcInsertRestaurant;
+    private SimpleJdbcInsert jdbcInsertDish;
+
+    private Dish testingDish1 = new Dish(1, 1, "Empanada", 100, "descripicón de empanada sin pasas de uva", 1, MAIN_DISH);
+
 
     @Autowired
     private DataSource ds;
@@ -54,47 +60,181 @@ public class ReservationJdbcDaoTest {
     public void setUp(){
         reservationDao = new ReservationJdbcDao(ds);
         jdbcTemplate = new JdbcTemplate(ds);
+        jdbcInsertRestaurant = new SimpleJdbcInsert(ds)
+                .withTableName(RESTAURANT_TABLE)
+                .usingGeneratedKeyColumns("restaurantId");
         jdbcInsertReservation = new SimpleJdbcInsert(ds)
                 .withTableName(RESERVATION_TABLE)
                 .usingGeneratedKeyColumns("reservationId");
-//        jdbcInsertCustomer = new SimpleJdbcInsert(ds)
-//                .withTableName(CUSTOMER_TABLE)
-//                .usingGeneratedKeyColumns("customerId");
-//        jdbcInsertRestaurant = new SimpleJdbcInsert(ds)
-//                .withTableName(RESTAURANT_TABLE)
-//                .usingGeneratedKeyColumns("restaurantId");
-//        jdbcInsertDish = new SimpleJdbcInsert(ds)
-//                .withTableName(DISH_TABLE)
-//                .usingGeneratedKeyColumns("dishId");
+        jdbcInsertCustomer = new SimpleJdbcInsert(ds)
+                .withTableName(CUSTOMER_TABLE)
+                .usingGeneratedKeyColumns("customerId");
+        jdbcInsertDish = new SimpleJdbcInsert(ds)
+                .withTableName(DISH_TABLE)
+                .usingGeneratedKeyColumns("dishId");
         jdbcInsertOrderItem = new SimpleJdbcInsert(ds)
-                .withTableName(ORDER_ITEM_TABLE);
+                .withTableName(ORDER_ITEM_TABLE)
+                .usingGeneratedKeyColumns("orderItemId");
+    }
+
+    public Number insertDish(String name, String description, int price, int restaurantId, int imageId, DishCategory category){
+        final Map<String, Object> dishData = new HashMap<>();
+        dishData.put("dishName", name);
+        dishData.put("dishDescription", description);
+        dishData.put("price", price);
+        dishData.put("restaurantId", restaurantId);
+        dishData.put("imageId", imageId);
+        dishData.put("category", category);
+        Number dishId = jdbcInsertDish.executeAndReturnKey(dishData);
+        return dishId;
+    }
+
+    public Number insertReservation(int restaurantId, int reservationHour, int customerId, int reservationStatus, int qPeople){
+        final Map<String, Object> reservationData = new HashMap<>();
+        reservationData.put("restaurantId", restaurantId);
+        reservationData.put("reservationHour", reservationHour);
+        reservationData.put("customerId", customerId);
+        reservationData.put("reservationstatus", reservationStatus);
+        reservationData.put("qPeople", 1);
+        reservationData.put("reservationdiscount", false);
+        reservationData.put("startedAtTime", null);
+        Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
+        return reservationId;
+    }
+
+    public Number insertOrderItem(int dishId, int reservationId, int unitPrice, int qty, int status){
+        final Map<String, Object> orderItemData = new HashMap<>();
+        orderItemData.put("dishid", dishId);
+        orderItemData.put("reservationid", reservationId);
+        orderItemData.put("unitprice", unitPrice);
+        orderItemData.put("quantity", qty);
+        orderItemData.put("status", status);
+        Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
+        return orderItemId;
+    }
+
+    public void cleanAllTables(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
+    }
+
+
+
+
+    @Test
+    @Rollback
+    public void testGetReservationById_Exists(){
+        // 1. Precondiciones
+        //insert dish, create reservation, insert orderItem
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+
+        // 2. Ejercitacion
+        Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId.longValue());
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeReservation.isPresent());
+        Assert.assertEquals(reservationId.longValue(), maybeReservation.get().getReservationId());
     }
 
     @Test
-    public void testGetOrderItemsByReservationIdExists() {
+    @Rollback
+    public void testGetReservationById_NotExists(){
         // 1. Precondiciones
-        List<FullOrderItem> testList = new ArrayList<>();
-        testList.add(new FullOrderItem(1, 1, 1, 100, 1, 1, "Milanesa"));
-        testList.add(new FullOrderItem(2, 1, 2, 200, 1, 1, "Empanada"));
-/*
-        final Map<String, Object> orderItemData = new HashMap<>();
-        orderItemData.put("dishid", 3);
-        orderItemData.put("reservationid", 1);
-        orderItemData.put("unitprice", 890);
-        orderItemData.put("quantity", 3);
-        orderItemData.put("status", 0);
-        final Map<String, Object> orderItemData2 = new HashMap<>();
-        orderItemData.put("dishid", 2);
-        orderItemData.put("reservationid", 1);
-        orderItemData.put("unitprice", 650);
-        orderItemData.put("quantity", 3);
-        orderItemData.put("status", 0);
-        jdbcInsertOrderItem.execute(orderItemData);
-        jdbcInsertOrderItem.execute(orderItemData2);
- */
+        //insert dish, create reservation, insert orderItem
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
-        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
+        Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId.longValue()+1);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeReservation.isPresent());
+    }
+
+
+    @Test
+    @Rollback
+    public void testGetReservationsByStatusList_Empty(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+
+        // 2. Ejercitacion
+        List<Reservation> maybeReservations = reservationDao.getReservationsByStatusList(1, new ArrayList<>());
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeReservations.isEmpty());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByStatusList_Full(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, 1, ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.SEATED);
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+
+        // 2. Ejercitacion
+        List<Reservation> maybeReservations = reservationDao.getReservationsByStatusList(1, statusList);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeReservations.isEmpty());
+        Assert.assertEquals(2, maybeReservations.size());
+    }
+
+    @Test
+    @Rollback
+    public void testCreateReservation() {
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+
+        // 2. Ejercitacion
+        Reservation maybeReservation = reservationDao.createReservation(1, 1, 1, 1, null);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(reservationId.intValue()+1, maybeReservation.getReservationId());
+        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, RESERVATION_TABLE));
+    }
+
+    @Test
+    @Rollback
+    public void testCreateOrderItemsByReservationId() {
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Dish new_dish = new Dish(dishId.longValue(), 1, "Empanada", 100, "sin pasas de uva", 1, MAIN_DISH);
+
+        // 2. Ejercitacion
+        OrderItem orderItem = reservationDao.createOrderItemByReservationId(reservationId.longValue(), new_dish, 2);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
+        Assert.assertEquals(new_dish.getId(), orderItem.getDishId());
+    }
+
+    @Test
+    @Rollback
+    public void testGetOrderItemsByReservationId_Exists() {
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number orderItemId = insertOrderItem(dishId.intValue(), reservationId.intValue(), 100, 1, 0);
+
+        List<FullOrderItem> testList = new ArrayList<>();
+        testList.add(new FullOrderItem(orderItemId.longValue(), reservationId.longValue(), dishId.intValue(), 100, 1, 0, "Empanada"));
+        //testList.add(new FullOrderItem(2, 1, 2, 200, 1, 1, "Empanada"));
+
+        // 2. Ejercitacion
+        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(reservationId.longValue());
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeList.isEmpty());
@@ -104,9 +244,10 @@ public class ReservationJdbcDaoTest {
     }
 
     @Test
-    public void testGetOrderItemsByReservationIdDoesntExists() {
+    @Rollback
+    public void testGetOrderItemsByReservationId_DoesntExists() {
         // 1. Precondiciones
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
+        cleanAllTables();
 
         // 2. Ejercitacion
         List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
@@ -116,30 +257,25 @@ public class ReservationJdbcDaoTest {
     }
 
     @Test
-    public void testAddOrderItemsByReservationId() {
+    @Rollback
+    public void testGetOrderItemsByStatus() {
         // 1. Precondiciones
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
-        List<OrderItem> testList = new ArrayList<>();
-        testList.add(new OrderItem(1, 1, 100, 3, 0));
-        testList.add(new OrderItem(1, 2, 200, 3, 0));
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number dishId2 = insertDish("Milanesa", "sin pasas de uva", 200, 1, 1, MAIN_DISH);
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId2.intValue(), reservationId.intValue(), 200, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
 
         // 2. Ejercitacion
-        reservationDao.;
+        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByStatus(OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
-        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
+        Assert.assertFalse(maybeList.isEmpty());
+        Assert.assertEquals(2, maybeList.size());
     }
 
-    @Test
-    public void testCreateReservation() {
-        // 1. Precondiciones
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
 
-        // 2. Ejercitacion
-        Reservation maybeReservation = reservationDao.createReservation(1, 1, 1, 1, null);
-
-        // 3. PostCondiciones
-        Assert.assertEquals(1, maybeReservation.getReservationId());
-    }
 
 }

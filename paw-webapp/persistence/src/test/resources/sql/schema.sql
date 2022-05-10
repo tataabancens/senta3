@@ -35,9 +35,6 @@ CREATE TABLE IF NOT EXISTS restaurant (
     FOREIGN KEY (userId) REFERENCES users (userId)
     );
 
-INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
-VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
-
 
 -- CREATE TABLE IF NOT EXISTS image
 -- (
@@ -82,5 +79,17 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
     );
+
+INSERT INTO users (username, password)
+VALUES ('Pepito', '123');
+INSERT INTO users (username, password)
+VALUES ('Juancho', '123');
+
+INSERT INTO customer (customerName, Phone, Mail, userId)
+VALUES ('Juancho', 541124557633, 'juan@gmail.com', 2);
+
+INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
+VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
+
 
 

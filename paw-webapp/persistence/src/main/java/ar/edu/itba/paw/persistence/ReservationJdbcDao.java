@@ -106,6 +106,9 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList) {
         // Building sql query
+        if(statusList.isEmpty()){
+            return new ArrayList<Reservation>();
+        }
 
         StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE restaurantId = ? AND (");
         Object[] params = new Object[statusList.size() + 1];
