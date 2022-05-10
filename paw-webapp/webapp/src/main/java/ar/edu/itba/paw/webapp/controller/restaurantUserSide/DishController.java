@@ -149,8 +149,8 @@ public class DishController {
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
         form.setDishPrice("" + dish.getPrice());
+        form.setCategory(dish.getCategory());
         return mav;
-
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/dishId={dishId}", method = RequestMethod.POST)

@@ -74,4 +74,11 @@ public class Dish {
         this.dishDescription = dishDescription;
     }
 
+    public DishCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(DishCategory category) {
+        this.category = category;
+    }
 }

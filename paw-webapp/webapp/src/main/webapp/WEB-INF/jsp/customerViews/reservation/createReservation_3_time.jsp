@@ -24,17 +24,23 @@
 <div class="content">
     <div class="content-container">
         <div class="card register-card">
+            <c:if test="${hours.size() > 0}">
             <span class="presentation-text"><spring:message code="Createreservation.hour.title"/></span>
-            <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
-            <form:form modelAttribute="hourForm" action="${postPath}" method="post">
-                <div class="input-field">
-                    <form:select  path="number">
-                        <form:options items="${hours}"></form:options>
-                    </form:select>
-                </div>
-                <spring:message code="Button.continue" var="label"/>
-                <input type="submit" value="${label}" class="btn confirm-btn center"/>
-            </form:form>
+                <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
+                <form:form modelAttribute="hourForm" action="${postPath}" method="post">
+                    <div class="input-field">
+                        <form:select  path="number">
+                            <form:options items="${hours}"></form:options>
+                        </form:select>
+                    </div>
+                    <spring:message code="Button.continue" var="label"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn center"/>
+                </form:form>
+            </c:if>
+            <c:if test="${hours.size() == 0}">
+                <span class="presentation-text"><spring:message code="Createreservation.hour.error"/></span>
+                <a class="waves-effect waves-light btn confirm-btn text description center" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
+            </c:if>
         </div>
     </div>
 </div>
