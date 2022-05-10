@@ -29,7 +29,7 @@ import static ar.edu.itba.paw.model.enums.DishCategory.MAIN_DISH;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Rollback
-public class RestaurantJdbcDaoTest {
+public class    RestaurantJdbcDaoTest {
 
     private static final String RESTAURANT_TABLE = "restaurant";
     private static final String DISH_TABLE = "dish";
