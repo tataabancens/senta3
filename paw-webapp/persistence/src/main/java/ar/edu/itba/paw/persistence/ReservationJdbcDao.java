@@ -192,6 +192,10 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> statusList) {
         // Building sql query
+        if(statusList.isEmpty()){
+            return new ArrayList<>();
+        }
+
         StringBuilder query_string = new StringBuilder("SELECT * FROM orderItem NATURAL JOIN dish WHERE reservationId = ? AND ");
         Object[] params = new Object[statusList.size() + 1];
         params[0] = reservationId;
@@ -221,6 +225,10 @@ public class ReservationJdbcDao implements ReservationDao {
 
     @Override
     public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
+        if(!getReservationById(reservationId).isPresent() || dish==null){
+            return null;
+        }
+
         final Map<String, Object> orderItemData = new HashMap<>();
         orderItemData.put("dishid", dish.getId());
         orderItemData.put("reservationid", reservationId);

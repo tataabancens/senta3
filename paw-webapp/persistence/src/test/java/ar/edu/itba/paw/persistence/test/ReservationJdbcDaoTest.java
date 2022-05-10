@@ -313,6 +313,69 @@ public class ReservationJdbcDaoTest {
 
     @Test
     @Rollback
+    public void testGetOrderItemsByReservationIdAndStatus_EmptyList(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number orderItemId1 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        Number orderItemId2 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
+        Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+
+        // 2. Ejercitacion
+        List<FullOrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId1.longValue(), new ArrayList<>());
+
+        // 3. PostCondiciones
+        Assert.assertTrue(orderItems.isEmpty());
+    }
+
+    @Test
+    @Rollback
+    public void testGetOrderItemsByReservationIdAndStatus_NoReservation(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number orderItemId1 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        Number orderItemId2 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
+        Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        List<OrderItemStatus> statusList = new ArrayList<>();
+        statusList.add(OrderItemStatus.ORDERED);
+
+        // 2. Ejercitacion
+        List<FullOrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(0, statusList);
+
+        // 3. PostCondiciones
+        Assert.assertTrue(orderItems.isEmpty());
+    }
+
+    @Test
+    @Rollback
+    public void testGetOrderItemsByReservationIdAndStatus_Full(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number orderItemId1 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        Number orderItemId2 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
+        Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        List<OrderItemStatus> statusList = new ArrayList<>();
+        statusList.add(OrderItemStatus.ORDERED);
+
+        // 2. Ejercitacion
+        List<FullOrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId1.longValue(), statusList);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(orderItems.isEmpty());
+        Assert.assertEquals(1, orderItems.size());
+        Assert.assertEquals(orderItemId1.longValue(), orderItems.get(0).getOrderItemId());
+    }
+
+    @Test
+    @Rollback
     public void testCreateReservation() {
         // 1. Precondiciones
         cleanAllTables();
@@ -342,6 +405,38 @@ public class ReservationJdbcDaoTest {
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
         Assert.assertEquals(new_dish.getId(), orderItem.getDishId());
     }
+
+    @Test
+    @Rollback
+    public void testCreateOrderItemsByReservationId_NoReservation() {
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Dish new_dish = new Dish(dishId.longValue(), 1, "Empanada", 100, "sin pasas de uva", 1, MAIN_DISH);
+
+        // 2. Ejercitacion
+        OrderItem orderItem = reservationDao.createOrderItemByReservationId(0, new_dish, 2);
+
+        // 3. PostCondiciones
+
+        Assert.assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
+    }
+
+    @Test
+    @Rollback
+    public void testCreateOrderItemsByReservationId_NoDish() {
+        // 1. Precondiciones
+        cleanAllTables();
+        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+
+        // 2. Ejercitacion
+        OrderItem orderItem = reservationDao.createOrderItemByReservationId(reservationId.longValue(), null, 2);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(0, JdbcTestUtils.countRowsInTable(jdbcTemplate, ORDER_ITEM_TABLE));
+    }
+
 
     @Test
     @Rollback
@@ -397,6 +492,35 @@ public class ReservationJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertFalse(maybeList.isEmpty());
         Assert.assertEquals(2, maybeList.size());
+    }
+
+    @Test
+    @Rollback
+    public void testApplyDiscount(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+
+        // 2. Ejercitacion
+        reservationDao.applyDiscount(reservationId.longValue());
+
+        // 3. PostCondiciones
+        //no explotó
+
+    }
+
+    @Test
+    @Rollback
+    public void testApplyDiscount_invalid(){
+        // 1. Precondiciones
+        cleanAllTables();
+
+        // 2. Ejercitacion
+        reservationDao.applyDiscount(0);
+
+
+        // 3. PostCondiciones
+        //no explotó
     }
 
 
