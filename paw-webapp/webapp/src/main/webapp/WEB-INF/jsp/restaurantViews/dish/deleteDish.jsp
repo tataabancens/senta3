@@ -22,80 +22,53 @@
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
-<div class="row">
-    <c:url value="/restaurant=${restaurantId}/menu/edit/deleteDish=${dishId}" var="postPath"/>
-    <form:form action="${postPath}" method="post">
-    <div class="col s4 offset-s3 card-margin">
-        <div class="card dish-card">
-            <div class="card-content white-text">
-                <span class="card-title text price center"><spring:message code="Deletedish.sure" arguments="${dish.dishName}"/> </span>
-                <div class="row margin-0">
-                    <div class="col s12 center">
-                        <spring:message code="Button.confirm" var="label"/>
-                        <input type="submit" value="${label}" class="continue-btn red"/>
-                    </div>
-                </div>
-            </div>
 
-        </div>
+<div class="pageContainer">
+    <div class="card restaurant-card">
+        <c:url value="/restaurant=${restaurantId}/menu/edit/deleteDish=${dishId}" var="postPath"/>
+        <form:form action="${postPath}" method="post">
+            <span class="presentation-text"><spring:message code="Deletedish.sure" arguments="${dish.dishName}"/> </span>
+            <spring:message code="Button.confirm" var="label"/>
+            <input type="submit" value="${label}" class="btn confirm-btn"/>
+        </form:form>
     </div>
-    </form:form>
-</div>
 </div>
 </body>
 </html>
 
 <style>
 
-    .text{
-        color:  #707070
-    }
-
-    .summary{
-        margin-top: 20px;
-    }
-
-
     .card{
-        border-radius: 16px;
-        display: grid;
+        border-radius: .8rem;
     }
-
-    .restaurant-card{
+    .pageContainer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-
-    
-
     .center{
         justify-content: center;
     }
-
-    .card-margin{
-        margin-top: 10%;
+    .text.description{
+        font-size: clamp(1rem,1vw,3rem);
+    }
+    .card.restaurant-card{
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .btn.confirm-btn{
+        margin-bottom: 2em;
+        background-color: red;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
-    }
-
-    .continue-btn{
-        font-family: "Goldplay", sans-serif;
-        border-radius: 10px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-        padding: 2%;
-        color: white;
-    }
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
 
 </style>

@@ -25,7 +25,6 @@
     <c:url value="/createReservation-1" var="postPath"/>
         <div class="content-container">
             <div class="card register-card">
-                <span class="presentation-text"><spring:message code="Createreservation.today"/></span>
                 <span class="presentation-text"><spring:message code="Createreservation.people.title"/></span>
                 <c:url value="/createReservation-1" var="postPath"/>
                 <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
@@ -45,6 +44,13 @@
 </html>
 
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .card{
         border-radius: 16px;
         display: flex;
