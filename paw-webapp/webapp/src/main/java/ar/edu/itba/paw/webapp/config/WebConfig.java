@@ -29,7 +29,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
-import javax.swing.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +126,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     private List<MediaType> getSupportedMediaTypes() {
-        List<MediaType> list = new ArrayList<MediaType>();
+        List<MediaType> list = new ArrayList<>();
         list.add(MediaType.IMAGE_JPEG);
         list.add(MediaType.IMAGE_PNG);
         list.add(MediaType.APPLICATION_OCTET_STREAM);

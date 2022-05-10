@@ -18,21 +18,19 @@ import java.util.List;
 
 @Controller
 public class OrderController {
-    private RestaurantService rs;
-    private ReservationService res;
-    private  DishService ds;
-    private CustomerService cs;
-    private MailingService ms;
-    private ControllerService controllerService;
+    private final RestaurantService rs;
+    private final ReservationService res;
+    private final DishService ds;
+    private final CustomerService cs;
+    private final ControllerService controllerService;
 
 
     @Autowired
-    public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds, final CustomerService cs, final MailingService ms, ControllerService controllerService) {
+    public OrderController(final RestaurantService rs, final ReservationService res, final DishService ds, final CustomerService cs, ControllerService controllerService) {
         this.rs = rs;
         this.res = res;
         this.ds = ds;
         this.cs = cs;
-        this.ms = ms;
         this.controllerService = controllerService;
     }
 
@@ -138,14 +136,6 @@ public class OrderController {
 
         controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
-
-        ms.sendOrderEmail(restaurant, customer, orderItems);
 
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
@@ -183,14 +173,11 @@ public class OrderController {
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
 
         cs.addPointsToCustomer(customer.getCustomerId(), res.getTotal(orderItems));
-
-        ms.sendReceiptEmail(restaurant, customer);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);

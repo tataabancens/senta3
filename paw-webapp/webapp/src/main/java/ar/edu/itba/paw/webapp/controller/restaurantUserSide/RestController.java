@@ -20,43 +20,23 @@ import java.security.Principal;
 
 @Controller
 public class RestController {
-    RestaurantService rs;
-    ReservationService res;
-    DishService ds;
-    ImageService ims;
-    ControllerService controllerService;
+    private final RestaurantService rs;
+    private final ControllerService controllerService;
 
     @Autowired
-    public RestController(RestaurantService rs, ReservationService res,
-                          DishService ds, ImageService ims, ControllerService controllerService) {
+    public RestController(RestaurantService rs, ControllerService controllerService) {
         this.rs = rs;
-        this.res = res;
-        this.ds = ds;
-        this.ims = ims;
         this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
-        final ModelAndView mav = new ModelAndView("login");
-
-        return mav;
+    public ModelAndView login(){
+        return new ModelAndView("login");
     }
 
-
-    @RequestMapping("/restaurant={restaurantId}")
-    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId,
-                                   @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        return new ModelAndView("aa_Trash/restaurantTest");
-    }
     @RequestMapping("/restaurant={restaurantId}/profile")
-    public ModelAndView restaurantProfile(@RequestParam(name = "userId", defaultValue = "1") final long userId,
-                                          @PathVariable("restaurantId") final String restaurantIdP,
-                                          Principal principal) throws Exception {
+    public ModelAndView restaurantProfile(@PathVariable("restaurantId") final String restaurantIdP,
+                                          final Principal principal) throws Exception {
 
         controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         Restaurant restaurant=rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);

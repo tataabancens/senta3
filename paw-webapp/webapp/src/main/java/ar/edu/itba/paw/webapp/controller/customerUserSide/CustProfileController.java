@@ -1,19 +1,13 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditEmailForm;
 import ar.edu.itba.paw.webapp.form.EditNameForm;
 import ar.edu.itba.paw.webapp.form.EditPhoneForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,23 +18,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Collection;
 
 @Controller
 public class CustProfileController {
-    private UserService us;
-    private CustomerService cs;
-    private ControllerService controllerService;
+    private final UserService us;
+    private final CustomerService cs;
 
     @Autowired
-    public CustProfileController(final UserService us, final CustomerService cs, final ControllerService controllerService) {
+    public CustProfileController(final UserService us, final CustomerService cs) {
         this.cs = cs;
         this.us = us;
-        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/customerProfile", method = RequestMethod.GET)
-    public ModelAndView profile(Principal principal){
+    public ModelAndView profile(final Principal principal){
         String username = principal.getName();
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
@@ -55,7 +46,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editName", method = RequestMethod.GET)
-    public ModelAndView profileEditName(Principal principal,
+    public ModelAndView profileEditName(final Principal principal,
                                         @ModelAttribute("editNameForm") final EditNameForm form){
 
         String username = principal.getName();
@@ -70,7 +61,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editName", method = RequestMethod.POST)
-    public ModelAndView profileEditNamePost(Principal principal,
+    public ModelAndView profileEditNamePost(final Principal principal,
                                             @Valid @ModelAttribute("editNameForm") final EditNameForm form,
                                             final BindingResult errors){
         if (errors.hasErrors()) {
@@ -84,7 +75,7 @@ public class CustProfileController {
         return new ModelAndView("redirect:/profile");
     }
     @RequestMapping(value = "/profile/editPhone", method = RequestMethod.GET)
-    public ModelAndView profileEditPhone(Principal principal,
+    public ModelAndView profileEditPhone(final Principal principal,
                                         @ModelAttribute("editPhoneForm") final EditPhoneForm form){
 
         String username = principal.getName();
@@ -98,7 +89,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editPhone", method = RequestMethod.POST)
-    public ModelAndView profileEditNamePost(Principal principal,
+    public ModelAndView profileEditNamePost(final Principal principal,
                                             @Valid @ModelAttribute("editPhoneForm") final EditPhoneForm form,
                                             final BindingResult errors){
         if (errors.hasErrors()) {
@@ -113,7 +104,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editMail", method = RequestMethod.GET)
-    public ModelAndView profileEditMail(Principal principal,
+    public ModelAndView profileEditMail(final Principal principal,
                                          @ModelAttribute("editMailForm") final EditEmailForm form){
 
         String username = principal.getName();
@@ -127,7 +118,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editMail", method = RequestMethod.POST)
-    public ModelAndView profileEditMailPost(Principal principal,
+    public ModelAndView profileEditMailPost(final Principal principal,
                                             @Valid @ModelAttribute("editMailForm") final EditEmailForm form,
                                             final BindingResult errors){
         if (errors.hasErrors()) {
@@ -142,7 +133,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editUsername", method = RequestMethod.GET)
-    public ModelAndView profileEditUsername(Principal principal,
+    public ModelAndView profileEditUsername(final Principal principal,
                                         @ModelAttribute("editUsernameForm") final EditNameForm form){
 
         String username = principal.getName();
@@ -154,8 +145,7 @@ public class CustProfileController {
     }
 
     @RequestMapping(value = "/profile/editUsername", method = RequestMethod.POST)
-    public ModelAndView profileEditUsernamePost(Authentication auth,
-                                                Principal principal,
+    public ModelAndView profileEditUsernamePost(final Principal principal,
                                                 @Valid @ModelAttribute("editNameForm") final EditNameForm form,
                                                 final BindingResult errors){
         if (errors.hasErrors()) {

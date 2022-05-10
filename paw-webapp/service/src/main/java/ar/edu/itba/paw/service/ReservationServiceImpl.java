@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.util.*;
@@ -121,7 +120,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
         List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
-        Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
+        Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
 
         List<ReservationStatus> ignoreStatus = new ArrayList<>();
         ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
@@ -298,7 +297,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public void checkReservationTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
         List<FullReservation> allReservations = getAllReservations(1);
