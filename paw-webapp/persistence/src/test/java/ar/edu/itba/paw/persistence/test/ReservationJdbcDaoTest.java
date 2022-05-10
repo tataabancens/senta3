@@ -44,9 +44,6 @@ public class ReservationJdbcDaoTest {
     private SimpleJdbcInsert jdbcInsertRestaurant;
     private SimpleJdbcInsert jdbcInsertDish;
 
-    private Dish testingDish1 = new Dish(1, 1, "Empanada", 100, "descripicón de empanada sin pasas de uva", 1, MAIN_DISH);
-
-
     @Autowired
     private DataSource ds;
 
