@@ -25,7 +25,8 @@
     <div class="content-container">
         <div class="card register-card">
             <c:if test="${hours.size() > 0}">
-            <span class="presentation-text"><spring:message code="Createreservation.hour.title"/></span>
+                <span class="presentation-text"><spring:message code="Createreservation.today"/></span>
+                <span class="presentation-text"><spring:message code="Createreservation.hour.title"/></span>
                 <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
                 <form:form modelAttribute="hourForm" action="${postPath}" method="post">
                     <div class="input-field">

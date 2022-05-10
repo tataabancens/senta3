@@ -21,11 +21,11 @@ import java.util.List;
 @Controller
 public class CustReservationController {
 
-    private CustomerService cs;
-    private RestaurantService rs;
-    private ReservationService res;
-    private MailingService ms;
-    private ControllerService controllerService;
+    private final CustomerService cs;
+    private final RestaurantService rs;
+    private final ReservationService res;
+    private final MailingService ms;
+    private final ControllerService controllerService;
 
     @Autowired
     public CustReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
@@ -39,10 +39,10 @@ public class CustReservationController {
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public ModelAndView userHistory(@ModelAttribute("reservationForm") final ReservationForm form,
-                                    Principal principal){
+                                    final Principal principal){
 
         ModelAndView mav = new ModelAndView("customerViews/reservation/history");
-        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         List<FullReservation> reservations = res.getReservationsByCustomerId(customer.getCustomerId());
 
@@ -52,7 +52,7 @@ public class CustReservationController {
         return mav;
     }
     @RequestMapping(value = "/active-reservations", method = RequestMethod.GET)
-    public ModelAndView activeReservations(Principal principal){
+    public ModelAndView activeReservations(final Principal principal){
         ModelAndView mav = new ModelAndView("customerViews/reservation/CustomerActiveReservations");
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         List<FullReservation> reservations = res.getReservationsByCustomerIdAndActive(customer.getCustomerId());
@@ -72,8 +72,7 @@ public class CustReservationController {
     @RequestMapping(value = "/createReservation-1")
     public ModelAndView createReservation_1(@ModelAttribute("qPeopleForm") final NumberForm form) {
 
-        ModelAndView mav = new ModelAndView("customerViews/reservation/createReservation_1_people");
-        return mav;
+        return new ModelAndView("customerViews/reservation/createReservation_1_people");
     }
 
     @RequestMapping(value = "/createReservation-1", method = RequestMethod.POST)
@@ -164,7 +163,7 @@ public class CustReservationController {
 
     @RequestMapping(value = "/confirmReservation/{reservationId}", method = RequestMethod.GET)
     public ModelAndView confirmReservation(@PathVariable("reservationId") final String reservationIdP,
-                                           Principal principal,
+                                           final Principal principal,
                                            @ModelAttribute("confirmReservationForm") final ReservationForm form) throws Exception {
 
         controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
@@ -208,8 +207,7 @@ public class CustReservationController {
     @RequestMapping(value = "/findReservation", method = RequestMethod.GET)
     public ModelAndView findReservation(@ModelAttribute("findReservationForm") final FindReservationForm form) {
 
-        final ModelAndView mav = new ModelAndView("customerViews/reservation/findReservation");
-        return mav;
+        return new ModelAndView("customerViews/reservation/findReservation");
     }
     @RequestMapping(value = "/findReservation", method = RequestMethod.POST)
     public ModelAndView findReservationForm(@ModelAttribute("findReservationForm") final FindReservationForm form,
@@ -249,7 +247,7 @@ public class CustReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         final ModelAndView mav = new ModelAndView("customerViews/reservation/cancelReservation");
         mav.addObject("restaurant", restaurant);

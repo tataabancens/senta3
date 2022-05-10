@@ -4,7 +4,6 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.exceptions.*;
-import ar.edu.itba.paw.webapp.form.EditNameForm;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,11 +15,11 @@ import java.util.List;
 @Controller
 public class RestReservationController {
 
-    private CustomerService cs;
-    private RestaurantService rs;
-    private ReservationService res;
-    private MailingService ms;
-    private ControllerService controllerService;
+    private final CustomerService cs;
+    private final RestaurantService rs;
+    private final ReservationService res;
+    private final MailingService ms;
+    private final ControllerService controllerService;
 
     @Autowired
     public RestReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
@@ -61,7 +60,6 @@ public class RestReservationController {
                                                           @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                                           @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
         controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
-        long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
@@ -119,7 +117,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/reservations", method = RequestMethod.POST)
     public ModelAndView reservationsOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
-                                            @ModelAttribute("filterForm") final FilterForm form) throws Exception {
+                                            @ModelAttribute("filterForm") final FilterForm form){
 
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + form.getOrderBy() +
@@ -134,7 +132,6 @@ public class RestReservationController {
                                      @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                      @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
@@ -146,6 +143,7 @@ public class RestReservationController {
     @RequestMapping(value = "/restaurant={restaurantId}/showReceipt={reservationId}")
     public ModelAndView showReceipt(@PathVariable("restaurantId") final String restaurantIdP,
                                        @PathVariable("reservationId") final String reservationIdP,
+                                    @RequestParam(value = "page", defaultValue = "1") final String page,
                                     @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                     @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
@@ -166,6 +164,10 @@ public class RestReservationController {
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservationId", reservationId);
         mav.addObject("customer", customer);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("filterStatus", filterStatus);
+        mav.addObject("page", page);
 
         return mav;
     }
@@ -178,7 +180,6 @@ public class RestReservationController {
                                        @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                        @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.FINISHED);
@@ -196,7 +197,6 @@ public class RestReservationController {
                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus
                                            ) throws Exception {
         controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);

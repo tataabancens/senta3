@@ -18,8 +18,8 @@ import java.io.InputStream;
 @Controller
 public class ImageController {
 
-    private ImageService ims;
-    private ControllerService controllerService;
+    private final ImageService ims;
+    private final ControllerService controllerService;
 
     @Autowired
     public ImageController(final ImageService ims, final ControllerService controllerService) {

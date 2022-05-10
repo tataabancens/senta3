@@ -30,9 +30,9 @@ import javax.validation.Valid;
 @Controller
 public class CustRegisterController {
 
-    private UserService us;
-    private CustomerService cs;
-    private ControllerService controllerService;
+    private final UserService us;
+    private final CustomerService cs;
+    private final ControllerService controllerService;
 
     @Autowired
     protected AuthenticationManager authenticationManager;
@@ -67,7 +67,7 @@ public class CustRegisterController {
                                           @PathVariable("reservationId") final String reservationIdP,
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
-                                          HttpServletRequest request) throws Exception{
+                                          final HttpServletRequest request) throws Exception{
         controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
         long customerId = Long.parseLong(customerIdP);
 
@@ -94,7 +94,7 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
                                               final BindingResult errors,
-                                              HttpServletRequest request){
+                                              final HttpServletRequest request){
         if (errors.hasErrors()){
             return CustomerRegister(form);
         }
@@ -108,7 +108,8 @@ public class CustRegisterController {
         return new ModelAndView("redirect:/" );
     }
 
-    public void authenticateUserAndSetSession(String username, String password, HttpServletRequest request, AuthenticationManager authenticationManager) {
+    public void authenticateUserAndSetSession(final String username, final String password, final HttpServletRequest request,
+                                              final AuthenticationManager authenticationManager) {
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 

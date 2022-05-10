@@ -20,10 +20,10 @@ import java.util.List;
 
 @Controller
 public class MenuController {
-    private RestaurantService rs;
-    private ReservationService res;
-    private ControllerService controllerService;
-    private CustomerService cs;
+    private final RestaurantService rs;
+    private final ReservationService res;
+    private final ControllerService controllerService;
+    private final CustomerService cs;
 
 
     @Autowired
@@ -56,12 +56,11 @@ public class MenuController {
         controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
+
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         restaurant.setDishes(dishes);
 
-        //Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
@@ -71,6 +70,7 @@ public class MenuController {
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
 
+        final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("restaurant", restaurant);
 //        mav.addObject("dish", dishes);

@@ -42,13 +42,14 @@
         <div class="confirm-card">
             <div class="card">
                 <div class="card-content white-text center">
+                    <p class="text description"><spring:message code="Notifycustomer.TimeAndPlace" arguments="${restaurant.restaurantName}, ${reservation.reservationHour}"/></p>
                     <span class="text description"><spring:message code="Notifycustomer.subtitle"/></span>
                     <div class="with-margin">
                         <span class="text description"><c:out value="${reservation.reservationId}"/></span>
                     </div>
                     <p class="text description"><spring:message code="Notifycustomer.mail"/></p>
-                    <p class="text description"><spring:message code="Notifycustomer.register"/></p>
                     <sec:authorize access="!isAuthenticated()">
+                        <p class="text description"><spring:message code="Notifycustomer.register"/></p>
                         <div class="center">
                             <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
                             <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.no.register"/></a>

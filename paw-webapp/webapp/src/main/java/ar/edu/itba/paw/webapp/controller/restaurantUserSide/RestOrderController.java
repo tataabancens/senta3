@@ -17,19 +17,12 @@ import java.util.List;
 
 @Controller
 public class RestOrderController {
-    RestaurantService rs;
-    ReservationService res;
-    DishService ds;
-    ImageService ims;
-    ControllerService controllerService;
+    private final ReservationService res;
+    private final ControllerService controllerService;
 
     @Autowired
-    public RestOrderController(RestaurantService rs, ReservationService res,
-                               DishService ds, ImageService ims, ControllerService controllerService) {
-        this.rs = rs;
+    public RestOrderController(ReservationService res, ControllerService controllerService) {
         this.res = res;
-        this.ds = ds;
-        this.ims = ims;
         this.controllerService = controllerService;
     }
 
@@ -39,7 +32,6 @@ public class RestOrderController {
 
         controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/order/orders");
         List<Reservation> reservations = res.getReservationsSeated(restaurantId);
