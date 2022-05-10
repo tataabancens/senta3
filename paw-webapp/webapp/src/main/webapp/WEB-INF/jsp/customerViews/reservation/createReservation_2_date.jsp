@@ -45,6 +45,13 @@
 </html>
 
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .card{
         border-radius: 16px;
         display: flex;

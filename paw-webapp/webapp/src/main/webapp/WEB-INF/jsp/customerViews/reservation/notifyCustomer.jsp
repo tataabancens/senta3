@@ -22,22 +22,6 @@
     <div class="row">
         <%@ include file="../../components/navbar.jsp" %>
     </div>
-    <div class="restaurant-header">
-        <div class="restaurant-info">
-            <div>
-                <i class="large material-icons">restaurant</i>
-            </div>
-            <div>
-                <div class="presentation-text title restaurant-title">
-                    <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
-                </div>
-                <div class="presentation-text restaurant-description">
-                    <span><spring:message code="Restaurant.phone"/> </span>
-                    <span><c:out value="${restaurant.phone}"/></span>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="page-container">
         <div class="confirm-card">
             <div class="card">
@@ -48,16 +32,18 @@
                         <span class="text description"><c:out value="${reservation.reservationId}"/></span>
                     </div>
                     <p class="text description"><spring:message code="Notifycustomer.mail"/></p>
-                    <sec:authorize access="!isAuthenticated()">
-                        <p class="text description"><spring:message code="Notifycustomer.register"/></p>
-                        <div class="center">
-                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
-                            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.no.register"/></a>
-                        </div>
-                    </sec:authorize>
-                    <sec:authorize access="isAuthenticated()">
-                        <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.continue"/></a>
-                    </sec:authorize>
+                    <p class="text description"><spring:message code="Notifycustomer.register"/></p>
+                    <div class="btn-row">
+                        <sec:authorize access="!isAuthenticated()">
+                            <div class="center">
+                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.no.register"/></a>
+                            </div>
+                        </sec:authorize>
+                        <sec:authorize access="isAuthenticated()">
+                            <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" <c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.continue"/></a>
+                        </sec:authorize>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,14 +56,22 @@
         color: #171616;
         margin-right: 25px;
     }
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
     .card{
         border-radius: 16px;
         display: grid;
     }
-    
 
+    .text.description{
+        font-size: 1.4em;
+    }
     .center{
         justify-content: center;
     }
@@ -86,8 +80,15 @@
         margin-top: 10%;
         margin-bottom: 10%;
     }
-
-
+    .btn-row{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 5%;
+    }
+    .btn.confirm-btn{
+        margin: 2%;
+    }
     .page-container {
         display: flex;
         width: 100%;

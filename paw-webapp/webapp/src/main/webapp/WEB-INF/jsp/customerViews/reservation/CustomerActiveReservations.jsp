@@ -63,7 +63,7 @@
 .card.horizontal{
     border-radius: .8rem;
     margin: 1%;
-    max-height: 20%;
+    max-height: 11rem;
     transition: 0.5s;
 }
 .reservation-list{
