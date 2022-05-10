@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.persistence.test;
 
-import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.FullOrderItem;
-import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
@@ -113,6 +110,16 @@ public class ReservationJdbcDaoTest {
         return orderItemId;
     }
 
+    public Number insertCustomer(String customerName, String phone, String mail){
+        final Map<String, Object> customerData = new HashMap<>();
+        customerData.put("customerName", customerName);
+        customerData.put("Phone", phone);
+        customerData.put("Mail", mail);
+
+        Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
+        return customerId;
+    }
+
     public void cleanAllTables(){
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
@@ -186,6 +193,122 @@ public class ReservationJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertFalse(maybeReservations.isEmpty());
         Assert.assertEquals(2, maybeReservations.size());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByCustomerIdAndStatus_EmptyList(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number customerId1 = insertCustomer("customerName", "541124555632", "mail@gmail.com");
+        Number customerId2 = insertCustomer("customerName2", "541124555631", "mail2@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+
+        // 2. Ejercitacion
+        List<FullReservation> maybeReservations = reservationDao.getReservationsByCustomerIdAndStatus(customerId1.intValue(), new ArrayList<>());
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeReservations.isEmpty());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByCustomerIdAndStatus_noCustomer(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number customerId1 = insertCustomer("customerName", "541124555632", "mail@gmail.com");
+        Number customerId2 = insertCustomer("customerName2", "541124555631", "mail2@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+
+        // 2. Ejercitacion
+        List<FullReservation> maybeReservations = reservationDao.getReservationsByCustomerIdAndStatus(0, statusList);
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeReservations.isEmpty());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByCustomerIdAndStatus_Full(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number customerId1 = insertCustomer("customerName", "541124555632", "mail@gmail.com");
+        Number customerId2 = insertCustomer("customerName2", "541124555631", "mail2@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+
+        // 2. Ejercitacion
+        List<FullReservation> maybeReservations = reservationDao.getReservationsByCustomerIdAndStatus(customerId1.intValue(), statusList);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeReservations.isEmpty());
+        Assert.assertEquals(1, maybeReservations.size());
+        Assert.assertEquals(reservationId1.longValue(),maybeReservations.get(0).getReservationId());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByIdAndStatus_EmptyList(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+
+        // 2. Ejercitacion
+        Optional<Reservation> maybeReservations = reservationDao.getReservationByIdAndStatus(reservationId1.longValue(), new ArrayList<>());
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeReservations.isPresent());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByIdAndStatus_NoReservation(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.SEATED);
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+
+        // 2. Ejercitacion
+        Optional<Reservation> maybeReservations = reservationDao.getReservationByIdAndStatus(0, statusList);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeReservations.isPresent());
+    }
+
+    @Test
+    @Rollback
+    public void testGetReservationsByIdAndStatus_Full(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, 1, ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.CHECK_ORDERED);
+
+        // 2. Ejercitacion
+        Optional<Reservation> maybeReservations = reservationDao.getReservationByIdAndStatus(reservationId1.longValue(), statusList);
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeReservations.isPresent());
+        Assert.assertEquals(reservationId1.longValue(), maybeReservations.get().getReservationId());
     }
 
     @Test

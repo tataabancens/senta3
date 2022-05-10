@@ -132,6 +132,10 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public List<FullReservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList) {
         // Building sql query
+        if(statusList.isEmpty()){
+            return new ArrayList<FullReservation>();
+        }
+
         StringBuilder query_string = new StringBuilder("SELECT * FROM reservation NATURAL JOIN customer cross join restaurant WHERE customerId = ? AND (");
         Object[] params = new Object[statusList.size() + 1];
         params[0] = customerId;
@@ -161,6 +165,10 @@ public class ReservationJdbcDao implements ReservationDao {
     @Override
     public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> statusList) {
         // Building sql query
+        if(statusList.isEmpty()){
+            return Optional.empty();
+        }
+
         StringBuilder query_string = new StringBuilder("SELECT * FROM reservation WHERE reservationId = ? AND ");
         Object[] params = new Object[statusList.size() + 1];
         params[0] = id;
