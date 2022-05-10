@@ -80,7 +80,7 @@ public class CustomerJdbcDaoTest {
 
     @Test
     @Rollback
-    public void testGetCsutomerById_NotExists(){
+    public void testGetCustomerById_NotExists(){
         // 1. Precondiciones
         cleanAllTables();
         Number customerId = insertCustomer("Pepito", "123456789", "pepe@gmail.com");
