@@ -28,10 +28,14 @@ public class UserJdbcDaoTest {
 
     private static final String USER_TABLE = "users";
     private static final String USERNAME = "pepe";
+    private static final String RESTAURANT_TABLE = "restaurant";
+
 
     private UserJdbcDao userDao ;
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsert;
+    private SimpleJdbcInsert jdbcInsertRestaurant;
+
 
     @Autowired
     private DataSource ds;
@@ -43,12 +47,22 @@ public class UserJdbcDaoTest {
         jdbcInsert = new SimpleJdbcInsert(ds)
                 .withTableName(USER_TABLE)
                 .usingGeneratedKeyColumns("userId");
+        jdbcInsertRestaurant = new SimpleJdbcInsert(ds)
+                .withTableName(RESTAURANT_TABLE)
+                .usingGeneratedKeyColumns("restaurantId");
+    }
+    public void cleanAllTables(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
     }
 
     @Test
+    @Rollback
     public void testCreateUser(){
         // 1. Precondiciones
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        cleanAllTables();
 
         // 2. Ejercitacion
         User user = userDao.create(USERNAME, "pass", Roles.CUSTOMER);
@@ -60,7 +74,8 @@ public class UserJdbcDaoTest {
     }
 
     @Test
-    public void testFindUserByIdDoesntExist(){
+    @Rollback
+    public void testFindUserById_DoesntExist(){
         // 1. Precondiciones
         JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
 
@@ -73,7 +88,8 @@ public class UserJdbcDaoTest {
     }
 
     @Test
-    public void testFindUserByIdExists(){
+    @Rollback
+    public void testFindUserById_Exists(){
         // 1. Precondiciones
         Map<String, String> map = new HashMap<>();
         map.put("username", USERNAME);

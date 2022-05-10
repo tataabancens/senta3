@@ -31,17 +31,11 @@ import static ar.edu.itba.paw.model.enums.DishCategory.MAIN_DISH;
 @Rollback
 public class RestaurantJdbcDaoTest {
 
-    private static final String RESERVATION_TABLE = "reservation";
-    private static final String ORDER_ITEM_TABLE = "orderItem";
-    private static final String CUSTOMER_TABLE = "customer";
     private static final String RESTAURANT_TABLE = "restaurant";
     private static final String DISH_TABLE = "dish";
 
     private RestaurantJdbcDao restaurantDao;
     private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsertReservation;
-    private SimpleJdbcInsert jdbcInsertOrderItem;
-    private SimpleJdbcInsert jdbcInsertCustomer;
     private SimpleJdbcInsert jdbcInsertRestaurant;
     private SimpleJdbcInsert jdbcInsertDish;
 
@@ -56,18 +50,9 @@ public class RestaurantJdbcDaoTest {
         jdbcInsertRestaurant = new SimpleJdbcInsert(ds)
                 .withTableName(RESTAURANT_TABLE)
                 .usingGeneratedKeyColumns("restaurantId");
-        jdbcInsertReservation = new SimpleJdbcInsert(ds)
-                .withTableName(RESERVATION_TABLE)
-                .usingGeneratedKeyColumns("reservationId");
-        jdbcInsertCustomer = new SimpleJdbcInsert(ds)
-                .withTableName(CUSTOMER_TABLE)
-                .usingGeneratedKeyColumns("customerId");
         jdbcInsertDish = new SimpleJdbcInsert(ds)
                 .withTableName(DISH_TABLE)
                 .usingGeneratedKeyColumns("dishId");
-        jdbcInsertOrderItem = new SimpleJdbcInsert(ds)
-                .withTableName(ORDER_ITEM_TABLE)
-                .usingGeneratedKeyColumns("orderItemId");
     }
 
 
@@ -83,43 +68,7 @@ public class RestaurantJdbcDaoTest {
         return dishId;
     }
 
-    public Number insertReservation(int restaurantId, int reservationHour, int customerId, int reservationStatus, int qPeople){
-        final Map<String, Object> reservationData = new HashMap<>();
-        reservationData.put("restaurantId", restaurantId);
-        reservationData.put("reservationHour", reservationHour);
-        reservationData.put("customerId", customerId);
-        reservationData.put("reservationstatus", reservationStatus);
-        reservationData.put("qPeople", 1);
-        reservationData.put("reservationdiscount", false);
-        reservationData.put("startedAtTime", null);
-        Number reservationId = jdbcInsertReservation.executeAndReturnKey(reservationData);
-        return reservationId;
-    }
-
-    public Number insertOrderItem(int dishId, int reservationId, int unitPrice, int qty, int status){
-        final Map<String, Object> orderItemData = new HashMap<>();
-        orderItemData.put("dishid", dishId);
-        orderItemData.put("reservationid", reservationId);
-        orderItemData.put("unitprice", unitPrice);
-        orderItemData.put("quantity", qty);
-        orderItemData.put("status", status);
-        Number orderItemId = jdbcInsertOrderItem.executeAndReturnKey(orderItemData);
-        return orderItemId;
-    }
-
-    public Number insertCustomer(String customerName, String phone, String mail){
-        final Map<String, Object> customerData = new HashMap<>();
-        customerData.put("customerName", customerName);
-        customerData.put("Phone", phone);
-        customerData.put("Mail", mail);
-
-        Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
-        return customerId;
-    }
-
     public void cleanAllTables(){
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
     }
 
