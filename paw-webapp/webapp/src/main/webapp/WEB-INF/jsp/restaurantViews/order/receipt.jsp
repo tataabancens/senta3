@@ -110,7 +110,7 @@
                         <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.finishres" var="label"/>
-                            <input type="submit" value="FINALIZAR RESERVA" class="waves-effect waves-light btn confirm-btn green right">
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
                 </sec:authorize>
