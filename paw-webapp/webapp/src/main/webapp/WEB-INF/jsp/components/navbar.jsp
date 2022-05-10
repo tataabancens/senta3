@@ -68,20 +68,22 @@
             </sec:authorize>
         </div>
         <div class="right-side">
-            <sec:authorize access="!isAuthenticated()">
-                <li>
-                    <a class="options" href="<c:url value="/register"/>">
-                        <spring:message code="Navbar.option.register"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="!isAuthenticated()">
-                <li>
-                    <a class="options" href="<c:url value="/login"/>">
-                        <spring:message code="Navbar.option.login"/>
-                    </a>
-                </li>
-            </sec:authorize>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/menu'}">
+                <sec:authorize access="!isAuthenticated()">
+                        <li>
+                            <a class="options" href="<c:url value="/register"/>">
+                                <spring:message code="Navbar.option.register"/>
+                            </a>
+                        </li>
+                </sec:authorize>
+                <sec:authorize access="!isAuthenticated()">
+                    <li>
+                        <a class="options" href="<c:url value="/login"/>">
+                            <spring:message code="Navbar.option.login"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
             <sec:authorize access="isAuthenticated()">
                 <li>
                     <a class="options" href="<c:url value="/profile"/>" >
