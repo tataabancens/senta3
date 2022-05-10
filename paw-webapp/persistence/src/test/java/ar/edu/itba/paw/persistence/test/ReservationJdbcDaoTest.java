@@ -511,16 +511,141 @@ public class ReservationJdbcDaoTest {
 
     @Test
     @Rollback
-    public void testApplyDiscount_invalid(){
+    public void testApplyDiscount_invalidReservation(){
         // 1. Precondiciones
         cleanAllTables();
 
         // 2. Ejercitacion
         reservationDao.applyDiscount(0);
 
+        // 3. PostCondiciones
+        //no explotó
+    }
+
+    @Test
+    @Rollback
+    public void testGetAllOrderItems(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
+        insertOrderItem(dishId1.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
+
+
+        // 2. Ejercitacion
+        List<FullOrderItem> allOrderItems = reservationDao.getAllOrderItems();
+
+        // 3. PostCondiciones
+        Assert.assertEquals(3, allOrderItems.size());
+    }
+
+    @Test
+    @Rollback
+    public void testDeleteOrderItemsByReservationIdAndStatus(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
+
+
+        // 2. Ejercitacion
+        reservationDao.deleteOrderItemsByReservationIdAndStatus(reservationId.longValue(), OrderItemStatus.ORDERED);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(1, reservationDao.getAllOrderItems().size());
+    }
+
+    @Test
+    @Rollback
+    public void testDeleteOrderItemsByReservationIdAndStatus_invalid(){
+        // 1. Precondiciones
+        cleanAllTables();
+
+        // 2. Ejercitacion
+        reservationDao.deleteOrderItemsByReservationIdAndStatus(0, OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
         //no explotó
+    }
+
+    @Test
+    @Rollback
+    public void testGetAllReservations(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+
+        // 2. Ejercitacion
+        List<FullReservation> allReservations = reservationDao.getAllReservations(1);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(2, allReservations.size());
+    }
+
+    @Test
+    @Rollback
+    public void testGetAllReservationsOrderedBy_invalidString1(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+
+        // 2. Ejercitacion
+        List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "XXXXXX", "ASC", "1", 1);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(0, allReservations.size());
+    }
+
+    @Test
+    @Rollback
+    public void testGetAllReservationsOrderedBy_invalidString2(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+
+        // 2. Ejercitacion
+        List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "reservationid", "XXXX", "1", 1);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(0, allReservations.size());
+    }
+
+    @Test
+    @Rollback
+    public void testGetAllReservationsOrderedBy_invalidString3(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+
+        // 2. Ejercitacion
+        List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "reservationid", "ASC", "XXXXXX", 1);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(0, allReservations.size());
+    }
+
+    @Test
+    @Rollback
+    public void testGetAllReservationsOrderedBy_valid(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+
+        // 2. Ejercitacion
+        List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "reservationid", "ASC", "1", 1);
+
+        // 3. PostCondiciones
+        Assert.assertEquals(2, allReservations.size());
     }
 
 
