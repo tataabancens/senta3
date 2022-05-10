@@ -97,8 +97,9 @@ public class CustReservationController {
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         ModelAndView mav = new ModelAndView("customerViews/reservation/createReservation_3_time");
+        List<Integer> hours = res.getAvailableHours(reservation.getRestaurantId(), reservation.getqPeople());
 
-        mav.addObject("hours", res.getAvailableHours(1, reservation.getqPeople()));
+        mav.addObject("hours", hours);
         mav.addObject("people", reservation.getqPeople());
         return mav;
     }

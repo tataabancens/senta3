@@ -10,6 +10,7 @@ import java.beans.Transient;
 
 public class CustomerRegisterShortForm {
 
+    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     @Size(min = 1, max = 50)
     private String username;
 

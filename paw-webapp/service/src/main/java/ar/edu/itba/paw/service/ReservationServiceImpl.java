@@ -162,8 +162,7 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
         if(qPeople > restaurant.getTotalChairs()){
-            //totalHours = new ArrayList<>();
-            return null;
+            return new ArrayList<>();
         } else {
             totalHours.removeAll(notAvailable);
         }

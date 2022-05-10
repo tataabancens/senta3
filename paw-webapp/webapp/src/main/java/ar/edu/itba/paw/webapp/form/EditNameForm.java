@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class EditNameForm {
 
     @Size(min = 1, max = 50)
-    @Pattern(regexp = "^[a-zA-Z ,.'-]+$")
+    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String name;
 
     public String getName() {
