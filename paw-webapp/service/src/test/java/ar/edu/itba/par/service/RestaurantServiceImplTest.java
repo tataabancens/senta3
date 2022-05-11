@@ -36,7 +36,9 @@ public class RestaurantServiceImplTest {
     @Test
     public void testCreateRestaurant() {
         // 1. Setup
-        Mockito.when(resDao.create(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(new Restaurant(1, "El Pepito", "456789456", "elpepito@gmail.com", 5, 12, 20));
+        Mockito.when(resDao.create(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(new Restaurant(1, "El Pepito", "456789456", "elpepito@gmail.com",
+                        5, 12, 20));
 
         // 2. ejercicio
         Restaurant res = resService.create("El Pepito", "456789456", "elpepito@gmail.com");

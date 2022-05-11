@@ -1,15 +1,14 @@
 package ar.edu.itba.par.service;
 
-import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.model.enums.Roles;
+import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import ar.edu.itba.paw.persistance.UserDao;
-import ar.edu.itba.paw.service.CustomerService;
-import ar.edu.itba.paw.service.ReservationServiceImpl;
-import ar.edu.itba.paw.service.RestaurantServiceImpl;
-import ar.edu.itba.paw.service.UserServiceImpl;
+import ar.edu.itba.paw.service.*;
 import org.junit.Assert;
 
 import org.junit.Before;
@@ -28,6 +27,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,14 +37,17 @@ public class ReservationServiceImplTest {
 
     private ReservationDao resDao;
     private RestaurantDao restDao;
+    private CustomerDao custDao;
     private ReservationServiceImpl resService;
-    private CustomerService cust;
+    private CustomerService custService;
 
     @Before
     public void setUp() {
         resDao = Mockito.mock(ReservationDao.class);
         restDao = Mockito.mock(RestaurantDao.class);
-        resService = new ReservationServiceImpl(resDao, restDao, cust);
+        custDao = Mockito.mock(CustomerDao.class);
+        custService = new CustomerServiceImpl(custDao);
+        resService = new ReservationServiceImpl(resDao, restDao, custService);
     }
     @Test
     public void testGetTotal(){
@@ -87,4 +92,58 @@ public class ReservationServiceImplTest {
         Assert.assertEquals(unavailable, unavailableDishIds);
     }
 
+    @Test
+    public void testGetAvailableHoursExists() {
+        // 1. Setup
+        List<FullReservation> mockList = new ArrayList<>();
+        for(int i = 1; i < 6; i++) {
+            mockList.add(new FullReservation(i, 1, i, 13 + i, 1,
+                    30, "Carlos", "CarlosResto", Timestamp.from(Instant.now())));
+        }
+        Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
+        Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(new Restaurant(1, "El Pepito",
+                "456789456", "elpepito@gmail.com",
+                35, 12, 20)));
+        List<Integer> expectedHours = new ArrayList<>();
+        expectedHours.add(12);
+        expectedHours.add(13);
+        expectedHours.add(19);
+        expectedHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+
+
+        // 2. ejercicio
+        List<Integer> hours = resService.getAvailableHours(1, 10);
+
+        // 3. asserts
+        Assert.assertNotNull(hours);
+        for(int j = 0; j < expectedHours.size(); j++) {
+            Assert.assertEquals(expectedHours.get(j), hours.get(j));
+        }
+    }
+
+    @Test
+    public void testGetAvailableHoursEmpty() {
+        // 1. Setup
+        List<FullReservation> mockList = new ArrayList<>();
+        for(int i = 1; i < 6; i++) {
+            mockList.add(new FullReservation(i, 1, i, 13 + i, 1,
+                    30, "Carlos", "CarlosResto", Timestamp.from(Instant.now())));
+        }
+        Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
+        Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(new Restaurant(1, "El Pepito",
+                "456789456", "elpepito@gmail.com",
+                35, 14, 18)));
+        List<Integer> expectedHours = new ArrayList<>();
+        expectedHours.add(12);
+        expectedHours.add(13);
+        expectedHours.add(19);
+        expectedHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+
+
+        // 2. ejercicio
+        List<Integer> hours = resService.getAvailableHours(1, 10);
+
+        // 3. asserts
+        Assert.assertTrue(hours.isEmpty());
+    }
 }
