@@ -22,17 +22,15 @@
 <%@ include file="../../components/navbar.jsp" %>
     <div class="form-container">
         <div class="card">
-            <div class="card-content white-text">
-                <!-- TODO CAMBIAR -->
-                <span class="card-title text price center">Estas seguro de cancelar la reserva ${reservationId}</span>
-                <div class="row margin-0">
-                    <div class="col s12 center">
-                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>
+            <div class="card-content">
+                <span class="presentation-text"><spring:message code="Cancelreservation.confirm" arguments="${reservationId}"/> </span>
+                    <div class="center" style="margin-top: 15%">
+                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="CANCELAR RESERVA" class="waves-effect waves-light btn plus-btn red" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">
+                            <spring:message code="Button.cancel" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red" onclick="this.form.submit(); this.disabled=true;this.value='procesando'; ">
                         </form:form>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -40,21 +38,27 @@
 </html>
 
 <style>
-    .text{
-        color:  #707070
-    }
-
-    .center{
+    .btn-row{
+        display:flex ;
+        margin-top: 3rem;
+        width: 100%;
         justify-content: center;
     }
 
     .card{
         display: flex;
+        flex-direction: column;
         justify-self: center;
         border-radius: 0.8rem;
         justify-content: center;
         padding: 1%;
-        width: 50%;
+        width: fit-content;
     }
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 </style>

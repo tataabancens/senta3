@@ -23,64 +23,75 @@
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-
 <div class="page-container">
-    <c:if test="${isPresent}">
-        <div class="dish-card">
-            <div class="dish-img">
-                <c:if test="${recommendedDish.imageId > 0}">
-                    <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
-                </c:if>
-                <c:if test="${recommendedDish.imageId == 0}">
-                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                </c:if>
-            </div>
-            <div class="card-info">
-                <span class="presentation-text"><c:out value="${recommendedDish.dishName}"/></span>
-                <p class="text description"><c:out value="${recommendedDish.dishDescription}"/></p>
-                <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
-            </div>
-        </div>
-    </c:if>
+    <div class="recommendations">
+        <c:if test="${isPresent}">
+            <h3 class="summary presentation-text"><spring:message code="Order.othercustomers"/>:</h3>
+                <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="card horizontal">
+                    <div class="card-image">
+                        <c:if test="${recommendedDish.imageId > 0}">
+                            <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
+                        </c:if>
+                        <c:if test="${recommendedDish.imageId == 0}">
+                            <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                        </c:if>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="presentation-text info"><c:out value="${recommendedDish.dishName}"/></span>
+                            <p class="text description info"><c:out value="${recommendedDish.dishDescription}"/></p>
+                            <c:if test="${reservation.reservationDiscount}">
+                                <span id="original-price" class="text price">$<c:out value="${(recommendedDish.price)}"/></span>
+                                <fmt:formatNumber var="dishPrice" type="number" value="${(recommendedDish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                            </c:if>
+                            <c:if test="${!reservation.reservationDiscount}">
+                                <span class="text price info">$<c:out value="${recommendedDish.price}"/></span>
+                            </c:if>
+                        </div>
+                    </div>
+                </a>
+        </c:if>
+    </div>
     <div class="card confirm-card">
         <div class="card-content wider-content center">
-            <span class="text main-title"><spring:message code="Completeorder.restaurant"/></span>
+            <span class="summary presentation-text"><spring:message code="Completeorder.restaurant"/></span>
             <div class="with-margin">
-                <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
+                <span class="summary presentation-text center"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="center">
-                <span class="title2 text center"><spring:message code="Order.title"/></span>
+                <span class="summary presentation-text"><spring:message code="Order.title"/></span>
             </div>
             <div class="summary">
                 <div class="titles">
                     <div class="dishname">
-                        <span class="title2 text"><spring:message code="Order.dish"/></span>
+                        <span class="summary presentation-text"><spring:message code="Order.dish"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.qty"/></span>
+                        <span class="summary presentation-text"><spring:message code="Order.qty"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.price"/></span>
+                        <span class=" summary presentation-text"><spring:message code="Order.price"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.total"/></span>
+                        <span class="summary presentation-text"><spring:message code="Order.total"/></span>
                     </div>
                 </div>
                 <hr class="solid-divider">
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
                         <div >
-                            <span class="items-title text"><c:out value="${orderItem.dishName}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.dishName}"/></span>
                         </div>
                         <div>
-                            <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.quantity}"/></span>
                         </div>
                         <div>
                             <fmt:formatNumber var="orderItemUnitPrice" type="number" value="${(orderItem.unitPrice * discountCoefficient)}" maxFractionDigits="2"/>
-                            <span class="items-title text">$<c:out value="${orderItemUnitPrice}"/></span>
+                            <span class="summary text description">$<c:out value="${orderItemUnitPrice}"/></span>
                         </div>
                         <div>
-                            <span class="items-title text"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.unitPrice * orderItem.quantity}"/></span>
                         </div>
                     </div>
                     <hr class="solid-divider">
@@ -90,18 +101,19 @@
 
                 <div class="titles">
                     <div >
-                        <p class="price"><spring:message code="Order.total"/></p>
+                        <p class="summary presentation-text"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price right "><c:out value="${totalPrice}"/></p>
+                        <p class="summary presentation-text right "><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
 
                     <div >
-                        <c:url value="/order/send-food?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                        <c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <input type="submit" value="Confirmar pedido" class="waves-effect waves-light btn confirm-btn green right">
+                            <spring:message code="Button.confirm" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">
                         </form:form>
                     </div>
 
@@ -115,22 +127,73 @@
 </html>
 
 <style>
-
+    .card.information{
+        display: flex;
+        margin-top: 2%;
+        align-items: center;
+        background-color: white;
+        height: 10%;
+        width: fit-content;
+        border-radius: .8rem;
+    }
     .text{
         color:  #707070
     }
 
+    .card.horizontal:hover{
+        transform: scale(1.1);
+    }
+    .card.horizontal{
+        width: clamp(35rem,35%,50rem);
+        height: clamp(8rem,25%,11rem);
+        box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
+        transition: 0.8s;
+        margin-right: 4%;
+    }
+    .card-stacked{
+        height: 100%;
+    }
+    .presentation-text.info{
+        color: black;
+        font-size: clamp(0.7rem,1rem + 0.1vw,2rem) ;
+    }
+    .text.description.info{
+        font-size: clamp(0.7rem,0.8rem + 0.1vw,1.1rem);
+    }
+    .card.horizontal .card-content{
+        padding: 10px;
+    }
+    .card.horizontal .card-image{
+        max-width: 25%;
+        margin-left: 1%;
+    }
+    .card.horizontal .card-image img{
+        border-radius: .8rem;
+        aspect-ratio: 1.1/1;
+    }
+    #original-price{
+        text-decoration: line-through;
+    }
+    #discounted-price{
+        color: blue;
+        margin-left: 12%;
+    }
     .summary{
         margin-top: 20px;
         width: 100%;
     }
-
-
-    .card{
-        border-radius: 16px;
+    .recommendations{
+        width:50%;
     }
-
-
+    .dish-card{
+        width: 57%;
+    }
+    .summary.presentation-text{
+        font-size: clamp(1rem,2rem + 1vw, 2rem);
+    }
+    summary.text.description{
+        font-size: 1.2rem;
+    }
     .center{
         justify-content: center;
     }
@@ -143,7 +206,8 @@
     .page-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        padding: 2%;
+        justify-content: space-between;
     }
 
     .titles{
@@ -152,13 +216,11 @@
         margin-right: 10px;
     }
 
-    .confirm-card{
+    .card.confirm-card{
         display:flex;
         justify-content: center;
         width: 40%;
         max-width: 60%;
-        margin-left: 5%;
-        margin-right: 5%;
     }
 
     .wider-content{

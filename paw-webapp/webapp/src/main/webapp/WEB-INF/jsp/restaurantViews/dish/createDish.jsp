@@ -17,7 +17,7 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
-    <title>Sentate-Register</title>
+    <title>Senta3</title>
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
@@ -26,32 +26,34 @@
     <c:url value="/restaurant=${restaurantId}/menu/create" var="postPath"/>
     <form:form modelAttribute="createDishForm" action="${postPath}" method="post">
         <div class="card card-content">
-                <span class="main-title"><spring:message code="Createdish.title"/></span>
-                    <div class="disName">
-                        <form:errors path="dishName" element="p" cssStyle="color:red"/>
-                        <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
-                        <form:input path="dishName" type="text"/>
-                    </div>
-                    <div class="dishDesc">
-                        <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
-                        <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.description"/></form:label>
-                        <form:input path="dishDesc" type="text"/>
-                    </div>
-                    <div class="dishPrice">
-                        <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
-                        <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.price"/></form:label>
-                        <form:input path="dishPrice" type="text"/>
-                    </div>
-                    <div class="input-field">
-                        <form:select  path="category">
-                            <form:options items="${categories}"></form:options>
-                        </form:select>
-                    </div>
-                    <div class="col s12 center">
+                <span class="presentation-text"><spring:message code="Createdish.title"/></span>
+            <div style="margin: 30px">
+                <div class="disName">
+                    <form:errors path="dishName" element="p" cssStyle="color:red"/>
+                    <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
+                    <form:input path="dishName" type="text"/>
+                </div>
+                <div class="dishDesc">
+                    <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
+                    <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.description"/></form:label>
+                    <form:input path="dishDesc" type="text"/>
+                </div>
+                <div class="dishPrice">
+                    <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
+                    <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.price"/></form:label>
+                    <form:input path="dishPrice" type="text"/>
+                </div>
+            </div>
+            <div class="input-field">
+                <form:select  path="category">
+                    <form:options items="${categories}"></form:options>
+                </form:select>
+            </div>
+            <div class="col s12 center">
+                <spring:message code="Button.continue" var="label"/>
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
 
-                        <input type="submit" value="Continuar" class="continue-btn"/>
-
-                    </div>
+            </div>
                 </div>
             </div>
         </div>
@@ -60,6 +62,13 @@
 </html>
 
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .form-container{
         display: flex;
         padding-top: 30px;

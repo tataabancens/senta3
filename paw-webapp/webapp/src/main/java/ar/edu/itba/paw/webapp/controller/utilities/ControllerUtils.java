@@ -1,15 +1,11 @@
-package ar.edu.itba.paw.service;
-
-import org.springframework.stereotype.Service;
+package ar.edu.itba.paw.webapp.controller.utilities;
 
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
-public class ControllerServiceImpl implements ControllerService {
+public class ControllerUtils {
 
-    @Override
-    public Optional<Integer> longParser(Object... str) {
+    public static Optional<Integer> longParser(Object... str) {
         if(str.length > 0){
             try{
                 Long str0 = Long.parseLong((String) str[0]);
@@ -37,20 +33,24 @@ public class ControllerServiceImpl implements ControllerService {
         return Optional.of(1);
     }
 
-    @Override
-    public Optional<Integer> orderByParser(String string) {
+    public static Optional<Integer> filterStatusParser(String filterStatus) {
+        if(Objects.equals(filterStatus, "9")) {
+            return Optional.of(1);
+        }
+        return ControllerUtils.longParser(filterStatus);
+    }
+
+    public static Optional<Integer> orderByParser(String string) {
         if(!Objects.equals(string, "reservationid") && !Objects.equals(string, "customerid") && !Objects.equals(string, "qpeople") && !Objects.equals(string, "reservationhour") && !Objects.equals(string, "reservationstatus")){
             return Optional.empty();
         }
         return Optional.of(1);
     }
 
-    @Override
-    public Optional<Integer> directionParser(String direction) {
+    public static Optional<Integer> directionParser(String direction) {
         if(!Objects.equals(direction, "ASC") && !Objects.equals(direction, "DESC")){
             return Optional.empty();
         }
         return Optional.of(1);
     }
-
 }

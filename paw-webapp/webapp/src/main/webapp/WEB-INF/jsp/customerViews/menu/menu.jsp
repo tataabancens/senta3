@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,21 +44,15 @@
         </div>
         <div class="page-container">
             <div class="restaurant-content">
-                <!--<div class="filter-box">
-                    <span class="presentation-text">Filtros:</span>
-                    <ul>
-                        <li><span class="text">algo</span></li>
-                        <li><span class="text">otro</span></li>
-                        <li><span class="text">eso</span></li>
-                    </ul>
-                </div>-->
-                <div class="card client-actions center">
+                <div class="left-section">
+                    <div class="card client-actions center">
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
-                                    <input type="submit" value="Reservar" class="waves-effect waves-light btn confirm-btn">
+                                    <spring:message code="Button.reserve" var="label"/>
+                                    <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn">
                                 </form:form>
                             </div>
                         </sec:authorize>
@@ -69,34 +63,59 @@
                         </sec:authorize>
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
-                        <div class="enter-confirm-btn">
-                            <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
-                        </div>
+                            <div class="enter-confirm-btn">
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
+                            </div>
                         </sec:authorize>
-                         <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('RESTAURANT')">
                             <div class="enter-confirm-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.exists"/></a>
                             </div>
                         </sec:authorize>
+                    </div>
+                    <div class="card filter-box">
+                        <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
+                        <ul class="categories">
+                            <c:forEach var="category" items="${categories}">
+                                <a href="<c:url value="/?category=${category}"/>">
+                                    <c:if test="${currentCategory.description == category.description}">
+                                        <button class="waves-effect waves-light btn confirm-btn text description">
+                                            <c:out value="${category.spanishDescr}"/>
+                                        </button>
+                                    </c:if>
+                                    <c:if test="${currentCategory.description != category.description}">
+                                        <button class="waves-effect waves-light btn confirm-btn text description">
+                                            <c:out value="${category.spanishDescr}"/>
+                                        </button>
+                                    </c:if>
+                                </a>
+                            </c:forEach>
+                        </ul>
+                    </div>
                 </div>
-                <div class="dishList">
-                    <c:forEach var="dish" items="${restaurant.dishes}">
-                        <div class="dish-card">
-                            <div class="dish-img">
-                                <c:if test="${dish.imageId > 0}">
-                                    <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                                </c:if>
-                                <c:if test="${dish.imageId == 0}">
-                                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                                </c:if>
+                <div class="dish-categories">
+                    <div>
+                        <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+                    </div>
+                    <div class="dishList">
+                        <c:forEach var="dish" items="${restaurant.dishes}">
+                            <div class="dish-card">
+                                <div class="dish-img">
+                                    <c:if test="${dish.imageId > 0}">
+                                        <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                    </c:if>
+                                    <c:if test="${dish.imageId == 0}">
+                                        <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                    </c:if>
+                                </div>
+                                <div class="card-info">
+                                    <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                    <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                                    <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                </div>
                             </div>
-                            <div class="card-info">
-                                <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                                <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                                <span class="text price">$<c:out value="${dish.price}"/></span>
-                            </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,40 +130,80 @@
     }
     .restaurant-info{
         width: 100%;
-        background-color: rgb(255, 242, 229);
+        background-color: rgb(16, 24, 28);
     }
-    .dish-card{
-        max-width: 38%;
-    }
-    .restaurant-content{
+    .restaurant-content {
         margin-top: 30px;
         display: flex;
         width: 100%;
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-    .presentation-text{
-        font-family:'Nunito',sans-serif;
-        font-weight: 700;
-        font-size: 1.3rem;
+    .categories{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-    .text.description{
-        font-family: 'Quicksand',sans-serif;
-        font-weight: 600;
-        font-size: 1rem;
+    .btn.text.description{
+        color: white;
     }
-    .text.price{
-        font-weight: 600;
-        font-size: 1.4rem;
+    .dish-card {
+        min-width: 30%;
+        height: 8rem;
     }
-
-    @media screen and (max-width: 1068px){
+    .card-info p{
+        margin-block-start: 0;
+    }
+    @media screen and (max-width: 1920px){
         .dish-card{
-            max-width: 80rem;
+            width: 25%;
         }
         .dish-img{
-            min-width: 20rem;
-            max-height: 20rem;
+            width: clamp(7rem,30%,10rem);
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
+        }
+    }
+    @media screen and (max-width: 1350px){
+        .dish-card{
+            height: 40%;
+        }
+        .dish-img{
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.description.info{
+            font-size: 0.8rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
+        }
+    }
+    @media screen and (max-width: 1080px){
+        .dish-card{
+            width: 70%;
+            height: clamp(5%,9%,20%);
+        }
+        p{
+            margin-block-start: 0.1em;
+        }
+        .dish-img{
+            width: 30%;
+        }
+        .presentation-text.info{
+            font-size: 1rem;
+        }
+        .text.price.info{
+            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 868px){
@@ -181,7 +240,7 @@
         justify-content: flex-start;
     }
     a{
-        padding: 5px;
+        margin: 0.2vw;
         justify-content: center;
         max-width: 200px;
     }
@@ -199,16 +258,24 @@
         background-color: white;
         padding: 10px;
         min-height: 150px;
-        max-height: 250px;
-        width: 15%;
+        width: 100%;
     }
 
-
+    .left-section{
+        display: flex;
+        flex-direction: column;
+        width: 15%;
+    }
+    .dish-categories{
+        padding: 0 2em;
+        width: 85%;
+    }
     .dishList{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         flex-wrap: wrap;
-        width: 85%;
+        width: 100%;
+        height: fit-content;
     }
     
 

@@ -13,21 +13,31 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registro</title>
+    <title>Senta3</title>
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
 <div class="content">
     <div class="card register-card">
-        <span class="presentation-text title"><spring:message code="Register.title"/></span>
-        <c:url value="/register" var="postPath"/>
-        <form:form modelAttribute="customerRegisterForm" action="${postPath}" method="post">
-            <div class="input-field col s12 input">
+        <div><span class="presentation-text title"><spring:message code="Register.title"/></span></div>
+        <div>
+            <c:url value="/register" var="postPath"/>
+            <form:form modelAttribute="customerRegisterForm" action="${postPath}" method="post">
+                <div>
+                    <form:errors path="customerName" element="p" cssStyle="color:red"/>
+                    <form:label path="customerName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.name"/></form:label>
+                    <form:input path="customerName" type="text"/>
+                </div>
                 <div>
                     <form:errors path="mail" element="p" cssStyle="color:red"/>
                     <form:label path="mail" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.mail"/></form:label>
                     <form:input path="mail" type="text"/>
+                </div>
+                <div>
+                    <form:errors path="phone" element="p" cssStyle="color:red"/>
+                    <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
+                    <form:input path="phone" type="text"/>
                 </div>
                 <div>
                     <form:errors path="username" element="p" cssStyle="color:red"/>
@@ -35,53 +45,49 @@
                     <form:input path="username" type="text"/>
                 </div>
                 <div>
-                    <form:errors path="customerName" element="p" cssStyle="color:red"/>
-                    <form:label path="customerName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.name"/></form:label>
-                    <form:input path="customerName" type="text"/>
+                    <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                    <form:label path="psPair.password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                    <form:input path="psPair.password" type="password"/>
                 </div>
                 <div>
-                    <form:errors path="password" element="p" cssStyle="color:red"/>
-                    <form:label path="password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
-                    <form:input path="password" type="password"/>
+                    <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                    <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                    <form:input path="psPair.checkPassword" type="password"/>
                 </div>
-                <div>
-                    <form:errors path="phone" element="p" cssStyle="color:red"/>
-                    <form:label path="phone" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.phone"/></form:label>
-                    <form:input path="phone" type="text"/>
-                </div>
-            </div>
-            <input type="submit" value="Continuar" class="continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();"/>
-        </form:form>
+                <spring:message code="Button.continue" var="label"/>
+                <spring:message code="Button.loading" var="label2"/>
+                <input type="submit" value="${label}" class="btn confirm-btn center" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
+            </form:form>
+        </div>
     </div>
 </div>
 </body>
 </html>
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .content{
         display: flex;
         justify-content: center;
-        margin-top: 5%;
+        margin-top: 30px;
     }
     .card.register-card{
-        padding: 2%;
-        min-width: 40%;
-        max-width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1%;
+        min-width: 25%;
         border-radius: .8rem;
-    }
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
     }
     .presentation-text.title{
         font-size: 2rem;
     }
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
+    .center{
+        align-items: center;
     }
 </style>

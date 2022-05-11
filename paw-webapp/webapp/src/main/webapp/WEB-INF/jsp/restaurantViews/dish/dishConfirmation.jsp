@@ -27,7 +27,7 @@
 </div>
     <div class="page-container">
             <div class="card confirm-card">
-                <h3 class="main-title text center"><spring:message code="Dishconfirm.title"/></h3>
+                <h3 class="presentation-text"><spring:message code="Dishconfirm.title"/></h3>
                 <div class="img-visualizer">
                     <div class="card visualizer">
                         <c:if test="${imageId > 0}">
@@ -43,12 +43,13 @@
                     <div class="img-row">
                         <input type="file" name="photo"/>
                         <div class="col s12 center">
-                            <input type="submit" value="Cargar" class="confirm-btn"/>
+                            <spring:message code="Button.load" var="label"/>
+                            <input type="submit" value="${label}" class="btn confirm-btn"/>
                         </div>
                     </div>
                 </form>
                 <div class="btn-row">
-                    <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/restaurant=${restaurantId}/menu"/>" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">Confirmar</a>
+                    <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/restaurant=${restaurantId}/menu"/>" onclick="this.form.submit(); this.disabled=true;this.value='procesando'; "><spring:message code="Button.confirm" var="label"/><spring:message code="Button.confirm"/></a>
                 </div>
             </div>
     </div>
@@ -63,10 +64,12 @@
         border-radius: 16px;
     }
     .visualizer{
-        background-color:#37A6E6;
+        background-color: rgb(255, 68, 31);
         padding: 8px;
     }
     img{
+        width: 100%;
+        height: 100%;
         border-radius: 16px;
     }
     .confirm-card{
@@ -86,6 +89,7 @@
         width: 100%;
         display: flex;
         margin: 20px;
+        align-items: center;
         justify-content: center;
     }
     .btn-row{
@@ -115,7 +119,13 @@
         margin-left: 5%;
         margin-right: 5%;
     }
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
 
 </style>

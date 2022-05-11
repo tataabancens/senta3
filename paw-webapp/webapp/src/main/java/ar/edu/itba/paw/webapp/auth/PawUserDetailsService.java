@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Component
@@ -22,7 +21,7 @@ public class PawUserDetailsService implements UserDetailsService {
     private final UserService us;
     private final PasswordEncoder passwordEncoder;
 
-    private Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
+    private final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     @Autowired
     public PawUserDetailsService(final UserService us, final PasswordEncoder passwordEncoder) {
@@ -36,7 +35,6 @@ public class PawUserDetailsService implements UserDetailsService {
 
         final Collection<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(user.getRole()));
-        // if (user. debe ser editor) -> roles.add "ROLE_EDITOR". etc.
 
         String password = user.getPassword();
         //migrate users with un-hashed password

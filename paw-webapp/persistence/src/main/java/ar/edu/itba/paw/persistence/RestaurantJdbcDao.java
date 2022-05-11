@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+
 import javax.sql.DataSource;
 import java.util.*;
 
@@ -73,6 +74,10 @@ public class RestaurantJdbcDao implements RestaurantDao {
 
     @Override
     public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
+        if(Arrays.stream(DishCategory.values()).noneMatch(e -> e.getDescription().equals(category.getDescription()))){
+            return new ArrayList<>();
+        }
+
         List<Dish> query = jdbcTemplate.query("SELECT * FROM dish WHERE dish.restaurantId = ? AND category = ?" +
                         " ORDER BY dishId OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
 

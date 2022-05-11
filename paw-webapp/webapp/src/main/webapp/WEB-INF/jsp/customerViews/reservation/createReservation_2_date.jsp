@@ -15,7 +15,7 @@
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
-    <title>Reserva</title>
+    <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 <body>
 <%@ include file="../../components/navbar.jsp" %>
@@ -25,7 +25,7 @@
     <form:form modelAttribute="numberForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title"><spring:message code="Createreservation.day.title"/></span>
+                <span class="presentation-text"><spring:message code="Createreservation.day.title"/></span>
 
                 <div class="input-field">
                     <form:select path="number">
@@ -33,7 +33,8 @@
                     </form:select>
                 </div>
                 <div class="submit center">
-                    <input type="submit" value="Confirmar reserva!" class="continue-btn"/>
+                    <spring:message code="Button.confirm" var="label"/>
+                    <input type="submit" value="${label}" class="btn confirm-btn"/>
                 </div>
             </div>
         </div>
@@ -44,6 +45,13 @@
 </html>
 
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .card{
         border-radius: 16px;
         display: flex;
@@ -78,22 +86,6 @@
     }
     select{
         display: flex;
-    }
-
-
-    .continue-btn{
-        padding-inline: 7%;
-        padding-block: 1%;
-        border-radius: 16px;
-        background-color: #37A6E6;
-        margin-top: 5%;
-        opacity: 57%;
-    }
-
-    .continue-btn:hover{
-        background-color: #37A6E6;
-        color: white;
-        opacity: 100%;
     }
 
     .back-btn{

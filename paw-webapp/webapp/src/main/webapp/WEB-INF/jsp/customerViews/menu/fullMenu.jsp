@@ -33,11 +33,11 @@
 <div class="restaurant-header">
     <div class="restaurant-info">
         <div>
-            <i class="large material-icons">restaurant</i>
+            <i class="medium material-icons">restaurant</i>
         </div>
         <div>
             <div class="presentation-text title restaurant-title">
-                <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
+                <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="presentation-text restaurant-description">
                 <span><spring:message code="Fullmenu.phone"/> </span>
@@ -45,79 +45,92 @@
             </div>
         </div>
     </div>
+    <div class="reservation-info" style="margin-right: 4%;">
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.title"/></p>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.date"/></p>
+            <span class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</span>
+    </div>
 </div>
 <div class="page-container">
     <div class="orders-and-info">
-        <div class="card client-actions">
-            <span class="main-title center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
-            <c:if test="${canOrderReceipt}">
-                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
-            </c:if>
-            <c:if test="${!canOrderReceipt}">
-                <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Fullmenu.receipt"/></a>
-            </c:if>
-            <div class="center div-padding">
-                <a class="waves-effect waves-light btn confirm-btn red" href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+        <div class="card filter-box">
+            <div class="client-actions">
+                <span class="presentation-text text-center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
+                <c:if test="${canOrderReceipt}">
+                    <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
+                </c:if>
+                <c:if test="${!canOrderReceipt}">
+                    <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
+                </c:if>
+                <div class="center div-padding">
+                    <a class="waves-effect waves-light btn confirm-btn red text description " href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                </div>
             </div>
-        </div>
-        <div class="card client-actions">
-            <c:forEach var="category" items="${categories}">
-                <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>">
-                    <c:if test="${currentCategory.description == category.description}">
-                        <button class="waves-effect waves-light btn confirm-btn red">
-                            <c:out value="${category.spanishDescr}"></c:out>
-                        </button>
-                    </c:if>
-                    <c:if test="${currentCategory.description != category.description}">
-                        <button class="waves-effect waves-light btn confirm-btn green">
-                            <c:out value="${category.spanishDescr}"></c:out>
-                        </button>
-                    </c:if>
-                </a>
-            </c:forEach>
+            <div>
+                <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
+                <ul class="categories">
+                    <c:forEach var="category" items="${categories}">
+                        <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>" style="margin: 0.2vw">
+                            <c:if test="${currentCategory.description == category.description}">
+                                <button class="waves-effect waves-light btn confirm-btn text description">
+                                    <c:out value="${category.spanishDescr}"/>
+                                </button>
+                            </c:if>
+                            <c:if test="${currentCategory.description != category.description}">
+                                <button class="waves-effect waves-light btn confirm-btn text description">
+                                    <c:out value="${category.spanishDescr}"/>
+                                </button>
+                            </c:if>
+                        </a>
+                    </c:forEach>
+                </ul>
+            </div>
         </div>
         <sec:authorize access="isAuthenticated()">
             <c:if test="${!reservation.reservationDiscount}">
                 <c:if test="${customer.points >= 100}">
-                    <div class="card client-actions">
-                        <span class="main-title center"><spring:message code="Fullmenu.discount"/></span>
+                    <div class="card client-actions discounts">
+                        <span class="presentation-text discounts"><spring:message code="Fullmenu.discount"/></span>
                         <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
-                            <input type="submit" value="Activar" class="waves-effect waves-light btn confirm-btn">
+                            <spring:message code="Button.activate" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
                         </form:form>
                     </div>
                 </c:if>
             </c:if>
             <c:if test="${reservation.reservationDiscount}">
-                <div class="card client-actions">
-                    <span class="main-title center"><spring:message code="Fullmenu.discount.apply"/></span>
+                <div class="card client-actions discounts">
+                    <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
                     <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
-                        <input type="submit" value="Cancelar" class="waves-effect waves-light btn confirm-btn">
+                        <spring:message code="Button.cancel" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
                     </form:form>
                 </div>
             </c:if>
         </sec:authorize>
         <div class="orderList">
             <div class="card order-card">
-                <span class="main-title"><spring:message code="Order.title"/></span>
+                <span class="presentation-text"><spring:message code="Order.title"/></span>
                 <div class="order-headers">
-                    <span class="title2 dishname"><spring:message code="Order.dish"/></span>
-                    <span class="title2"><spring:message code="Order.qty"/></span>
-                    <span class="title2"><spring:message code="Order.total"/></span>
+                    <span class="presentation-text"><spring:message code="Order.dish"/></span>
+                    <span class="presentation-text"><spring:message code="Order.qty"/></span>
+                    <span class="presentation-text"><spring:message code="Order.total"/></span>
                 </div>
                 <hr class="solid-divider">
                 <div class="order-info">
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="order-item">
-                            <div class="order-field center"><span class="items-title "><c:out value="${orderItem.dishName}"/></span></div>
-                            <div class="order-field center"><span class="items-title center"><c:out value="${orderItem.quantity}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dishName}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
                             <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
-                            <div class="order-field center"><span class="items-title center"><c:out value="${orderItemPrice}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
                             <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
-                                <!--<a href=""><i class="material-icons clear-symbol">clear</i></a>-->
-                                <input type="submit" value="X" class="waves-effect waves-light btn confirm-btn red">
+                                <button type="submit" class="small btn-floating" style="background-color: #757575">
+                                    <i class="material-icons clear-symbol">clear</i>
+                                </button>
                             </form:form>
                         </div>
                         <hr class="solid-divider">
@@ -125,11 +138,11 @@
                 </div>
                 <div class="order-total">
                     <div>
-                        <p class="price">Total</p>
+                        <p class="presentation-text"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price right"><c:out value="${totalPrice}"/></p>
+                        <p class="presentation-text right"><c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
                 <div class="order-btn-row">
@@ -137,79 +150,98 @@
                         <c:if test="${selected > 0}">
                             <c:url value="/order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
-                                <input type="submit" value="Vaciar pedido" class="waves-effect waves-light btn confirm-btn red">
+                                <spring:message code="Order.empty" var="label"/>
+                                <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red text description">
                             </form:form>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn red"><spring:message code="Order.empty"/></a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn red text description "><spring:message code="Order.empty"/></a>
                         </c:if>
                     </div>
                     <div>
                         <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green" href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
+                            <a class="waves-effect waves-light btn confirm-btn green text description " href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
                         </c:if>
                         <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn green"><spring:message code="Button.continue"/></a>
+                            <a disabled class="waves-effect waves-light btn confirm-btn green text description "><spring:message code="Button.continue"/></a>
                         </c:if>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="dishList">
-        <div class="presentation-text title restaurant-title">
+    <div class="dish-categories">
+        <c:if test="${reservation.reservationStatus.name != 'SEATED'}">
+            <div class="disclaimer">
+                <div class="card information">
+                    <i class="medium material-icons" style="color: #0d0d56">info</i>
+                    <span class="presentation-text" style="color: #0d0d56; font-size: 1.2rem;margin-right: 5px;"><spring:message code="Order.disclaimer"/></span>
+                </div>
+            </div>
+        </c:if>
+        <div>
             <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
         </div>
-        <c:forEach var="dish" items="${restaurant.dishes}">
+        <div class="dishList">
+            <c:forEach var="dish" items="${restaurant.dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
-                    <div class="dish-card">
-                        <div class="dish-img">
-                            <c:if test="${dish.imageId > 0}">
-                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                            </c:if>
-                            <c:if test="${dish.imageId == 0}">
-                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                            </c:if>
-                        </div>
-                        <div class="card-info">
-                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
-                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
-                            </c:if>
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <c:if test="${dish.imageId > 0}">
+                            <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                        </c:if>
+                        <c:if test="${dish.imageId == 0}">
+                            <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                        </c:if>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <div>
+                                <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
+                                <p class="text description"><c:out value="${dish.dishDescription}"/></p>
+                                <c:if test="${reservation.reservationDiscount}">
+                                    <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                    <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                    <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                </c:if>
+                            </div>
                             <c:if test="${!reservation.reservationDiscount}">
-                                <span class="text price">$<c:out value="${dish.price}"/></span>
+                                <span class="text price info">$<c:out value="${dish.price}"/></span>
                             </c:if>
                         </div>
                     </div>
+                </div>
                 </c:if>
                 <c:if test="${!unavailable.contains(dish.id)}">
-                    <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>" class="dish-card">
-                        <div class="dish-img">
-                            <c:if test="${dish.imageId > 0}">
-                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                            </c:if>
-                            <c:if test="${dish.imageId == 0}">
-                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                            </c:if>
-                        </div>
-                        <div class="card-info">
-                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price">$<c:out value="${(dish.price)}"/></span>
-                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
-                            </c:if>
-                            <c:if test="${!reservation.reservationDiscount}">
-                                <span class="text price">$<c:out value="${dish.price}"/></span>
-                            </c:if>
-                        </div>
+                    <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>"  class="card horizontal">
+                            <div class="card-image">
+                                <c:if test="${dish.imageId > 0}">
+                                    <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                </c:if>
+                                <c:if test="${dish.imageId == 0}">
+                                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                </c:if>
+                            </div>
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <div>
+                                        <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                        <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                                        <c:if test="${reservation.reservationDiscount}">
+                                            <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                            <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                            <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                        </c:if>
+                                    </div>
+                                    <c:if test="${!reservation.reservationDiscount}">
+                                        <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                    </c:if>
+                                </div>
+                            </div>
                     </a>
                 </c:if>
-        </c:forEach>
+            </c:forEach>
+        </div>
     </div>
 </div>
 
@@ -218,47 +250,122 @@
 </html>
 
 <style>
-
+    .disclaimer{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:center;
+        width: 100%;
+    }
+    .restaurant-header{
+        display: flex;
+        justify-content: space-between;
+        background-color: rgb(255, 242, 229);
+        border-radius: 0px;
+    }
+    .presentation-text.header-title.info{
+        color: #E63737;
+        font-size: clamp(1rem,1.2vw,2rem);
+    }
     .page-container{
         padding: 1%;
         display: flex;
-
+        flex-wrap: wrap;
+    }
+    .card.horizontal{
+        width: clamp(30rem,40%,35rem);
+        height: clamp(9.5rem,15%,11rem);
+        margin: 1%;
+        box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
+        transition: 0.8s;
+    }
+    .reservation-info p{
+        margin-block-end: 0.5em;
+        margin-block-start: 0;
+    }
+    .presentation-text.info{
+        color: black;
+        font-size: clamp(0.7rem,1rem + 0.1vw,2rem) ;
+    }
+    .text.description.info{
+        font-size: clamp(0.7rem,0.8rem + 0.1vw,1.1rem);
+    }
+    .card .card-content{
+        padding: 10px;
+    }
+    .card.horizontal .card-image{
+        object-fit: fill;
+        max-width: 25%;
+        margin-left: 2%;
+    }
+    .card.horizontal .card-image img{
+        border-radius: .8rem;
+        width: clamp(5rem,100%,10rem);
+        height: clamp(5rem,100%,10rem);
+        aspect-ratio: 1/1;
+    }
+    .card-stacked{
+        height: 100%;
     }
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: 35%;
+        width: clamp(20rem,23%,30rem);
         height: 100%;
     }
-    .presentation-text{
-        font-family:'Nunito',sans-serif;
-        font-weight: 700;
-        font-size: 1.3rem;
+    .presentation-text.text-center{
+        text-align: center;
     }
-    .text.description{
-        font-family: 'Quicksand',sans-serif;
-        font-weight: 600;
-        font-size: 1rem;
+    .dish-categories{
+        display: flex;
+        flex-direction: column;
+        width: clamp(15rem,70%,80rem);
     }
-    .text.price{
-        font-weight: 600;
-        font-size: 1.4rem;
+    .card.information{
+        width: 100%;
+    }
+    .card.client-actions.discounts{
+        max-width: 60%;
+    }
+    .presentation-text.discounts{
+        font-size: 1.18rem;
+    }
+    .client-actions{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 5%;
+    }
+    .card.filter-box{
+        width: 60%;
+    }
+    .btn.confirm-btn{
+        color: white;
+    }
+    .btn-floating{
+        width: 25px;
+        height: 25px;
+    }
+    .btn-floating i{
+        line-height: 25px;
     }
     i{
-        color: black;
+        color: rgb(255, 68, 31);
         align-self: center;
         margin-right: 25px;
     }
     .material-icons.clear-symbol{
-        color: #707070;
+        color: white;
     }
     .dishList{
         display: flex;
-        justify-self: flex-start;
-        justify-content: center;
         flex-wrap: wrap;
-        width: 65%;
-        height: 100%;
+        width: 100%;
+        height: fit-content;
+    }
+    .categories{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .card{
         border-radius: 16px;
@@ -292,7 +399,6 @@
         min-height: 250px;
         padding: 20px;
         width: 100%;
-        margin: 8px;
     }
     .order-headers{
         display: flex;
@@ -307,9 +413,13 @@
         width: 100%;
         justify-content: space-evenly;
     }
+    .orders-and-info{
+        margin-right: 5%;
+    }
     .order-item{
         display: flex;
         width: 100%;
+        align-items: center;
         justify-content: space-evenly;
     }
     .order-field{
@@ -322,15 +432,13 @@
         display: flex;
         justify-content: space-around;
     }
-    .dish-card:hover{
+    .card.horizontal:hover{
         transform: scale(1.1);
-    }
-    .dish-card{
-        width:58%
     }
     .order-btn-row{
         width: 100%;
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-around;
     }
     .center{
@@ -342,16 +450,18 @@
     .center{
         justify-content: center;
     }
-
-    .order-card{
-        width: 100%;
+    p{
+        line-height: 1.3;
     }
-
+    .text.description{
+        font-size: 1rem;
+    }
     #original-price{
         text-decoration: line-through;
     }
     #discounted-price{
         color: blue;
+        margin-left: 12%;
     }
 
 

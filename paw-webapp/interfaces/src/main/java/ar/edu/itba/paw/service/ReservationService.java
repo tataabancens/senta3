@@ -3,16 +3,13 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
-
-    List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status);
-
-    List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
@@ -38,8 +35,6 @@ public interface ReservationService {
 
     List<Integer> getAvailableHours(long restaurantId, long qPeople);
 
-    void cancelReservation(long restaurantId, long reservationId);
-
     List<Long> getUnavailableItems(long reservationId);
 
     List<FullReservation> getAllReservations(long restaurantId);
@@ -56,6 +51,8 @@ public interface ReservationService {
 
     void checkReservationTime();
 
+    void cleanMaybeReservations();
+
     void applyDiscount(long reservationId);
 
     void cancelDiscount(long reservationId);
@@ -66,13 +63,11 @@ public interface ReservationService {
 
     public List<Reservation> getReservationsSeated(long restaurantId);
 
-    void cleanMaybeReservations(long restaurantId);
-
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
     List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
 
-    long getRecommendedDishId(long reservationId);
+    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
-    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus);
+    boolean isFromOrder(String isFromOrderP);
 }

@@ -28,7 +28,7 @@
         <form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
             <div class="card card-content">
                 <div class="title">
-                    <span class="main-title"><spring:message code="Register.login"/></span>
+                    <span class="presentation-text"><spring:message code="Register.login"/></span>
                 </div>
             <div>
                 <label for="username"><spring:message code="Register.user"/> </label>
@@ -37,8 +37,6 @@
             <div>
                 <label for="password"><spring:message code="Register.password"/></label>
                 <input id="password" name="password" type="password"/>
-                <!-- TODO cambiar -->
-                <a href=""><span>OLVIDE</span></a>
             </div>
             <div class="rememberme">
                 <label>
@@ -47,7 +45,7 @@
                 </label>
             </div>
             <div class="row center smaller">
-                <input class="confirm-btn center" type="submit" value="Ingresar"/>
+                <input class="btn confirm-btn center" type="submit" value="Ingresar"/>
             </div>
             </div>
         </form>
@@ -57,7 +55,13 @@
 
 
 <style>
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .form-container{
         display: flex;
         padding-top: 30px;
@@ -69,7 +73,7 @@
         display: flex;
     }
     .card.card-content{
-        justify-content: center;
+        justify-content: space-evenly;
         flex-direction: column;
         align-content: center;
         font-family: "Segoe UI", Lato, sans-serif;

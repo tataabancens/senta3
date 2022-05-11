@@ -4,10 +4,13 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,29 +23,32 @@ import java.util.List;
 
 @Controller
 public class MenuController {
-    private RestaurantService rs;
-    private ReservationService res;
-    private ControllerService controllerService;
-    private CustomerService cs;
+    private final RestaurantService rs;
+    private final ReservationService res;
+    private final CustomerService cs;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
 
     @Autowired
-    public MenuController(final RestaurantService rs, final ReservationService res,
-                          final ControllerService controllerService, final CustomerService cs) {
+    public MenuController(final RestaurantService rs, final ReservationService res, final CustomerService cs) {
         this.rs = rs;
         this.res = res;
-        this.controllerService = controllerService;
         this.cs = cs;
     }
 
     @RequestMapping("/")
-    public ModelAndView helloWorld() {
+    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category ) {
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
 
+        LOGGER.info("Attempting to show menu");
+
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(1));
+        List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
+        restaurant.setDishes(dishes);
         mav.addObject("restaurant", restaurant);
+        mav.addObject("categories", DishCategory.getAsList());
+        mav.addObject("currentCategory", DishCategory.valueOf(category));
         return mav;
     }
 
@@ -50,15 +56,14 @@ public class MenuController {
     public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                              @RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
-        final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
+
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         restaurant.setDishes(dishes);
 
-        //Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
 
@@ -68,6 +73,7 @@ public class MenuController {
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
 
+        final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("restaurant", restaurant);
 //        mav.addObject("dish", dishes);
@@ -93,7 +99,7 @@ public class MenuController {
     @RequestMapping(value= "/menu/applyDiscount/{reservationId}", method = RequestMethod.POST)
     public ModelAndView applyDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.applyDiscount(reservationId);
@@ -103,7 +109,7 @@ public class MenuController {
     @RequestMapping(value= "/menu/cancelDiscount/{reservationId}", method = RequestMethod.POST)
     public ModelAndView cancelDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.cancelDiscount(reservationId);

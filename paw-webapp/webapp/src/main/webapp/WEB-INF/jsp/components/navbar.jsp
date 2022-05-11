@@ -68,20 +68,22 @@
             </sec:authorize>
         </div>
         <div class="right-side">
-            <sec:authorize access="!isAuthenticated()">
-                <li>
-                    <a class="options" href="<c:url value="/register"/>">
-                        <spring:message code="Navbar.option.register"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="!isAuthenticated()">
-                <li>
-                    <a class="options" href="<c:url value="/login"/>">
-                        <spring:message code="Navbar.option.login"/>
-                    </a>
-                </li>
-            </sec:authorize>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/menu'}">
+                <sec:authorize access="!isAuthenticated()">
+                        <li>
+                            <a class="options" href="<c:url value="/register"/>">
+                                <spring:message code="Navbar.option.register"/>
+                            </a>
+                        </li>
+                </sec:authorize>
+                <sec:authorize access="!isAuthenticated()">
+                    <li>
+                        <a class="options" href="<c:url value="/login"/>">
+                            <spring:message code="Navbar.option.login"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
             <sec:authorize access="isAuthenticated()">
                 <li>
                     <a class="options" href="<c:url value="/profile"/>" >
@@ -145,7 +147,7 @@
         background-color: whitesmoke;
         color: #171616;
     }
-    @media (max-width: 35em){
+    @media (max-width: 36em){
         .primary-navigation{
             position: fixed;
             --gap: 2em;
@@ -153,7 +155,7 @@
             z-index: 1000;
             flex-direction: column;
             padding: min(30vh,10rem) 2rem;
-            background: hsl(0 0% 100% / 0.1);
+            background: hsla(0, 4%, 16%, 0.1);
             backdrop-filter: blur(1em);
             transform: translateX(100%);
             transition: transform 350ms ease-out;
@@ -161,11 +163,14 @@
         .primary-navigation[data-visible="true"]{
             transform: translateX(0%);
         }
+        .primary-navigation a{
+            color: black;
+        }
         .mobile-nav-toggle{
             display: block;
             position: absolute;
             z-index: 9999;
-            background: url("/resources/images/hamburger.png");
+            background: url("/resources/images/menu.png") center;
             width: 3rem;
             aspect-ratio: 1;
             border: 0;

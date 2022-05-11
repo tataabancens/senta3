@@ -1,14 +1,12 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,7 +31,7 @@ public class MailingServiceImpl implements MailingService{
 
     private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
         String subject="Un cliente realizo una reserva";
-        String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
+        String message="El cliente: "+customer.getCustomerName()+" realizo una reserva para las: "+
                 reservation.getReservationHour() +'\n';
         sendEmail(properties,restaurant.getMail(),subject,message);
     }
@@ -60,33 +58,11 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
-    @Override
-    public void sendReceiptEmail(Restaurant restaurant, Customer customer) {
-        Properties properties=setProperties();
-        String subject="Un cliente quiere pedir la cuenta";
-        String messageText="el cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+
-                ") quiere la cuenta";
-        sendEmail(properties,restaurant.getMail(),subject,messageText);
-    }
-
-    @Override
-    public void sendOrderEmail(Restaurant restaurant, Customer customer, List<FullOrderItem> orderItems) {
-        Properties properties=setProperties();
-        String subject="Un cliente hizo un pedido";
-        StringBuilder stringBuilder=
-                new StringBuilder("El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") pidio estos items:\n");
-        for(FullOrderItem item : orderItems){
-            stringBuilder.append(item.getDishName()).append(" x ").append(item.getQuantity()).append('\n');
-        }
-        sendEmail(properties,restaurant.getMail(),subject,stringBuilder.toString());
-    }
-
-    private void sendEmail(Properties properties, String toEmailAddress,
+    public void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageText) {
-
         new Thread(() -> {
 
-        Session session = Session.getInstance(properties,
+            Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication
@@ -106,8 +82,7 @@ public class MailingServiceImpl implements MailingService{
             Transport.send(msg);
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        }).start();
+        }}).start();
     }
 
 

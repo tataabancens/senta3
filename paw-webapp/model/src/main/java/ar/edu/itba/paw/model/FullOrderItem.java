@@ -2,6 +2,8 @@ package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 
+import java.util.Objects;
+
 public class FullOrderItem {
 
     private long orderItemId;
@@ -74,5 +76,18 @@ public class FullOrderItem {
 
     public void setOrderItemId(long orderItemId) {
         this.orderItemId = orderItemId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FullOrderItem that = (FullOrderItem) o;
+        return orderItemId == that.orderItemId && reservationId == that.reservationId && dishId == that.dishId && Float.compare(that.unitPrice, unitPrice) == 0 && quantity == that.quantity && status == that.status && dishName.equals(that.dishName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderItemId, reservationId, dishId, unitPrice, quantity, status, dishName);
     }
 }

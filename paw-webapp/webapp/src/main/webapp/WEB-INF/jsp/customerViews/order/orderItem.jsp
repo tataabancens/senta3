@@ -26,18 +26,20 @@
 <%@ include file="../../components/navbar.jsp" %>
 <div class="form-container">
             <div class="card card-content">
-                <span class="main-title"><c:out value="${dish.dishName}"/></span>
-                <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}" var="postUrl"/>
+                <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
+                <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}&isFromOrder=${isFromOrder}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
                     <div class ="orderItem">
-                        <p class="title2"><c:out value="${dish.dishDescription}"/></p>
+                        <p class="text description"><c:out value="${dish.dishDescription}"/></p>
                         <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price">$<c:out value="${dishPrice}"/></p>
+                        <p class="text description">$<c:out value="${dishPrice}"/></p>
                         <form:errors path="orderItem" element="p" cssStyle="color: red"/>
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
                         <form:input path="orderItem.quantity" type="number" min="1" max="50" required="required" value="0" cssClass="center"/>
                         <div class="submit center">
-                            <input type="submit" value="Confirmar" class="waves-effect waves-light btn continue-btn" onclick="this.disabled=true;this.value='procesando'; this.form.submit();">
+                            <spring:message code="Button.confirm" var="label"/>
+                            <spring:message code="Button.loading" var="label2"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; ">
                         </div>
                     </div>
                 </form:form>
@@ -94,18 +96,12 @@
         justify-content: center;
     }
 
-    .with-margin{
-        margin-top: 10%;
-        margin-bottom: 10%;
-    }
-
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    .already-reserved-btn{
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
 
 </style>

@@ -3,6 +3,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +17,7 @@
 
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 
-    <title>Editar Plato</title>
+    <title>Senta3</title>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
@@ -28,7 +31,8 @@
                 <form:input path="mail" type="text"/>
             </div>
             <div class="submit center">
-                <input type="submit" value="Confirmar" class="continue-btn"/>
+                <spring:message code="Button.confirm" var="label"/>
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
             </div>
         </div>
     </form:form>

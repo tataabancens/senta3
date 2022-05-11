@@ -4,72 +4,92 @@ drop table if exists dish cascade;
 drop table if exists reservation cascade;
 drop table if exists orderItem cascade;
 
-CREATE TABLE IF NOT EXISTS customer (
-  customerId SERIAL PRIMARY KEY,
-  customerName varchar(50) NOT NULL,
-  Phone varchar(50) NOT NULL,
-  Mail varchar(50)
-);
+CREATE TABLE IF NOT EXISTS users (
+    userId SERIAL PRIMARY KEY,
+    username varchar(100) UNIQUE,
+    password varchar(100),
+    role varchar(100) default 'ROLE_RESTAURANT'
+    );
 
-INSERT INTO customer (customername, phone, Mail)
-VALUES('Juan el loco','110502517', 'uriel.mihura@gmail.com');
+
+CREATE TABLE IF NOT EXISTS customer (
+    customerId SERIAL PRIMARY KEY,
+    customerName varchar(50) NOT NULL,
+    Phone varchar(50) NOT NULL,
+    Mail varchar(50),
+    userId int,
+    points int default 0,
+    FOREIGN KEY (userId) REFERENCES users (userId)
+    );
+
 
 CREATE TABLE IF NOT EXISTS restaurant (
-  restaurantId SERIAL PRIMARY KEY,
-  restaurantName varchar(100) NOT NULL,
-  phone varchar(100) NOT NULL,
-  Mail varchar(50) NOT NULL
-);
+    restaurantId SERIAL PRIMARY KEY,
+    restaurantName varchar(100) NOT NULL,
+    phone varchar(100) NOT NULL,
+    Mail varchar(50) NOT NULL,
+    totalChairs int default 10 NOT NULL,
+    openHour int DEFAULT 0,
+    closeHour int default 0,
+    userId int default 1,
+    FOREIGN KEY (userId) REFERENCES users (userId)
+    );
 
-INSERT INTO restaurant (restaurantName, phone, Mail)
-VALUES('Pepito Masterchef','110502400', 'tataabancens@gmail.com');
+
+-- CREATE TABLE IF NOT EXISTS image
+-- (
+--     imageId serial PRIMARY KEY,
+--     bitmap bytea
+-- );
 
 CREATE TABLE IF NOT EXISTS dish (
-  dishId SERIAL PRIMARY KEY,
-  restaurantId int NOT NULL,
-  dishName varchar(100) NOT NULL,
-  price int NOT NULL,
-  FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
-);
+    dishId SERIAL PRIMARY KEY,
+    restaurantId int NOT NULL,
+    dishName varchar(100) NOT NULL,
+    price int NOT NULL,
+    dishDescription varchar(200) NOT NULL,
+    imageId int default 1 not null,
+    category varchar(100) default 'MAIN_DISH' not null,
+    FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
+    );
 
-INSERT INTO dish (restaurantId, dishName, price)
-VALUES(1,'Milanesa napolitana', 87);
-INSERT INTO dish (restaurantId, dishName, price)
-VALUES(1,'Pizza calabresa', 650);
 
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
     customerId      integer NOT NULL,
-    reservationDate timestamp,
-    status          integer NOT NULL,
+    reservationHour integer default 0 NOT NULL,
+    reservationStatus integer,
+    qPeople integer default 1,
+    reservationDiscount boolean default false not null,
+    startedAtTime timestamp default now(),
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
-);
+    );
 
-INSERT INTO reservation (restaurantId, customerId, reservationDate)
-VALUES(1, 1, NOW());
-
-CREATE TABLE IF NOT EXISTS users (
-  userId SERIAL PRIMARY KEY,
-  username varchar(100),
-  password varchar(100)
-);
 
 CREATE TABLE IF NOT EXISTS orderItem
 (
+    id          serial PRIMARY KEY,
     dishId     integer NOT NULL,
-    reservationId serial NOT NULL,
+    reservationId integer NOT NULL,
     unitPrice     decimal(12,2) NOT NULL,
     quantity      integer NOT NULL,
     status        integer NOT NULL,
-    PRIMARY KEY (reservationId, dishId),
-    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ),
-    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId )
-);
+    FOREIGN KEY ( reservationId ) REFERENCES reservation ( reservationId ) ON DELETE CASCADE ,
+    FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
+    );
 
-INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
-VALUES(1, 1, 890, 3, 0);
+INSERT INTO users (username, password)
+VALUES ('Pepito', '123');
+INSERT INTO users (username, password)
+VALUES ('Juancho', '123');
 
-INSERT INTO orderItem (dishId, reservationId, unitPrice, quantity, status)
-VALUES(2, 1, 650, 3, 0);
+INSERT INTO customer (customerName, Phone, Mail, userId)
+VALUES ('Juancho', 541124557633, 'juan@gmail.com', 2);
+
+INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
+VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
+
+
+

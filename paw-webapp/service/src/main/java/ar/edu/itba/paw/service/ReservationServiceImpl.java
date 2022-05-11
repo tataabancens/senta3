@@ -6,10 +6,11 @@ import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.util.*;
@@ -17,9 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
-    private ReservationDao reservationDao;
-    private RestaurantDao restaurantDao;
-    private CustomerService customerService;
+    private final ReservationDao reservationDao;
+    private final RestaurantDao restaurantDao;
+    private final CustomerService customerService;
     private static final int POINTS_TO_DISCOUNT = 100;
 
     @Autowired
@@ -36,24 +37,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsByStatus(long restaurantId, ReservationStatus status) {
-        List<ReservationStatus> statusList = new ArrayList<>();
-        statusList.add(status);
-        return reservationDao.getReservationsByStatusList(restaurantId, statusList);
-    }
-
-    @Override
     public List<Reservation> getReservationsSeated(long restaurantId) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.CHECK_ORDERED);
         statusList.add(ReservationStatus.SEATED);
 
         return reservationDao.getReservationsByStatusList(restaurantId, statusList);
-    }
-
-    @Override
-    public List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems) {
-        return reservationDao.addOrderItemsByReservationId(orderItems);
     }
 
     @Override
@@ -119,7 +108,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
         List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
-        Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
+        Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
 
         List<ReservationStatus> ignoreStatus = new ArrayList<>();
         ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
@@ -161,18 +150,12 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
         if(qPeople > restaurant.getTotalChairs()){
-            //totalHours = new ArrayList<>();
-            return null;
+            return new ArrayList<>();
         } else {
             totalHours.removeAll(notAvailable);
         }
         totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
-    }
-
-    @Override
-    public void cancelReservation(long restaurantId, long reservationId) {
-        reservationDao.cancelReservation(restaurantId, reservationId);
     }
 
     @Override
@@ -203,8 +186,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus) {
-        return reservationDao.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus);
+    public List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
+        return reservationDao.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, page);
     }
 
     @Override
@@ -230,35 +213,6 @@ public class ReservationServiceImpl implements ReservationService {
         statusList.add(ReservationStatus.OPEN);
         statusList.add(ReservationStatus.SEATED);
         return reservationDao.getReservationsByCustomerIdAndStatus(customerId, statusList);
-    }
-
-    @Override
-    public long getRecommendedDishId(long reservationId) {
-        List<FullOrderItem> allOrderItems = reservationDao.getAllOrderItems();
-        //List<FullOrderItem> currentOrderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, Collections.singletonList(OrderItemStatus.SELECTED));
-        List<FullOrderItem> currentOrderItems = allOrderItems.stream().
-                filter(item -> item.getReservationId() == reservationId && item.getStatus() == OrderItemStatus.SELECTED).collect(Collectors.toList());
-
-        Map<Long, Integer> map = new HashMap<>(); // dishId, occurrences
-        for(FullOrderItem currentItem : currentOrderItems){
-            for(FullOrderItem allItem : allOrderItems){
-                if(allItem.getDishId() == currentItem.getDishId() && allItem.getReservationId() != currentItem.getReservationId()){
-                    //get other items from same reservationId
-                                //List<FullOrderItem> otherItemsFromSameReservation = reservationDao.getOrderItemsByReservationId(allItem.getReservationId());
-                    List<FullOrderItem> otherItemsFromSameReservation = allOrderItems.stream().
-                            filter(item -> item.getReservationId() == allItem.getReservationId() && item.getDishId()!= allItem.getDishId()).collect(Collectors.toList());
-
-                    for(FullOrderItem relatedItem : otherItemsFromSameReservation){
-                        if(map.containsKey(relatedItem.getDishId())){
-                            map.put(relatedItem.getDishId(), map.get(relatedItem.getDishId())+1);
-                        } else {
-                            map.put(relatedItem.getDishId(), 1);
-                        }
-                    }
-                }
-            }
-        }
-        return Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
     @Override
@@ -292,33 +246,45 @@ public class ReservationServiceImpl implements ReservationService {
         reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
     }
 
+    @Scheduled(cron = "0 1/31 * * * ?")
+    @Transactional
     @Override
     public void checkReservationTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
-            if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
+                updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            } else if (reservation.getStartedAtTime().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()){
+                updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            } else {
+                if(now.getHour() > reservation.getReservationHour()){
+                    if(reservation.getReservationStatus() == ReservationStatus.SEATED){
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
+                    }
+                    if(reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED && reservation.getReservationStatus() != ReservationStatus.FINISHED){
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                    }
                 }
-            }
-            if(now.getHour() > reservation.getReservationHour() + 1) {
-                if(reservation.getReservationStatus() == ReservationStatus.SEATED){
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
+                if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
+                    if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                    }
                 }
             }
         }
     }
 
+    @Scheduled(cron = "0 0/5 * * * ?")
+    @Transactional
     @Override
-    public void cleanMaybeReservations(long restaurantId) {
+    public void cleanMaybeReservations() {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.MAYBE_RESERVATION);
         LocalDateTime now = LocalDateTime.now();
 
-        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(restaurantId, statusList);
+        List<Reservation> allMaybeReservations = reservationDao.getReservationsByStatusList(1, statusList);
         for (Reservation reservation : allMaybeReservations) {
             LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
             if (now.compareTo(tenMinutesLater) > 0) {
@@ -326,6 +292,8 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
     }
+
+
 
     @Override
     public void applyDiscount(long reservationId) {
@@ -335,7 +303,7 @@ public class ReservationServiceImpl implements ReservationService {
             Customer customer = customerService.getUserByID(reservation.getCustomerId()).get();
 
             if (customer.getPoints() >= POINTS_TO_DISCOUNT) {
-                customerService.updatePoints(customer.getCustomerId(), -POINTS_TO_DISCOUNT);
+                customerService.addPointsToCustomer(customer.getCustomerId(), -POINTS_TO_DISCOUNT);
                 reservationDao.applyDiscount(reservationId);
             }
         }
@@ -348,7 +316,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
 
-            customerService.updatePoints(reservation.getCustomerId(), POINTS_TO_DISCOUNT);
+            customerService.addPointsToCustomer(reservation.getCustomerId(), POINTS_TO_DISCOUNT);
             reservationDao.cancelDiscount(reservationId);
         }
     }
@@ -364,7 +332,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
-        return reservation.getReservationStatus().getName() == "SEATED" && hasOrdered;
+        return Objects.equals(reservation.getReservationStatus().getName(), "SEATED") && hasOrdered;
     }
 
+    @Override
+    public boolean isFromOrder(String isFromOrderP) {
+        return isFromOrderP.compareTo("true") == 0;
+    }
 }
