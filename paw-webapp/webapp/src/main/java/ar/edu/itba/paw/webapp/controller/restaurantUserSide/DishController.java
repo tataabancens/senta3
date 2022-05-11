@@ -49,7 +49,7 @@ public class DishController {
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
         controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ModelAndView mav = new ModelAndView("restaurantViews/dish/createDish");
-        mav.addObject("categories", DishCategory.getAsList());
+        mav.addObject("categories", DishCategory.getAsMap());
 
         return mav;
     }
@@ -125,7 +125,7 @@ public class DishController {
         mav.addObject("restaurantId", restaurantId);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
-        mav.addObject("categories", DishCategory.getAsList());
+        mav.addObject("categories", DishCategory.getAsMap());
 
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
