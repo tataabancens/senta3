@@ -27,27 +27,9 @@
 
     <div class="content-container">
 
-        <div class="restaurant-card">
-            <div class="card">
-                <div class="card-content white-text">
-                    <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
-                    <span class="text title2"><c:out value="${restaurant.phone}"/></span>
-                </div>
-                <div>
-                    <div class="presentation-text title restaurant-title">
-                        <span><c:out value="${restaurant.restaurantName}"/></span>
-                    </div>
-                    <div class="presentation-text restaurant-description">
-                        <span><spring:message code="Restaurant.phone"/> </span>
-                        <span><c:out value="${restaurant.phone}"/></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="confirm-card card">
             <div class="card-content white-text">
-                <span class="main-title text center"><spring:message code="Cancel.subtitle"/></span>
+                <span class="text description"><spring:message code="Cancel.subtitle"/></span>
                     <div class="center-btn">
                         <c:url value="/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
@@ -68,38 +50,16 @@
         padding-right: 20px;
         display: flex;
         flex-direction: column;
-    }
-    .restaurant-header{
-        background: rgb(55,166,230);
-        background: linear-gradient(70deg, rgba(55,166,230,1) 7%, rgba(240,240,240,1) 88%);
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        min-height: 150px;
-        max-height: 300px;
-        border-radius: 20px;
+        justify-items: center;
         align-items: center;
-        padding: 15px;
     }
-    .restaurant-info{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        min-height: 150px;
-        max-height: 300px;
+    .center-btn{
+        margin-left: 25%;
+        margin-top: 15%;
     }
     i{
         color: white;
         margin-right: 25px;
-    }
-    .presentation-text.restaurant-title{
-        font-size: 30px;
-        color:white;
-    }
-    .presentation-text.restaurant-description{
-        color: white;
-        font-size: 21px;
     }
     .card{
         border-radius: 16px;
@@ -116,13 +76,6 @@
         background-size: cover;
     }
 
-
-
-    .page-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
 
 
     .confirm-card{

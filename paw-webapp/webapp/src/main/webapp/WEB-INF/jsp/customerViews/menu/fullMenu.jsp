@@ -46,8 +46,9 @@
         </div>
     </div>
     <div class="reservation-info" style="margin-right: 4%;">
-            <p class="presentation-text header-title info">Dia: hoy</p>
-            <span class="presentation-text header-title info">Hora: <c:out value="${reservation.reservationHour}"/>:00</span>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.title"/></p>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.date"/></p>
+            <span class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</span>
     </div>
 </div>
 <div class="page-container">
@@ -171,7 +172,7 @@
     </div>
     <div class="dish-categories">
         <c:if test="${reservation.reservationStatus.name != 'SEATED'}">
-            <div style="display: flex; flex-wrap: wrap;justify-content:center; width: fit-content;">
+            <div class="disclaimer">
                 <div class="card information">
                     <i class="medium material-icons" style="color: #0d0d56">info</i>
                     <span class="presentation-text" style="color: #0d0d56; font-size: 1.2rem;margin-right: 5px;"><spring:message code="Order.disclaimer"/></span>
@@ -184,53 +185,59 @@
         <div class="dishList">
             <c:forEach var="dish" items="${restaurant.dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
-                    <div class="dish-card">
-                        <div class="dish-img">
-                            <c:if test="${dish.imageId > 0}">
-                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                            </c:if>
-                            <c:if test="${dish.imageId == 0}">
-                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                            </c:if>
-                        </div>
-                        <div class="card-info">
-                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <c:if test="${reservation.reservationDiscount}">
-                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
-                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
-                            </c:if>
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <c:if test="${dish.imageId > 0}">
+                            <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                        </c:if>
+                        <c:if test="${dish.imageId == 0}">
+                            <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                        </c:if>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <div>
+                                <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
+                                <p class="text description"><c:out value="${dish.dishDescription}"/></p>
+                                <c:if test="${reservation.reservationDiscount}">
+                                    <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                    <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                    <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                </c:if>
+                            </div>
                             <c:if test="${!reservation.reservationDiscount}">
                                 <span class="text price info">$<c:out value="${dish.price}"/></span>
                             </c:if>
                         </div>
                     </div>
+                </div>
                 </c:if>
                 <c:if test="${!unavailable.contains(dish.id)}">
-                    <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>" class="dish-card">
-                        <div class="dish-img">
-                            <c:if test="${dish.imageId > 0}">
-                                <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
-                            </c:if>
-                            <c:if test="${dish.imageId == 0}">
-                                <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                            </c:if>
-                        </div>
-                        <div class="card-info">
-                            <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                            <p class="text description"><c:out value="${dish.dishDescription}"/></p>
-                            <c:if test="${reservation.reservationDiscount}">
-                                <div class="discounted-price">
-                                    <span id="original-price" class="text price">$<c:out value="${(dish.price)}"/></span>
-                                    <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                                    <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                    <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>"  class="card horizontal">
+                            <div class="card-image">
+                                <c:if test="${dish.imageId > 0}">
+                                    <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
+                                </c:if>
+                                <c:if test="${dish.imageId == 0}">
+                                    <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                                </c:if>
+                            </div>
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <div>
+                                        <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                        <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                                        <c:if test="${reservation.reservationDiscount}">
+                                            <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                            <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                            <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                        </c:if>
+                                    </div>
+                                    <c:if test="${!reservation.reservationDiscount}">
+                                        <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                    </c:if>
                                 </div>
-                            </c:if>
-                            <c:if test="${!reservation.reservationDiscount}">
-                                <span class="text price">$<c:out value="${dish.price}"/></span>
-                            </c:if>
-                        </div>
+                            </div>
                     </a>
                 </c:if>
             </c:forEach>
@@ -243,6 +250,12 @@
 </html>
 
 <style>
+    .disclaimer{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:center;
+        width: 100%;
+    }
     .restaurant-header{
         display: flex;
         justify-content: space-between;
@@ -250,17 +263,53 @@
         border-radius: 0px;
     }
     .presentation-text.header-title.info{
-        font-size: 1.1rem;
+        color: #E63737;
+        font-size: clamp(1rem,1.2vw,2rem);
     }
     .page-container{
         padding: 1%;
         display: flex;
-
+        flex-wrap: wrap;
+    }
+    .card.horizontal{
+        width: clamp(30rem,40%,35rem);
+        height: clamp(9.5rem,15%,11rem);
+        margin: 1%;
+        box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
+        transition: 0.8s;
+    }
+    .reservation-info p{
+        margin-block-end: 0.5em;
+        margin-block-start: 0;
+    }
+    .presentation-text.info{
+        color: black;
+        font-size: clamp(0.7rem,1rem + 0.1vw,2rem) ;
+    }
+    .text.description.info{
+        font-size: clamp(0.7rem,0.8rem + 0.1vw,1.1rem);
+    }
+    .card .card-content{
+        padding: 10px;
+    }
+    .card.horizontal .card-image{
+        object-fit: fill;
+        max-width: 25%;
+        margin-left: 2%;
+    }
+    .card.horizontal .card-image img{
+        border-radius: .8rem;
+        width: clamp(5rem,100%,10rem);
+        height: clamp(5rem,100%,10rem);
+        aspect-ratio: 1/1;
+    }
+    .card-stacked{
+        height: 100%;
     }
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: 26%;
+        width: clamp(20rem,23%,30rem);
         height: 100%;
     }
     .presentation-text.text-center{
@@ -269,7 +318,10 @@
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: 74%;
+        width: clamp(15rem,70%,80rem);
+    }
+    .card.information{
+        width: 100%;
     }
     .card.client-actions.discounts{
         max-width: 60%;
@@ -308,7 +360,7 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
-        height: 100%;
+        height: fit-content;
     }
     .categories{
         display: flex;
@@ -380,12 +432,8 @@
         display: flex;
         justify-content: space-around;
     }
-    .dish-card:hover{
+    .card.horizontal:hover{
         transform: scale(1.1);
-    }
-    .dish-card{
-        width:25%;
-        max-height: 8rem;
     }
     .order-btn-row{
         width: 100%;
@@ -415,86 +463,7 @@
         color: blue;
         margin-left: 12%;
     }
-    @media screen and (max-width: 1920px){
-        .dish-card{
-            width: 45%;
-        }
-        .dish-img{
-            width: 30%;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
-    }
-    @media screen and (max-width: 1350px){
-        .dish-card{
-            height: 40%;
-        }
-        .dish-img{
-            width: 30%;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
-    }
-    @media screen and (max-width: 1080px){
-        .dish-card{
-            width: 100%;
-            height: clamp(10%,15%,20%);
-        }
-        p{
-            margin-block-start: 0.1em;
-        }
-        .dish-img{
-            width: 30%;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
-    }
-    @media screen and (max-width: 868px){
-        .dish-card{
-            padding: 1rem;
-            flex-direction: column;
-            max-height: none;
-        }
-        .text.price{
-            bottom: 0;
-        }
-        .dish-img{
-            min-width: 100%;
-            max-width: 100%;
-        }
-    }
 
-    @media screen and (max-width: 768px){
-        .dish-card{
-            padding: 2.5rem;
-            flex-direction: column;
-        }
-        .dish-img{
-            min-width: 90%;
-            max-width: 90%;
-        }
-    }
 
 </style>
 
