@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.test.annotation.Rollback;
@@ -70,6 +71,25 @@ public class ReservationJdbcDaoTest {
                 .withTableName(ORDER_ITEM_TABLE)
                 .usingGeneratedKeyColumns("orderItemId");
     }
+
+    private static final RowMapper<Reservation> ROW_MAPPER_RESERVATION = ((resultSet, i) ->
+            new Reservation(resultSet.getLong("reservationId"),
+                    resultSet.getLong("restaurantId"),
+                    resultSet.getInt("reservationHour"),
+                    resultSet.getLong("customerId"),
+                    resultSet.getInt("reservationStatus"),
+                    resultSet.getInt("qPeople"),
+                    resultSet.getBoolean("reservationDiscount"),
+                    resultSet.getTimestamp("startedAtTime")));
+
+    private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
+            new FullOrderItem(resultSet.getLong("id"),
+                    resultSet.getLong("reservationId"),
+                    resultSet.getLong("dishId"),
+                    resultSet.getFloat("unitPrice"),
+                    resultSet.getInt("quantity"),
+                    resultSet.getInt("status"),
+                    resultSet.getString("dishname")));
 
     private Number insertDish(String name, String description, int price, int restaurantId, int imageId, DishCategory category){
         final Map<String, Object> dishData = new HashMap<>();
@@ -502,7 +522,10 @@ public class ReservationJdbcDaoTest {
         reservationDao.applyDiscount(reservationId.longValue());
 
         // 3. PostCondiciones
-        //no explotó
+        Optional<Reservation> reservation = jdbcTemplate.query("SELECT * FROM reservation WHERE reservationId = ?",
+                new Object[]{reservationId.longValue()}, ROW_MAPPER_RESERVATION).stream().findFirst();
+        Assert.assertTrue(reservation.isPresent());
+        Assert.assertTrue(reservation.get().isReservationDiscount());
 
     }
 
@@ -554,7 +577,10 @@ public class ReservationJdbcDaoTest {
         reservationDao.deleteOrderItemsByReservationIdAndStatus(reservationId.longValue(), OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
-        Assert.assertEquals(1, reservationDao.getAllOrderItems().size());
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                new Object[]{}, ROW_MAPPER_ORDER_ITEMS);
+        Assert.assertEquals(1, query.size());
+
     }
 
     @Test
@@ -562,12 +588,18 @@ public class ReservationJdbcDaoTest {
     public void testDeleteOrderItemsByReservationIdAndStatus_invalid(){
         // 1. Precondiciones
         cleanAllTables();
+        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
 
         // 2. Ejercitacion
         reservationDao.deleteOrderItemsByReservationIdAndStatus(0, OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
-        //no explotó
+        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+                new Object[]{}, ROW_MAPPER_ORDER_ITEMS);
+        Assert.assertEquals(2, query.size());
     }
 
     @Test

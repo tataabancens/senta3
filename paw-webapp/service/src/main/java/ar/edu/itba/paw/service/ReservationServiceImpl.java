@@ -300,7 +300,7 @@ public class ReservationServiceImpl implements ReservationService {
             Customer customer = customerService.getUserByID(reservation.getCustomerId()).get();
 
             if (customer.getPoints() >= POINTS_TO_DISCOUNT) {
-                customerService.updatePoints(customer.getCustomerId(), -POINTS_TO_DISCOUNT);
+                customerService.addPointsToCustomer(customer.getCustomerId(), -POINTS_TO_DISCOUNT);
                 reservationDao.applyDiscount(reservationId);
             }
         }
@@ -313,7 +313,7 @@ public class ReservationServiceImpl implements ReservationService {
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
 
-            customerService.updatePoints(reservation.getCustomerId(), POINTS_TO_DISCOUNT);
+            customerService.addPointsToCustomer(reservation.getCustomerId(), POINTS_TO_DISCOUNT);
             reservationDao.cancelDiscount(reservationId);
         }
     }

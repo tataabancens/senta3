@@ -47,11 +47,13 @@ public class CustomerServiceImpl implements CustomerService {
     public void linkCustomerToUserId(long customerId, long userId) {
         customerDao.linkCustomerToUserId(customerId, userId);
     }
-
+/*
     @Override
     public void updatePoints(long customerId, int points) {
         customerDao.updatePoints(customerId, points);
     }
+
+ */
 
     public float getDiscountCoefficient() {
         return DISCOUNT_COEFFICIENT;

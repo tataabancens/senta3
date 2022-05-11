@@ -208,7 +208,6 @@ public class DishJdbcDaoTest {
 
         // 3. PostCondiciones
         Assert.assertFalse(dish.isPresent());
-        //Assert.assertEquals(2, dish.get().getId());
     }
 
 }

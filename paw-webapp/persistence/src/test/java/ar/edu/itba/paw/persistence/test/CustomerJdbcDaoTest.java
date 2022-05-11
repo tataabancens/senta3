@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,6 +19,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,8 +64,18 @@ public class CustomerJdbcDaoTest {
         customerData.put("customerName", customerName);
         customerData.put("Phone", phone);
         customerData.put("Mail", mail);
-        customerData.put("userId", userId);
+        customerData.put("userId", 1);
         customerData.put("points", 0);
+
+        Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
+        return customerId;
+    }
+
+    private Number insertCustomerNoUser(String customerName, String phone, String mail){
+        final Map<String, Object> customerData = new HashMap<>();
+        customerData.put("customerName", customerName);
+        customerData.put("Phone", phone);
+        customerData.put("Mail", mail);
 
         Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
         return customerId;
@@ -84,6 +96,21 @@ public class CustomerJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
     }
+
+    private static final RowMapper<Customer> ROW_MAPPER = ((resultSet, i) ->
+            new Customer(resultSet.getLong("customerId"),
+                    resultSet.getString("customerName"),
+                    resultSet.getString("Phone"),
+                    resultSet.getString("Mail"),
+                    resultSet.getInt("points")));
+
+    private static final RowMapper<Customer> ROW_MAPPER_WITH_USERID = ((resultSet, i) ->
+            new Customer(resultSet.getLong("customerId"),
+                    resultSet.getString("customerName"),
+                    resultSet.getString("Phone"),
+                    resultSet.getString("Mail"),
+                    resultSet.getLong("userId"),
+                    resultSet.getInt("points")));
 
     @Test
     @Rollback
@@ -158,29 +185,11 @@ public class CustomerJdbcDaoTest {
         customerDao.addPointsToCustomer(customerId.longValue(), 15);
 
         // 3. PostCondiciones
-        Optional<Customer> customer = customerDao.getCustomerById(customerId.longValue()); //esto creo que no está muy bien
+        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
         Assert.assertTrue(customer.isPresent());
         Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
         Assert.assertEquals(15, customer.get().getPoints());
-    }
 
-    @Test
-    @Rollback
-    public void testLinkCustomerToUserId(){ //TODO ta fallando, revisar ma;ana que carajo
-        // 1. Precondiciones
-        cleanAllTables();
-        Number user = insertUser("username", "pass", Roles.CUSTOMER);
-        Number user2 = insertUser("username2", "pass", Roles.CUSTOMER);
-        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", user.longValue());
-
-        // 2. Ejercitacion
-        customerDao.linkCustomerToUserId(customerId.longValue(), user.longValue());
-
-        // 3. PostCondiciones
-        Optional<Customer> customer = customerDao.getCustomerById(customerId.longValue());
-        Assert.assertTrue(customer.isPresent());
-        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
-        Assert.assertEquals(user.longValue(), customer.get().getUserId());
     }
 
     @Test
@@ -189,28 +198,54 @@ public class CustomerJdbcDaoTest {
         // 1. Precondiciones
         cleanAllTables();
         Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-        Number customer = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
-        customerDao.updatePoints(customer.longValue(), 30);
+        customerDao.updatePoints(customerId.longValue(), 30);
 
         // 3. PostCondiciones
+        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
+        Assert.assertTrue(customer.isPresent());
+        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(30, customer.get().getPoints());
 
+    }
+
+    @Test
+    @Rollback
+    public void testLinkCustomerToUserId(){
+        // 1. Precondiciones
+        //cleanAllTables();
+        Number user = insertUser("username", "pass", Roles.CUSTOMER);
+        Number user2 = insertUser("username2", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("PepeCapo", "123456789", "pepe@gmail.com", user.longValue());
+
+        // 2. Ejercitacion
+        customerDao.linkCustomerToUserId(customerId.longValue(), user2.longValue());
+
+        // 3. PostCondiciones
+        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER_WITH_USERID).stream().findFirst();
+        Assert.assertTrue(customer.isPresent());
+        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(user2.longValue(), customer.get().getUserId());
     }
 
     @Test
     @Rollback
     public void testUpdateCustomerData(){
         // 1. Precondiciones
-        cleanAllTables();
+        //cleanAllTables();
         Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.longValue());
 
         // 2. Ejercitacion
         customerDao.updateCustomerData(customerId.longValue(), "pepito", "789456789", "elpepe@gmail.com");
 
         // 3. PostCondiciones
-
+        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER_WITH_USERID).stream().findFirst();
+        Assert.assertTrue(customer.isPresent());
+        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals("pepito", customer.get().getCustomerName());
     }
 
 }
