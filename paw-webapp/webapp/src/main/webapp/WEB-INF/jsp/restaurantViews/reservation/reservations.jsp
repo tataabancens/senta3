@@ -24,7 +24,7 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reservas</title>
+    <title>Senta3</title>
 
 </head>
 <body>
@@ -52,25 +52,25 @@
         <div class="orderBy">
             <div class="input-field">
                 <form:select id="orderBy" path="orderBy">
-                    <form:option value="reservationid">Reserva</form:option>
-                    <form:option value="customerid">Nombre</form:option>
-                    <form:option value="qpeople">Personas</form:option>
-                    <form:option value="reservationhour">Hora</form:option>
-                    <form:option value="reservationstatus">Estado</form:option>
+                    <form:option value="reservationid"><spring:message code="Reservations.reservation"/></form:option>
+                    <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
+                    <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
+                    <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
+                    <form:option value="reservationstatus"><spring:message code="Reservations.status"/></form:option>
                 </form:select>
             </div>
         </div>
         <div class="order-orientation">
             <div class="input-field">
                 <form:select id="orderDirection" path="direction">
-                    <form:option value="ASC">Ascendente</form:option>
-                    <form:option value="DESC">Desecendete</form:option>
+                    <form:option value="ASC"><spring:message code="Reservations.order.asc"/></form:option>
+                    <form:option value="DESC"><spring:message code="Reservations.order.dec"/></form:option>
                 </form:select>
             </div>
         </div>
         <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
             <button type="submit" class="btn waves-effect waves-light confirm-btn">
-                <span class="text description " style="font-size: 0.8rem;color: white">Aplicar</span>
+                <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Button.confirm"/></span>
             </button>
         </div>
     </div>
@@ -101,12 +101,12 @@
                             <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
-                                    <span class="text description" style="font-size: 0.8rem; color: white;">Aceptar</span>
+                                    <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.confirm"/></span>
                                 </button>
                             </form:form>
                         </div>
                         <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
-                            <span class="text description" style="font-size: 0.8rem;color: white;"> Rechazar</span>
+                            <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.reject"/></span>
                         </a>
                     </td>
                 </c:if>
@@ -117,7 +117,7 @@
                             <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
-                                    <span class="text description" style="font-size: 0.8rem; color: white">Ver Cuenta</span>
+                                    <span class="text description" style="font-size: 0.8rem; color: white"><spring:message code="Receipt.title"/></span>
                                 </button>
                             </form:form>
                         </div>
@@ -130,7 +130,7 @@
                             <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
-                                    <span class="text description " style="font-size: 0.8rem;color: white">Pedir Cuenta</span>
+                                    <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Receipt.title"/></span>
                                 </button>
                             </form:form>
                         </div>

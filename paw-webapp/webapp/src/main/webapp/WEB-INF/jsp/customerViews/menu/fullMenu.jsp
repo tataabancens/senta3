@@ -137,7 +137,7 @@
                 </div>
                 <div class="order-total">
                     <div>
-                        <p class="presentation-text">Total</p>
+                        <p class="presentation-text"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
