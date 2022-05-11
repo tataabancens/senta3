@@ -1,11 +1,8 @@
 package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.persistence.CustomerJdbcDao;
-import ar.edu.itba.paw.persistence.ReservationJdbcDao;
 import ar.edu.itba.paw.persistence.UserJdbcDao;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,7 +27,10 @@ import java.util.Optional;
 public class CustomerJdbcDaoTest {
 
     private static final String CUSTOMER_TABLE = "customer";
-    private static final String USER_TABLE = "user";
+    private static final String USER_TABLE = "users";
+    private static final String RESERVATION_TABLE = "reservation";
+    private static final String RESTAURANT_TABLE= "restaurant";
+
 
     private CustomerJdbcDao customerDao;
     private UserJdbcDao userDao;
@@ -52,17 +51,19 @@ public class CustomerJdbcDaoTest {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsertCustomer = new SimpleJdbcInsert(ds)
                 .withTableName(CUSTOMER_TABLE)
-                .usingGeneratedKeyColumns("customerId");
+                .usingGeneratedKeyColumns("customerid");
         jdbcInsertUser = new SimpleJdbcInsert(ds)
                 .withTableName(USER_TABLE)
-                .usingGeneratedKeyColumns("userId");
+                .usingGeneratedKeyColumns("userid");
     }
 
-    public Number insertCustomer(String customerName, String phone, String mail){
+    public Number insertCustomer(String customerName, String phone, String mail, long userId){
         final Map<String, Object> customerData = new HashMap<>();
         customerData.put("customerName", customerName);
         customerData.put("Phone", phone);
         customerData.put("Mail", mail);
+        customerData.put("userId", userId);
+        customerData.put("points", 0);
 
         Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
         return customerId;
@@ -79,7 +80,9 @@ public class CustomerJdbcDaoTest {
     }
 
     public void cleanAllTables(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
     }
 
     @Test
@@ -87,7 +90,8 @@ public class CustomerJdbcDaoTest {
     public void testGetCustomerById_Exists(){
         // 1. Precondiciones
         cleanAllTables();
-        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com");
+        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
         Optional<Customer> maybeCustomer = customerDao.getCustomerById(customerId.longValue());
@@ -95,6 +99,7 @@ public class CustomerJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertTrue(maybeCustomer.isPresent());
         Assert.assertEquals(customerId.longValue(), maybeCustomer.get().getCustomerId());
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, CUSTOMER_TABLE));
     }
 
     @Test
@@ -102,7 +107,8 @@ public class CustomerJdbcDaoTest {
     public void testGetCustomerById_NotExists(){
         // 1. Precondiciones
         cleanAllTables();
-        Number customerId = insertCustomer("Pepito", "123456789", "pepe@gmail.com");
+        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
         Optional<Customer> maybeCustomer = customerDao.getCustomerById(customerId.longValue()+1);
@@ -116,7 +122,8 @@ public class CustomerJdbcDaoTest {
     public void testGetCustomerByUsername(){
         // 1. Precondiciones
         cleanAllTables();
-        insertCustomer("Pepito", "123456789", "pepe@gmail.com");
+        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
         Optional<Customer> maybeCustomer = customerDao.getCustomerByUsername("Pepito");
@@ -127,32 +134,53 @@ public class CustomerJdbcDaoTest {
 
     @Test
     @Rollback
-    public void testAddPointsToCustomer(){
+    public void testGetCustomerByUsername_NotExists(){
         // 1. Precondiciones
         cleanAllTables();
-        Number customer = insertCustomer("Pepito", "123456789", "pepe@gmail.com");
+        //insertCustomer("Pepito", "123456789", "pepe@gmail.com");
 
         // 2. Ejercitacion
-        customerDao.addPointsToCustomer(customer.longValue(), 15);
+        Optional<Customer> maybeCustomer = customerDao.getCustomerByUsername("Pepitooooo");
 
         // 3. PostCondiciones
-        // TODO seguir esto ??
+        Assert.assertFalse(maybeCustomer.isPresent());
     }
 
     @Test
     @Rollback
-    public void testLinkCustomerToUserId(){
+    public void testAddPointsToCustomer(){
         // 1. Precondiciones
         cleanAllTables();
-        Number customer = insertCustomer("Pepote", "123456789", "pepe@gmail.com");
-        Number user = insertUser("Pepote", "123", Roles.CUSTOMER);
+        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
-        customerDao.linkCustomerToUserId(customer.longValue(), user.longValue());
+        customerDao.addPointsToCustomer(customerId.longValue(), 15);
 
         // 3. PostCondiciones
-        Assert.assertEquals(user.longValue(), customer.longValue());
+        Optional<Customer> customer = customerDao.getCustomerById(customerId.longValue()); //esto creo que no está muy bien
+        Assert.assertTrue(customer.isPresent());
+        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(15, customer.get().getPoints());
+    }
 
+    @Test
+    @Rollback
+    public void testLinkCustomerToUserId(){ //TODO ta fallando, revisar ma;ana que carajo
+        // 1. Precondiciones
+        cleanAllTables();
+        Number user = insertUser("username", "pass", Roles.CUSTOMER);
+        Number user2 = insertUser("username2", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", user.longValue());
+
+        // 2. Ejercitacion
+        customerDao.linkCustomerToUserId(customerId.longValue(), user.longValue());
+
+        // 3. PostCondiciones
+        Optional<Customer> customer = customerDao.getCustomerById(customerId.longValue());
+        Assert.assertTrue(customer.isPresent());
+        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(user.longValue(), customer.get().getUserId());
     }
 
     @Test
@@ -160,7 +188,8 @@ public class CustomerJdbcDaoTest {
     public void testUpdatePoints() {
         // 1. Precondiciones
         cleanAllTables();
-        Number customer = insertCustomer("Pepote", "123456789", "pepe@gmail.com");
+        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
+        Number customer = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
         customerDao.updatePoints(customer.longValue(), 30);
@@ -174,10 +203,11 @@ public class CustomerJdbcDaoTest {
     public void testUpdateCustomerData(){
         // 1. Precondiciones
         cleanAllTables();
-        Number customer = insertCustomer("Pepote", "123456789", "pepe@gmail.com");
+        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
+        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
-        customerDao.updateCustomerData(customer.longValue(), "pepito", "789456789", "elpepe@gmail.com");
+        customerDao.updateCustomerData(customerId.longValue(), "pepito", "789456789", "elpepe@gmail.com");
 
         // 3. PostCondiciones
 
