@@ -31,7 +31,7 @@ public class MailingServiceImpl implements MailingService{
 
     private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
         String subject="Un cliente realizo una reserva";
-        String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
+        String message="El cliente: "+customer.getCustomerName()+" realizo una reserva para las: "+
                 reservation.getReservationHour() +'\n';
         sendEmail(properties,restaurant.getMail(),subject,message);
     }
@@ -62,8 +62,7 @@ public class MailingServiceImpl implements MailingService{
     public void sendReceiptEmail(Restaurant restaurant, Customer customer) {
         Properties properties=setProperties();
         String subject="Un cliente quiere pedir la cuenta";
-        String messageText="el cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+
-                ") quiere la cuenta";
+        String messageText="el cliente: "+customer.getCustomerName()+" quiere la cuenta";
         sendEmail(properties,restaurant.getMail(),subject,messageText);
     }
 
@@ -72,7 +71,7 @@ public class MailingServiceImpl implements MailingService{
         Properties properties=setProperties();
         String subject="Un cliente hizo un pedido";
         StringBuilder stringBuilder=
-                new StringBuilder("El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") pidio estos items:\n");
+                new StringBuilder("El cliente: "+customer.getCustomerName()+" pidio estos items:\n");
         for(FullOrderItem item : orderItems){
             stringBuilder.append(item.getDishName()).append(" x ").append(item.getQuantity()).append('\n');
         }
