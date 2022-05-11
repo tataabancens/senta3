@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -22,16 +23,13 @@ import java.util.List;
 public class MenuController {
     private final RestaurantService rs;
     private final ReservationService res;
-    private final ControllerService controllerService;
     private final CustomerService cs;
 
 
     @Autowired
-    public MenuController(final RestaurantService rs, final ReservationService res,
-                          final ControllerService controllerService, final CustomerService cs) {
+    public MenuController(final RestaurantService rs, final ReservationService res, final CustomerService cs) {
         this.rs = rs;
         this.res = res;
-        this.controllerService = controllerService;
         this.cs = cs;
     }
 
@@ -53,7 +51,7 @@ public class MenuController {
     public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                              @RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
 
@@ -96,7 +94,7 @@ public class MenuController {
     @RequestMapping(value= "/menu/applyDiscount/{reservationId}", method = RequestMethod.POST)
     public ModelAndView applyDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.applyDiscount(reservationId);
@@ -106,7 +104,7 @@ public class MenuController {
     @RequestMapping(value= "/menu/cancelDiscount/{reservationId}", method = RequestMethod.POST)
     public ModelAndView cancelDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.cancelDiscount(reservationId);

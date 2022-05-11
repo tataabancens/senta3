@@ -3,9 +3,9 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
@@ -32,17 +32,15 @@ public class CustRegisterController {
 
     private final UserService us;
     private final CustomerService cs;
-    private final ControllerService controllerService;
 
     @Autowired
     protected AuthenticationManager authenticationManager;
 
 
     @Autowired
-    public CustRegisterController(final UserService us, final CustomerService cs, final ControllerService controllerService) {
+    public CustRegisterController(final UserService us, final CustomerService cs) {
         this.cs = cs;
         this.us = us;
-        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/registerShort/{customerId}/{reservationId}", method = RequestMethod.GET)
@@ -50,7 +48,7 @@ public class CustRegisterController {
                                      @PathVariable("reservationId") final String reservationIdP,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
-        controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
+        ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
         Customer customer = cs.getUserByID(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
 
         form.setMail(customer.getMail());
@@ -68,7 +66,7 @@ public class CustRegisterController {
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
                                           final HttpServletRequest request) throws Exception{
-        controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
+        ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
         long customerId = Long.parseLong(customerIdP);
 
         if (errors.hasErrors()){
