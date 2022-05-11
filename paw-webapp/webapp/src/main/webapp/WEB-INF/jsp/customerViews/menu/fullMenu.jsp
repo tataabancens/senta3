@@ -46,9 +46,9 @@
         </div>
     </div>
     <div class="reservation-info" style="margin-right: 4%;">
-            <p class="presentation-text header-title info">Reserva:</p>
-            <p class="presentation-text header-title info">Dia: hoy</p>
-            <span class="presentation-text header-title info">Hora: <c:out value="${reservation.reservationHour}"/>:00</span>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.title"/></p>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.date"/></p>
+            <span class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</span>
     </div>
 </div>
 <div class="page-container">
@@ -272,7 +272,7 @@
         flex-wrap: wrap;
     }
     .card.horizontal{
-        width: clamp(35rem,35%,40rem);
+        width: clamp(30rem,40%,35rem);
         height: clamp(9.5rem,15%,11rem);
         margin: 1%;
         box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
