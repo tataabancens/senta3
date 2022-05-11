@@ -28,10 +28,12 @@ import java.util.Optional;
 @Rollback
 public class CustomerJdbcDaoTest {
 
-    private static final String CUSTOMER_TABLE = "customer";
+    private static final String RESTAURANT_TABLE = "restaurant";
     private static final String USER_TABLE = "users";
+    private static final String CUSTOMER_TABLE = "customer";
+    private static final String DISH_TABLE = "dish";
     private static final String RESERVATION_TABLE = "reservation";
-    private static final String RESTAURANT_TABLE= "restaurant";
+    private static final String ORDER_ITEM_TABLE = "orderItem";
 
 
     private CustomerJdbcDao customerDao;
@@ -92,11 +94,15 @@ public class CustomerJdbcDaoTest {
     }
 
     private void cleanAllTables(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
         //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
         //JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
         jdbcTemplate.execute("DELETE FROM users WHERE userId NOT IN ( 1 )");
     }
+
 
 
     private static final RowMapper<Customer> ROW_MAPPER = ((resultSet, i) ->

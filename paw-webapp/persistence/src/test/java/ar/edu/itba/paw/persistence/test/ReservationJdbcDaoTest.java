@@ -31,11 +31,11 @@ import static ar.edu.itba.paw.model.enums.DishCategory.*;
 @Rollback
 public class ReservationJdbcDaoTest {
 
+    private static final String RESTAURANT_TABLE = "restaurant";
+    private static final String CUSTOMER_TABLE = "customer";
     private static final String DISH_TABLE = "dish";
     private static final String RESERVATION_TABLE = "reservation";
     private static final String ORDER_ITEM_TABLE = "orderItem";
-    private static final String CUSTOMER_TABLE = "customer";
-    private static final String RESTAURANT_TABLE = "restaurant";
 
 
     private ReservationJdbcDao reservationDao;
@@ -144,7 +144,12 @@ public class ReservationJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        jdbcTemplate.execute("DELETE FROM users WHERE userId NOT IN ( 1 )");
     }
+
 
 
 

@@ -120,7 +120,12 @@ public class DishJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        jdbcTemplate.execute("DELETE FROM users WHERE userId NOT IN ( 1 )");
     }
+
 
     @Test
     @Rollback
