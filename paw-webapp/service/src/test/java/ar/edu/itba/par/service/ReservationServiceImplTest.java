@@ -1,10 +1,8 @@
 package ar.edu.itba.par.service;
 
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.model.enums.Roles;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import ar.edu.itba.paw.persistance.UserDao;
@@ -27,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,14 +46,17 @@ public class ReservationServiceImplTest {
     @Test
     public void testGetTotal(){
         // 1. Setup
-        Mockito.when(resDao.createReservation(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt(), Mockito.any())).thenReturn(new Reservation(1, 1, 22, 1, 2, 12, false, Timestamp.from(Instant.now())));
+        FullOrderItem item1 = new FullOrderItem(1, 1, 1, 20, 1, 1, "plato");
+        FullOrderItem item2 = new FullOrderItem(2, 1, 2, 20, 1, 1, "plato2");
+        List<FullOrderItem> items = new ArrayList<FullOrderItem>();
+        items.add(item1);
+        items.add(item2);
 
         // 2. ejercicio
-        Reservation res = resService.createReservation(1, 1, 22, 1);
-
+        Float total = resService.getTotal(items);
 
         // 3. asserts
-        
+        Assert.assertEquals(40, total, 0.001);
     }
 
 }
