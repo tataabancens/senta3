@@ -41,7 +41,7 @@
                             </div>
                         </sec:authorize>
                         <sec:authorize access="isAuthenticated()">
-                            <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" <c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.continue"/></a>
+                            <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.continue"/></a>
                         </sec:authorize>
                     </div>
                 </div>
