@@ -1,5 +1,6 @@
 package ar.edu.itba.par.service;
 
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
@@ -26,18 +27,17 @@ public class userServiceImplTest {
 
     @Test
     public void testCreateUser() {
-        User user = new User(1, "pepe", "pepe", "ROLE_USER");
-        Mockito.when(userDao.create(Mockito.anyString(), Mockito.anyString(), null)).thenReturn(user);
+        // 1. Setup
+        Mockito.when(userDao.create("Pepito", "456", Roles.CUSTOMER)).thenReturn(new User(1, "Pepito", "456", Roles.CUSTOMER.getDescription()));
 
-        try {
-            User u = userService.create("pepe", "pepe", Roles.CUSTOMER);
-        }
-        catch (Exception e){
-            Assert.fail("unexpected error during create user");
-        }
-
-        // no usar verify !! testeamos comportamiento no implementacion!
+        // 2. ejercicio
+        User user = userService.create("Pepito", "456", Roles.CUSTOMER);
 
 
+        // 3. asserts
+        Assert.assertNotNull(user);
+        Assert.assertEquals("Pepito", user.getUsername());
+        Assert.assertEquals("456", user.getPassword());
+        Assert.assertEquals(Roles.CUSTOMER.getDescription(), user.getRole());
     }
 }
