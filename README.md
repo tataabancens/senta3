@@ -1,5 +1,8 @@
 # PAW
-primeras semanas de paw, este repo será portado al repo que nos de la cátedra.
+## Credenciales
+Para loggearse como Restaurant, se deberán usar las siguientes credenciales (case sensitive):
+-user: Pepito
+-pass: 12345678
 
 # Instalacion de Maven
 Link https://www.youtube.com/watch?v=J6yeuluYkYE&ab_channel=ReynaldoBernardDeDiosDeLaCruz
