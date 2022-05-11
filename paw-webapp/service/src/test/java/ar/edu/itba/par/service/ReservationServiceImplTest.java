@@ -1,10 +1,9 @@
 package ar.edu.itba.par.service;
 
-import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.model.enums.Roles;
-import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.persistance.CustomerDao;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import ar.edu.itba.paw.persistance.UserDao;
