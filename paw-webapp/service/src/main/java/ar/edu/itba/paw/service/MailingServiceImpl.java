@@ -58,12 +58,11 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
-    @Async
-    @Override
     public void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageText) {
+        new Thread(() -> {
 
-        Session session = Session.getInstance(properties,
+            Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication
@@ -83,7 +82,7 @@ public class MailingServiceImpl implements MailingService{
             Transport.send(msg);
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
+        }}).start();
     }
 
 

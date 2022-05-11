@@ -11,8 +11,4 @@ public interface MailingService{
     void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation);
 
     void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation);
-
-    @Async
-    void sendEmail(Properties properties, String toEmailAddress,
-                   String subject, String messageText);
 }
