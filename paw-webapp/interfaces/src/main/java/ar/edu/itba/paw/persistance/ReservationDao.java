@@ -19,8 +19,6 @@ public interface ReservationDao {
 
     Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople, Timestamp startedAtTime);
 
-    List<OrderItem> addOrderItemsByReservationId(List<OrderItem> orderItems);
-
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
     List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
@@ -38,8 +36,6 @@ public interface ReservationDao {
     void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
 
     void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
-
-    void cancelReservation(long restaurantId, long reservationId);
 
     List<FullReservation> getAllReservations(long restaurantId);
 

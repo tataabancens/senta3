@@ -64,4 +64,12 @@ public class Customer {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }

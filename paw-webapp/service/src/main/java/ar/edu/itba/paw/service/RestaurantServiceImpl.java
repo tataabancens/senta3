@@ -27,7 +27,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {
-        return null;
+        return restaurantDao.create(restaurantName, phone, mail);
     }
 
     @Override

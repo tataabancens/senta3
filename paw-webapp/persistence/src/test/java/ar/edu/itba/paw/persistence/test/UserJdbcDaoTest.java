@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,10 +29,18 @@ public class UserJdbcDaoTest {
 
     private static final String USER_TABLE = "users";
     private static final String USERNAME = "pepe";
+    private static final String RESTAURANT_TABLE = "restaurant";
+    private static final String CUSTOMER_TABLE = "customer";
+
+
 
     private UserJdbcDao userDao ;
     private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsert;
+    private SimpleJdbcInsert jdbcInsertUser;
+    private SimpleJdbcInsert jdbcInsertRestaurant;
+    private SimpleJdbcInsert jdbcInsertCustomer;
+
+
 
     @Autowired
     private DataSource ds;
@@ -40,15 +49,44 @@ public class UserJdbcDaoTest {
     public void setUp(){
         userDao = new UserJdbcDao(ds);
         jdbcTemplate = new JdbcTemplate(ds);
-        jdbcInsert = new SimpleJdbcInsert(ds)
+        jdbcInsertUser = new SimpleJdbcInsert(ds)
                 .withTableName(USER_TABLE)
                 .usingGeneratedKeyColumns("userId");
+        jdbcInsertRestaurant = new SimpleJdbcInsert(ds)
+                .withTableName(RESTAURANT_TABLE)
+                .usingGeneratedKeyColumns("restaurantId");
+        jdbcInsertCustomer = new SimpleJdbcInsert(ds)
+                .withTableName(CUSTOMER_TABLE)
+                .usingGeneratedKeyColumns("customerid");
     }
 
+    private Number insertUser(String userName, String pass, Roles role){
+        final Map<String, Object> userData = new HashMap<>();
+        userData.put("userName", userName);
+        userData.put("pass", pass);
+        userData.put("role", role);
+
+        Number userId = jdbcInsertUser.executeAndReturnKey(userData);
+        return userId;
+    }
+
+    private void cleanAllTables(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+    }
+
+    private static final RowMapper<User> ROW_MAPPER = (resultSet, i) ->
+            new User(resultSet.getLong("userId"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    resultSet.getString("role"));
+
     @Test
+    @Rollback
     public void testCreateUser(){
         // 1. Precondiciones
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        cleanAllTables();
 
         // 2. Ejercitacion
         User user = userDao.create(USERNAME, "pass", Roles.CUSTOMER);
@@ -60,32 +98,76 @@ public class UserJdbcDaoTest {
     }
 
     @Test
-    public void testFindUserByIdDoesntExist(){
+    @Rollback
+    public void testFindUserById_DoesntExist(){
         // 1. Precondiciones
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        cleanAllTables();
 
         // 2. Ejercitacion
         Optional<User> maybeUser = userDao.getUserById(1);
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeUser.isPresent());
-
     }
 
     @Test
-    public void testFindUserByIdExists(){
+    @Rollback
+    public void testFindUserById_Exists(){
         // 1. Precondiciones
-        Map<String, String> map = new HashMap<>();
-        map.put("username", USERNAME);
-
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
-        Number key = jdbcInsert.executeAndReturnKey(map);
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
 
         // 2. Ejercitacion
-        Optional<User> maybeUser = userDao.getUserById(key.longValue());
+        Optional<User> maybeUser = userDao.getUserById(userId.longValue());
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeUser.isPresent());
         Assert.assertEquals(USERNAME, maybeUser.get().getUsername());
+    }
+
+    @Test
+    @Rollback
+    public void testFindUserByName_Exists(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
+
+        // 2. Ejercitacion
+        Optional<User> maybeUser = userDao.findByName(USERNAME);
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeUser.isPresent());
+        Assert.assertEquals(USERNAME, maybeUser.get().getUsername());
+    }
+
+    @Test
+    @Rollback
+    public void testFindUserByName_NotExists(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
+
+        // 2. Ejercitacion
+        Optional<User> maybeUser = userDao.findByName("Not_Username");
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeUser.isPresent());
+    }
+
+    @Test
+    @Rollback
+    public void testupdateUsername(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
+
+        // 2. Ejercitacion
+        userDao.updateUsername(USERNAME, "new_username");
+
+        // 3. PostCondiciones
+        Optional<User> user = jdbcTemplate.query("SELECT * FROM users WHERE username = ?", new Object[]{"new_username"}, ROW_MAPPER).stream().findFirst();
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals("new_username", user.get().getUsername());
+        Assert.assertEquals(userId.longValue(), user.get().getId());
     }
 }

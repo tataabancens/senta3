@@ -40,7 +40,6 @@ public class TestConfig {
         return new DataSourceTransactionManager(dataSource());
     }
 
-
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
         DataSourceInitializer dsi = new DataSourceInitializer();
