@@ -24,14 +24,14 @@
 
 
 <div class="pageContainer">
-    <div class="card restaurant-card">
-        <c:url value="/restaurant=${restaurantId}/menu/edit/deleteDish=${dishId}" var="postPath"/>
-        <form:form action="${postPath}" method="post">
+    <c:url value="/restaurant=${restaurantId}/menu/edit/deleteDish=${dishId}" var="postPath"/>
+    <form:form action="${postPath}" method="post">
+        <div class="card">
             <span class="presentation-text"><spring:message code="Deletedish.sure" arguments="${dish.dishName}"/> </span>
             <spring:message code="Button.confirm" var="label"/>
             <input type="submit" value="${label}" class="btn confirm-btn"/>
-        </form:form>
-    </div>
+        </div>
+    </form:form>
 </div>
 </body>
 </html>
@@ -52,8 +52,9 @@
     .text.description{
         font-size: clamp(1rem,1vw,3rem);
     }
-    .card.restaurant-card{
+    .card{
         padding: 1rem;
+        width: 40%;
         justify-content: center;
         align-items: center;
         flex-direction: column;

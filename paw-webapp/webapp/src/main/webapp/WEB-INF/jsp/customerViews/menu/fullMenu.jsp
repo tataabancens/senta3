@@ -33,17 +33,21 @@
 <div class="restaurant-header">
     <div class="restaurant-info">
         <div>
-            <i class="large material-icons">restaurant</i>
+            <i class="medium material-icons">restaurant</i>
         </div>
         <div>
             <div class="presentation-text title restaurant-title">
-                <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
+                <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="presentation-text restaurant-description">
                 <span><spring:message code="Fullmenu.phone"/> </span>
                 <span><c:out value="${restaurant.phone}"/></span>
             </div>
         </div>
+    </div>
+    <div class="reservation-info" style="margin-right: 4%;">
+            <p class="presentation-text header-title info">Dia: hoy</p>
+            <span class="presentation-text header-title info">Hora: <c:out value="${reservation.reservationHour}"/>:00</span>
     </div>
 </div>
 <div class="page-container">
@@ -166,6 +170,14 @@
         </div>
     </div>
     <div class="dish-categories">
+        <c:if test="${reservation.reservationStatus.name != 'SEATED'}">
+            <div style="display: flex; flex-wrap: wrap;justify-content:center; width: fit-content;">
+                <div class="card information">
+                    <i class="medium material-icons" style="color: #0d0d56">info</i>
+                    <span class="presentation-text" style="color: #0d0d56; font-size: 1.2rem;margin-right: 5px;"><spring:message code="Order.disclaimer"/></span>
+                </div>
+            </div>
+        </c:if>
         <div>
             <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
         </div>
@@ -231,7 +243,15 @@
 </html>
 
 <style>
-
+    .restaurant-header{
+        display: flex;
+        justify-content: space-between;
+        background-color: rgb(255, 242, 229);
+        border-radius: 0px;
+    }
+    .presentation-text.header-title.info{
+        font-size: 1.1rem;
+    }
     .page-container{
         padding: 1%;
         display: flex;
@@ -277,7 +297,7 @@
         line-height: 25px;
     }
     i{
-        color: black;
+        color: rgb(255, 68, 31);
         align-self: center;
         margin-right: 25px;
     }

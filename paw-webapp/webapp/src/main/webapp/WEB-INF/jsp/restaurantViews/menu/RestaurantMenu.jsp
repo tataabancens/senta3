@@ -22,9 +22,10 @@
     </head>
     <body>
         <%@ include file="../../components/navbar.jsp" %>
-
-        <div class="header">
-            <h1 class="presentation-text header-title"><spring:message code="Restaurant.menu.title"/></h1>
+        <div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
+            <div class="restaurant-info" style="margin-left: 2%;">
+                <h1 class="presentation-text header-title"><spring:message code="Restaurant.menu.title"/></h1>
+            </div>
         </div>
         <div class="contentContainer">
             <div class="card filter-box">

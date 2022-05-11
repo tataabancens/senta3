@@ -29,8 +29,10 @@
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<div class="header">
-    <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
+<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
+    <div class="restaurant-info" style="margin-left: 2%;">
+        <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
+    </div>
 </div>
 <c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
 <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
@@ -153,10 +155,6 @@
 
 
 <style>
-    .presentation-text.header-title{
-        color: #171616;
-        font-size: 4rem;
-    }
     .filters-orderBy{
         display: flex;
         flex-wrap: wrap;
