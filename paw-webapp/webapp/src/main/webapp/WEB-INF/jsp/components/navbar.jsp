@@ -170,7 +170,7 @@
             display: block;
             position: absolute;
             z-index: 9999;
-            background: url("/resources/images/hamburger.png");
+            background: url("/resources/images/menu.png") center;
             width: 3rem;
             aspect-ratio: 1;
             border: 0;
