@@ -34,7 +34,7 @@ public class ControllerUtils {
     }
 
     public static Optional<Integer> filterStatusParser(String filterStatus) {
-        if(Objects.equals(filterStatus, "")) {
+        if(Objects.equals(filterStatus, "9")) {
             return Optional.of(1);
         }
         return ControllerUtils.longParser(filterStatus);

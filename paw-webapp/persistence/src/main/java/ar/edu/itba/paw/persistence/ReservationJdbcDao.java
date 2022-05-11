@@ -303,7 +303,7 @@ public class ReservationJdbcDao implements ReservationDao {
             return new ArrayList<>();
         }
 
-        if(!Objects.equals(filterStatus, "")){
+        if(!Objects.equals(filterStatus, "9")){
         filterStatusString = " AND reservationStatus = " + filterStatus;
         }
 
