@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,33 @@ public class ReservationServiceImplTest {
 
         // 3. asserts
         Assert.assertEquals(40, total, 0.001);
+    }
+
+    @Test
+    public void testUnavailableItems(){
+        // 1. Setup
+        List<FullOrderItem> items = resDao.getOrderItemsByReservationId(1);
+        List<Long> dishIds = new ArrayList<>();
+
+        for (FullOrderItem item:items){
+            dishIds.add(item.getDishId());
+        }
+
+        List<Long> unavailableDishIds = new ArrayList<>();
+
+        int count;
+        for(Long dishId:dishIds){
+            count = Collections.frequency(dishIds, dishId);
+            if(count > 3 && ! unavailableDishIds.contains(dishId)){
+                unavailableDishIds.add(dishId);
+            }
+        }
+
+        // 2. ejercicio
+        List<Long> unavailable = resService.getUnavailableItems(1);
+
+        // 3. asserts
+        Assert.assertEquals(unavailable, unavailableDishIds);
     }
 
 }
