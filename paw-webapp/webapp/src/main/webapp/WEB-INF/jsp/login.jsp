@@ -55,7 +55,13 @@
 
 
 <style>
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .form-container{
         display: flex;
         padding-top: 30px;

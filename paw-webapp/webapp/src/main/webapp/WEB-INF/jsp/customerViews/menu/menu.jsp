@@ -148,7 +148,8 @@
         color: white;
     }
     .dish-card {
-        max-height: 25%;
+        min-width: 40%;
+        height: 8rem;
     }
     @media screen and (max-width: 1920px){
         .dish-card{

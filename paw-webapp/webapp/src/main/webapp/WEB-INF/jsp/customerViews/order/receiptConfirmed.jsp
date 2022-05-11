@@ -34,7 +34,7 @@
         <div class="card-content white-text center">
             <span class="main-title text"><spring:message code="Receipt.finish"/></span>
             <div>
-                <span class="main-title text"><spring:message code="Receip.points" arguments="${points}"/></span>
+                <span class="main-title text"><spring:message code="Receipt.points" arguments="${points}"/></span>
             </div>
             <div class="center">
                 <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/"/>"><spring:message code="Button.back"/></a>

@@ -58,26 +58,6 @@ public class MailingServiceImpl implements MailingService{
         sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
-    @Override
-    public void sendReceiptEmail(Restaurant restaurant, Customer customer) {
-        Properties properties=setProperties();
-        String subject="Un cliente quiere pedir la cuenta";
-        String messageText="el cliente: "+customer.getCustomerName()+" quiere la cuenta";
-        sendEmail(properties,restaurant.getMail(),subject,messageText);
-    }
-
-    @Override
-    public void sendOrderEmail(Restaurant restaurant, Customer customer, List<FullOrderItem> orderItems) {
-        Properties properties=setProperties();
-        String subject="Un cliente hizo un pedido";
-        StringBuilder stringBuilder=
-                new StringBuilder("El cliente: "+customer.getCustomerName()+" pidio estos items:\n");
-        for(FullOrderItem item : orderItems){
-            stringBuilder.append(item.getDishName()).append(" x ").append(item.getQuantity()).append('\n');
-        }
-        sendEmail(properties,restaurant.getMail(),subject,stringBuilder.toString());
-    }
-
     @Async
     @Override
     public void sendEmail(Properties properties, String toEmailAddress,

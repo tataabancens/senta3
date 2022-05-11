@@ -15,7 +15,7 @@
 
 <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
-<title>Sentate-Registro</title>
+<title>Senta3</title>
 <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 
 <body>
@@ -67,6 +67,13 @@
 </html>
 
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 .card{
     border-radius: 16px;
     display: flex;

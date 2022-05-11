@@ -39,7 +39,7 @@
 
 <style>
     body{
-        background: url("${pageContext.request.contextPath}/resources/images/restaurant-background.jpg") no-repeat center center fixed;
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;

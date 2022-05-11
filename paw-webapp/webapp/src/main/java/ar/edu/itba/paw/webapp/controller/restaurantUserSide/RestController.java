@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditPhoneForm;
@@ -20,45 +21,23 @@ import java.security.Principal;
 
 @Controller
 public class RestController {
-    RestaurantService rs;
-    ReservationService res;
-    DishService ds;
-    ImageService ims;
-    ControllerService controllerService;
+    private final RestaurantService rs;
 
     @Autowired
-    public RestController(RestaurantService rs, ReservationService res,
-                          DishService ds, ImageService ims, ControllerService controllerService) {
+    public RestController(RestaurantService rs) {
         this.rs = rs;
-        this.res = res;
-        this.ds = ds;
-        this.ims = ims;
-        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(name = "reservationId", defaultValue = "1") final long reservationId){
-        final ModelAndView mav = new ModelAndView("login");
-
-        return mav;
+    public ModelAndView login(){
+        return new ModelAndView("login");
     }
 
-
-    @RequestMapping("/restaurant={restaurantId}")
-    public ModelAndView restaurant(@RequestParam(name = "userId", defaultValue = "1") final long userId,
-                                   @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
-        long restaurantId = Long.parseLong(restaurantIdP);
-
-        return new ModelAndView("aa_Trash/restaurantTest");
-    }
     @RequestMapping("/restaurant={restaurantId}/profile")
-    public ModelAndView restaurantProfile(@RequestParam(name = "userId", defaultValue = "1") final long userId,
-                                          @PathVariable("restaurantId") final String restaurantIdP,
-                                          Principal principal) throws Exception {
+    public ModelAndView restaurantProfile(@PathVariable("restaurantId") final String restaurantIdP,
+                                          final Principal principal) throws Exception {
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         Restaurant restaurant=rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);
 
         ModelAndView mav=new ModelAndView("restaurantViews/restaurantProfile");
@@ -71,7 +50,7 @@ public class RestController {
     @RequestMapping("/restaurant={restaurantId}/menu")
     public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/menu/RestaurantMenu");
@@ -87,7 +66,7 @@ public class RestController {
     public ModelAndView editTablesForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                  @ModelAttribute("editTablesForm") final EditTablesForm form) throws Exception {
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/editAvailableTables");
@@ -109,7 +88,7 @@ public class RestController {
             return editTablesForm(restaurantIdP, form);
         }
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         rs.updateRestaurantHourAndTables(restaurantId,  Integer.parseInt(form.getTableQty()),
@@ -123,7 +102,7 @@ public class RestController {
     public ModelAndView editNameForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                  @ModelAttribute("editNameForm") final EditNameForm form) throws Exception {
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantName");
@@ -143,7 +122,7 @@ public class RestController {
             return editNameForm(restaurantIdP, form);
         }
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         rs.updateRestaurantName(form.getName(), restaurantId);
@@ -155,7 +134,7 @@ public class RestController {
     public ModelAndView editPhoneForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                      @ModelAttribute("editPhoneForm") final EditPhoneForm form) throws Exception {
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantPhone");
@@ -175,7 +154,7 @@ public class RestController {
             return editPhoneForm(restaurantIdP, form);
         }
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         rs.updatePhone(form.getPhone(), restaurantId);
@@ -187,7 +166,7 @@ public class RestController {
     public ModelAndView editEmailForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                      @ModelAttribute("editEmailForm") final EditEmailForm form) throws Exception {
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantEmail");
@@ -207,7 +186,7 @@ public class RestController {
             return editEmailForm(restaurantIdP, form);
         }
 
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         rs.updateRestaurantEmail(form.getMail(), restaurantId);
