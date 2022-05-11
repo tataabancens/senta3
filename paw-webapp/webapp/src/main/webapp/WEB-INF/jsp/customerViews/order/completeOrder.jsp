@@ -23,14 +23,6 @@
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<c:if test="${reservation.reservationStatus.name != 'SEATED'}">
-    <div style="display: flex; flex-wrap: wrap;justify-content:center;padding: 1.2rem;">
-        <div class="card information">
-            <i class="medium material-icons" style="color: #0d0d56">info</i>
-            <span class="presentation-text" style="color: #0d0d56"><spring:message code="Order.disclaimer"/></span>
-        </div>
-    </div>
-</c:if>
 <div class="page-container">
     <div class="recommendations">
         <c:if test="${isPresent}">
