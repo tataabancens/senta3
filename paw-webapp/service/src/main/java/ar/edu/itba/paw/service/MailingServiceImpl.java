@@ -31,7 +31,7 @@ public class MailingServiceImpl implements MailingService{
 
     private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
         String subject="Un cliente realizo una reserva";
-        String message="El cliente: "+customer.getCustomerName()+"(id: "+customer.getCustomerId()+") realizo una reserva para el: "+
+        String message="El cliente: "+customer.getCustomerName()+" realizo una reserva para las: "+
                 reservation.getReservationHour() +'\n';
         sendEmail(properties,restaurant.getMail(),subject,message);
     }
