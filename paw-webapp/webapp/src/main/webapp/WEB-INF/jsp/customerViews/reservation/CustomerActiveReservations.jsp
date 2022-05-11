@@ -13,7 +13,7 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reservas</title>
+    <title>Senta3</title>
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
