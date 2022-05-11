@@ -57,7 +57,7 @@ public class CustomerJdbcDaoTest {
                 .usingGeneratedKeyColumns("userid");
     }
 
-    public Number insertCustomer(String customerName, String phone, String mail, long userId){
+    private Number insertCustomer(String customerName, String phone, String mail, long userId){
         final Map<String, Object> customerData = new HashMap<>();
         customerData.put("customerName", customerName);
         customerData.put("Phone", phone);
@@ -69,7 +69,7 @@ public class CustomerJdbcDaoTest {
         return customerId;
     }
 
-    public Number insertUser(String userName, String pass, Roles role){
+    private Number insertUser(String userName, String pass, Roles role){
         final Map<String, Object> userData = new HashMap<>();
         userData.put("userName", userName);
         userData.put("pass", pass);
@@ -79,7 +79,7 @@ public class CustomerJdbcDaoTest {
         return userId;
     }
 
-    public void cleanAllTables(){
+    private void cleanAllTables(){
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);

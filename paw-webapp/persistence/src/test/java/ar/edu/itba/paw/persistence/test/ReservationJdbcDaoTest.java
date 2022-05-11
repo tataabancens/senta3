@@ -71,7 +71,7 @@ public class ReservationJdbcDaoTest {
                 .usingGeneratedKeyColumns("orderItemId");
     }
 
-    public Number insertDish(String name, String description, int price, int restaurantId, int imageId, DishCategory category){
+    private Number insertDish(String name, String description, int price, int restaurantId, int imageId, DishCategory category){
         final Map<String, Object> dishData = new HashMap<>();
         dishData.put("dishName", name);
         dishData.put("dishDescription", description);
@@ -83,7 +83,7 @@ public class ReservationJdbcDaoTest {
         return dishId;
     }
 
-    public Number insertReservation(int restaurantId, int reservationHour, int customerId, int reservationStatus, int qPeople){
+    private Number insertReservation(int restaurantId, int reservationHour, int customerId, int reservationStatus, int qPeople){
         final Map<String, Object> reservationData = new HashMap<>();
         reservationData.put("restaurantId", restaurantId);
         reservationData.put("reservationHour", reservationHour);
@@ -96,7 +96,7 @@ public class ReservationJdbcDaoTest {
         return reservationId;
     }
 
-    public Number insertOrderItem(int dishId, int reservationId, int unitPrice, int qty, int status){
+    private Number insertOrderItem(int dishId, int reservationId, int unitPrice, int qty, int status){
         final Map<String, Object> orderItemData = new HashMap<>();
         orderItemData.put("dishid", dishId);
         orderItemData.put("reservationid", reservationId);
@@ -107,7 +107,7 @@ public class ReservationJdbcDaoTest {
         return orderItemId;
     }
 
-    public Number insertCustomer(String customerName, String phone, String mail){
+    private Number insertCustomer(String customerName, String phone, String mail){
         final Map<String, Object> customerData = new HashMap<>();
         customerData.put("customerName", customerName);
         customerData.put("Phone", phone);
@@ -117,7 +117,7 @@ public class ReservationJdbcDaoTest {
         return customerId;
     }
 
-    public void cleanAllTables(){
+    private void cleanAllTables(){
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);

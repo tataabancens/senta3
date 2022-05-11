@@ -56,7 +56,7 @@ public class    RestaurantJdbcDaoTest {
     }
 
 
-    public Number insertDish(String name, String description, int price, int restaurantId, int imageId, DishCategory category){
+    private Number insertDish(String name, String description, int price, int restaurantId, int imageId, DishCategory category){
         final Map<String, Object> dishData = new HashMap<>();
         dishData.put("dishName", name);
         dishData.put("dishDescription", description);
@@ -68,7 +68,7 @@ public class    RestaurantJdbcDaoTest {
         return dishId;
     }
 
-    public void cleanAllTables(){
+    private void cleanAllTables(){
         JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
     }
 
@@ -128,7 +128,7 @@ public class    RestaurantJdbcDaoTest {
         Number dishId2 = insertDish("Empanada2", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
 
         // 2. Ejercitacion
-        List<Dish> allDishes = restaurantDao.getRestaurantDishesByCategory(1, DishCategory.valueOf("asd"));
+        List<Dish> allDishes = restaurantDao.getRestaurantDishesByCategory(1, DishCategory.valueOf("asd")); //ni me deja, asique bien
 
         // 3. PostCondiciones
         Assert.assertEquals(0, allDishes.size());
