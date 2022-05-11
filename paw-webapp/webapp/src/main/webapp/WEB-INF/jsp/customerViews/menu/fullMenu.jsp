@@ -30,14 +30,14 @@
 <a id="full-menu"></a>
 <%@ include file="../../components/navbar.jsp" %>
 
-<div class="restaurant-header">
+<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
     <div class="restaurant-info">
         <div>
-            <i class="large material-icons">restaurant</i>
+            <i class="medium material-icons">restaurant</i>
         </div>
         <div>
             <div class="presentation-text title restaurant-title">
-                <h3 class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></h3>
+                <span class="presentation-text header-title"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
             <div class="presentation-text restaurant-description">
                 <span><spring:message code="Fullmenu.phone"/> </span>
@@ -277,7 +277,7 @@
         line-height: 25px;
     }
     i{
-        color: black;
+        color: rgb(255, 68, 31);
         align-self: center;
         margin-right: 25px;
     }
