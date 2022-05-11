@@ -64,7 +64,7 @@ public class CustomerJdbcDaoTest {
         customerData.put("customerName", customerName);
         customerData.put("Phone", phone);
         customerData.put("Mail", mail);
-        customerData.put("userId", 1);
+        customerData.put("userId", userId);
         customerData.put("points", 0);
 
         Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
@@ -215,7 +215,7 @@ public class CustomerJdbcDaoTest {
     @Rollback
     public void testLinkCustomerToUserId(){
         // 1. Precondiciones
-        //cleanAllTables();
+        cleanAllTables();
         Number user = insertUser("username", "pass", Roles.CUSTOMER);
         Number user2 = insertUser("username2", "pass", Roles.CUSTOMER);
         Number customerId = insertCustomer("PepeCapo", "123456789", "pepe@gmail.com", user.longValue());
