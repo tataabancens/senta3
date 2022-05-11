@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence.test;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistence.DishJdbcDao;
 import ar.edu.itba.paw.persistence.ReservationJdbcDao;
@@ -165,17 +166,49 @@ public class DishJdbcDaoTest {
 
     @Test
     @Rollback
-    public void testGetRecommendedDish() { //le falta la implementaciooon y distintos casos
+    public void testGetRecommendedDish() {
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId2 = insertCustomer("pedro", "54112457896", "pedropicapiedras@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number dishId2 = insertDish("Empanada2", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number dishId3 = insertDish("Empanada3", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        insertOrderItem(dishId1.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId2.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId1.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.SELECTED.ordinal());
+
 
         // 2. Ejercitacion
-        Optional<Dish> dish = dishDao.getRecommendedDish(reservationId.longValue());
+        Optional<Dish> dish = dishDao.getRecommendedDish(reservationId2.longValue());
 
         // 3. PostCondiciones
         Assert.assertTrue(dish.isPresent());
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, DISH_TABLE));
+        Assert.assertEquals(2, dish.get().getId());
+    }
+
+    @Test
+    @Rollback
+    public void testGetRecommendedDish_Empty() {
+        // 1. Precondiciones
+        cleanAllTables();
+        Number customerId2 = insertCustomer("pedro", "54112457896", "pedropicapiedras@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number dishId2 = insertDish("Empanada2", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        Number dishId3 = insertDish("Empanada3", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+        insertOrderItem(dishId1.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+        insertOrderItem(dishId2.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
+
+
+        // 2. Ejercitacion
+        Optional<Dish> dish = dishDao.getRecommendedDish(reservationId2.longValue());
+
+        // 3. PostCondiciones
+        Assert.assertFalse(dish.isPresent());
+        //Assert.assertEquals(2, dish.get().getId());
     }
 
 }

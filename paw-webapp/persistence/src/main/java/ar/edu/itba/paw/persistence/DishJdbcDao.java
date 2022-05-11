@@ -74,11 +74,11 @@ public class DishJdbcDao implements DishDao {
                         "                   where orderitem.reservationid = ? and reservation.reservationid = orderitem.reservationid\n" +
                         "                   group by dishid, reservation.reservationid)\n" +
                         "\n" +
-                        "         (select customersOrdered.dishId as defDishId, sum(customersOrdered.sum) as defsum\n" +
+                        "         (select customersOrdered.dishId as defDishId, sum(customersOrdered.accum) as defsum\n" +
                         "          from (select dishid, sum(quantity), reservation.reservationId\n" +
                         "                from orderitem, reservation\n" +
                         "                where orderitem.reservationid = reservation.reservationid\n" +
-                        "                group by dishid, reservation.reservationid) as customersOrdered (dishId, sum, reservationId),\n" +
+                        "                group by dishid, reservation.reservationid) as customersOrdered (dishId, accum, reservationId),\n" +
                         "               currentOrderedCTE as currentOrdered (currentDish, currentReservationId)\n" +
                         "          where currentReservationId <> customersOrdered.reservationId\n" +
                         "            and dishId not in (select dishId from currentOrderedCTE)\n" +
