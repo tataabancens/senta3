@@ -3,8 +3,10 @@ package ar.edu.itba.paw.persistence.test;
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.persistence.CustomerJdbcDao;
 import ar.edu.itba.paw.persistence.ReservationJdbcDao;
+import ar.edu.itba.paw.persistence.UserJdbcDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,10 +31,13 @@ import java.util.Optional;
 public class CustomerJdbcDaoTest {
 
     private static final String CUSTOMER_TABLE = "customer";
+    private static final String USER_TABLE = "user";
 
     private CustomerJdbcDao customerDao;
+    private UserJdbcDao userDao;
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsertCustomer;
+    private SimpleJdbcInsert jdbcInsertUser;
 
     @Autowired
     private DataSource ds;
@@ -43,10 +48,14 @@ public class CustomerJdbcDaoTest {
     @Before
     public void setUp(){
         customerDao = new CustomerJdbcDao(ds);
+        userDao = new UserJdbcDao(ds);
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsertCustomer = new SimpleJdbcInsert(ds)
                 .withTableName(CUSTOMER_TABLE)
                 .usingGeneratedKeyColumns("customerId");
+        jdbcInsertUser = new SimpleJdbcInsert(ds)
+                .withTableName(USER_TABLE)
+                .usingGeneratedKeyColumns("userId");
     }
 
     public Number insertCustomer(String customerName, String phone, String mail){
@@ -57,6 +66,16 @@ public class CustomerJdbcDaoTest {
 
         Number customerId = jdbcInsertCustomer.executeAndReturnKey(customerData);
         return customerId;
+    }
+
+    public Number insertUser(String userName, String pass, Roles role){
+        final Map<String, Object> userData = new HashMap<>();
+        userData.put("userName", userName);
+        userData.put("pass", pass);
+        userData.put("role", role);
+
+        Number userId = jdbcInsertUser.executeAndReturnKey(userData);
+        return userId;
     }
 
     public void cleanAllTables(){
@@ -124,19 +143,27 @@ public class CustomerJdbcDaoTest {
     @Rollback
     public void testLinkCustomerToUserId(){
         // 1. Precondiciones
+        cleanAllTables();
+        Number customer = insertCustomer("Pepote", "123456789", "pepe@gmail.com");
+        Number user = insertUser("Pepote", "123", Roles.CUSTOMER);
 
         // 2. Ejercitacion
+        customerDao.linkCustomerToUserId(customer.longValue(), user.longValue());
 
         // 3. PostCondiciones
+        Assert.assertEquals(user.longValue(), customer.longValue());
 
     }
 
     @Test
     @Rollback
-    public void testUpdatePoints(){
+    public void testUpdatePoints() {
         // 1. Precondiciones
+        cleanAllTables();
+        Number customer = insertCustomer("Pepote", "123456789", "pepe@gmail.com");
 
         // 2. Ejercitacion
+        customerDao.updatePoints(customer.longValue(), 30);
 
         // 3. PostCondiciones
 
@@ -146,8 +173,11 @@ public class CustomerJdbcDaoTest {
     @Rollback
     public void testUpdateCustomerData(){
         // 1. Precondiciones
+        cleanAllTables();
+        Number customer = insertCustomer("Pepote", "123456789", "pepe@gmail.com");
 
         // 2. Ejercitacion
+        customerDao.updateCustomerData(customer.longValue(), "pepito", "789456789", "elpepe@gmail.com");
 
         // 3. PostCondiciones
 

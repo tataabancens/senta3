@@ -53,9 +53,6 @@ public class UserJdbcDaoTest {
     }
     public void cleanAllTables(){
         JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
-        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
-        //JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
     }
 
     @Test

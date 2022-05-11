@@ -66,8 +66,6 @@ public class ImageJdbcDaoTest {
     @Rollback
     public void testGetImageById_Exists(){
         // 1. Precondiciones
-        cleanAllTables();
-        Number imageId = insertImage();
 
         // 2. Ejercitacion
 
