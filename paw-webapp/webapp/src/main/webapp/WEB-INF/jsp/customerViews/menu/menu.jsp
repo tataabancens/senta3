@@ -151,6 +151,9 @@
         min-width: 30%;
         height: 8rem;
     }
+    .card-info p{
+        margin-block-start: 0;
+    }
     @media screen and (max-width: 1920px){
         .dish-card{
             width: 25%;
