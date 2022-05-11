@@ -9,6 +9,7 @@ import ar.edu.itba.paw.service.RestaurantServiceImpl;
 import ar.edu.itba.paw.service.UserServiceImpl;
 import org.junit.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,18 +24,19 @@ import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestaurantServiceImplTest {
-
-    @Mock
+    
     private RestaurantDao resDao;
+    private RestaurantServiceImpl resService;
 
-    @InjectMocks
-    private RestaurantServiceImpl resService = new RestaurantServiceImpl(resDao);
-
-
+    @Before
+    public void setUp() {
+        resDao = Mockito.mock(RestaurantDao.class);
+        resService = new RestaurantServiceImpl(resDao);
+    }
     @Test
-    public void testCreateUser() {
+    public void testCreateRestaurant() {
         // 1. Setup
-        Mockito.when(resDao.create("El Pepito", "456789456", "elpepito@gmail.com")).thenReturn(new Restaurant(1, "El Pepito", "456789456", "elpepito@gmail.com", 5, 12, 20));
+        Mockito.when(resDao.create(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(new Restaurant(1, "El Pepito", "456789456", "elpepito@gmail.com", 5, 12, 20));
 
         // 2. ejercicio
         Restaurant res = resService.create("El Pepito", "456789456", "elpepito@gmail.com");
@@ -45,8 +47,6 @@ public class RestaurantServiceImplTest {
         Assert.assertEquals("El Pepito", res.getRestaurantName());
         Assert.assertEquals("456789456", res.getPhone());
         Assert.assertEquals("elpepito@gmail.com", res.getMail());
-
-
 
     }
 }
