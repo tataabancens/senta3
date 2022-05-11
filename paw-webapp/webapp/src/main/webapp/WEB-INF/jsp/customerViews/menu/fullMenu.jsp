@@ -263,13 +263,14 @@
     .page-container{
         padding: 1%;
         display: flex;
+        flex-wrap: wrap;
     }
     .card.horizontal{
-        width: clamp(30rem,35%,50rem);
-        height: clamp(8rem,25%,9rem);
+        width: clamp(35rem,35%,40rem);
+        height: clamp(9.5rem,15%,11rem);
+        margin: 1%;
         box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
         transition: 0.8s;
-        margin-right: 4%;
     }
     .reservation-info p{
         margin-block-end: 0.5em;
@@ -286,12 +287,15 @@
         padding: 10px;
     }
     .card.horizontal .card-image{
+        object-fit: fill;
         max-width: 25%;
         margin-left: 1%;
     }
     .card.horizontal .card-image img{
         border-radius: .8rem;
-        aspect-ratio: 1.1/1;
+        width: clamp(5rem,100%,10rem);
+        height: clamp(5rem,100%,10rem);
+        aspect-ratio: 1/1;
     }
     .card-stacked{
         height: 100%;
@@ -299,7 +303,7 @@
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: 26%;
+        width: clamp(20rem,23%,30rem);
         height: 100%;
     }
     .presentation-text.text-center{
@@ -308,7 +312,7 @@
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: 74%;
+        width: clamp(30rem,75%,75rem);
     }
     .card.client-actions.discounts{
         max-width: 60%;

@@ -27,28 +27,30 @@
     <div class="recommendations">
         <c:if test="${isPresent}">
             <h3 class="summary presentation-text"><spring:message code="Order.othercustomers"/>:</h3>
-            <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="dish-card">
-                <div class="dish-img">
-                    <c:if test="${recommendedDish.imageId > 0}">
-                        <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
-                    </c:if>
-                    <c:if test="${recommendedDish.imageId == 0}">
-                        <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
-                    </c:if>
-                </div>
-                <div class="card-info">
-                    <span class="presentation-text"><c:out value="${recommendedDish.dishName}"/></span>
-                    <p class="text description"><c:out value="${recommendedDish.dishDescription}"/></p>
-                    <c:if test="${reservation.reservationDiscount}">
-                        <span id="original-price" class="text price">$<c:out value="${(recommendedDish.price)}"/></span>
-                        <fmt:formatNumber var="dishPrice" type="number" value="${(recommendedDish.price * discountCoefficient)}" maxFractionDigits="2"/>
-                        <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
-                    </c:if>
-                    <c:if test="${!reservation.reservationDiscount}">
-                        <span class="text price">$<c:out value="${recommendedDish.price}"/></span>
-                    </c:if>
-                </div>
-            </a>
+                <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="card horizontal">
+                    <div class="card-image">
+                        <c:if test="${recommendedDish.imageId > 0}">
+                            <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
+                        </c:if>
+                        <c:if test="${recommendedDish.imageId == 0}">
+                            <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
+                        </c:if>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <span class="presentation-text info"><c:out value="${recommendedDish.dishName}"/></span>
+                            <p class="text description info"><c:out value="${recommendedDish.dishDescription}"/></p>
+                            <c:if test="${reservation.reservationDiscount}">
+                                <span id="original-price" class="text price">$<c:out value="${(recommendedDish.price)}"/></span>
+                                <fmt:formatNumber var="dishPrice" type="number" value="${(recommendedDish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                            </c:if>
+                            <c:if test="${!reservation.reservationDiscount}">
+                                <span class="text price info">$<c:out value="${recommendedDish.price}"/></span>
+                            </c:if>
+                        </div>
+                    </div>
+                </a>
         </c:if>
     </div>
     <div class="card confirm-card">
@@ -138,10 +140,44 @@
         color:  #707070
     }
 
-    .dish-card:hover{
+    .card.horizontal:hover{
         transform: scale(1.1);
     }
-
+    .card.horizontal{
+        width: clamp(35rem,35%,50rem);
+        height: clamp(8rem,25%,11rem);
+        box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
+        transition: 0.8s;
+        margin-right: 4%;
+    }
+    .card-stacked{
+        height: 100%;
+    }
+    .presentation-text.info{
+        color: black;
+        font-size: clamp(0.7rem,1rem + 0.1vw,2rem) ;
+    }
+    .text.description.info{
+        font-size: clamp(0.7rem,0.8rem + 0.1vw,1.1rem);
+    }
+    .card.horizontal .card-content{
+        padding: 10px;
+    }
+    .card.horizontal .card-image{
+        max-width: 25%;
+        margin-left: 1%;
+    }
+    .card.horizontal .card-image img{
+        border-radius: .8rem;
+        aspect-ratio: 1.1/1;
+    }
+    #original-price{
+        text-decoration: line-through;
+    }
+    #discounted-price{
+        color: blue;
+        margin-left: 12%;
+    }
     .summary{
         margin-top: 20px;
         width: 100%;
