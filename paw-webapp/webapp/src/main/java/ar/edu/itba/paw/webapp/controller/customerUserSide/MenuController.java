@@ -9,6 +9,8 @@ import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ public class MenuController {
     private final ReservationService res;
     private final CustomerService cs;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
 
     @Autowired
     public MenuController(final RestaurantService rs, final ReservationService res, final CustomerService cs) {
@@ -37,6 +40,8 @@ public class MenuController {
     public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category ) {
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
+
+        LOGGER.info("Attempting to show menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
