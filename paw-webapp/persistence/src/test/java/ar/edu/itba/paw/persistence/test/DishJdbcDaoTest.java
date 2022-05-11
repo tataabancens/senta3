@@ -185,7 +185,7 @@ public class DishJdbcDaoTest {
 
         // 3. PostCondiciones
         Assert.assertTrue(dish.isPresent());
-        Assert.assertEquals(2, dish.get().getId());
+        Assert.assertEquals(dishId2.longValue(), dish.get().getId());
     }
 
     @Test
