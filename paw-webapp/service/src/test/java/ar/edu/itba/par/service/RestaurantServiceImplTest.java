@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestaurantServiceImplTest {
-    
+
     private RestaurantDao resDao;
     private RestaurantServiceImpl resService;
 
