@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
@@ -25,15 +26,13 @@ public class CustReservationController {
     private final RestaurantService rs;
     private final ReservationService res;
     private final MailingService ms;
-    private final ControllerService controllerService;
 
     @Autowired
-    public CustReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
+    public CustReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms) {
         this.cs = cs;
         this.rs = rs;
         this.res = res;
         this.ms = ms;
-        this.controllerService = controllerService;
     }
 
 
@@ -92,7 +91,7 @@ public class CustReservationController {
     public ModelAndView createReservation_2(@PathVariable("reservationId") final String reservationIdP,
                                             @Valid @ModelAttribute("hourForm") final NumberForm form) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
@@ -111,7 +110,7 @@ public class CustReservationController {
         if (errors.hasErrors()){
             return createReservation_2(reservationIdP, form);
         }
-        controllerService.longParser(reservationIdP, form.getNumber()).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(reservationIdP, form.getNumber()).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
         long hour = Long.parseLong(form.getNumber());
 
@@ -127,7 +126,7 @@ public class CustReservationController {
     public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
                                             @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
@@ -140,7 +139,7 @@ public class CustReservationController {
     @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.POST)
     public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
                                             @Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         if (errors.hasErrors()){
@@ -167,7 +166,7 @@ public class CustReservationController {
                                            final Principal principal,
                                            @ModelAttribute("confirmReservationForm") final ReservationForm form) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
@@ -191,7 +190,7 @@ public class CustReservationController {
         if (errors.hasErrors()){
             return confirmReservation(reservationIdP, principal, form);
         }
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
@@ -224,7 +223,7 @@ public class CustReservationController {
     @RequestMapping("/notify/{reservationId}")
     public ModelAndView notifyCustomer(@PathVariable("reservationId") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("customerViews/reservation/notifyCustomer");
@@ -243,7 +242,7 @@ public class CustReservationController {
     public ModelAndView cancelReservation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                           @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
         long restaurantId = Long.parseLong(restaurantIdP);
 
@@ -260,7 +259,7 @@ public class CustReservationController {
     @RequestMapping(value = "/reservation-cancel", method = RequestMethod.POST)
     public ModelAndView cancelReservationConfirm(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP) throws Exception {
 
-        controllerService.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);

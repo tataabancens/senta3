@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,13 @@ public class RestReservationController {
     private final RestaurantService rs;
     private final ReservationService res;
     private final MailingService ms;
-    private final ControllerService controllerService;
 
     @Autowired
-    public RestReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms, ControllerService controllerService) {
+    public RestReservationController(CustomerService cs, RestaurantService rs, ReservationService res, MailingService ms) {
         this.cs = cs;
         this.rs = rs;
         this.res = res;
         this.ms = ms;
-        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
@@ -37,7 +36,7 @@ public class RestReservationController {
                                                       @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                                       @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                                       @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
-        controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -59,7 +58,7 @@ public class RestReservationController {
                                                           @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                                           @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                                           @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
-        controllerService.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
@@ -83,11 +82,11 @@ public class RestReservationController {
                                             @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
 
 
-        controllerService.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
-        controllerService.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
-        controllerService.longParser(page).orElseThrow(() -> new LongParseException(page));
-        controllerService.filterStatusParser(filterStatus).orElseThrow(() -> new LongParseException(filterStatus));
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        ControllerUtils.filterStatusParser(filterStatus).orElseThrow(() -> new LongParseException(filterStatus));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");
@@ -131,7 +130,7 @@ public class RestReservationController {
                                      @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                      @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                      @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
@@ -147,7 +146,7 @@ public class RestReservationController {
                                     @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                     @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -179,7 +178,7 @@ public class RestReservationController {
                                        @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                        @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                        @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.FINISHED);
@@ -196,7 +195,7 @@ public class RestReservationController {
                                            @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus
                                            ) throws Exception {
-        controllerService.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
 
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
@@ -21,20 +22,18 @@ public class DishController {
 
     private final DishService ds;
     private final ImageService ims;
-    private final ControllerService controllerService;
 
     @Autowired
-    public DishController(final DishService ds, final ImageService ims, final ControllerService controllerService) {
+    public DishController(final DishService ds, final ImageService ims) {
         this.ds = ds;
         this.ims = ims;
-        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/confirmDish={dishId}", method = RequestMethod.GET)
     public ModelAndView confirmDish(@PathVariable("restaurantId") final String restaurantIdP,
                                     @PathVariable("dishId") final String dishIdP) throws Exception {
 
-        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/dish/dishConfirmation");
@@ -47,7 +46,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
     public ModelAndView createDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ModelAndView mav = new ModelAndView("restaurantViews/dish/createDish");
         mav.addObject("categories", DishCategory.getAsMap());
 
@@ -57,7 +56,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
     public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
                                    @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {
-        controllerService.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         if (errors.hasErrors()){
@@ -76,7 +75,7 @@ public class DishController {
                                   @PathVariable ("dishId") final String dishIdP,
                                   @RequestParam CommonsMultipartFile photo) throws Exception {
 
-        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
         Image image = ims.createImage(photo);
@@ -88,7 +87,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.GET)
     public ModelAndView deleteDishConfirmation(@PathVariable("dishId") final String dishIdP,
                                                @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/dish/deleteDish");
@@ -102,7 +101,7 @@ public class DishController {
     @RequestMapping(value = "/restaurant={restaurantId}/menu/edit/deleteDish={dishId}", method = RequestMethod.POST)
     public ModelAndView deleteDishConfirmationPost(@PathVariable("dishId") final String dishIdP,
                                                @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
-        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
 
         ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
@@ -117,7 +116,7 @@ public class DishController {
                                      @ModelAttribute("editDishForm") final EditDishForm form,
                                      @PathVariable("dishId") final String dishIdP) throws Exception {
 
-        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
@@ -144,7 +143,7 @@ public class DishController {
             return editDishForm(restaurantIdP, form, dishIdP);
         }
 
-        controllerService.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
