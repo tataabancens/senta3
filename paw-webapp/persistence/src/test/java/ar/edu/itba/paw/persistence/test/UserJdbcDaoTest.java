@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -75,6 +76,12 @@ public class UserJdbcDaoTest {
         JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
     }
 
+    private static final RowMapper<User> ROW_MAPPER = (resultSet, i) ->
+            new User(resultSet.getLong("userId"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    resultSet.getString("role"));
+
     @Test
     @Rollback
     public void testCreateUser(){
@@ -116,5 +123,51 @@ public class UserJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertTrue(maybeUser.isPresent());
         Assert.assertEquals(USERNAME, maybeUser.get().getUsername());
+    }
+
+    @Test
+    @Rollback
+    public void testFindUserByName_Exists(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
+
+        // 2. Ejercitacion
+        Optional<User> maybeUser = userDao.findByName(USERNAME);
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeUser.isPresent());
+        Assert.assertEquals(USERNAME, maybeUser.get().getUsername());
+    }
+
+    @Test
+    @Rollback
+    public void testFindUserByName_NotExists(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
+
+        // 2. Ejercitacion
+        Optional<User> maybeUser = userDao.findByName("Not_Username");
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeUser.isPresent());
+    }
+
+    @Test
+    @Rollback
+    public void testupdateUsername(){
+        // 1. Precondiciones
+        cleanAllTables();
+        Number userId = insertUser(USERNAME, "passguord", Roles.CUSTOMER);
+
+        // 2. Ejercitacion
+        userDao.updateUsername(USERNAME, "new_username");
+
+        // 3. PostCondiciones
+        Optional<User> user = jdbcTemplate.query("SELECT * FROM users WHERE username = ?", new Object[]{"new_username"}, ROW_MAPPER).stream().findFirst();
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals("new_username", user.get().getUsername());
+        Assert.assertEquals(userId.longValue(), user.get().getId());
     }
 }
