@@ -17,7 +17,7 @@
 
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 
-    <title>Editar Telefono</title>
+    <title>Senta3</title>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
