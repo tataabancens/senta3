@@ -132,7 +132,7 @@
         width: 100%;
         background-color: rgb(16, 24, 28);
     }
-    .restaurant-content{
+    .restaurant-content {
         margin-top: 30px;
         display: flex;
         width: 100%;
@@ -148,15 +148,18 @@
         color: white;
     }
     .dish-card {
-        min-width: 40%;
+        min-width: 30%;
         height: 8rem;
+    }
+    .card-info p{
+        margin-block-start: 0;
     }
     @media screen and (max-width: 1920px){
         .dish-card{
-            width: 30%;
+            width: 25%;
         }
         .dish-img{
-            width: 30%;
+            width: clamp(7rem,30%,10rem);
         }
         .presentation-text.info{
             font-size: 1rem;
