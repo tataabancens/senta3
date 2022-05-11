@@ -1,8 +1,22 @@
 # PAW
+
 ## Credenciales
-Para loggearse como Restaurant, se deberÃ¡n usar las siguientes credenciales (case sensitive):
+
+Para loggearse como Restaurant, se deber n usar las siguientes credenciales (case sensitive):
+
 -user: Pepito
+
 -pass: 12345678
+
+## A tener en cuenta
+
+El usuario solo puede hacer reservas en horarios disponibles;
+
+Entre los horarios de apertura y cierre del restaurant, 
+luego del tiempo en que el usuario est‚ realizando la reserva 
+y cuando tenga sillas/mesas disponibles.
+
+Es decir, si el restaurant cierra a las 24hs, los usuarios que entren a la pagina luego de las 23hs no tendr n mesas disponibles. Esto no es un bug.
 
 # Instalacion de Maven
 Link https://www.youtube.com/watch?v=J6yeuluYkYE&ab_channel=ReynaldoBernardDeDiosDeLaCruz
