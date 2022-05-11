@@ -172,7 +172,7 @@
     </div>
     <div class="dish-categories">
         <c:if test="${reservation.reservationStatus.name != 'SEATED'}">
-            <div style="display: flex; flex-wrap: wrap;justify-content:center; width: fit-content;">
+            <div class="disclaimer">
                 <div class="card information">
                     <i class="medium material-icons" style="color: #0d0d56">info</i>
                     <span class="presentation-text" style="color: #0d0d56; font-size: 1.2rem;margin-right: 5px;"><spring:message code="Order.disclaimer"/></span>
@@ -250,6 +250,12 @@
 </html>
 
 <style>
+    .disclaimer{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:center;
+        width: 100%;
+    }
     .restaurant-header{
         display: flex;
         justify-content: space-between;
@@ -289,7 +295,7 @@
     .card.horizontal .card-image{
         object-fit: fill;
         max-width: 25%;
-        margin-left: 1%;
+        margin-left: 2%;
     }
     .card.horizontal .card-image img{
         border-radius: .8rem;
@@ -312,7 +318,10 @@
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: clamp(30rem,75%,75rem);
+        width: clamp(15rem,70%,80rem);
+    }
+    .card.information{
+        width: 100%;
     }
     .card.client-actions.discounts{
         max-width: 60%;
@@ -351,7 +360,7 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
-        height: 100%;
+        height: fit-content;
     }
     .categories{
         display: flex;
