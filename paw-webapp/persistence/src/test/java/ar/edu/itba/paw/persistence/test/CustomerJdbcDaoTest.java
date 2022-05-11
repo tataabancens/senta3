@@ -92,10 +92,12 @@ public class CustomerJdbcDaoTest {
     }
 
     private void cleanAllTables(){
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        jdbcTemplate.execute("DELETE FROM users WHERE userId NOT IN ( 1 )");
     }
+
 
     private static final RowMapper<Customer> ROW_MAPPER = ((resultSet, i) ->
             new Customer(resultSet.getLong("customerId"),

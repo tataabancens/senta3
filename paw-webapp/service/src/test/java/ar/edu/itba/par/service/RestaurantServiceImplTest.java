@@ -43,7 +43,6 @@ public class RestaurantServiceImplTest {
         // 2. ejercicio
         Restaurant res = resService.create("El Pepito", "456789456", "elpepito@gmail.com");
 
-
         // 3. asserts
         Assert.assertNotNull(res);
         Assert.assertEquals("El Pepito", res.getRestaurantName());

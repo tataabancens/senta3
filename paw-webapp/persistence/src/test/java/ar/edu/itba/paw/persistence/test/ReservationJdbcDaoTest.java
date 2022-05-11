@@ -31,11 +31,12 @@ import static ar.edu.itba.paw.model.enums.DishCategory.*;
 @Rollback
 public class ReservationJdbcDaoTest {
 
+    private static final String DISH_TABLE = "dish";
     private static final String RESERVATION_TABLE = "reservation";
     private static final String ORDER_ITEM_TABLE = "orderItem";
     private static final String CUSTOMER_TABLE = "customer";
     private static final String RESTAURANT_TABLE = "restaurant";
-    private static final String DISH_TABLE = "dish";
+
 
     private ReservationJdbcDao reservationDao;
     private JdbcTemplate jdbcTemplate;
@@ -44,6 +45,8 @@ public class ReservationJdbcDaoTest {
     private SimpleJdbcInsert jdbcInsertCustomer;
     private SimpleJdbcInsert jdbcInsertRestaurant;
     private SimpleJdbcInsert jdbcInsertDish;
+
+
 
     @Autowired
     private DataSource ds;
@@ -152,7 +155,8 @@ public class ReservationJdbcDaoTest {
         // 1. Precondiciones
         //insert dish, create reservation, insert orderItem
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId.longValue());
@@ -168,7 +172,8 @@ public class ReservationJdbcDaoTest {
         // 1. Precondiciones
         //insert dish, create reservation, insert orderItem
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId.longValue()+1);
@@ -183,7 +188,8 @@ public class ReservationJdbcDaoTest {
     public void testGetReservationsByStatusList_Empty(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
         List<Reservation> maybeReservations = reservationDao.getReservationsByStatusList(1, new ArrayList<>());
@@ -197,9 +203,10 @@ public class ReservationJdbcDaoTest {
     public void testGetReservationsByStatusList_Full(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId3 = insertReservation(1, 12, 1, ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.CHECK_ORDERED.ordinal(), 1);
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.SEATED);
         statusList.add(ReservationStatus.CHECK_ORDERED);
@@ -282,7 +289,8 @@ public class ReservationJdbcDaoTest {
     public void testGetReservationsByIdAndStatus_EmptyList(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
         Optional<Reservation> maybeReservations = reservationDao.getReservationByIdAndStatus(reservationId1.longValue(), new ArrayList<>());
@@ -296,7 +304,8 @@ public class ReservationJdbcDaoTest {
     public void testGetReservationsByIdAndStatus_NoReservation(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.SEATED);
         statusList.add(ReservationStatus.CHECK_ORDERED);
@@ -313,9 +322,10 @@ public class ReservationJdbcDaoTest {
     public void testGetReservationsByIdAndStatus_Full(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId3 = insertReservation(1, 12, 1, ReservationStatus.CHECK_ORDERED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId3 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.CHECK_ORDERED.ordinal(), 1);
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.OPEN);
         statusList.add(ReservationStatus.CHECK_ORDERED);
@@ -333,9 +343,10 @@ public class ReservationJdbcDaoTest {
     public void testGetOrderItemsByReservationIdAndStatus_EmptyList(){
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
         Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number orderItemId1 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
         Number orderItemId2 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
         Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
@@ -352,9 +363,10 @@ public class ReservationJdbcDaoTest {
     public void testGetOrderItemsByReservationIdAndStatus_NoReservation(){
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
         Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number orderItemId1 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
         Number orderItemId2 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
         Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
@@ -373,9 +385,10 @@ public class ReservationJdbcDaoTest {
     public void testGetOrderItemsByReservationIdAndStatus_Full(){
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
         Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number orderItemId1 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
         Number orderItemId2 = insertOrderItem(dishId.intValue(), reservationId1.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
         Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
@@ -396,10 +409,11 @@ public class ReservationJdbcDaoTest {
     public void testCreateReservation() {
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
-        Reservation maybeReservation = reservationDao.createReservation(1, 1, 1, 1, null);
+        Reservation maybeReservation = reservationDao.createReservation(1, customerId1.longValue(), 1, 1, null);
 
         // 3. PostCondiciones
         Assert.assertEquals(reservationId.intValue()+1, maybeReservation.getReservationId());
@@ -411,8 +425,9 @@ public class ReservationJdbcDaoTest {
     public void testCreateOrderItemsByReservationId() {
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
         Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Dish new_dish = new Dish(dishId.longValue(), 1, "Empanada", 100, "sin pasas de uva", 1, MAIN_DISH);
 
         // 2. Ejercitacion
@@ -444,8 +459,9 @@ public class ReservationJdbcDaoTest {
     public void testCreateOrderItemsByReservationId_NoDish() {
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
         Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
 
         // 2. Ejercitacion
         OrderItem orderItem = reservationDao.createOrderItemByReservationId(reservationId.longValue(), null, 2);
@@ -460,8 +476,9 @@ public class ReservationJdbcDaoTest {
     public void testGetOrderItemsByReservationId_Exists() {
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
         Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Number orderItemId = insertOrderItem(dishId.intValue(), reservationId.intValue(), 100, 1, 0);
 
         List<FullOrderItem> testList = new ArrayList<>();
@@ -496,7 +513,8 @@ public class ReservationJdbcDaoTest {
     public void testGetOrderItemsByStatus() {
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
         Number dishId2 = insertDish("Milanesa", "sin pasas de uva", 200, 1, 1, MAIN_DISH);
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
@@ -516,7 +534,8 @@ public class ReservationJdbcDaoTest {
     public void testApplyDiscount(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
 
         // 2. Ejercitacion
         reservationDao.applyDiscount(reservationId.longValue());
@@ -547,8 +566,9 @@ public class ReservationJdbcDaoTest {
     public void testGetAllOrderItems(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
@@ -567,7 +587,8 @@ public class ReservationJdbcDaoTest {
     public void testDeleteOrderItemsByReservationIdAndStatus(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
@@ -588,7 +609,8 @@ public class ReservationJdbcDaoTest {
     public void testDeleteOrderItemsByReservationIdAndStatus_invalid(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
         Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
@@ -607,8 +629,9 @@ public class ReservationJdbcDaoTest {
     public void testGetAllReservations(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
 
         // 2. Ejercitacion
         List<FullReservation> allReservations = reservationDao.getAllReservations(1);
@@ -622,8 +645,9 @@ public class ReservationJdbcDaoTest {
     public void testGetAllReservationsOrderedBy_invalidString1(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
 
         // 2. Ejercitacion
         List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "XXXXXX", "ASC", "1", 1);
@@ -637,8 +661,9 @@ public class ReservationJdbcDaoTest {
     public void testGetAllReservationsOrderedBy_invalidString2(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
 
         // 2. Ejercitacion
         List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "reservationid", "XXXX", "1", 1);
@@ -652,8 +677,9 @@ public class ReservationJdbcDaoTest {
     public void testGetAllReservationsOrderedBy_invalidString3(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
 
         // 2. Ejercitacion
         List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "reservationid", "ASC", "XXXXXX", 1);
@@ -667,8 +693,9 @@ public class ReservationJdbcDaoTest {
     public void testGetAllReservationsOrderedBy_valid(){
         // 1. Precondiciones
         cleanAllTables();
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
-        Number reservationId2 = insertReservation(1, 12, 1, ReservationStatus.SEATED.ordinal(), 1);
+        Number customerId1 = insertCustomer("Jake el perro", "54112457896", "jake@gmail.com");
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
+        Number reservationId2 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.SEATED.ordinal(), 1);
 
         // 2. Ejercitacion
         List<FullReservation> allReservations = reservationDao.getAllReservationsOrderedBy(1, "reservationid", "ASC", "1", 1);

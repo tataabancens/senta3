@@ -169,8 +169,9 @@ public class DishJdbcDaoTest {
     public void testGetRecommendedDish() {
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("marcos", "54112457896", "marcospicapiedras@gmail.com");
         Number customerId2 = insertCustomer("pedro", "54112457896", "pedropicapiedras@gmail.com");
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Number reservationId2 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
         Number dishId2 = insertDish("Empanada2", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
@@ -193,8 +194,9 @@ public class DishJdbcDaoTest {
     public void testGetRecommendedDish_Empty() {
         // 1. Precondiciones
         cleanAllTables();
+        Number customerId1 = insertCustomer("marcos", "54112457896", "marcospicapiedras@gmail.com");
         Number customerId2 = insertCustomer("pedro", "54112457896", "pedropicapiedras@gmail.com");
-        Number reservationId1 = insertReservation(1, 12, 1, ReservationStatus.OPEN.ordinal(), 1);
+        Number reservationId1 = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Number reservationId2 = insertReservation(1, 12, customerId2.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Number dishId1 = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
         Number dishId2 = insertDish("Empanada2", "sin pasas de uva", 100, 1, 1, MAIN_DISH);

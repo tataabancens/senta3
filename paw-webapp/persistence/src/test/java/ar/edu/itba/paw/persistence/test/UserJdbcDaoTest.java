@@ -31,6 +31,9 @@ public class UserJdbcDaoTest {
     private static final String USERNAME = "pepe";
     private static final String RESTAURANT_TABLE = "restaurant";
     private static final String CUSTOMER_TABLE = "customer";
+    private static final String DISH_TABLE = "dish";
+    private static final String RESERVATION_TABLE = "reservation";
+    private static final String ORDER_ITEM_TABLE = "orderItem";
 
 
 
@@ -71,9 +74,13 @@ public class UserJdbcDaoTest {
     }
 
     private void cleanAllTables(){
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
-        JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        //JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
+        jdbcTemplate.execute("DELETE FROM users WHERE userId NOT IN ( 1 )");
     }
 
     private static final RowMapper<User> ROW_MAPPER = (resultSet, i) ->
@@ -94,7 +101,7 @@ public class UserJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertNotNull(user);
         Assert.assertEquals(USERNAME, user.getUsername());
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, USER_TABLE));
+        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, USER_TABLE));
     }
 
     @Test
@@ -104,7 +111,7 @@ public class UserJdbcDaoTest {
         cleanAllTables();
 
         // 2. Ejercitacion
-        Optional<User> maybeUser = userDao.getUserById(1);
+        Optional<User> maybeUser = userDao.getUserById(100);
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeUser.isPresent());
