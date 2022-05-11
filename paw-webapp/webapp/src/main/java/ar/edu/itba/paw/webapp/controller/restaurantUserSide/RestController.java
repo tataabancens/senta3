@@ -48,17 +48,19 @@ public class RestController {
 
 
     @RequestMapping("/restaurant={restaurantId}/menu")
-    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+    public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP,
+                                       @RequestParam(value = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/menu/RestaurantMenu");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishes(restaurantId));
+        restaurant.setDishes(rs.getRestaurantDishesByCategory(restaurantId, DishCategory.valueOf(category)));
+
         mav.addObject("restaurant", restaurant);
         mav.addObject("categories", DishCategory.getAsList());
-
+        mav.addObject("currentCategory", DishCategory.valueOf(category));
         return mav;
     }
 

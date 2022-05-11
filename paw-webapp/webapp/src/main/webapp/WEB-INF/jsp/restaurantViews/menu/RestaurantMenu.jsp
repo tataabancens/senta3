@@ -95,11 +95,12 @@
         display: flex;
         flex-wrap: wrap;
         margin-top: 30px;
+        justify-content: space-between;
         padding: 1em;
     }
     .dish-card{
         flex-direction: column;
-        width: 40%;
+        width: 100%;
         height: 9.7rem;
         transition: 0.7s;
     }
@@ -157,12 +158,13 @@
     .dishList{
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         flex-wrap: wrap;
         width: 100%;
     }
     .dish-categories{
-        width: 85%;
+        width: 80%;
+        margin-left: 1%;
     }
     .btn-row-card{
         display: flex;
