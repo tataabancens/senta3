@@ -23,11 +23,10 @@
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-
 <div class="page-container">
     <div class="recommendations">
         <c:if test="${isPresent}">
-            <h3 class="summary presentation-text">Otras personas tambien pidieron:</h3>
+            <h3 class="summary presentation-text"><spring:message code="Order.othercustomers"/>:</h3>
             <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="dish-card">
                 <div class="dish-img">
                     <c:if test="${recommendedDish.imageId > 0}">
@@ -126,7 +125,15 @@
 </html>
 
 <style>
-
+    .card.information{
+        display: flex;
+        margin-top: 2%;
+        align-items: center;
+        background-color: white;
+        height: 10%;
+        width: fit-content;
+        border-radius: .8rem;
+    }
     .text{
         color:  #707070
     }

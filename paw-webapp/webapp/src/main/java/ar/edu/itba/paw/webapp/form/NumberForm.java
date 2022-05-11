@@ -6,8 +6,7 @@ import javax.validation.constraints.Size;
 
 public class NumberForm {
 
-    @Size(min = 1, max = 4)
-    @Pattern(regexp = "[0-9]+")
+    @Pattern(regexp = "[1-9]|[1-3][0-9]")
     String number;
 
     public String getNumber() {

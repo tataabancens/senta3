@@ -26,7 +26,7 @@
                 <span class="card-title text price center"><spring:message code="Cancelreservation.confirm" arguments="${reservationId}"/> </span>
                 <div class="row margin-0">
                     <div class="col s12 center">
-                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}" var="postUrl"/>
+                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.cancel" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn plus-btn red" onclick="this.form.submit(); this.disabled=true;this.value='procesando'; ">

@@ -13,12 +13,14 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reservas</title>
+    <title>Senta3</title>
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<div class="header">
-    <h1 class="presentation-text header-title"><spring:message code="Reservation.active"/></h1>
+<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
+    <div class="restaurant-info" style="margin-left: 2%;">
+        <h1 class="presentation-text header-title"><spring:message code="Reservation.active"/></h1>
+    </div>
 </div>
 <div class="contentContainer">
     <div class="reservation-list">
@@ -30,6 +32,7 @@
                             <span class="presentation-text">${customer.customerName}</span>
                             <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
                             <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurantName}"/></p>
+                            <p  class="text description">${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
                             <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/></p>
                         </div>
                     </div>
@@ -62,7 +65,7 @@
 .card.horizontal{
     border-radius: .8rem;
     margin: 1%;
-    max-height: 20%;
+    max-height: 11rem;
     transition: 0.5s;
 }
 .reservation-list{

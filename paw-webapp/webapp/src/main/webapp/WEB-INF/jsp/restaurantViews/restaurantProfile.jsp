@@ -17,13 +17,15 @@
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
     <link href="<c:url value="https://fonts.googleapis.com/icon?family=Material+Icons"/>" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
-    <title>Perfil</title>
+    <title>Senta3</title>
 
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
-<div class="header">
-    <h1 class="presentation-text header-title"><spring:message code="Restaurant.profile"/></h1>
+<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
+    <div class="restaurant-info" style="margin-left: 2%;">
+        <h1 class="presentation-text header-title"><spring:message code="Restaurant.profile"/></h1>
+    </div>
 </div>
 <div class="contentContainer">
     <div class="info">
@@ -36,12 +38,12 @@
                 <span class="text description">${restaurant.totalChairs}</span>
             </div>
             <div>
-                <span class="presentation-text"><spring:message code="Restaurant.hour.open"/> </span>
-                <span class="text description">${restaurant.openHour}</span>
+                <span class="presentation-text"><spring:message code="Restaurant.hour.open"/></span>
+                <span class="text description">${restaurant.openHour}:00</span>
             </div>
             <div>
-                <span class="presentation-text"><spring:message code="Restaurant.hour.close"/> </span>
-                <span class="text description">${restaurant.closeHour}</span>
+                <span class="presentation-text"><spring:message code="Restaurant.hour.close"/></span>
+                <span class="text description">${restaurant.closeHour}:00</span>
             </div>
         </div>
         <div class="profile-field" style="display: flex; align-items:center; width: fit-content">
@@ -80,18 +82,6 @@
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>
-        <div class="profile-field" style="display: flex; align-items:center; width: fit-content">
-            <div class="restaurant-field">
-                <span class="presentation-text"><spring:message code="Register.password"/> </span>
-                <span class="text">restaurant no tiene el getter</span>
-            </div>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" style="margin-left: 10px;" href="">
-                <i class="material-icons info-field">edit</i>
-            </a>
-        </div>
-    </div>
-    <div class="imageContainer">
-        <img src="${pageContext.request.contextPath}/resources/images/masterchef.jpg" alt="imagen de restarante">
     </div>
 </div>
 </body>
@@ -170,6 +160,9 @@
         background-color: white;
     }
     .info-field i{
+        position: absolute;
+        top: 0;
+        right: 0;
         color: black;
     }
     .restaurant-field:hover .info-field{

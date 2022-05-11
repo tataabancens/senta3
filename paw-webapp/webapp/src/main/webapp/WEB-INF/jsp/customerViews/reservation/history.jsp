@@ -18,12 +18,14 @@
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
-    <title>Historial</title>
+    <title>Senta3</title>
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<div class="header">
-    <h1 class="presentation-text header-title"><spring:message code="History.title"/></h1>
+<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
+    <div class="restaurant-info" style="margin-left: 2%;">
+        <h1 class="presentation-text header-title"><spring:message code="History.title"/></h1>
+    </div>
 </div>
 <div class="contentContainer">
     <div class="points">
@@ -50,6 +52,7 @@
                             <p class="presentation-text">${reservation.customerName}</p>
                             <p class="text description">Personas: ${reservation.qPeople}</p>
                             <p class="text description">En ${reservation.restaurantName}</p>
+                            <p  class="text description">El ${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
                             <p  class="text description">A las ${reservation.reservationHour}</p>
                         </div>
                     </div>

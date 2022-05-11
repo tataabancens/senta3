@@ -15,7 +15,7 @@
 
 <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
-<title>Sentate-Registro</title>
+<title>Senta3</title>
 <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 
 <body>
@@ -27,26 +27,36 @@
     <form:form modelAttribute="confirmReservationForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
-                <span class="main-title"><spring:message code="Reservation.confirm.check"/></span>
-                <div class="input-field input">
-                    <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.mail" arguments="${customer.mail}"/></form:label>
+                <span class="presentation-text"><spring:message code="Reservation.confirm.check"/></span>
+                <div class="input-field input" style="margin-bottom: 1%">
+                    <form:errors path="mail" element="p" cssStyle="color:red"/>
+                    <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.mail"/></form:label>
+                    <form:input path="mail"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
                 </div>
-                <div class="input-field input">
-                    <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.phone" arguments="${customer.phone}"/></form:label>
+                <div class="input-field input" style="margin-bottom: 1%">
+                    <form:errors path="phone" element="p" cssStyle="color:red"/>
+                    <form:label path="phone" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.phone"/></form:label>
+                    <form:input path="phone"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
+
                 </div>
-                <div class="input-field input">
-                    <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.name" arguments="${customer.customerName}"/></form:label>
+                <div class="input-field input" style="margin-bottom: 8%">
+                    <form:errors path="name" element="p" cssStyle="color:red"/>
+                    <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.name"/></form:label>
+                    <form:input path="name"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
                 </div>
-                <div>
+                <div style="margin-bottom: 1%">
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.people" arguments="${reservation.qPeople}"/></form:label>
                 </div>
-                <div>
+                <div style="margin-bottom: 3%">
+                    <span style="font-family: Lato,sans-serif;font-size:20px"><spring:message code="Confirmreservation.date"/></span>
+                </div>
+                <div style="margin-bottom: 1%">
                     <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/></form:label>
                 </div>
                 <div class="submit center">
                     <spring:message code="Button.confirm" var="label"/>
                     <spring:message code="Button.loading" var="label2"/>
-                    <input type="submit" value="${label}" class="continue-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
+                    <input type="submit" value="${label}" class="btn confirm-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
                 </div>
             </div>
         </div>
@@ -57,6 +67,13 @@
 </html>
 
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 .card{
     border-radius: 16px;
     display: flex;

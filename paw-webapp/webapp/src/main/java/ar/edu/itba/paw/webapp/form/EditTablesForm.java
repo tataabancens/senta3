@@ -1,9 +1,17 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.form.CustomValidator.OpenCloseHoursConstraint;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+@OpenCloseHoursConstraint.List({
+        @OpenCloseHoursConstraint(
+                openHour = "openHour",
+                closeHour = "closeHour"
+        )
+        })
 public class EditTablesForm {
 
     @Size(min = 1, max = 4)
@@ -40,4 +48,12 @@ public class EditTablesForm {
     public void setCloseHour(String closeHour) {
         this.closeHour = closeHour;
     }
+
+    public String getErrorMessage() {
+        return "No puede abrir antes de cerrar!";
+    }
+    public EditTablesForm getThis() {
+        return this;
+    }
+
 }

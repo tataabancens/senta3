@@ -3,9 +3,10 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.ControllerService;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
@@ -29,25 +30,28 @@ import javax.validation.Valid;
 @Controller
 public class CustRegisterController {
 
-    private UserService us;
-    private CustomerService cs;
-    private ControllerService controllerService;
+    private final UserService us;
+    private final CustomerService cs;
 
     @Autowired
     protected AuthenticationManager authenticationManager;
 
 
     @Autowired
-    public CustRegisterController(final UserService us, final CustomerService cs, final ControllerService controllerService) {
+    public CustRegisterController(final UserService us, final CustomerService cs) {
         this.cs = cs;
         this.us = us;
-        this.controllerService = controllerService;
     }
 
     @RequestMapping(value = "/registerShort/{customerId}/{reservationId}", method = RequestMethod.GET)
     public ModelAndView userRegister(@PathVariable("customerId") final String customerIdP,
                                      @PathVariable("reservationId") final String reservationIdP,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
+
+        ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
+        Customer customer = cs.getUserByID(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
+
+        form.setMail(customer.getMail());
 
         ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
         mav.addObject("customerId", customerIdP);
@@ -61,17 +65,17 @@ public class CustRegisterController {
                                           @PathVariable("reservationId") final String reservationIdP,
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
-                                          HttpServletRequest request) throws Exception{
-        controllerService.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
+                                          final HttpServletRequest request) throws Exception{
+        ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
         long customerId = Long.parseLong(customerIdP);
 
         if (errors.hasErrors()){
             return userRegister(customerIdP, reservationIdP, form);
         }
-        User user = us.create(form.getUsername(), form.getPassword(), Roles.CUSTOMER);
+        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
         cs.linkCustomerToUserId(customerId, user.getId());
 
-        authenticateUserAndSetSession(form.getUsername(), form.getPassword(), request, authenticationManager);
+        authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
         return new ModelAndView("redirect:/menu?reservationId=" +  reservationIdP);
     }
@@ -88,21 +92,22 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
                                               final BindingResult errors,
-                                              HttpServletRequest request){
+                                              final HttpServletRequest request){
         if (errors.hasErrors()){
             return CustomerRegister(form);
         }
-        User user = us.create(form.getUsername(), form.getPassword(), Roles.CUSTOMER);
+        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
         Customer customer = cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
 
         cs.linkCustomerToUserId(customer.getCustomerId(), user.getId());
 
-        authenticateUserAndSetSession(form.getUsername(), form.getPassword(), request, authenticationManager);
+        authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
         return new ModelAndView("redirect:/" );
     }
 
-    public void authenticateUserAndSetSession(String username, String password, HttpServletRequest request, AuthenticationManager authenticationManager) {
+    public void authenticateUserAndSetSession(final String username, final String password, final HttpServletRequest request,
+                                              final AuthenticationManager authenticationManager) {
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 

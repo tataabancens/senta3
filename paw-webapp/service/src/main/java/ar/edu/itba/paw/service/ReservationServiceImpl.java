@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 import java.util.*;
@@ -109,7 +108,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
         List<FullReservation> reservations = reservationDao.getAllReservations(restaurantId);
-        Restaurant restaurant = restaurantDao.getRestaurantById(1).get();
+        Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
 
         List<ReservationStatus> ignoreStatus = new ArrayList<>();
         ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
@@ -151,8 +150,7 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
         if(qPeople > restaurant.getTotalChairs()){
-            //totalHours = new ArrayList<>();
-            return null;
+            return new ArrayList<>();
         } else {
             totalHours.removeAll(notAvailable);
         }
@@ -248,26 +246,31 @@ public class ReservationServiceImpl implements ReservationService {
         reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 1/31 * * * ?")
     @Transactional
     @Override
     public void checkReservationTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
         List<FullReservation> allReservations = getAllReservations(1);
         for(FullReservation reservation :allReservations){
-            if(now.getHour() > reservation.getReservationHour()){
-                if(reservation.getReservationStatus() == ReservationStatus.SEATED){
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
+            if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
+                updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            } else if (reservation.getStartedAtTime().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()){
+                updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+            } else {
+                if(now.getHour() > reservation.getReservationHour()){
+                    if(reservation.getReservationStatus() == ReservationStatus.SEATED){
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CHECK_ORDERED);
+                    }
+                    if(reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED && reservation.getReservationStatus() != ReservationStatus.FINISHED){
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                    }
                 }
-                if(reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED && reservation.getReservationStatus() != ReservationStatus.FINISHED){
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
-                }
-            }
-            if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
-                    updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
+                    if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
+                        updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                    }
                 }
             }
         }

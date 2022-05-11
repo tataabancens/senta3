@@ -11,13 +11,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&family=Quicksand:wght@600&display=swap" rel="stylesheet">
-    <title>Perfil</title>
+    <title>Senta3</title>
 
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<div class="header">
-    <h1 class="presentation-text header-title"><spring:message code="Customer.profile"/></h1>
+<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
+    <div class="restaurant-info" style="margin-left: 2%;">
+        <h1 class="presentation-text header-title"><spring:message code="Customer.profile"/></h1>
+    </div>
 </div>
 <div class="contentContainer">
     <div class="info">
@@ -54,14 +56,6 @@
                 <span class="text description">${username}</span>
             </div>
             <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editUsername" />">
-                <i class="material-icons info-field">edit</i>
-            </a>
-        </div>
-        <div class="profile-field" style="display: flex; align-items:center; width: fit-content">
-            <div class="restaurant-field">
-                <span class="presentation-text"><spring:message code="Customer.pass"/></span>
-            </div>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" href="<c:url value="/profile/editPassword" />">
                 <i class="material-icons info-field">edit</i>
             </a>
         </div>

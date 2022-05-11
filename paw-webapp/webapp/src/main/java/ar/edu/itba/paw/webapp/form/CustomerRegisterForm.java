@@ -1,5 +1,9 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.model.PasswordPair;
+import ar.edu.itba.paw.webapp.form.CustomValidator.PasswordConstraint;
+import ar.edu.itba.paw.webapp.form.CustomValidator.PasswordLengthConstraint;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -9,15 +13,21 @@ public class CustomerRegisterForm {
     @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String mail;
 
+    @Size(min = 1, max = 50)
+    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String username;
 
     @Size(min = 1, max = 50)
-    @Pattern(regexp = "^[a-zA-Z ,.'-]+$")
+    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String customerName;
 
+    @Size(min = 9, max = 13)
+    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
 
-    private String password;
+    @PasswordLengthConstraint
+    @PasswordConstraint
+    private PasswordPair psPair;
 
     public String getUsername() {
         return username;
@@ -51,11 +61,11 @@ public class CustomerRegisterForm {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
+    public PasswordPair getPsPair() {
+        return psPair;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPsPair(PasswordPair psPair) {
+        this.psPair = psPair;
     }
 }

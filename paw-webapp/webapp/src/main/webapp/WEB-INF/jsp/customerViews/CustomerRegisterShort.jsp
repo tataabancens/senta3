@@ -13,7 +13,7 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registro</title>
+    <title>Senta3</title>
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
@@ -24,29 +24,46 @@
             <c:url value="/registerShort/${customerId}/${reservationId}" var="postPath"/>
             <form:form modelAttribute="customerRegisterShortForm" action="${postPath}" method="post">
                 <div class="input-field col s12 input">
+                    <div class="input-field input" style="margin-bottom: 1%">
+                        <form:errors path="mail" element="p" cssStyle="color:red"/>
+                        <form:label path="mail" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.mail"/></form:label>
+                        <form:input path="mail"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
+                    </div>
                     <div>
                         <form:errors path="username" element="p" cssStyle="color:red"/>
                         <form:label path="username" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.user"/></form:label>
                         <form:input path="username" type="text"/>
                     </div>
                     <div>
-                        <form:errors path="password" element="p" cssStyle="color:red"/>
-                        <form:label path="password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
-                        <form:input path="password" type="password"/>
+                        <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                        <form:label path="psPair.password" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                        <form:input path="psPair.password" type="password"/>
+                    </div>
+                    <div>
+                        <form:errors path="psPair" element="p" cssStyle="color:red"/>
+                        <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                        <form:input path="psPair.checkPassword" type="password"/>
                     </div>
                 </div>
                 <spring:message code="Button.continue" var="label"/>
-                <input type="submit" value="${label}" class="continue-btn"/>
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
             </form:form>
         </div>
 </div>
 </body>
 </html>
 <style>
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .content{
         display: flex;
         justify-content: center;
-        margin-top: 5%;
+        margin-top: 30px;
     }
     .presentation-text{
         font-size: clamp(1.3rem,2.5em,9rem);
