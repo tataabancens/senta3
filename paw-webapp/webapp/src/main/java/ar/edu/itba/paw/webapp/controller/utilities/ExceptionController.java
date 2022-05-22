@@ -42,18 +42,18 @@ public class ExceptionController {
         return new ModelAndView("error/imageNotFound");
     }
 
-    /*
-    @ExceptionHandler(OrderByException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ModelAndView handleOrderByException(){
-        return new ModelAndView("error/imageNotFound");
-    }
     @ExceptionHandler(LongParseException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ModelAndView handleLongParseException(){
-        return new ModelAndView("error/imageNotFound");
+        return new ModelAndView("error/error404");
     }
-     */
+
+    @ExceptionHandler(OrderByException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView handleorderByParseException(){
+        return new ModelAndView("error/error404");
+    }
+
 
 
 }
