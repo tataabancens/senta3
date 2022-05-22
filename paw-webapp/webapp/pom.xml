@@ -112,7 +112,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
     </dependency>
-  </dependencies>
+  </dependencies>º
 
   <build>
     <finalName>webapp</finalName>
