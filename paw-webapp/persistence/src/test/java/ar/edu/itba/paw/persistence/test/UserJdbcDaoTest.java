@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.persistence.UserJdbcDao;
+import ar.edu.itba.paw.persistence.jdbc.UserJdbcDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;

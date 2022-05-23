@@ -1,12 +1,11 @@
 package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
-import ar.edu.itba.paw.persistence.DishJdbcDao;
-import ar.edu.itba.paw.persistence.ReservationJdbcDao;
+import ar.edu.itba.paw.persistence.jdbc.DishJdbcDao;
+import ar.edu.itba.paw.persistence.jdbc.ReservationJdbcDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -163,7 +162,7 @@ public class DishJdbcDaoTest {
         cleanAllTables();
 
         // 2. Ejercitacion
-        Dish dish = dishDao.create(1, "Empanada", "sin pasas de uva", 100, 1, MAIN_DISH);
+        Dish dish = dishDao.create(null, "Empanada", "sin pasas de uva", 100, 1, MAIN_DISH);
 
         // 3. PostCondiciones
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, DISH_TABLE));

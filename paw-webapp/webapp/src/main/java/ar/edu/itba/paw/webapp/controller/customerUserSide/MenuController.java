@@ -44,9 +44,11 @@ public class MenuController {
         LOGGER.info("Attempting to show menu");
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
-        restaurant.setDishes(dishes);
+        // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
+        //restaurant.setDishes(dishes);
+
         mav.addObject("restaurant", restaurant);
+        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
         mav.addObject("categories", DishCategory.getAsList());
         mav.addObject("currentCategory", DishCategory.valueOf(category));
         return mav;
@@ -61,8 +63,8 @@ public class MenuController {
 
 
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
-        restaurant.setDishes(dishes);
+//        deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
+//        restaurant.setDishes(dishes);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
@@ -76,7 +78,7 @@ public class MenuController {
         final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
         mav.addObject("restaurant", restaurant);
-//        mav.addObject("dish", dishes);
+        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
         mav.addObject("customer", customer);
         mav.addObject("categories", DishCategory.getAsList());
         mav.addObject("currentCategory", DishCategory.valueOf(category));

@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class UserJdbcDao implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;

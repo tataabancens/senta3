@@ -13,17 +13,17 @@ public interface RestaurantService {
 
     Restaurant create(String restaurantName, String phone, String mail);
 
-    List<Dish> getRestaurantDishes(long id);
+    void updateRestaurantHourAndTables(Restaurant restaurant, int newMaxTables, int openHour, int closeHour);
 
-    void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int openHour, int closeHour);
+    void updateRestaurantName(Restaurant restaurant, String name);
 
-    void updateRestaurantName(String name, long restaurantId);
+    void updateRestaurantEmail(Restaurant restaurant, String mail);
 
-    void updateRestaurantEmail(String mail, long restaurantId);
-
-    void updatePhone(String phone, long restaurantId);
+    public void updatePhone(Restaurant restaurant, String phone);
 
     Optional<Restaurant> getRestaurantByUsername(String username);
 
-    List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category);
+    Dish createDish(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category);
+
+    void deleteDish(Restaurant restaurant, long dishId);
 }

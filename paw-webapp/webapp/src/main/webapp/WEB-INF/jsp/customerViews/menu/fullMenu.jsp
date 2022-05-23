@@ -183,7 +183,7 @@
             <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
         </div>
         <div class="dishList">
-            <c:forEach var="dish" items="${restaurant.dishes}">
+            <c:forEach var="dish" items="${dishes}">
                 <c:if test="${unavailable.contains(dish.id)}">
                 <div class="card horizontal">
                     <div class="card-image">

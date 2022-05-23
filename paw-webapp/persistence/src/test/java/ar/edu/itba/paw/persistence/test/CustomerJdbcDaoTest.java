@@ -2,8 +2,8 @@ package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.enums.Roles;
-import ar.edu.itba.paw.persistence.CustomerJdbcDao;
-import ar.edu.itba.paw.persistence.UserJdbcDao;
+import ar.edu.itba.paw.persistence.jdbc.CustomerJdbcDao;
+import ar.edu.itba.paw.persistence.jdbc.UserJdbcDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,6 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 

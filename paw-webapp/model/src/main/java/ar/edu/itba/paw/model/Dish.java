@@ -3,21 +3,68 @@ package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.DishCategory;
 
+import javax.persistence.*;
+
+@Entity
 public class Dish {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dish_dishid_seq")
+    @SequenceGenerator(sequenceName = "dish_dishid_seq", name = "dish_dishid_seq", allocationSize = 1)
+    @Column(name = "dishid")
     private long id;
-    private long restaurantId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "restaurantid", nullable = false)
+    private Restaurant restaurant;
+
+    @Deprecated
+    //private long restaurantId;
+
+    @Column(length = 100, nullable = false)
     private String dishName;
+
+
+    @Column(nullable = false)
     private int price;
+
+    @Column(nullable = false, length = 200)
     private String dishDescription;
+
+
+    @Column(nullable = false)
     private long imageId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
     private DishCategory category;
 
+    public void setCategory(DishCategory category) {
+        this.category = category;
+    }
+
+    @Deprecated
     public Dish(long id, long restaurantId, String dishName,
                 int price, String dishDescription,
                 long imageId, DishCategory category) {
         super();
         this.id = id;
-        this.restaurantId = restaurantId;
+        //this.restaurantId = restaurantId;
+        this.dishName = dishName;
+        this.price = price;
+        this.dishDescription = dishDescription;
+        this.imageId = imageId;
+        this.category = category;
+    }
+
+    /* default */ Dish() {
+        // Just for hibernate
+    }
+
+    public Dish(Restaurant restaurant, String dishName,
+                int price, String dishDescription,
+                long imageId, DishCategory category) {
+        super();
+        this.restaurant = restaurant;
         this.dishName = dishName;
         this.price = price;
         this.dishDescription = dishDescription;
@@ -39,7 +86,7 @@ public class Dish {
     }
 
     public long getRestaurantId() {
-        return restaurantId;
+        return restaurant.getId();
     }
 
     public String getDishName() {
@@ -55,7 +102,7 @@ public class Dish {
     }
 
     public void setRestaurantId(long restaurantId) {
-        this.restaurantId = restaurantId;
+        this.restaurant.setId(restaurantId);
     }
 
     public void setDishName(String dishName) {
@@ -78,7 +125,11 @@ public class Dish {
         return category;
     }
 
-    public void setCategory(DishCategory category) {
-        this.category = category;
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }
