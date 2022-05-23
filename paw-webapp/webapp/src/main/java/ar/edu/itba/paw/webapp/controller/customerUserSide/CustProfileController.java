@@ -70,7 +70,7 @@ public class CustProfileController {
         String username = principal.getName();
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer.getCustomerId(), form.getName(), customer.getPhone(), customer.getMail());
+        cs.updateCustomerData(customer, form.getName(), customer.getPhone(), customer.getMail());
 
         return new ModelAndView("redirect:/profile");
     }
@@ -98,7 +98,7 @@ public class CustProfileController {
         String username = principal.getName();
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer.getCustomerId(), customer.getCustomerName(), form.getPhone(), customer.getMail());
+        cs.updateCustomerData(customer, customer.getCustomerName(), form.getPhone(), customer.getMail());
 
         return new ModelAndView("redirect:/profile");
     }
@@ -127,7 +127,7 @@ public class CustProfileController {
         String username = principal.getName();
 
         Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer.getCustomerId(), customer.getCustomerName(), customer.getPhone(), form.getMail());
+        cs.updateCustomerData(customer, customer.getCustomerName(), customer.getPhone(), form.getMail());
 
         return new ModelAndView("redirect:/profile");
     }

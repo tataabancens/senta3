@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -300,10 +299,10 @@ public class ReservationServiceImpl implements ReservationService {
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
-            Customer customer = customerService.getUserByID(reservation.getCustomerId()).get();
+            Customer customer = customerService.getCustomerById(reservation.getCustomerId()).get();
 
             if (customer.getPoints() >= POINTS_TO_DISCOUNT) {
-                customerService.addPointsToCustomer(customer.getCustomerId(), -POINTS_TO_DISCOUNT);
+                customerService.addPointsToCustomer(customer, -POINTS_TO_DISCOUNT);
                 reservationDao.applyDiscount(reservationId);
             }
         }
@@ -315,8 +314,9 @@ public class ReservationServiceImpl implements ReservationService {
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
+            Customer customer = customerService.getCustomerById(reservation.getCustomerId()).get();
 
-            customerService.addPointsToCustomer(reservation.getCustomerId(), POINTS_TO_DISCOUNT);
+            customerService.addPointsToCustomer(customer, POINTS_TO_DISCOUNT);
             reservationDao.cancelDiscount(reservationId);
         }
     }
