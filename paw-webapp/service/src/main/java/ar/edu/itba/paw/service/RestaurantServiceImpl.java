@@ -31,24 +31,30 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantDao.create(restaurantName, phone, mail);
     }
 
+    @Transactional
     @Override
-    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour) {
-        restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
+    public void updateRestaurantHourAndTables(Restaurant restaurant, int newTotalChairs, int newOpenHour, int newCloseHour) {
+        restaurant.setTotalChairs(newTotalChairs);
+        restaurant.setOpenHour(newOpenHour);
+        restaurant.setCloseHour(newCloseHour);
     }
 
+    @Transactional
     @Override
-    public void updateRestaurantName(String name, long restaurantId) {
-        restaurantDao.updateRestaurantName(name, restaurantId);
+    public void updateRestaurantName(Restaurant restaurant, String name) {
+        restaurant.setRestaurantName(name);
     }
 
+    @Transactional
     @Override
-    public void updateRestaurantEmail(String mail, long restaurantId) {
-        restaurantDao.updateRestaurantEmail(mail, restaurantId);
+    public void updateRestaurantEmail(Restaurant restaurant, String mail) {
+        restaurant.setMail(mail);
     }
 
+    @Transactional
     @Override
-    public void updatePhone(String phone, long restaurantId) {
-        restaurantDao.updatePhone(phone, restaurantId);
+    public void updatePhone(Restaurant restaurant, String phone) {
+        restaurant.setPhone(phone);
     }
 
     @Override

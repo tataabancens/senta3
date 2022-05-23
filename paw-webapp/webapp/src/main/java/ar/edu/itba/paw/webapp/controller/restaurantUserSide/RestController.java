@@ -93,8 +93,9 @@ public class RestController {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
-        rs.updateRestaurantHourAndTables(restaurantId,  Integer.parseInt(form.getTableQty()),
+        rs.updateRestaurantHourAndTables(restaurant,  Integer.parseInt(form.getTableQty()),
                                                         Integer.parseInt(form.getOpenHour()),
                                                         Integer.parseInt(form.getCloseHour()));
 
@@ -127,8 +128,8 @@ public class RestController {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
-
-        rs.updateRestaurantName(form.getName(), restaurantId);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        rs.updateRestaurantName(restaurant, form.getName());
 
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
@@ -159,8 +160,9 @@ public class RestController {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
-        rs.updatePhone(form.getPhone(), restaurantId);
+        rs.updatePhone(restaurant, form.getPhone());
 
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
@@ -191,8 +193,8 @@ public class RestController {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
-
-        rs.updateRestaurantEmail(form.getMail(), restaurantId);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        rs.updateRestaurantEmail(restaurant, form.getMail());
 
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }

@@ -13,13 +13,13 @@ public interface RestaurantService {
 
     Restaurant create(String restaurantName, String phone, String mail);
 
-    void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int openHour, int closeHour);
+    void updateRestaurantHourAndTables(Restaurant restaurant, int newMaxTables, int openHour, int closeHour);
 
-    void updateRestaurantName(String name, long restaurantId);
+    void updateRestaurantName(Restaurant restaurant, String name);
 
-    void updateRestaurantEmail(String mail, long restaurantId);
+    void updateRestaurantEmail(Restaurant restaurant, String mail);
 
-    void updatePhone(String phone, long restaurantId);
+    public void updatePhone(Restaurant restaurant, String phone);
 
     Optional<Restaurant> getRestaurantByUsername(String username);
 

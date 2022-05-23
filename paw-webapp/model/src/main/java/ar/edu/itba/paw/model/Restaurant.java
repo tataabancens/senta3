@@ -27,6 +27,10 @@ public class Restaurant {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
     private List<Dish> dishes;
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "userid")
+    private User user;
+
     @Column(nullable = false)
     private Integer totalChairs;
 
@@ -35,6 +39,14 @@ public class Restaurant {
 
     @Column(nullable = false)
     private Integer closeHour;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
 
     /* default */ Restaurant() {
         // Just for hibernate
