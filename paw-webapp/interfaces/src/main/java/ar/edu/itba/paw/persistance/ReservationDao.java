@@ -17,7 +17,7 @@ public interface ReservationDao {
 
     List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList);
 
-    Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople, Timestamp startedAtTime);
+    Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople, Timestamp startedAtTime);
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
@@ -37,9 +37,9 @@ public interface ReservationDao {
 
     void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
 
-    List<FullReservation> getAllReservations(long restaurantId);
+    List<Reservation> getAllReservations(long restaurantId);
 
-    List<FullReservation> getReservationsByCustomerId(long customerId);
+    List<Reservation> getReservationsByCustomerId(long customerId);
 
     void updateReservationById(long reservationId, long customerId, long hour, int qPeople);
 
@@ -47,10 +47,10 @@ public interface ReservationDao {
 
     void cancelDiscount(long reservationId);
 
-    List<FullReservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList);
+    List<Reservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList);
 
     List<FullOrderItem> getAllOrderItems();
 
-    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
+    List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 }
 

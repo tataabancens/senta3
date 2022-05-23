@@ -3,7 +3,6 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,7 @@ public interface ReservationService {
 
     List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
-    Reservation createReservation(long restaurantId, long customerId, int reservationHour, int qPeople);
+    Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople);
 
     float getTotal(List<FullOrderItem> orderItems);
 
@@ -27,7 +26,7 @@ public interface ReservationService {
 
     void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus);
 
-    void updateReservationStatus(long reservationId, ReservationStatus newStatus);
+    void updateReservationStatus(Reservation reservation, ReservationStatus newStatus);
 
     void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
 
@@ -37,7 +36,7 @@ public interface ReservationService {
 
     List<Long> getUnavailableItems(long reservationId);
 
-    List<FullReservation> getAllReservations(long restaurantId);
+    List<Reservation> getAllReservations(long restaurantId);
 
     Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 
@@ -45,7 +44,7 @@ public interface ReservationService {
 
     List<FullOrderItem> getAllOrderItemsByReservationId(long reservationId);
 
-    List<FullReservation> getReservationsByCustomerId(long customerId);
+    List<Reservation> getReservationsByCustomerId(long customerId);
 
     void updateReservationById(long reservationId, long customerId, long hour, int getqPeople);
 
@@ -65,9 +64,9 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
-    List<FullReservation> getReservationsByCustomerIdAndActive(long customerId);
+    List<Reservation> getReservationsByCustomerIdAndActive(long customerId);
 
-    List<FullReservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
+    List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
     boolean isFromOrder(String isFromOrderP);
 }

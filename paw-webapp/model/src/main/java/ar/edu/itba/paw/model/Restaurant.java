@@ -24,8 +24,11 @@ public class Restaurant {
     @Column(length = 50, nullable = false)
     private String mail;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
-    private List<Dish> dishes;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dish> dishes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userid")
@@ -77,6 +80,7 @@ public class Restaurant {
         dishes.add(dish);
         return dish;
     }
+
     public void deleteDish(long dishId) {
         dishes.removeIf(d -> d.getId() == dishId);
     }
@@ -154,4 +158,11 @@ public class Restaurant {
         this.closeHour = closeHour;
     }
 
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 }

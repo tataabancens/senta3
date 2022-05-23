@@ -36,7 +36,7 @@
                     <div class="btn-row">
                         <sec:authorize access="!isAuthenticated()">
                             <div class="center">
-                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customer.customerId}/${reservation.reservationId}"/>"><spring:message code="Button.register"/></a>
                                 <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.reservationId}"/>"><spring:message code="Button.no.register"/></a>
                             </div>
                         </sec:authorize>

@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -27,6 +29,8 @@ public class Customer {
     @JoinColumn(name = "userid")
     private User user;
 
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 
     /* default */ Customer() {
         // Just for hibernate
@@ -49,7 +53,6 @@ public class Customer {
 //        this.userId = userId;
     }
 
-    @Deprecated
     public Customer(long customerId, String customerName, String phone, String mail, int points) {
         this.customerId = customerId;
         this.customerName = customerName;
@@ -121,5 +124,13 @@ public class Customer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

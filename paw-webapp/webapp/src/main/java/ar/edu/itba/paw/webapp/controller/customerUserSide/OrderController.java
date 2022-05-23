@@ -77,7 +77,7 @@ public class OrderController {
         res.createOrderItemByReservationId(reservationId, dish, form.getOrderItem().getQuantity());
 
         if (isFromOrder) {
-            return new ModelAndView("redirect:/order/send-food?reservationId=" + reservationId + "&restaurantId=" + reservation.getRestaurantId());
+            return new ModelAndView("redirect:/order/send-food?reservationId=" + reservationId + "&restaurantId=" + reservation.getRestaurant().getId());
         }
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
@@ -173,12 +173,12 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Customer customer = cs.getCustomerById(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getCustomerId()).orElseThrow(CustomerNotFoundException::new);
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
 
         cs.addPointsToCustomer(customer, res.getTotal(orderItems));
 
-        res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
+        res.updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
 
         return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId + "&points=" + cs.getPoints(res.getTotal(orderItems)));

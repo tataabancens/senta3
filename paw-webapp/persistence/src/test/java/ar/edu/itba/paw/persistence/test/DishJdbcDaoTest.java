@@ -5,7 +5,7 @@ import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistence.jdbc.DishJdbcDao;
-import ar.edu.itba.paw.persistence.jdbc.ReservationJdbcDao;
+import ar.edu.itba.paw.persistence.jpa.ReservationJpaDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class DishJdbcDaoTest {
     private static final String RESTAURANT_TABLE = "restaurant";
     private static final String DISH_TABLE = "dish";
 
-    private ReservationJdbcDao reservationDao;
+    private ReservationJpaDao reservationDao;
     private DishJdbcDao dishDao;
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsertReservation;
