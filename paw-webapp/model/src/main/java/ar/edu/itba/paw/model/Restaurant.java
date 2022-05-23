@@ -27,7 +27,7 @@ public class Restaurant {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
     private List<Dish> dishes;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userid")
     private User user;
 

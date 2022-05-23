@@ -6,6 +6,7 @@ import ar.edu.itba.paw.persistance.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,16 +22,19 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     @Override
     public Optional<User> getUserByID(long id) {
         return userDao.getUserById(id);
     }
 
+    @Transactional
     @Override
     public User create(String username, String password, Roles role) {
         return userDao.create(username, passwordEncoder.encode(password), role);
     }
 
+    @Transactional
     @Override
     public Optional<User> findByName(String username) {
         return userDao.findByName(username);

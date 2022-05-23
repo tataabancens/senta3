@@ -26,6 +26,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantDao.getRestaurantById(id);
     }
 
+    @Transactional
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {
         return restaurantDao.create(restaurantName, phone, mail);
@@ -57,6 +58,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setPhone(phone);
     }
 
+    @Transactional
     @Override
     public Optional<Restaurant> getRestaurantByUsername(String username) {
         return restaurantDao.getRestaurantByUsername(username);

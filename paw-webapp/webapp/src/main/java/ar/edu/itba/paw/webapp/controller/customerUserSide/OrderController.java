@@ -173,10 +173,10 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
         List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
 
-        cs.addPointsToCustomer(customer.getCustomerId(), res.getTotal(orderItems));
+        cs.addPointsToCustomer(customer, res.getTotal(orderItems));
 
         res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
         res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
