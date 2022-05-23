@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.persistance.CustomerDao;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class CustomerJdbcDao implements CustomerDao {
 
     private final JdbcTemplate jdbcTemplate;

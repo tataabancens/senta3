@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,43 +26,53 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantDao.getRestaurantById(id);
     }
 
+    @Transactional
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {
         return restaurantDao.create(restaurantName, phone, mail);
     }
 
+    @Transactional
     @Override
-    public List<Dish> getRestaurantDishes(long id) {
-        return restaurantDao.getRestaurantDishes(id);
+    public void updateRestaurantHourAndTables(Restaurant restaurant, int newTotalChairs, int newOpenHour, int newCloseHour) {
+        restaurant.setTotalChairs(newTotalChairs);
+        restaurant.setOpenHour(newOpenHour);
+        restaurant.setCloseHour(newCloseHour);
     }
 
+    @Transactional
     @Override
-    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
-        return restaurantDao.getRestaurantDishesByCategory(restaurantId, category);
+    public void updateRestaurantName(Restaurant restaurant, String name) {
+        restaurant.setRestaurantName(name);
     }
 
+    @Transactional
     @Override
-    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour) {
-        restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
+    public void updateRestaurantEmail(Restaurant restaurant, String mail) {
+        restaurant.setMail(mail);
     }
 
+    @Transactional
     @Override
-    public void updateRestaurantName(String name, long restaurantId) {
-        restaurantDao.updateRestaurantName(name, restaurantId);
+    public void updatePhone(Restaurant restaurant, String phone) {
+        restaurant.setPhone(phone);
     }
 
-    @Override
-    public void updateRestaurantEmail(String mail, long restaurantId) {
-        restaurantDao.updateRestaurantEmail(mail, restaurantId);
-    }
-
-    @Override
-    public void updatePhone(String phone, long restaurantId) {
-        restaurantDao.updatePhone(phone, restaurantId);
-    }
-
+    @Transactional
     @Override
     public Optional<Restaurant> getRestaurantByUsername(String username) {
         return restaurantDao.getRestaurantByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public Dish createDish(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category){
+        return restaurant.createDish(dishName, dishDescription, price, imageId, category);
+    }
+
+    @Transactional
+    @Override
+    public void deleteDish(Restaurant restaurant, long dishId) {
+        restaurant.deleteDish(dishId);
     }
 }

@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.*;
 
-@Repository
+//@Repository
 public class RestaurantJdbcDao implements RestaurantDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -85,26 +85,26 @@ public class RestaurantJdbcDao implements RestaurantDao {
         return query;
     }
 
-    @Override
-    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHOur) {
-        jdbcTemplate.update("UPDATE restaurant SET totalChairs = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
-            new Object[]{newMaxTables, newOpenHour, newCloseHOur, restaurantId});
-    }
-
-    @Override
-    public void updateRestaurantName(String name, long restaurantId) {
-        jdbcTemplate.update("UPDATE restaurant SET restaurantname = ? WHERE restaurantId = ?", new Object[]{name, restaurantId});
-    }
-
-    @Override
-    public void updateRestaurantEmail(String mail, long restaurantId) {
-        jdbcTemplate.update("UPDATE restaurant SET maul = ? WHERE restaurantId = ?", new Object[]{mail, restaurantId});
-    }
-
-    @Override
-    public void updatePhone(String phone, long restaurantId) {
-        jdbcTemplate.update("UPDATE restaurant SET phone = ? WHERE restaurantId = ?", new Object[]{phone, restaurantId});
-    }
+//    @Override
+//    public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHOur) {
+//        jdbcTemplate.update("UPDATE restaurant SET totalChairs = ?, openHour = ?, closeHour = ? WHERE restaurantId = ?",
+//            new Object[]{newMaxTables, newOpenHour, newCloseHOur, restaurantId});
+//    }
+//
+//    @Override
+//    public void updateRestaurantName(String name, long restaurantId) {
+//        jdbcTemplate.update("UPDATE restaurant SET restaurantname = ? WHERE restaurantId = ?", new Object[]{name, restaurantId});
+//    }
+//
+//    @Override
+//    public void updateRestaurantEmail(String mail, long restaurantId) {
+//        jdbcTemplate.update("UPDATE restaurant SET maul = ? WHERE restaurantId = ?", new Object[]{mail, restaurantId});
+//    }
+//
+//    @Override
+//    public void updatePhone(String phone, long restaurantId) {
+//        jdbcTemplate.update("UPDATE restaurant SET phone = ? WHERE restaurantId = ?", new Object[]{phone, restaurantId});
+//    }
 
 
     @Override

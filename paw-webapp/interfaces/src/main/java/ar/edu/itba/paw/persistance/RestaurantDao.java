@@ -15,14 +15,6 @@ public interface RestaurantDao {
 
     List<Dish> getRestaurantDishes(long restaurantId);
 
-    void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour);
-
-    void updateRestaurantName(String name, long restaurantId);
-
-    void updateRestaurantEmail(String mail, long restaurantId);
-
-    void updatePhone(String phone, long restaurantId);
-
     Optional<Restaurant> getRestaurantByUsername(String username);
 
     List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category);

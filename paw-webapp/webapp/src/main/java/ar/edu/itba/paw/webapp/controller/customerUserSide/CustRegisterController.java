@@ -49,7 +49,7 @@ public class CustRegisterController {
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
         ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
-        Customer customer = cs.getUserByID(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
 
         form.setMail(customer.getMail());
 
@@ -73,7 +73,8 @@ public class CustRegisterController {
             return userRegister(customerIdP, reservationIdP, form);
         }
         User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        cs.linkCustomerToUserId(customerId, user.getId());
+        Customer customer = cs.getCustomerById(customerId).orElseThrow(CustomerNotFoundException::new);
+        cs.linkCustomerToUserId(customer, user);
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
@@ -99,7 +100,7 @@ public class CustRegisterController {
         User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
         Customer customer = cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
 
-        cs.linkCustomerToUserId(customer.getCustomerId(), user.getId());
+        cs.linkCustomerToUserId(customer, user);
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 

@@ -1,16 +1,18 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-public class DishServiceImpl implements DishService{
+public class DishServiceImpl implements DishService {
 
     private final DishDao dishDao;
     private final ImageDao imageDao;
@@ -26,14 +28,13 @@ public class DishServiceImpl implements DishService{
         return dishDao.getDishById(id);
     }
 
+    @Transactional
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category){
-        return dishDao.create(restaurantId, dishName, dishDescription, price, imageId, category);
-    }
-
-    @Override
-    public void updateDish(long dishId, String dishName, String dishDescription, double price, DishCategory category, long restaurantId) {
-        dishDao.updateDish(dishId, dishName, dishDescription, price, category, restaurantId);
+    public void updateDish(Dish dish, String dishName, String dishDescription, double price, DishCategory category) {
+        dish.setDishName(dishName);
+        dish.setDishDescription(dishDescription);
+        dish.setPrice((int) price);
+        dish.setCategory(category);
     }
 
     @Override
