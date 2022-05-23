@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class CustomerJdbcDao implements CustomerDao {
 
     private final JdbcTemplate jdbcTemplate;

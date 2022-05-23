@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.persistance.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,16 +19,19 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerDao = customerDao;
     }
 
+    @Transactional
     @Override
     public Optional<Customer> getUserByID(long id) {
         return customerDao.getCustomerById(id);
     }
 
+    @Transactional
     @Override
     public Customer create(String customerName, String phone, String mail) {
         return customerDao.create(customerName, phone, mail);
     }
 
+    @Transactional
     @Override
     public Optional<Customer> getCustomerByUsername(String username) {
         return customerDao.getCustomerByUsername(username);
@@ -38,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerDao.addPointsToCustomer(customerId, getPoints(total));
     }
 
+    @Transactional
     @Override
     public Customer create(String customerName, String phone, String mail, long id) {
         return customerDao.create(customerName, phone, mail, id);
