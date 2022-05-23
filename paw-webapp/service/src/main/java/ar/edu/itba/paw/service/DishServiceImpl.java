@@ -34,10 +34,14 @@ public class DishServiceImpl implements DishService{
         return dishDao.create(restaurant, dishName, dishDescription, price, imageId, category);
     }
 
+    @Transactional
     @Override
     public void updateDish(Dish dish, String dishName, String dishDescription, double price, DishCategory category) {
         //deprecated dishDao.updateDish(dishId, dishName, dishDescription, price, category, restaurantId);
-
+        dish.setDishName(dishName);
+        dish.setDishDescription(dishDescription);
+        dish.setPrice((int) price);
+        dish.setCategory(category);
     }
 
     @Override

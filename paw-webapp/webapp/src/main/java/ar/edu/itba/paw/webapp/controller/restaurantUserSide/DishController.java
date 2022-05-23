@@ -152,8 +152,8 @@ public class DishController {
         long dishId = Long.parseLong(dishIdP);
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-        //ds.updateDish(dish, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  form.getCategory());
-        dish.setDishName(form.getDishName());
+        ds.updateDish(dish, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  form.getCategory());
+
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
     }
 }
