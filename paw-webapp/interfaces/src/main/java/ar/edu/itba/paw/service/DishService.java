@@ -10,8 +10,6 @@ public interface DishService {
 
     Optional<Dish> getDishById(long id);
 
-    Dish create(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category);
-
     void updateDish(Dish dish, String dishName, String dishDescription, double price, DishCategory category);
 
     void updateDishPhoto(long dishId, long imageId);

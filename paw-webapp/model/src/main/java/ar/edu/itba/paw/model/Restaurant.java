@@ -24,7 +24,7 @@ public class Restaurant {
     @Column(length = 50, nullable = false)
     private String mail;
 
-    @OneToMany(mappedBy = "restaurant", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
     private List<Dish> dishes;
 
     @Column(nullable = false)
@@ -59,6 +59,14 @@ public class Restaurant {
         this.totalChairs = totalChairs;
         this.openHour = openHour;
         this.closeHour = closeHour;
+    }
+    public Dish createDish(String dishName, String dishDescription, double price, long imageId, DishCategory category) {
+        Dish dish = new Dish(this, dishName, (int) price,  dishDescription, imageId, category);
+        dishes.add(dish);
+        return dish;
+    }
+    public void deleteDish(long dishId) {
+        dishes.removeIf(d -> d.getId() == dishId);
     }
 
     public String getRestaurantName() {
@@ -133,4 +141,5 @@ public class Restaurant {
     public void setCloseHour(Integer closeHour) {
         this.closeHour = closeHour;
     }
+
 }

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +32,6 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Dish> getRestaurantDishes(long id) {
-        return restaurantDao.getRestaurantDishes(id);
-    }
-
-    @Override
-    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
-        return restaurantDao.getRestaurantDishesByCategory(restaurantId, category);
-    }
-
-    @Override
     public void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int newOpenHour, int newCloseHour) {
         restaurantDao.updateRestaurantHourAndTables(restaurantId, newMaxTables, newOpenHour, newCloseHour);
     }
@@ -63,5 +54,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Optional<Restaurant> getRestaurantByUsername(String username) {
         return restaurantDao.getRestaurantByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public Dish createDish(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category){
+        return restaurant.createDish(dishName, dishDescription, price, imageId, category);
+    }
+
+    @Transactional
+    @Override
+    public void deleteDish(Restaurant restaurant, long dishId) {
+        restaurant.deleteDish(dishId);
     }
 }

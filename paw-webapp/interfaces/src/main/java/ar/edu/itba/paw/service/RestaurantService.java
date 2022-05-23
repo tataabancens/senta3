@@ -13,8 +13,6 @@ public interface RestaurantService {
 
     Restaurant create(String restaurantName, String phone, String mail);
 
-    List<Dish> getRestaurantDishes(long id);
-
     void updateRestaurantHourAndTables(long restaurantId, int newMaxTables, int openHour, int closeHour);
 
     void updateRestaurantName(String name, long restaurantId);
@@ -25,5 +23,7 @@ public interface RestaurantService {
 
     Optional<Restaurant> getRestaurantByUsername(String username);
 
-    List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category);
+    Dish createDish(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category);
+
+    void deleteDish(Restaurant restaurant, long dishId);
 }

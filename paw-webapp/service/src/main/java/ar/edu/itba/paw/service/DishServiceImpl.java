@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class DishServiceImpl implements DishService{
+public class DishServiceImpl implements DishService {
 
     private final DishDao dishDao;
     private final ImageDao imageDao;
@@ -26,12 +26,6 @@ public class DishServiceImpl implements DishService{
     @Override
     public Optional<Dish> getDishById(long id) {
         return dishDao.getDishById(id);
-    }
-
-    @Transactional
-    @Override
-    public Dish create(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category){
-        return dishDao.create(restaurant, dishName, dishDescription, price, imageId, category);
     }
 
     @Transactional

@@ -71,7 +71,7 @@ public class DishController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
 
-        Dish dish = ds.create(restaurant, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, createDishForm.getCategory());
+        Dish dish = rs.createDish(restaurant, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, createDishForm.getCategory());
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/confirmDish=" + dish.getId());
     }
 
@@ -108,9 +108,10 @@ public class DishController {
                                                @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
         ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
+        long restaurantId = Long.parseLong(restaurantIdP);
 
-        ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-        ds.deleteDish(dishId);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        rs.deleteDish(restaurant, dishId);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
 
