@@ -168,10 +168,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update"); //"BEST EFFORT" para actualizar el equema
-                properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
-// Solo para desarrollar, el que pone esto en prod, hay tabla!!!. Es para imprimir la tabla en stdout
-                        properties.setProperty("hibernate.show_sql", "true");
-                                properties.setProperty("format_sql", "true");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
+
+        // Solo para desarrollar, el que pone esto en prod, hay tabla!!!. Es para imprimir la tabla en stdout
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("format_sql", "true");
         factoryBean.setJpaProperties(properties);
         return factoryBean;
     }
