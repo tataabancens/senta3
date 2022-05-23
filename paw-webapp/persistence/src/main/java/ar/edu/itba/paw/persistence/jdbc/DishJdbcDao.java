@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.enums.DishCategory;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+// @Repository
 public class DishJdbcDao implements DishDao {
 
     private final JdbcTemplate jdbcTemplate;

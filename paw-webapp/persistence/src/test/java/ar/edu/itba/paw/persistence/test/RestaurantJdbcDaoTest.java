@@ -1,11 +1,8 @@
 package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.FullReservation;
 import ar.edu.itba.paw.model.enums.DishCategory;
-import ar.edu.itba.paw.model.enums.ReservationStatus;
-import ar.edu.itba.paw.persistence.ReservationJdbcDao;
-import ar.edu.itba.paw.persistence.RestaurantJdbcDao;
+import ar.edu.itba.paw.persistence.jdbc.RestaurantJdbcDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -21,7 +21,7 @@ public class User {
     @Column(length = 100)
     private String role;
 
-    /* default */ User(){
+    /* default */ User() {
         //just for hibernate
     }
 

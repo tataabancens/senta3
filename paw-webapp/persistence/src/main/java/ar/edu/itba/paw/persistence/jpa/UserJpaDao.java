@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.enums.Roles;
