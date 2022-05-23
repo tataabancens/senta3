@@ -98,7 +98,7 @@
                         <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
                     </div>
                     <div class="dishList">
-                        <c:forEach var="dish" items="${restaurant.dishes}">
+                        <c:forEach var="dish" items="${dishes}">
                             <div class="dish-card">
                                 <div class="dish-img">
                                     <c:if test="${dish.imageId > 0}">

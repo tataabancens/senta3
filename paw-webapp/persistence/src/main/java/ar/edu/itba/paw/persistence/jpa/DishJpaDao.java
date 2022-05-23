@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Dish;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,10 @@ public class DishJpaDao implements DishDao {
     }
 
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category) {
-        return null;
+    public Dish create(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category) {
+        final Dish dish = new Dish(restaurant, dishName, (int) price, dishDescription, imageId, category);
+        em.persist(dish);
+        return dish;
     }
 
     @Override

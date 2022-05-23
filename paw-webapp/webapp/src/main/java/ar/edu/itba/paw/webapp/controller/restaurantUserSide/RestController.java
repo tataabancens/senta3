@@ -56,8 +56,9 @@ public class RestController {
 
         final ModelAndView mav = new ModelAndView("restaurantViews/menu/RestaurantMenu");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        restaurant.setDishes(rs.getRestaurantDishesByCategory(restaurantId, DishCategory.valueOf(category)));
+        // deprecated restaurant.setDishes(rs.getRestaurantDishesByCategory(restaurantId, DishCategory.valueOf(category)));
 
+        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
         mav.addObject("restaurant", restaurant);
         mav.addObject("categories", DishCategory.getAsList());
         mav.addObject("currentCategory", DishCategory.valueOf(category));

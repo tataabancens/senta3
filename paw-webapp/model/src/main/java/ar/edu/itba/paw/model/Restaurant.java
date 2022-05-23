@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.DishCategory;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -82,6 +85,15 @@ public class Restaurant {
         return dishes;
     }
 
+    public List<Dish> getDishesByCategory(DishCategory category) {
+        List<Dish> toRet = new ArrayList<>();
+        for (Dish dish : getDishes()) {
+            if (dish.getCategory().ordinal() == category.ordinal())
+                toRet.add(dish);
+        }
+        return toRet;
+    }
+
     public int getTotalChairs() {
         return totalChairs;
     }
@@ -92,5 +104,33 @@ public class Restaurant {
 
     public int getCloseHour() {
         return closeHour;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setTotalChairs(Integer totalChairs) {
+        this.totalChairs = totalChairs;
+    }
+
+    public void setOpenHour(Integer openHour) {
+        this.openHour = openHour;
+    }
+
+    public void setCloseHour(Integer closeHour) {
+        this.closeHour = closeHour;
     }
 }

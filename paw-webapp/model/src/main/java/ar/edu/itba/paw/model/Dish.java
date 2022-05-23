@@ -18,7 +18,7 @@ public class Dish {
     private Restaurant restaurant;
 
     @Deprecated
-    private long restaurantId;
+    //private long restaurantId;
 
     @Column(length = 100, nullable = false)
     private String dishName;
@@ -48,7 +48,7 @@ public class Dish {
                 long imageId, DishCategory category) {
         super();
         this.id = id;
-        this.restaurantId = restaurantId;
+        //this.restaurantId = restaurantId;
         this.dishName = dishName;
         this.price = price;
         this.dishDescription = dishDescription;
@@ -60,11 +60,11 @@ public class Dish {
         // Just for hibernate
     }
 
-    public Dish(long restaurantId, String dishName,
+    public Dish(Restaurant restaurant, String dishName,
                 int price, String dishDescription,
                 long imageId, DishCategory category) {
         super();
-        this.restaurantId = restaurantId;
+        this.restaurant = restaurant;
         this.dishName = dishName;
         this.price = price;
         this.dishDescription = dishDescription;
@@ -86,7 +86,7 @@ public class Dish {
     }
 
     public long getRestaurantId() {
-        return restaurantId;
+        return restaurant.getId();
     }
 
     public String getDishName() {
@@ -102,7 +102,7 @@ public class Dish {
     }
 
     public void setRestaurantId(long restaurantId) {
-        this.restaurantId = restaurantId;
+        this.restaurant.setId(restaurantId);
     }
 
     public void setDishName(String dishName) {

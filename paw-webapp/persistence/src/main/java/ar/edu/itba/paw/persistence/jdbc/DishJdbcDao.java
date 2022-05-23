@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence.jdbc;
 
 import ar.edu.itba.paw.model.Dish;
+import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 
@@ -52,7 +53,7 @@ public class DishJdbcDao implements DishDao {
 
 
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category) {
+    public Dish create(Restaurant restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category) {
         final Map<String, Object> dishData = new HashMap<>();
         dishData.put("dishName", dishName);
         dishData.put("dishDescription", dishDescription);
@@ -62,7 +63,7 @@ public class DishJdbcDao implements DishDao {
         dishData.put("category", category);
 
         Number dishId = jdbcInsert.executeAndReturnKey(dishData);
-        return new Dish(dishId.longValue(), restaurantId, dishName, (int)price, dishDescription, imageId, category);
+        return new Dish(dishId.longValue(), 1, dishName, (int)price, dishDescription, imageId, category);
     }
 
     @Override
