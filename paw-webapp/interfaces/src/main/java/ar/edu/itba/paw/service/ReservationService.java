@@ -46,7 +46,7 @@ public interface ReservationService {
 
     List<Reservation> getReservationsByCustomerId(long customerId);
 
-    void updateReservationById(long reservationId, long customerId, long hour, int getqPeople);
+    void updateReservationById(Reservation reservation, Customer customer, long hour, int getqPeople);
 
     void checkReservationTime();
 

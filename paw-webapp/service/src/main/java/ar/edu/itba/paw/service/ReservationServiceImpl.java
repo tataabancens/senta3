@@ -92,7 +92,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public void updateReservationStatus(Reservation reservation, ReservationStatus newStatus) {
-        reservation.setReservationStatus(ReservationStatus.OPEN);
+        reservation.setReservationStatus(newStatus);
     }
 
     @Override
@@ -199,6 +199,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
     }
 
+    @Transactional
     @Override
     public Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus status) {
         List<ReservationStatus> statusList = new ArrayList<>();
@@ -241,9 +242,12 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getReservationsByCustomerId(customerId);
     }
 
+    @Transactional
     @Override
-    public void updateReservationById(long reservationId, long customerId, long hour, int qPeople) {
-        reservationDao.updateReservationById(reservationId, customerId, hour, qPeople);
+    public void updateReservationById(Reservation reservation, Customer customer, long hour, int qPeople) {
+        reservation.setReservationHour((int) hour);
+        reservation.setCustomer(customer);
+        reservation.setqPeople(qPeople);
     }
 
     @Scheduled(cron = "0 1/31 * * * ?")

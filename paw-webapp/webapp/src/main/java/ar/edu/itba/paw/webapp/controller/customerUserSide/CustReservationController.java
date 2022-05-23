@@ -119,7 +119,8 @@ public class CustReservationController {
 
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-        res.updateReservationById(reservationId, 1, hour, reservation.getqPeople());
+        Customer maybeCustomer = new Customer(1, "", "", "", 0);
+        res.updateReservationById(reservation, maybeCustomer, hour, reservation.getqPeople());
 
         return new ModelAndView("redirect:/createReservation-3/" + reservationId + "/redirect");
 
@@ -153,7 +154,8 @@ public class CustReservationController {
 
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-        res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
+        Customer maybeCustomer = new Customer(1, "", "", "", 0);
+        res.updateReservationById(reservation, maybeCustomer, reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservation, ReservationStatus.OPEN);
 
 
@@ -200,8 +202,8 @@ public class CustReservationController {
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
         ms.sendConfirmationEmail(restaurant, customer, reservation);
-
-        res.updateReservationById(reservationId, customer.getCustomerId(), reservation.getReservationHour(), reservation.getqPeople());
+        Customer maybeCustomer = new Customer(1, "", "", "", 0);
+        res.updateReservationById(reservation, maybeCustomer, reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservation, ReservationStatus.OPEN);
 
         return new ModelAndView("redirect:/notify/" + reservationId);
