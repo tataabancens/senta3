@@ -36,12 +36,12 @@ public class OrderItem {
         // Just for hibernate
     }
 
-    public OrderItem(Reservation reservation, Dish dish, float unitPrice, int quantity , int status) {
+    public OrderItem(Reservation reservation, Dish dish, float unitPrice, int quantity, OrderItemStatus status) {
         this.reservation = reservation;
         this.dish = dish;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        this.status = OrderItemStatus.values()[status];
+        this.status = status;
     }
 
     public void setReservation(Reservation reservation) {

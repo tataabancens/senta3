@@ -81,9 +81,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
-        return reservationDao.createOrderItemByReservationId(reservationId, dish, quantity);
+    public OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity) {
+        return reservation.createOrderItem(dish, quantity);
     }
+
     @Override
     public float getTotal(List<OrderItem> orderItems) {
         float toRet = 0;
@@ -155,7 +156,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<Long> dishIds = new ArrayList<>();
 
         for (OrderItem item:query){
-            dishIds.add(item.getDishId());
+            dishIds.add(item.getDish().getId());
         }
 
         List<Long> unavailableDishIds = new ArrayList<>();

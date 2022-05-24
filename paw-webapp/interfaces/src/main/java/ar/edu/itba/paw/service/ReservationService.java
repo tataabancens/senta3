@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ReservationService {
     Optional<Reservation> getReservationById(long id);
 
-    OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
+    OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity);
 
     List<OrderItem> getOrderItemsByReservationId(long reservationId);
 

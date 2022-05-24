@@ -1,9 +1,13 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -38,6 +42,9 @@ public class Reservation {
     @Column(nullable = false)
     private boolean reservationDiscount;
 
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
+
     /* default */ Reservation() {
         // Just for hibernate
     }
@@ -49,6 +56,20 @@ public class Reservation {
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
         this.qPeople = qPeople;
         this.startedAtTime = startedAtTime;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return new ArrayList<>(orderItems);
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public OrderItem createOrderItem(Dish dish, int quantity) {
+        OrderItem orderItem = new OrderItem(this, dish, dish.getPrice(), quantity, OrderItemStatus.SELECTED);
+        orderItems.add(orderItem);
+        return orderItem;
     }
 
     public Timestamp getStartedAtTime() {

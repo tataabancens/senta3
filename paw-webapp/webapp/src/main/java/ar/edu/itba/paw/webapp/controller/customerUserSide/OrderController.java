@@ -74,7 +74,7 @@ public class OrderController {
         boolean isFromOrder = res.isFromOrder(isFromOrderP);
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
 
-        res.createOrderItemByReservationId(reservationId, dish, form.getOrderItem().getQuantity());
+        res.createOrderItemByReservation(reservation, dish, form.getOrderItem().getQuantity());
 
         if (isFromOrder) {
             return new ModelAndView("redirect:/order/send-food?reservationId=" + reservationId + "&restaurantId=" + reservation.getRestaurant().getId());

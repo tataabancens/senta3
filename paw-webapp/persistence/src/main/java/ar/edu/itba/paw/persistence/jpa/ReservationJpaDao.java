@@ -44,11 +44,6 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity) {
-        return null;
-    }
-
-    @Override
     public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
         return null;
     }
