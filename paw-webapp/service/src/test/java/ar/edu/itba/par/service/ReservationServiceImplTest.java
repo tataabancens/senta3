@@ -37,7 +37,7 @@ public class ReservationServiceImplTest {
         restDao = Mockito.mock(RestaurantDao.class);
         custDao = Mockito.mock(CustomerDao.class);
         custService = new CustomerServiceImpl(custDao);
-        resService = new ReservationServiceImpl(resDao, restDao, custService);
+        resService = new ReservationServiceImpl(resDao, restDao, custService, null);
     }
     @Test
     public void testGetTotal(){

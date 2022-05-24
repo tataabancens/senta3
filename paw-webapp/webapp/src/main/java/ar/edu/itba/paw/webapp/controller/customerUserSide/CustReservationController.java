@@ -81,7 +81,7 @@ public class CustReservationController {
             return createReservation_1(form);
         }
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        Customer maybeCustomer = new Customer(1, "", "", "", 0);
+        Customer maybeCustomer = cs.getCustomerById(1).orElseThrow(CustomerNotFoundException::new);
 
         Reservation reservation = res.createReservation(restaurant, maybeCustomer, 0, Integer.parseInt(form.getNumber()));
         res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);

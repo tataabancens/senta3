@@ -15,9 +15,7 @@ public interface ReservationDao {
 
     Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> status);
 
-    List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList);
-
-    Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople, Timestamp startedAtTime);
+//    List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList);
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
@@ -27,25 +25,25 @@ public interface ReservationDao {
 
     List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
-    void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
-
-    void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus);
-
-    void updateReservationStatus(long reservationId, ReservationStatus newStatus);
-
-    void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
-
-    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
+//    void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
+//
+//    void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus);
+//
+//    void updateReservationStatus(long reservationId, ReservationStatus newStatus);
+//
+//    void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+//
+//    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
 
     List<Reservation> getAllReservations(long restaurantId);
 
     List<Reservation> getReservationsByCustomerId(long customerId);
 
-    void updateReservationById(long reservationId, long customerId, long hour, int qPeople);
-
-    void applyDiscount(long reservationId);
-
-    void cancelDiscount(long reservationId);
+//    void updateReservationById(long reservationId, long customerId, long hour, int qPeople);
+//
+//    void applyDiscount(long reservationId);
+//
+//    void cancelDiscount(long reservationId);
 
     List<Reservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList);
 

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -75,10 +76,17 @@ public class Restaurant {
         this.openHour = openHour;
         this.closeHour = closeHour;
     }
+
     public Dish createDish(String dishName, String dishDescription, double price, long imageId, DishCategory category) {
         Dish dish = new Dish(this, dishName, (int) price,  dishDescription, imageId, category);
         dishes.add(dish);
         return dish;
+    }
+
+    public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
+        List<Reservation> toRet = new ArrayList<>(reservations);
+        toRet.removeIf(r -> !statusList.contains(r.getReservationStatus()));
+        return toRet;
     }
 
     public void deleteDish(long dishId) {

@@ -36,7 +36,7 @@ public interface ReservationService {
 
     List<Long> getUnavailableItems(long reservationId);
 
-    List<Reservation> getAllReservations(long restaurantId);
+    List<Reservation> getAllReservations(Restaurant restaurant);
 
     Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 
@@ -60,7 +60,7 @@ public interface ReservationService {
 
     boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
 
-    public List<Reservation> getReservationsSeated(long restaurantId);
+    public List<Reservation> getReservationsSeated(Restaurant restaurant);
 
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 

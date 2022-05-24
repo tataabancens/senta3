@@ -63,7 +63,7 @@ public class CustomerJdbcDao implements CustomerDao {
         customerData.put("points", 0);
 
         Number customerId = jdbcInsert.executeAndReturnKey(customerData);
-        return new Customer(customerId.longValue(), customerName, phone, mail, userId, 0);
+        return new Customer(customerId.longValue(), customerName, phone, mail, (int) userId);
     }
 
     @Override

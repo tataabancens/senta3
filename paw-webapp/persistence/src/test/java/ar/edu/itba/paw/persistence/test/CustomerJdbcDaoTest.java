@@ -116,8 +116,7 @@ public class CustomerJdbcDaoTest {
                     resultSet.getString("customerName"),
                     resultSet.getString("Phone"),
                     resultSet.getString("Mail"),
-                    resultSet.getLong("userId"),
-                    resultSet.getInt("points")));
+                    resultSet.getInt("userId")));
 
     @Test
     @Rollback
