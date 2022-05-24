@@ -44,18 +44,11 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
-        return null;
-    }
-
-    @Override
-    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status) {
-        return null;
-    }
-
-    @Override
     public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
-        return null;
+        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status = :status", OrderItem.class); //es hql, no sql
+        query.setParameter("status", status);
+        final List<OrderItem> list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
     }
 
 //

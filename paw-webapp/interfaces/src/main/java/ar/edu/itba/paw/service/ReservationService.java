@@ -12,9 +12,9 @@ public interface ReservationService {
 
     OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity);
 
-    List<OrderItem> getOrderItemsByReservationId(long reservationId);
+    List<OrderItem> getOrderItemsByReservation(Reservation reservation);
 
-    List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+    List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
     List<OrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
@@ -40,9 +40,9 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
 
-    List<OrderItem> getOrderItemsByReservationIdAndOrder(long reservationId);
+    List<OrderItem> getOrderItemsByReservationAndOrder(Reservation reservation);
 
-    List<OrderItem> getAllOrderItemsByReservationId(long reservationId);
+    List<OrderItem> getAllOrderItemsByReservation(Reservation reservation);
 
     List<Reservation> getReservationsByCustomer(Customer customer);
 

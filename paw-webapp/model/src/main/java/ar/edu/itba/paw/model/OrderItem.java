@@ -32,8 +32,8 @@ public class OrderItem {
     private OrderItemStatus status;
 
 
-    /* default */ OrderItem() {
-        // Just for hibernate
+    public OrderItem() {
+        // Just for hibernate and forms
     }
 
     public OrderItem(Reservation reservation, Dish dish, float unitPrice, int quantity, OrderItemStatus status) {

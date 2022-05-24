@@ -7,7 +7,6 @@ public class OrderForm {
     @OrderConstraint
     private OrderItem orderItem;
 
-
     public OrderItem getOrderItem() {
         return orderItem;
     }
