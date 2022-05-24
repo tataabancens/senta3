@@ -292,7 +292,7 @@ public class ReservationServiceImpl implements ReservationService {
         for (Reservation reservation : allMaybeReservations) {
             LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
             if (now.compareTo(tenMinutesLater) > 0) {
-                reservationDao.updateReservationStatus(reservation.getReservationId(), ReservationStatus.CANCELED);
+                reservationDao.updateReservationStatus(reservation.getId(), ReservationStatus.CANCELED);
             }
         }
     }
@@ -304,7 +304,7 @@ public class ReservationServiceImpl implements ReservationService {
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
-            Customer customer = customerService.getCustomerById(reservation.getCustomer().getCustomerId()).get();
+            Customer customer = customerService.getCustomerById(reservation.getCustomer().getId()).get();
 
             if (customer.getPoints() >= POINTS_TO_DISCOUNT) {
                 customerService.addPointsToCustomer(customer, -POINTS_TO_DISCOUNT);
@@ -319,7 +319,7 @@ public class ReservationServiceImpl implements ReservationService {
         Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
-            Customer customer = customerService.getCustomerById(reservation.getCustomer().getCustomerId()).get();
+            Customer customer = customerService.getCustomerById(reservation.getCustomer().getId()).get();
 
             customerService.addPointsToCustomer(customer, POINTS_TO_DISCOUNT);
             reservationDao.cancelDiscount(reservationId);

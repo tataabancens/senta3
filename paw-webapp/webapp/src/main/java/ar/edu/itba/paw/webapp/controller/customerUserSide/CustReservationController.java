@@ -43,7 +43,7 @@ public class CustReservationController {
         ModelAndView mav = new ModelAndView("customerViews/reservation/history");
         rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        List<Reservation> reservations = res.getReservationsByCustomerId(customer.getCustomerId());
+        List<Reservation> reservations = res.getReservationsByCustomerId(customer.getId());
 
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
@@ -54,7 +54,7 @@ public class CustReservationController {
     public ModelAndView activeReservations(final Principal principal){
         ModelAndView mav = new ModelAndView("customerViews/reservation/CustomerActiveReservations");
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        List<Reservation> reservations = res.getReservationsByCustomerIdAndActive(customer.getCustomerId());
+        List<Reservation> reservations = res.getReservationsByCustomerIdAndActive(customer.getId());
 
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
@@ -87,7 +87,7 @@ public class CustReservationController {
         res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
 
 
-        return new ModelAndView("redirect:/createReservation-2/" + reservation.getReservationId());
+        return new ModelAndView("redirect:/createReservation-2/" + reservation.getId());
     }
 
     @RequestMapping(value = "/createReservation-2/{reservationId}")
@@ -222,7 +222,7 @@ public class CustReservationController {
             return findReservation(form);
         }
         Reservation reservation = res.getReservationByIdAndIsActive(form.getReservationId()).orElseThrow(ReservationNotFoundException::new);
-        return new ModelAndView("redirect:/menu?reservationId=" + reservation.getReservationId());
+        return new ModelAndView("redirect:/menu?reservationId=" + reservation.getId());
     }
 
     @RequestMapping("/notify/{reservationId}")
@@ -269,7 +269,7 @@ public class CustReservationController {
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
-        Customer customer = cs.getCustomerById(reservation.getCustomer().getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
         ms.sendCancellationEmail(restaurant,customer,reservation);
 

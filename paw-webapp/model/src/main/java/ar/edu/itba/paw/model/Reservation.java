@@ -12,7 +12,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_reservationid_seq")
     @SequenceGenerator(sequenceName = "reservation_reservationid_seq", name = "reservation_reservationid_seq", allocationSize = 1)
     @Column(name = "reservationid")
-    private long reservationId;
+    private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "restaurantid", nullable = false)
@@ -59,12 +59,12 @@ public class Reservation {
         this.startedAtTime = startedAtTime;
     }
 
-    public long getReservationId() {
-        return reservationId;
+    public long getId() {
+        return id;
     }
 
-    public void setReservationId(long reservationId) {
-        this.reservationId = reservationId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Restaurant getRestaurant() {

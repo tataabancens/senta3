@@ -11,7 +11,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_customerid_seq")
     @SequenceGenerator(sequenceName = "customer_customerid_seq", name = "customer_customerid_seq", allocationSize = 1)
     @Column(name = "customerid")
-    private long customerId;
+    private long id;
 
     @Column(length = 50, nullable = false)
     private String customerName;
@@ -54,7 +54,7 @@ public class Customer {
     }
 
     public Customer(long customerId, String customerName, String phone, String mail, int points) {
-        this.customerId = customerId;
+        this.id = customerId;
         this.customerName = customerName;
         this.phone = phone;
         this.mail = mail;
@@ -63,19 +63,19 @@ public class Customer {
 
     @Deprecated
     public Customer(long customerId, String customerName, String phone, String mail, long userId, int points) {
-        this.customerId = customerId;
+        this.id = customerId;
         this.customerName = customerName;
         this.phone = phone;
         this.mail = mail;
         this.points = points;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public long getId() {
+        return id;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCustomerName() {

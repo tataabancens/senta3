@@ -165,7 +165,7 @@ public class ReservationJdbcDaoTest {
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeReservation.isPresent());
-        Assert.assertEquals(reservationId.longValue(), maybeReservation.get().getReservationId());
+        Assert.assertEquals(reservationId.longValue(), maybeReservation.get().getId());
     }
 
     @Test
@@ -283,7 +283,7 @@ public class ReservationJdbcDaoTest {
         // 3. PostCondiciones
         Assert.assertFalse(maybeReservations.isEmpty());
         Assert.assertEquals(1, maybeReservations.size());
-        Assert.assertEquals(reservationId1.longValue(),maybeReservations.get(0).getReservationId());
+        Assert.assertEquals(reservationId1.longValue(),maybeReservations.get(0).getId());
     }
 
     @Test
@@ -337,7 +337,7 @@ public class ReservationJdbcDaoTest {
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeReservations.isPresent());
-        Assert.assertEquals(reservationId1.longValue(), maybeReservations.get().getReservationId());
+        Assert.assertEquals(reservationId1.longValue(), maybeReservations.get().getId());
     }
 
     @Test

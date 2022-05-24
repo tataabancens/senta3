@@ -67,7 +67,7 @@ public class MenuController {
 //        restaurant.setDishes(dishes);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Customer customer = cs.getCustomerById(reservation.getCustomer().getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
 
         List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);

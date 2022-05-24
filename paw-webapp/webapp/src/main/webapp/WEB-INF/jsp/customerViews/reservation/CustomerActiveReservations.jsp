@@ -26,7 +26,7 @@
     <div class="reservation-list">
         <c:forEach var="reservation" items="${reservations}">
             <div class="card horizontal">
-                <a href="<c:url value="menu/?reservationId=${reservation.reservationId}"/>">
+                <a href="<c:url value="menu/?reservationId=${reservation.id}"/>">
                     <div class="card-stacked">
                         <div class="card-content">
                             <span class="presentation-text">${customer.customerName}</span>

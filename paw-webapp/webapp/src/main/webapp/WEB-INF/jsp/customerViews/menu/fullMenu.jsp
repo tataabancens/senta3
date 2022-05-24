@@ -55,22 +55,22 @@
     <div class="orders-and-info">
         <div class="card filter-box">
             <div class="client-actions">
-                <span class="presentation-text text-center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.reservationId}"/></span>
+                <span class="presentation-text text-center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.id}"/></span>
                 <c:if test="${canOrderReceipt}">
-                    <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
+                    <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
                 <c:if test="${!canOrderReceipt}">
                     <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
                 <div class="center div-padding">
-                    <a class="waves-effect waves-light btn confirm-btn red text description " href="<c:url value="/reservation-cancel?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                    <a class="waves-effect waves-light btn confirm-btn red text description " href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
                 </div>
             </div>
             <div>
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
-                        <a href="<c:url value="/menu?reservationId=${reservation.reservationId}&category=${category}"/>" style="margin: 0.2vw">
+                        <a href="<c:url value="/menu?reservationId=${reservation.id}&category=${category}"/>" style="margin: 0.2vw">
                             <c:if test="${currentCategory.description == category.description}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
                                     <c:out value="${category.spanishDescr}"/>
@@ -91,7 +91,7 @@
                 <c:if test="${customer.points >= 100}">
                     <div class="card client-actions discounts">
                         <span class="presentation-text discounts"><spring:message code="Fullmenu.discount"/></span>
-                        <c:url value="/menu/applyDiscount/${reservation.reservationId}" var="postUrl_actDisc"/>
+                        <c:url value="/menu/applyDiscount/${reservation.id}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
                             <spring:message code="Button.activate" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
@@ -102,7 +102,7 @@
             <c:if test="${reservation.reservationDiscount}">
                 <div class="card client-actions discounts">
                     <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
-                    <c:url value="/menu/cancelDiscount/${reservation.reservationId}" var="postUrl_undoDisc"/>
+                    <c:url value="/menu/cancelDiscount/${reservation.id}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
                         <spring:message code="Button.cancel" var="label"/>
                         <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
@@ -126,7 +126,7 @@
                             <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
                             <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
                             <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
-                            <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.reservationId}" var="postUrl_remDish"/>
+                            <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.id}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
                                 <button type="submit" class="small btn-floating" style="background-color: #757575">
                                     <i class="material-icons clear-symbol">clear</i>
@@ -148,7 +148,7 @@
                 <div class="order-btn-row">
                     <div>
                         <c:if test="${selected > 0}">
-                            <c:url value="/order/empty-cart?reservationId=${reservation.reservationId}" var="postUrl"/>
+                            <c:url value="/order/empty-cart?reservationId=${reservation.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <spring:message code="Order.empty" var="label"/>
                                 <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red text description">
@@ -160,7 +160,7 @@
                     </div>
                     <div>
                         <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green text description " href="<c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
+                            <a class="waves-effect waves-light btn confirm-btn green text description " href="<c:url value="/order/send-food?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
                         </c:if>
                         <c:if test="${selected == 0}">
                             <a disabled class="waves-effect waves-light btn confirm-btn green text description "><spring:message code="Button.continue"/></a>
@@ -213,7 +213,7 @@
                 </div>
                 </c:if>
                 <c:if test="${!unavailable.contains(dish.id)}">
-                    <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${dish.id}"/>"  class="card horizontal">
+                    <a href="<c:url value="/menu/orderItem?reservationId=${reservation.id}&dishId=${dish.id}"/>" class="card horizontal">
                             <div class="card-image">
                                 <c:if test="${dish.imageId > 0}">
                                     <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>

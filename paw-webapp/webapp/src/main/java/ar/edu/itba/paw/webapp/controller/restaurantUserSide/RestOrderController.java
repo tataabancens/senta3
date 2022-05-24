@@ -36,7 +36,7 @@ public class RestOrderController {
         List<Reservation> reservations = res.getReservationsSeated(restaurantId);
 
         for (Reservation reservation : reservations) {
-            res.updateOrderItemsStatus(reservation.getReservationId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
+            res.updateOrderItemsStatus(reservation.getId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
         List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
         List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);

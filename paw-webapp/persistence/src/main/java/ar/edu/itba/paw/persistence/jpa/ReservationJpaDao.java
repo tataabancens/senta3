@@ -26,9 +26,11 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> status) {
-        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus in :status", Reservation.class); //es hql, no sql
+    public Optional<Reservation> getReservationByIdAndStatus(long reservationId, List<ReservationStatus> status) {
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus in :status and r.id = :reservation_id",
+                Reservation.class); //es hql, no sql
         query.setParameter("status", status);
+        query.setParameter("reservation_id", reservationId);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
     }
@@ -92,7 +94,8 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public List<Reservation> getAllReservations(long restaurantId) {
-        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r", Reservation.class); //es hql, no sql
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.restaurant.id = :restaurant_id", Reservation.class); //es hql, no sql
+        query.setParameter("restaurant_id", restaurantId);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }

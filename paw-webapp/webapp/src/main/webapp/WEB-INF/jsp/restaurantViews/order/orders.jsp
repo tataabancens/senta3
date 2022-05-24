@@ -37,7 +37,7 @@
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${incomingItems}">
-                    <c:if test="${item.reservationId == reservation.reservationId}">
+                    <c:if test="${item.reservationId == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
@@ -60,7 +60,7 @@
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
-                    <c:if test="${item.reservationId == reservation.reservationId}">
+                    <c:if test="${item.reservationId == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="card-title title text"><c:out value="${item.dishName}"/></span>
