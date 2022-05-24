@@ -90,7 +90,7 @@ public class ReservationServiceImplTest {
 //            mockList.add(new Reservation(i, 1, i, 13 + i, 1,
 //                    30, "Carlos", "CarlosResto", Timestamp.from(Instant.now())));
 //        }
-        Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
+       // Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
         Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(new Restaurant(1, "El Pepito",
                 "456789456", "elpepito@gmail.com",
                 35, 12, 20)));
@@ -119,7 +119,7 @@ public class ReservationServiceImplTest {
 //            mockList.add(new Reservation(i, 1, i, 13 + i, 1,
 //                    30, "Carlos", "CarlosResto", Timestamp.from(Instant.now())));
 //        }
-        Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
+        //Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
         Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(new Restaurant(1, "El Pepito",
                 "456789456", "elpepito@gmail.com",
                 35, 14, 18)));

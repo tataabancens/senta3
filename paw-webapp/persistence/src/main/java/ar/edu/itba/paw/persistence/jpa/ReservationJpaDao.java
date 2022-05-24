@@ -36,36 +36,12 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> getAllReservations(long restaurantId) {
+    public List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
+        // Esto es dummy hay que ver como se soluciona
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.restaurant.id = :restaurant_id", Reservation.class); //es hql, no sql
         query.setParameter("restaurant_id", restaurantId);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
-    }
-
-//    @Override
-//    public List<Reservation> getReservationsByStatusList(long restaurantId, List<ReservationStatus> statusList) {
-//        return null;
-//    }
-
-    @Override
-    public List<Reservation> getReservationsByCustomerId(long customerId) {
-        return null;
-    }
-
-    @Override
-    public List<Reservation> getReservationsByCustomerIdAndStatus(long customerId, List<ReservationStatus> statusList) {
-        return null;
-    }
-
-    @Override
-    public List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
-        return null;
-    }
-
-    @Override
-    public List<FullOrderItem> getAllOrderItems() {
-        return null;
     }
 
     @Override
@@ -88,22 +64,6 @@ public class ReservationJpaDao implements ReservationDao {
         return null;
     }
 
-
-
-//    @Override
-//    public void updateReservationById(long reservationId, long customerId, long hour, int qPeople) {
-//
-//    }
-//
-//    @Override
-//    public void applyDiscount(long reservationId) {
-//
-//    }
-//
-//    @Override
-//    public void cancelDiscount(long reservationId) {
-//
-//    }
 //
 //    @Override
 //    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
@@ -115,10 +75,6 @@ public class ReservationJpaDao implements ReservationDao {
 //
 //    }
 //
-//    @Override
-//    public void updateReservationStatus(long reservationId, ReservationStatus newStatus) {
-//
-//    }
 //
 //    @Override
 //    public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {

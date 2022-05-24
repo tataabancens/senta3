@@ -66,8 +66,6 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
-
-
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
     boolean isFromOrder(String isFromOrderP);
