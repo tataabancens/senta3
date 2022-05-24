@@ -154,8 +154,7 @@ public class CustReservationController {
 
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-        Customer maybeCustomer = new Customer(1, "", "", "", 0);
-        res.updateReservationById(reservation, maybeCustomer, reservation.getReservationHour(), reservation.getqPeople());
+        res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservation, ReservationStatus.OPEN);
 
 
@@ -202,8 +201,8 @@ public class CustReservationController {
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
         ms.sendConfirmationEmail(restaurant, customer, reservation);
-        Customer maybeCustomer = new Customer(1, "", "", "", 0);
-        res.updateReservationById(reservation, maybeCustomer, reservation.getReservationHour(), reservation.getqPeople());
+
+        res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
         res.updateReservationStatus(reservation, ReservationStatus.OPEN);
 
         return new ModelAndView("redirect:/notify/" + reservationId);

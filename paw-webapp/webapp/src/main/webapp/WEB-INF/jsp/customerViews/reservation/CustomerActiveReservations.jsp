@@ -31,7 +31,7 @@
                         <div class="card-content">
                             <span class="presentation-text">${customer.customerName}</span>
                             <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
-                            <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurantName}"/></p>
+                            <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/></p>
                             <p  class="text description">${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
                             <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/></p>
                         </div>
