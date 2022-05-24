@@ -33,7 +33,7 @@ public class Customer {
     @JoinColumn(name = "userid")
     private User user;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
 
     /* default */ Customer() {
@@ -70,6 +70,12 @@ public class Customer {
         final Reservation reservation = new Reservation(restaurant, customer, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime);
         reservations.add(reservation);
         return reservation;
+    }
+
+    public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
+        List<Reservation> toRet = new ArrayList<>(reservations);
+        toRet.removeIf(r -> !statusList.contains(r.getReservationStatus()));
+        return toRet;
     }
 
     public long getId() {
@@ -129,10 +135,12 @@ public class Customer {
     }
 
     public List<Reservation> getReservations() {
-        return reservations;
+        return new ArrayList<>(reservations);
     }
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
+
+
 }

@@ -43,7 +43,7 @@ public class CustReservationController {
         ModelAndView mav = new ModelAndView("customerViews/reservation/history");
         rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        List<Reservation> reservations = res.getReservationsByCustomerId(customer.getId());
+        List<Reservation> reservations = res.getReservationsByCustomer(customer);
 
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
@@ -54,7 +54,7 @@ public class CustReservationController {
     public ModelAndView activeReservations(final Principal principal){
         ModelAndView mav = new ModelAndView("customerViews/reservation/CustomerActiveReservations");
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        List<Reservation> reservations = res.getReservationsByCustomerIdAndActive(customer.getId());
+        List<Reservation> reservations = res.getReservationsByCustomerAndActive(customer);
 
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);

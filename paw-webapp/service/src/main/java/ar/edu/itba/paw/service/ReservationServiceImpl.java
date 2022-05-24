@@ -94,11 +94,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
 
-
+    @Transactional
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
-        List<Reservation> reservations = reservationDao.getAllReservations(restaurantId);
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
+        List<Reservation> reservations = restaurant.getReservations();
 
         List<ReservationStatus> ignoreStatus = new ArrayList<>();
         ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
@@ -189,11 +189,16 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getReservationsByCustomerIdAndActive(long customerId) {
+    public List<Reservation> getReservationsByCustomerAndActive(Customer customer) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.OPEN);
         statusList.add(ReservationStatus.SEATED);
-        return reservationDao.getReservationsByCustomerIdAndStatus(customerId, statusList);
+        return customer.getReservationsByStatusList(statusList);
+    }
+
+    @Override
+    public List<Reservation> getReservationsByCustomer(Customer customer) {
+        return customer.getReservations();
     }
 
     @Override
@@ -217,10 +222,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, statusList);
     }
 
-    @Override
-    public List<Reservation> getReservationsByCustomerId(long customerId) {
-        return reservationDao.getReservationsByCustomerId(customerId);
-    }
+
 
     @Override
     public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
@@ -262,7 +264,7 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDateTime now = LocalDateTime.now();
         Restaurant restaurant = restaurantService.getRestaurantById(1).get();
 
-        List<Reservation> allReservations = getAllReservations(restaurant);
+        List<Reservation> allReservations = restaurant.getReservations();
         for(Reservation reservation :allReservations){
             if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
                 updateReservationStatus(reservation, ReservationStatus.CANCELED);

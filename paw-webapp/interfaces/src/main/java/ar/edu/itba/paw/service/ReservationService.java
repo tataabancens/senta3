@@ -44,7 +44,9 @@ public interface ReservationService {
 
     List<FullOrderItem> getAllOrderItemsByReservationId(long reservationId);
 
-    List<Reservation> getReservationsByCustomerId(long customerId);
+    List<Reservation> getReservationsByCustomer(Customer customer);
+
+    List<Reservation> getReservationsByCustomerAndActive(Customer customer);
 
     void updateReservationById(Reservation reservation, Customer customer, long hour, int getqPeople);
 
@@ -64,7 +66,7 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
 
-    List<Reservation> getReservationsByCustomerIdAndActive(long customerId);
+
 
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 

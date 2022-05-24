@@ -118,11 +118,8 @@ public class Restaurant {
     }
 
     public List<Dish> getDishesByCategory(DishCategory category) {
-        List<Dish> toRet = new ArrayList<>();
-        for (Dish dish : getDishes()) {
-            if (dish.getCategory().ordinal() == category.ordinal())
-                toRet.add(dish);
-        }
+        List<Dish> toRet = new ArrayList<>(dishes);
+        toRet.removeIf(d -> d.getCategory().ordinal() == category.ordinal());
         return toRet;
     }
 
@@ -167,7 +164,7 @@ public class Restaurant {
     }
 
     public List<Reservation> getReservations() {
-        return reservations;
+        return new ArrayList<>(reservations);
     }
 
     public void setReservations(List<Reservation> reservations) {
