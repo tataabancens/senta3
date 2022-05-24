@@ -153,7 +153,7 @@ public class RestReservationController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
         ModelAndView mav = new ModelAndView("restaurantViews/order/receipt");

@@ -126,7 +126,7 @@
                             <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
                             <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
                             <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
-                            <c:url value="/order/remove-dish?orderItemId=${orderItem.orderItemId}&reservationId=${reservation.id}" var="postUrl_remDish"/>
+                            <c:url value="/order/remove-dish?orderItemId=${orderItem.id}&reservationId=${reservation.id}" var="postUrl_remDish"/>
                             <form:form action="${postUrl_remDish}" method="post">
                                 <button type="submit" class="small btn-floating" style="background-color: #757575">
                                     <i class="material-icons clear-symbol">clear</i>

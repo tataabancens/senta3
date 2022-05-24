@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,17 +49,17 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationId(long reservationId) {
+    public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
         return null;
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status) {
+    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status) {
         return null;
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status) {
+    public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
         return null;
     }
 

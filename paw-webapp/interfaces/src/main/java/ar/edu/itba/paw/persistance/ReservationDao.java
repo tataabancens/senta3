@@ -4,7 +4,6 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +16,11 @@ public interface ReservationDao {
 
     OrderItem createOrderItemByReservationId(long reservationId, Dish dish, int quantity);
 
-    List<FullOrderItem> getOrderItemsByReservationId(long reservationId);
+    List<OrderItem> getOrderItemsByReservationId(long reservationId);
 
-    List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status);
+    List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, List<OrderItemStatus> status);
 
-    List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status);
+    List<OrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
 //    void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
 //

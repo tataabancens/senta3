@@ -94,7 +94,7 @@ public class OrderController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        List<OrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
@@ -111,7 +111,7 @@ public class OrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        List<OrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         Dish recommendedDish = ds.getRecommendedDish(reservationId);
@@ -151,7 +151,7 @@ public class OrderController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderItems.size() > 0);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/order/receipt");
@@ -174,7 +174,7 @@ public class OrderController {
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
 
         cs.addPointsToCustomer(customer, res.getTotal(orderItems));
 

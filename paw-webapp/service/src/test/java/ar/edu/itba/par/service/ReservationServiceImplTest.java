@@ -14,8 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,9 +40,9 @@ public class ReservationServiceImplTest {
     @Test
     public void testGetTotal(){
         // 1. Setup
-        FullOrderItem item1 = new FullOrderItem(1, 1, 1, 20, 1, 1, "plato");
-        FullOrderItem item2 = new FullOrderItem(2, 1, 2, 20, 1, 1, "plato2");
-        List<FullOrderItem> items = new ArrayList<FullOrderItem>();
+        OrderItem item1 = new OrderItem(1, 1, 1, 20, 1, 1, "plato");
+        OrderItem item2 = new OrderItem(2, 1, 2, 20, 1, 1, "plato2");
+        List<OrderItem> items = new ArrayList<OrderItem>();
         items.add(item1);
         items.add(item2);
 
@@ -58,10 +56,10 @@ public class ReservationServiceImplTest {
     @Test
     public void testUnavailableItems(){
         // 1. Setup
-        List<FullOrderItem> items = resDao.getOrderItemsByReservationId(1);
+        List<OrderItem> items = resDao.getOrderItemsByReservationId(1);
         List<Long> dishIds = new ArrayList<>();
 
-        for (FullOrderItem item:items){
+        for (OrderItem item:items){
             dishIds.add(item.getDishId());
         }
 

@@ -58,19 +58,19 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationId(long reservationId) {
+    public List<OrderItem> getOrderItemsByReservationId(long reservationId) {
         return reservationDao.getOrderItemsByReservationId(reservationId);
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
+    public List<OrderItem> getOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(status);
         return reservationDao.getOrderItemsByReservationIdAndStatus(reservationId, statusList);
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByStatus(OrderItemStatus status) {
+    public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
         return reservationDao.getOrderItemsByStatus(status);
     }
 
@@ -85,9 +85,9 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.createOrderItemByReservationId(reservationId, dish, quantity);
     }
     @Override
-    public float getTotal(List<FullOrderItem> orderItems) {
+    public float getTotal(List<OrderItem> orderItems) {
         float toRet = 0;
-        for (FullOrderItem orderItem : orderItems) {
+        for (OrderItem orderItem : orderItems) {
             toRet += orderItem.getQuantity() * orderItem.getUnitPrice();
         }
         return toRet;
@@ -150,11 +150,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
-        List<FullOrderItem> query = reservationDao.getOrderItemsByReservationId(reservationId);
+        List<OrderItem> query = reservationDao.getOrderItemsByReservationId(reservationId);
 
         List<Long> dishIds = new ArrayList<>();
 
-        for (FullOrderItem item:query){
+        for (OrderItem item:query){
             dishIds.add(item.getDishId());
         }
 
@@ -202,7 +202,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FullOrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
+    public List<OrderItem> getOrderItemsByReservationIdAndOrder(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
         statusList.add(OrderItemStatus.INCOMING);
@@ -212,7 +212,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FullOrderItem> getAllOrderItemsByReservationId(long reservationId) {
+    public List<OrderItem> getAllOrderItemsByReservationId(long reservationId) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
         statusList.add(OrderItemStatus.INCOMING);

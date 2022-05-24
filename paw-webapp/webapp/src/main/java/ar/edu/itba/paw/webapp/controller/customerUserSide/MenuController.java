@@ -70,8 +70,8 @@ public class MenuController {
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
 
-        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        List<OrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
+        List<OrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
 

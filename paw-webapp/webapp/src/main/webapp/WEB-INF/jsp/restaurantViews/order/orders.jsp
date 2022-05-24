@@ -44,7 +44,7 @@
                                 <p class="description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
                                 <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservationId}"/></p>
                             </div>
-                            <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <spring:message code="Button.finish" var="label"/>
                                 <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn blue center">
@@ -67,7 +67,7 @@
                                 <p class="description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
                                 <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservationId}"/></p>
                             </div>
-                            <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <spring:message code="Button.deliver" var="label"/>
                                 <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">

@@ -82,8 +82,8 @@ public class ReservationJdbcDaoTest {
 //                    resultSet.getBoolean("reservationDiscount"),
 //                    resultSet.getTimestamp("startedAtTime")));
 
-    private static final RowMapper<FullOrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
-            new FullOrderItem(resultSet.getLong("id"),
+    private static final RowMapper<OrderItem> ROW_MAPPER_ORDER_ITEMS = ((resultSet, i) ->
+            new OrderItem(resultSet.getLong("id"),
                     resultSet.getLong("reservationId"),
                     resultSet.getLong("dishId"),
                     resultSet.getFloat("unitPrice"),
@@ -354,7 +354,7 @@ public class ReservationJdbcDaoTest {
         Number orderItemId3 = insertOrderItem(dishId.intValue(), reservationId2.intValue(), 100, 1, OrderItemStatus.ORDERED.ordinal());
 
         // 2. Ejercitacion
-        List<FullOrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId1.longValue(), new ArrayList<>());
+        List<OrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId1.longValue(), new ArrayList<>());
 
         // 3. PostCondiciones
         Assert.assertTrue(orderItems.isEmpty());
@@ -376,7 +376,7 @@ public class ReservationJdbcDaoTest {
         statusList.add(OrderItemStatus.ORDERED);
 
         // 2. Ejercitacion
-        List<FullOrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(0, statusList);
+        List<OrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(0, statusList);
 
         // 3. PostCondiciones
         Assert.assertTrue(orderItems.isEmpty());
@@ -398,12 +398,12 @@ public class ReservationJdbcDaoTest {
         statusList.add(OrderItemStatus.ORDERED);
 
         // 2. Ejercitacion
-        List<FullOrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId1.longValue(), statusList);
+        List<OrderItem> orderItems = reservationDao.getOrderItemsByReservationIdAndStatus(reservationId1.longValue(), statusList);
 
         // 3. PostCondiciones
         Assert.assertFalse(orderItems.isEmpty());
         Assert.assertEquals(1, orderItems.size());
-        Assert.assertEquals(orderItemId1.longValue(), orderItems.get(0).getOrderItemId());
+        Assert.assertEquals(orderItemId1.longValue(), orderItems.get(0).getId());
     }
 
     @Test
@@ -483,12 +483,12 @@ public class ReservationJdbcDaoTest {
         Number reservationId = insertReservation(1, 12, customerId1.intValue(), ReservationStatus.OPEN.ordinal(), 1);
         Number orderItemId = insertOrderItem(dishId.intValue(), reservationId.intValue(), 100, 1, 0);
 
-        List<FullOrderItem> testList = new ArrayList<>();
-        testList.add(new FullOrderItem(orderItemId.longValue(), reservationId.longValue(), dishId.intValue(), 100, 1, 0, "Empanada"));
+        List<OrderItem> testList = new ArrayList<>();
+        testList.add(new OrderItem(orderItemId.longValue(), reservationId.longValue(), dishId.intValue(), 100, 1, 0, "Empanada"));
         //testList.add(new FullOrderItem(2, 1, 2, 200, 1, 1, "Empanada"));
 
         // 2. Ejercitacion
-        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(reservationId.longValue());
+        List<OrderItem> maybeList = reservationDao.getOrderItemsByReservationId(reservationId.longValue());
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeList.isEmpty());
@@ -504,7 +504,7 @@ public class ReservationJdbcDaoTest {
         cleanAllTables();
 
         // 2. Ejercitacion
-        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
+        List<OrderItem> maybeList = reservationDao.getOrderItemsByReservationId(1);
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeList.isEmpty());
@@ -524,7 +524,7 @@ public class ReservationJdbcDaoTest {
         insertOrderItem(dishId1.intValue(), reservationId.intValue(), 100, 1, OrderItemStatus.DELIVERED.ordinal());
 
         // 2. Ejercitacion
-        List<FullOrderItem> maybeList = reservationDao.getOrderItemsByStatus(OrderItemStatus.ORDERED);
+        List<OrderItem> maybeList = reservationDao.getOrderItemsByStatus(OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeList.isEmpty());
@@ -600,7 +600,7 @@ public class ReservationJdbcDaoTest {
 //        reservationDao.deleteOrderItemsByReservationIdAndStatus(reservationId.longValue(), OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{}, ROW_MAPPER_ORDER_ITEMS);
         Assert.assertEquals(1, query.size());
 
@@ -621,7 +621,7 @@ public class ReservationJdbcDaoTest {
 //        reservationDao.deleteOrderItemsByReservationIdAndStatus(0, OrderItemStatus.ORDERED);
 
         // 3. PostCondiciones
-        List<FullOrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
+        List<OrderItem> query = jdbcTemplate.query("SELECT * FROM orderItem NATURAL JOIN dish ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY",
                 new Object[]{}, ROW_MAPPER_ORDER_ITEMS);
         Assert.assertEquals(2, query.size());
     }

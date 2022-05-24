@@ -2,32 +2,62 @@ package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
 public class OrderItem {
-    private long reservationId;
-    private long dishId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderitem_id_seq")
+    @SequenceGenerator(sequenceName = "orderitem_id_seq", name = "orderitem_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "reservationid", nullable = false)
+    private Reservation reservation;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "dishid", nullable = false)
+    private Dish dish;
+
+    @Column(nullable = false)
     private float unitPrice;
+
+    @Column(nullable = false)
     private int quantity;
+
+    @Enumerated
+    @Column(nullable = false)
     private OrderItemStatus status;
 
-    public OrderItem(long reservationId, long dishId, float unitPrice, int quantity , int status) {
-        this.reservationId = reservationId;
-        this.dishId = dishId;
+
+    /* default */ OrderItem() {
+        // Just for hibernate
+    }
+
+    public OrderItem(Reservation reservation, Dish dish, float unitPrice, int quantity , int status) {
+        this.reservation = reservation;
+        this.dish = dish;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.status = OrderItemStatus.values()[status];
     }
-    public OrderItem() {
 
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
-    public void setReservationId(long reservationId) {
-        this.reservationId = reservationId;
+    public Dish getDish() {
+        return dish;
     }
 
-    public void setDishId(long dishId) {
-        this.dishId = dishId;
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
     }
 
     public void setUnitPrice(float unitPrice) {
@@ -36,14 +66,6 @@ public class OrderItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public long getReservationId() {
-        return reservationId;
-    }
-
-    public long getDishId() {
-        return dishId;
     }
 
     public float getUnitPrice() {
@@ -62,16 +84,24 @@ public class OrderItem {
         this.status = status;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return reservationId == orderItem.reservationId && dishId == orderItem.dishId && Float.compare(orderItem.unitPrice, unitPrice) == 0 && quantity == orderItem.quantity && status == orderItem.status;
+        OrderItem that = (OrderItem) o;
+        return id == that.id && Float.compare(that.unitPrice, unitPrice) == 0 && quantity == that.quantity && status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reservationId, dishId, unitPrice, quantity, status);
+        return Objects.hash(id, unitPrice, quantity, status);
     }
 }

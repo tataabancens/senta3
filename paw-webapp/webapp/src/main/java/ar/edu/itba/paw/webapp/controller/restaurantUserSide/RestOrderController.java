@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
-import ar.edu.itba.paw.model.FullOrderItem;
+import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
@@ -44,8 +44,8 @@ public class RestOrderController {
         for (Reservation reservation : reservations) {
             res.updateOrderItemsStatus(reservation.getId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
-        List<FullOrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
-        List<FullOrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
+        List<OrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
+        List<OrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
 
         mav.addObject("reservations", reservations);
         mav.addObject("incomingItems", incomingItems);
