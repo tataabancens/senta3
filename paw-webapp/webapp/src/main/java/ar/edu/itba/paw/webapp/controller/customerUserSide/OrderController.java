@@ -134,8 +134,9 @@ public class OrderController {
 
         ControllerUtils.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
 
-        res.updateOrderItemsStatus(reservationId, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
+        res.updateOrderItemsStatus(reservation, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
@@ -178,7 +179,7 @@ public class OrderController {
         cs.addPointsToCustomer(customer, res.getTotal(orderItems));
 
         res.updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
-        res.updateOrderItemsStatus(reservationId, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
+        res.updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
 
         return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId + "&points=" + cs.getPoints(res.getTotal(orderItems)));
     }
@@ -205,8 +206,8 @@ public class OrderController {
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
-        res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        res.deleteOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }
 
@@ -220,8 +221,8 @@ public class OrderController {
         long orderItemId = Long.parseLong(orderItemIdP);
 
         res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        //res.deleteOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
-        res.deleteOrderItemByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED, orderItemId);
+        OrderItem orderItem = res.getOrderItemById(orderItemId).orElseThrow(OrderItemNotFoundException::new);
+        res.deleteOrderItemByStatus(orderItem , OrderItemStatus.SELECTED);
 
         return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
     }

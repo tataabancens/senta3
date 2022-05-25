@@ -12,8 +12,6 @@ public interface ReservationService {
 
     OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity);
 
-    List<OrderItem> getOrderItemsByReservation(Reservation reservation);
-
     List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
     List<OrderItem> getOrderItemsByStatus(OrderItemStatus status);
@@ -22,15 +20,15 @@ public interface ReservationService {
 
     float getTotal(List<OrderItem> orderItems);
 
-    void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus);
+    void updateOrderItemsStatus(Reservation reservation, OrderItemStatus oldStatus, OrderItemStatus newStatus);
 
-    void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus);
+    void updateOrderItemStatus(OrderItem orderItem, OrderItemStatus newStatus);
 
     void updateReservationStatus(Reservation reservation, ReservationStatus newStatus);
 
-    void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status);
+    void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
-    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
+    void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status);
 
     List<Integer> getAvailableHours(long restaurantId, long qPeople);
 
@@ -69,4 +67,6 @@ public interface ReservationService {
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
     boolean isFromOrder(String isFromOrderP);
+
+    Optional<OrderItem> getOrderItemById(long orderItemId);
 }

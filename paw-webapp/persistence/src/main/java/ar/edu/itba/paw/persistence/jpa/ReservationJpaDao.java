@@ -25,6 +25,11 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
+    public Optional<OrderItem> getOrderItemById(long orderItemId) {
+        return Optional.of(em.find(OrderItem.class, orderItemId));
+    }
+
+    @Override
     public Optional<Reservation> getReservationByIdAndStatus(long reservationId, List<ReservationStatus> status) {
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus in :status and r.id = :reservation_id",
                 Reservation.class); //es hql, no sql

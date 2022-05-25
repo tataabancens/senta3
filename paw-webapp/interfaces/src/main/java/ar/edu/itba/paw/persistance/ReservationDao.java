@@ -25,5 +25,7 @@ public interface ReservationDao {
 //    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
 
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
+
+    Optional<OrderItem> getOrderItemById(long orderItemId);
 }
 

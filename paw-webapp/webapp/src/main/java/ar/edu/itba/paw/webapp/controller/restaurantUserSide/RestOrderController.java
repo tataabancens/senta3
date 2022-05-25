@@ -7,6 +7,7 @@ import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
+import ar.edu.itba.paw.webapp.exceptions.OrderItemNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class RestOrderController {
         List<Reservation> reservations = res.getReservationsSeated(restaurant);
 
         for (Reservation reservation : reservations) {
-            res.updateOrderItemsStatus(reservation.getId(), OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
+            res.updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         }
         List<OrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
         List<OrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
@@ -61,7 +62,8 @@ public class RestOrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long orderItemId = Long.parseLong(orderItemIdP);
 
-        res.updateOrderItemStatus(orderItemId, OrderItemStatus.FINISHED);
+        OrderItem orderItem = res.getOrderItemById(orderItemId).orElseThrow(OrderItemNotFoundException::new);
+        res.updateOrderItemStatus(orderItem, OrderItemStatus.FINISHED);
         return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
     }
 
@@ -73,7 +75,9 @@ public class RestOrderController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long orderItemId = Long.parseLong(orderItemIdP);
 
-        res.updateOrderItemStatus(orderItemId, OrderItemStatus.DELIVERED);
+        OrderItem orderItem = res.getOrderItemById(orderItemId).orElseThrow(OrderItemNotFoundException::new);
+
+        res.updateOrderItemStatus(orderItem, OrderItemStatus.DELIVERED);
         return new ModelAndView("redirect:/restaurant="+restaurantId+"/orders");
     }
 

@@ -58,11 +58,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByReservation(Reservation reservation) {
-        return reservation.getOrderItems();
-    }
-
-    @Override
     public List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(status);
@@ -72,6 +67,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
         return reservationDao.getOrderItemsByStatus(status);
+    }
+
+    @Override
+    public Optional<OrderItem> getOrderItemById(long orderItemId) {
+        return reservationDao.getOrderItemById(orderItemId);
     }
 
     @Transactional
@@ -225,31 +225,39 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation.getOrderItemsByStatusList(statusList);
     }
 
-
-
+    @Transactional
     @Override
-    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
-//        reservationDao.updateOrderItemsStatus(reservationId, oldStatus, newStatus);
+    public void updateOrderItemsStatus(Reservation reservation, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
+        reservation.getOrderItems().forEach(o -> {
+            if (o.getStatus().ordinal() == oldStatus.ordinal())
+                o.setStatus(newStatus);
+        });
+    }
+
+    @Transactional
+    @Override
+    public void updateOrderItemStatus(OrderItem orderItem, OrderItemStatus newStatus) {
+        orderItem.setStatus(newStatus);
     }
 
     @Override
-    public void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus) {
-//        reservationDao.updateOrderItemStatus(orderItemId, newStatus);
+    public void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status) {
+        reservation.getOrderItems().forEach(o -> {
+            if(o.getStatus().ordinal() == status.ordinal())
+                o.setStatus(OrderItemStatus.DELETED);
+        });
     }
+
+    @Override
+    public void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status) {
+        if(orderItem.getStatus() == status)
+            orderItem.setStatus(OrderItemStatus.DELETED);
+    }
+
     @Transactional
     @Override
     public void updateReservationStatus(Reservation reservation, ReservationStatus newStatus) {
         reservation.setReservationStatus(newStatus);
-    }
-
-    @Override
-    public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-//        reservationDao.deleteOrderItemsByReservationIdAndStatus(reservationId, status);
-    }
-
-    @Override
-    public void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId) {
-//        reservationDao.deleteOrderItemByReservationIdAndStatus(reservationId, status, orderItemId);
     }
 
     @Transactional
