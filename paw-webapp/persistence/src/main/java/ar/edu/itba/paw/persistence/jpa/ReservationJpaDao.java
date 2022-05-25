@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReservationJpaDao implements ReservationDao {
@@ -42,10 +45,31 @@ public class ReservationJpaDao implements ReservationDao {
     @Override
     public List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
         // Esto es dummy hay que ver como se soluciona
-        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.restaurant.id = :restaurant_id", Reservation.class); //es hql, no sql
-        query.setParameter("restaurant_id", restaurantId);
-        query.setMaxResults(10);
-        query.setFirstResult(Math.abs(page-1)*10);
+        String filterStatusString = "";
+        if(!Objects.equals(orderBy, "reservationid") && !Objects.equals(orderBy, "customerid") && !Objects.equals(orderBy, "qpeople") && !Objects.equals(orderBy, "reservationhour") && !Objects.equals(orderBy, "reservationstatus")) {
+            return new ArrayList<>();
+        } else if(!Objects.equals(direction, "ASC") && !Objects.equals(direction, "DESC")) {
+            return new ArrayList<>();
+        } else if(!filterStatus.matches("[0-9]*")) {
+            return new ArrayList<>();
+        }
+        if(!Objects.equals(filterStatus, "9")){
+            filterStatusString = " AND reservationStatus = " + filterStatus;
+        }
+
+        final Query idQuery = em.createNativeQuery("SELECT reservationid FROM reservation NATURAL JOIN customer CROSS JOIN restaurant WHERE restaurant.restaurantid = :restaurantId" + filterStatusString +
+                " ORDER BY " + orderBy + " " + direction + " OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
+        idQuery.setParameter("restaurantId", restaurantId);
+        idQuery.setParameter("offset", Math.abs((page-1)*10));
+
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.id IN :ids order by " + orderBy + " " + direction, Reservation.class); //es hql, no sql
+        query.setParameter("ids", ids);
+        //uery.setMaxResults(10);
+        //query.setFirstResult(Math.abs(page-1)*10);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }
