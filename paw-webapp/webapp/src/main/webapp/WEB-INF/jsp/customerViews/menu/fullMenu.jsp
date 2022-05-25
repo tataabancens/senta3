@@ -46,9 +46,10 @@
         </div>
     </div>
     <div class="reservation-info" style="margin-right: 4%;">
-            <p class="presentation-text header-title info"><spring:message code="Reservation.header.title"/></p>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.title"/><c:out value="${reservation.id}"/></p>
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.date"/></p>
-            <span class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</span>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
     </div>
 </div>
 <div class="page-container">
@@ -142,7 +143,7 @@
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="presentation-text right"><c:out value="${totalPrice}"/></p>
+                        <p class="presentation-text right">$<c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
                 <div class="order-btn-row">
