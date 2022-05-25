@@ -119,7 +119,7 @@ public class Restaurant {
 
     public List<Dish> getDishesByCategory(DishCategory category) {
         List<Dish> toRet = new ArrayList<>(dishes);
-        toRet.removeIf(d -> d.getCategory().ordinal() == category.ordinal());
+        toRet.removeIf(d -> d.getCategory().ordinal() != category.ordinal());
         return toRet;
     }
 

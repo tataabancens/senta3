@@ -32,6 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.restaurantService = restaurantService;
     }
 
+    @Transactional
     @Override
     public Optional<Reservation> getReservationById(long id) {
         return reservationDao.getReservationById(id);
@@ -47,16 +48,19 @@ public class ReservationServiceImpl implements ReservationService {
         return restaurant.getReservationsByStatusList(statusList);
     }
 
+    @Transactional
     @Override
     public List<Reservation> getAllReservations(Restaurant restaurant) {
         return restaurant.getReservations();
     }
 
+    @Transactional
     @Override
     public List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
         return reservationDao.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, page);
     }
 
+    @Transactional
     @Override
     public List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status) {
         List<OrderItemStatus> statusList = new ArrayList<>();
@@ -64,11 +68,13 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation.getOrderItemsByStatusList(statusList);
     }
 
+    @Transactional
     @Override
     public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
         return reservationDao.getOrderItemsByStatus(status);
     }
 
+    @Transactional
     @Override
     public Optional<OrderItem> getOrderItemById(long orderItemId) {
         return reservationDao.getOrderItemById(orderItemId);
@@ -80,10 +86,12 @@ public class ReservationServiceImpl implements ReservationService {
         return customer.createReservation(restaurant, customer, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()));
     }
 
+    @Transactional
     @Override
     public OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity) {
         return reservation.createOrderItem(dish, quantity);
     }
+
 
     @Override
     public float getTotal(List<OrderItem> orderItems) {
@@ -149,6 +157,7 @@ public class ReservationServiceImpl implements ReservationService {
         return totalHours;
     }
 
+    @Transactional
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
         Reservation reservation = getReservationById(reservationId).get();
@@ -172,6 +181,7 @@ public class ReservationServiceImpl implements ReservationService {
         return unavailableDishIds;
     }
 
+    @Transactional
     @Override
     public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
         List<ReservationStatus> statusList = new ArrayList<>();
@@ -190,6 +200,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
     }
 
+    @Transactional
     @Override
     public List<Reservation> getReservationsByCustomerAndActive(Customer customer) {
         List<ReservationStatus> statusList = new ArrayList<>();
@@ -198,11 +209,13 @@ public class ReservationServiceImpl implements ReservationService {
         return customer.getReservationsByStatusList(statusList);
     }
 
+    @Transactional
     @Override
     public List<Reservation> getReservationsByCustomer(Customer customer) {
         return customer.getReservations();
     }
 
+    @Transactional
     @Override
     public List<OrderItem> getOrderItemsByReservationAndOrder(Reservation reservation) {
         List<OrderItemStatus> statusList = new ArrayList<>();
@@ -214,6 +227,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation.getOrderItemsByStatusList(statusList);
     }
 
+    @Transactional
     @Override
     public List<OrderItem> getAllOrderItemsByReservation(Reservation reservation) {
         List<OrderItemStatus> statusList = new ArrayList<>();
@@ -240,6 +254,7 @@ public class ReservationServiceImpl implements ReservationService {
         orderItem.setStatus(newStatus);
     }
 
+    @Transactional
     @Override
     public void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status) {
         reservation.getOrderItems().forEach(o -> {
@@ -248,6 +263,7 @@ public class ReservationServiceImpl implements ReservationService {
         });
     }
 
+    @Transactional
     @Override
     public void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status) {
         if(orderItem.getStatus() == status)

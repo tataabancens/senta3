@@ -122,7 +122,7 @@
                 <div class="order-info">
                     <c:forEach var="orderItem" items="${orderItems}">
                         <div class="order-item">
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dishName}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
                             <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
                             <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
                             <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
