@@ -44,6 +44,8 @@ public class ReservationJpaDao implements ReservationDao {
         // Esto es dummy hay que ver como se soluciona
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.restaurant.id = :restaurant_id", Reservation.class); //es hql, no sql
         query.setParameter("restaurant_id", restaurantId);
+        query.setMaxResults(10);
+        query.setFirstResult(Math.abs(page-1)*10);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }
