@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,5 +28,9 @@ public interface ReservationDao {
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
     Optional<OrderItem> getOrderItemById(long orderItemId);
+
+    List<OrderItem> getOrderItemsByStatusList(List<OrderItemStatus> statusList);
+
+    List<OrderItem> getOrderItems();
 }
 

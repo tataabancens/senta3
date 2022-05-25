@@ -58,6 +58,25 @@ public class ReservationJpaDao implements ReservationDao {
         return list.isEmpty() ? new ArrayList<>() : list;
     }
 
+    @Override
+    public List<OrderItem> getOrderItems() {
+        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o", OrderItem.class); //es hql, no sql
+        query.setMaxResults(100);
+        query.setFirstResult(0);
+        final List<OrderItem> list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemsByStatusList(List<OrderItemStatus> statusList) {
+        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status = :status", OrderItem.class); //es hql, no sql
+        query.setParameter("status", statusList);
+        query.setMaxResults(100);
+        query.setFirstResult(0);
+        final List<OrderItem> list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
+    }
+
 //
 //    @Override
 //    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
