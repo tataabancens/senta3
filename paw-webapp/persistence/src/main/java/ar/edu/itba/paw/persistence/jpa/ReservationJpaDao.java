@@ -54,6 +54,8 @@ public class ReservationJpaDao implements ReservationDao {
     public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
         final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status = :status", OrderItem.class); //es hql, no sql
         query.setParameter("status", status);
+        query.setMaxResults(100);
+        query.setFirstResult(0);
         final List<OrderItem> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }
