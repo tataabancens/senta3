@@ -61,6 +61,7 @@ public class Reservation {
     public List<OrderItem> getOrderItems() {
         return new ArrayList<>(orderItems);
     }
+    
     public List<OrderItem> getOrderItemsByStatusList(List<OrderItemStatus> statusList) {
         List<OrderItem> toRet = new ArrayList<>(orderItems);
         toRet.removeIf(or -> !statusList.contains(or.getStatus()));
