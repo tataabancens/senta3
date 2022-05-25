@@ -49,9 +49,9 @@
                 <div class="card horizontal">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <p class="presentation-text">${reservation.customerName}</p>
+                            <p class="presentation-text">${reservation.customer.customerName}</p>
                             <p class="text description">Personas: ${reservation.qPeople}</p>
-                            <p class="text description">En ${reservation.restaurantName}</p>
+                            <p class="text description">En ${reservation.restaurant.restaurantName}</p>
                             <p  class="text description">El ${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
                             <p  class="text description">A las ${reservation.reservationHour}</p>
                         </div>

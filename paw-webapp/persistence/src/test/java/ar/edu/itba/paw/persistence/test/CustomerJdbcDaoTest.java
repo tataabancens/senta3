@@ -116,8 +116,7 @@ public class CustomerJdbcDaoTest {
                     resultSet.getString("customerName"),
                     resultSet.getString("Phone"),
                     resultSet.getString("Mail"),
-                    resultSet.getLong("userId"),
-                    resultSet.getInt("points")));
+                    resultSet.getInt("userId")));
 
     @Test
     @Rollback
@@ -132,7 +131,7 @@ public class CustomerJdbcDaoTest {
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeCustomer.isPresent());
-        Assert.assertEquals(customerId.longValue(), maybeCustomer.get().getCustomerId());
+        Assert.assertEquals(customerId.longValue(), maybeCustomer.get().getId());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, CUSTOMER_TABLE));
     }
 
@@ -194,7 +193,7 @@ public class CustomerJdbcDaoTest {
         // 3. PostCondiciones
         Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
         Assert.assertTrue(customer.isPresent());
-        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(customerId.longValue(), customer.get().getId());
         Assert.assertEquals(15, customer.get().getPoints());
 
     }
@@ -213,7 +212,7 @@ public class CustomerJdbcDaoTest {
         // 3. PostCondiciones
         Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
         Assert.assertTrue(customer.isPresent());
-        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(customerId.longValue(), customer.get().getId());
         Assert.assertEquals(30, customer.get().getPoints());
 
     }
@@ -233,7 +232,7 @@ public class CustomerJdbcDaoTest {
         // 3. PostCondiciones
         Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER_WITH_USERID).stream().findFirst();
         Assert.assertTrue(customer.isPresent());
-        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(customerId.longValue(), customer.get().getId());
         Assert.assertEquals(user2.longValue(), customer.get().getUserId());
     }
 
@@ -251,7 +250,7 @@ public class CustomerJdbcDaoTest {
         // 3. PostCondiciones
         Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER_WITH_USERID).stream().findFirst();
         Assert.assertTrue(customer.isPresent());
-        Assert.assertEquals(customerId.longValue(), customer.get().getCustomerId());
+        Assert.assertEquals(customerId.longValue(), customer.get().getId());
         Assert.assertEquals("pepito", customer.get().getCustomerName());
     }
 

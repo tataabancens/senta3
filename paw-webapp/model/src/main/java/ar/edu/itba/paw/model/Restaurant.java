@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,8 +25,11 @@ public class Restaurant {
     @Column(length = 50, nullable = false)
     private String mail;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval = true)
-    private List<Dish> dishes;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dish> dishes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userid")
@@ -72,11 +76,19 @@ public class Restaurant {
         this.openHour = openHour;
         this.closeHour = closeHour;
     }
+
     public Dish createDish(String dishName, String dishDescription, double price, long imageId, DishCategory category) {
         Dish dish = new Dish(this, dishName, (int) price,  dishDescription, imageId, category);
         dishes.add(dish);
         return dish;
     }
+
+    public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
+        List<Reservation> toRet = new ArrayList<>(reservations);
+        toRet.removeIf(r -> !statusList.contains(r.getReservationStatus()));
+        return toRet;
+    }
+
     public void deleteDish(long dishId) {
         dishes.removeIf(d -> d.getId() == dishId);
     }
@@ -106,11 +118,8 @@ public class Restaurant {
     }
 
     public List<Dish> getDishesByCategory(DishCategory category) {
-        List<Dish> toRet = new ArrayList<>();
-        for (Dish dish : getDishes()) {
-            if (dish.getCategory().ordinal() == category.ordinal())
-                toRet.add(dish);
-        }
+        List<Dish> toRet = new ArrayList<>(dishes);
+        toRet.removeIf(d -> d.getCategory().ordinal() != category.ordinal());
         return toRet;
     }
 
@@ -154,4 +163,11 @@ public class Restaurant {
         this.closeHour = closeHour;
     }
 
+    public List<Reservation> getReservations() {
+        return new ArrayList<>(reservations);
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 }

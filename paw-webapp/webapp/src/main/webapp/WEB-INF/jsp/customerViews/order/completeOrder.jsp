@@ -27,7 +27,7 @@
     <div class="recommendations">
         <c:if test="${isPresent}">
             <h3 class="summary presentation-text"><spring:message code="Order.othercustomers"/>:</h3>
-                <a href="<c:url value="/menu/orderItem?reservationId=${reservation.reservationId}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="card horizontal">
+                <a href="<c:url value="/menu/orderItem?reservationId=${reservation.id}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="card horizontal">
                     <div class="card-image">
                         <c:if test="${recommendedDish.imageId > 0}">
                             <img src="<c:url value="/resources_/images/${recommendedDish.imageId}"/>" alt="La foto del plato"/>
@@ -81,7 +81,7 @@
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
                         <div >
-                            <span class="summary text description"><c:out value="${orderItem.dishName}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.dish.dishName}"/></span>
                         </div>
                         <div>
                             <span class="summary text description"><c:out value="${orderItem.quantity}"/></span>
@@ -105,12 +105,12 @@
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="summary presentation-text right "><c:out value="${totalPrice}"/></p>
+                        <p class="summary presentation-text right ">$<c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
 
                     <div >
-                        <c:url value="/order/send-food?reservationId=${reservation.reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                        <c:url value="/order/send-food?reservationId=${reservation.id}&restaurantId=${restaurant.id}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.confirm" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">

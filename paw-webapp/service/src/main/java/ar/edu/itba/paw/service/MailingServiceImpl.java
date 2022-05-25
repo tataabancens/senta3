@@ -1,13 +1,11 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
 import java.util.Properties;
 
 @Service
@@ -24,7 +22,7 @@ public class MailingServiceImpl implements MailingService{
     }
     private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
         String subject="Confirmacion de reserva";
-        String stringBuilder = "tu reserva fue confirmada\n" + "tu codigo de reserva es: "+reservation.getReservationId()+'\n' +
+        String stringBuilder = "tu reserva fue confirmada\n" + "tu codigo de reserva es: "+reservation.getId()+'\n' +
                 "si necesitas contactar al restaurant, este es su email: " + restaurant.getMail() + '\n';
         sendEmail(props,customer.getMail(),subject, stringBuilder);
     }

@@ -67,11 +67,11 @@ public class MenuController {
 //        restaurant.setDishes(dishes);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Customer customer = cs.getCustomerById(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
 
-        List<FullOrderItem> orderedItems = res.getOrderItemsByReservationIdAndOrder(reservationId);
-        List<FullOrderItem> orderItems = res.getOrderItemsByReservationIdAndStatus(reservationId, OrderItemStatus.SELECTED);
+        List<OrderItem> orderedItems = res.getOrderItemsByReservationAndOrder(reservation);
+        List<OrderItem> orderItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
 

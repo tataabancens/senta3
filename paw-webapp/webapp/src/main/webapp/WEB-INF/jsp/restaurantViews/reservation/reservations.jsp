@@ -90,22 +90,22 @@
         <tbody>
         <c:forEach var="reservation" items="${reservations}">
             <tr>
-                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.reservationId}"/></span></td>
-                <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customerName}"/></span></td>
+                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.id}"/></span></td>
+                <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customer.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
                 <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
                                     <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.confirm"/></span>
                                 </button>
                             </form:form>
                         </div>
-                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.reject"/></span>
                         </a>
                     </td>
@@ -114,7 +114,7 @@
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
                                     <span class="text description" style="font-size: 0.8rem; color: white"><spring:message code="Receipt.title"/></span>
@@ -127,7 +127,7 @@
                 <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
                                     <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Receipt.title"/></span>

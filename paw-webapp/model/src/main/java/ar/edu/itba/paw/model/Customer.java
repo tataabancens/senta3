@@ -1,6 +1,12 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -9,7 +15,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_customerid_seq")
     @SequenceGenerator(sequenceName = "customer_customerid_seq", name = "customer_customerid_seq", allocationSize = 1)
     @Column(name = "customerid")
-    private long customerId;
+    private long id;
 
     @Column(length = 50, nullable = false)
     private String customerName;
@@ -27,10 +33,13 @@ public class Customer {
     @JoinColumn(name = "userid")
     private User user;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 
     /* default */ Customer() {
         // Just for hibernate
     }
+
 
     public Customer(String customerName, String phone, String mail, int points) {
         super();
@@ -49,30 +58,32 @@ public class Customer {
 //        this.userId = userId;
     }
 
-    @Deprecated
     public Customer(long customerId, String customerName, String phone, String mail, int points) {
-        this.customerId = customerId;
+        this.id = customerId;
         this.customerName = customerName;
         this.phone = phone;
         this.mail = mail;
         this.points = points;
     }
 
-    @Deprecated
-    public Customer(long customerId, String customerName, String phone, String mail, long userId, int points) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.phone = phone;
-        this.mail = mail;
-        this.points = points;
+    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople, Timestamp startedAtTime) {
+        final Reservation reservation = new Reservation(restaurant, customer, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime);
+        reservations.add(reservation);
+        return reservation;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
+        List<Reservation> toRet = new ArrayList<>(reservations);
+        toRet.removeIf(r -> !statusList.contains(r.getReservationStatus()));
+        return toRet;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCustomerName() {
@@ -122,4 +133,14 @@ public class Customer {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public List<Reservation> getReservations() {
+        return new ArrayList<>(reservations);
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+
 }

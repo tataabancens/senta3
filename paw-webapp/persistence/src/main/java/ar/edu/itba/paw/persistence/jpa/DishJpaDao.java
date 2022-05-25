@@ -22,18 +22,6 @@ public class DishJpaDao implements DishDao {
     }
 
     @Override
-    public Dish create(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category) {
-        final Dish dish = new Dish(restaurant, dishName, (int) price, dishDescription, imageId, category);
-        em.persist(dish);
-        return dish;
-    }
-
-    @Override
-    public void updateDish(long dishId, String dishName, String dishDescription, double price, DishCategory category, long restaurantId) {
-
-    }
-
-    @Override
     public void updateDishPhoto(long dishId, long imageId) {
 
     }

@@ -13,6 +13,6 @@ public class OrderValidator implements ConstraintValidator<OrderConstraint, Orde
 
     @Override
     public boolean isValid(OrderItem orderItem, ConstraintValidatorContext constraintValidatorContext) {
-        return orderItem.getQuantity()>0 && orderItem.getQuantity()<=50;
+        return orderItem.getQuantity()>0 && orderItem.getQuantity() <= 50;
     }
 }

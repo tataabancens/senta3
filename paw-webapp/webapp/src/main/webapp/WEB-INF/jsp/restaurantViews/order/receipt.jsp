@@ -88,7 +88,7 @@
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price right "><c:out value="${totalPrice}"/></p>
+                        <p class="price right ">$<c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
                     <sec:authorize access="!hasRole('RESTAURANT')">
