@@ -81,7 +81,7 @@
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
                         <div >
-                            <span class="summary text description"><c:out value="${orderItem.dishName}"/></span>
+                            <span class="summary text description"><c:out value="${orderItem.dish.dishName}"/></span>
                         </div>
                         <div>
                             <span class="summary text description"><c:out value="${orderItem.quantity}"/></span>

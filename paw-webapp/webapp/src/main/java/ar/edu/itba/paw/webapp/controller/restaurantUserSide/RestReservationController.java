@@ -90,7 +90,7 @@ public class RestReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
         List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, Integer.parseInt(page));
