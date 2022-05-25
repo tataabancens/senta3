@@ -106,7 +106,7 @@
                             </form:form>
                         </div>
                         <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
-                            <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.reject"/></span>
+                            <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.cancel"/></span>
                         </a>
                     </td>
                 </c:if>
@@ -139,6 +139,8 @@
             </tr>
         </c:forEach>
         </tbody>
+
+
     </table>
 </div>
 <div class="pagination-indicator">
