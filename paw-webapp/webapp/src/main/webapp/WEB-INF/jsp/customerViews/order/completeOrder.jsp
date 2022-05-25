@@ -105,7 +105,7 @@
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="summary presentation-text right "><c:out value="${totalPrice}"/></p>
+                        <p class="summary presentation-text right ">$<c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
 
