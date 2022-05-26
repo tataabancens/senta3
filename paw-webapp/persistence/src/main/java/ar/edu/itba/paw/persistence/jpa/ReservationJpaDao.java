@@ -100,9 +100,10 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItems() {
+    public List<OrderItem> getOrderItems(Reservation reservation) {
         //falta 1+1 TODO
-        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem ORDER BY id OFFSET 0 ROWS FETCH NEXT 500 ROWS ONLY");
+        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 500 ROWS ONLY");
+        idQuery.setParameter("reservationid", reservation.getId());
         @SuppressWarnings("unchecked")
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());

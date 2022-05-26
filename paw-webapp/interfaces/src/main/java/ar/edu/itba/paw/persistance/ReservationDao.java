@@ -31,6 +31,6 @@ public interface ReservationDao {
 
     List<OrderItem> getOrderItemsByStatusListAndReservation(Reservation reservation, List<OrderItemStatus> statusList);
 
-    List<OrderItem> getOrderItems();
+    List<OrderItem> getOrderItems(Reservation reservation);
 }
 
