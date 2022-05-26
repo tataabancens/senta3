@@ -102,7 +102,7 @@ public class ReservationJpaDao implements ReservationDao {
     @Override
     public List<OrderItem> getOrderItems(Reservation reservation) {
         //falta 1+1 TODO
-        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 500 ROWS ONLY");
+        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
         idQuery.setParameter("reservationid", reservation.getId());
         @SuppressWarnings("unchecked")
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
@@ -125,15 +125,21 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public List<OrderItem> getOrderItemsByStatusListAndReservation(Long reservationId, List<OrderItemStatus> statusList) {
-        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status in :statusList", OrderItem.class); //es hql, no sql
-        // and o.reservation.id = :reservationid
-        query.setParameter("statusList", statusList);
-        //query.setParameter("reservationid", reservationId);
-        query.setMaxResults(100);
-        query.setFirstResult(0);
-        final List<OrderItem> list = query.getResultList();
-        return list.isEmpty() ? new ArrayList<>() : list; //está siempre devolviendo vacía, dudo de ese createQuery de ahí arriba
-        //trae los orderitems, pero cuando le pedis el .reservation está todo vacío entonces no podes filtrar por reservationId
+        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
+        idQuery.setParameter("reservationid", reservationId);
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if(! ids.isEmpty()){
+            final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status in :statusList and o.id IN :ids", OrderItem.class); //es hql, no sql
+            query.setParameter("statusList", statusList);
+            query.setParameter("ids", ids);
+            final List<OrderItem> list = query.getResultList();
+            return list.isEmpty() ? new ArrayList<>() : list;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 //

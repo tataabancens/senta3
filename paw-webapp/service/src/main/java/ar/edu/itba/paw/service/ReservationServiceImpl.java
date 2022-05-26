@@ -234,6 +234,7 @@ public class ReservationServiceImpl implements ReservationService {
         statusList.add(OrderItemStatus.INCOMING);
         statusList.add(OrderItemStatus.DELIVERED);
         statusList.add(OrderItemStatus.FINISHED);
+        statusList.add(OrderItemStatus.CHECK_ORDERED);
 
         return reservationDao.getOrderItemsByStatusListAndReservation(reservation.getId(), statusList);
     }
