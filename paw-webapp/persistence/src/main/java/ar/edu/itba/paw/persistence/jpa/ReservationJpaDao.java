@@ -124,14 +124,16 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByStatusListAndReservation(Reservation reservation, List<OrderItemStatus> statusList) {
-        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status in :statusList and o.reservation.id = :reservationid order by id", OrderItem.class); //es hql, no sql
+    public List<OrderItem> getOrderItemsByStatusListAndReservation(Long reservationId, List<OrderItemStatus> statusList) {
+        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status in :statusList", OrderItem.class); //es hql, no sql
+        // and o.reservation.id = :reservationid
         query.setParameter("statusList", statusList);
-        query.setParameter("reservationid", reservation.getId());
+        //query.setParameter("reservationid", reservationId);
         query.setMaxResults(100);
         query.setFirstResult(0);
         final List<OrderItem> list = query.getResultList();
-        return list.isEmpty() ? new ArrayList<>() : list;
+        return list.isEmpty() ? new ArrayList<>() : list; //está siempre devolviendo vacía, dudo de ese createQuery de ahí arriba
+        //trae los orderitems, pero cuando le pedis el .reservation está todo vacío entonces no podes filtrar por reservationId
     }
 
 //

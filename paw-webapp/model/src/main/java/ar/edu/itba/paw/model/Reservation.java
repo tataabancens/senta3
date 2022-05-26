@@ -57,7 +57,7 @@ public class Reservation {
         this.qPeople = qPeople;
         this.startedAtTime = startedAtTime;
     }
-    /* pasando al dao
+    /* pasados al dao
     public List<OrderItem> getOrderItems() {
         return new ArrayList<>(orderItems);
     }
@@ -143,7 +143,7 @@ public class Reservation {
         this.reservationDiscount = reservationDiscount;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
+//    public List<OrderItem> getOrderItems() {
+//        return orderItems;
+//    }
 }
