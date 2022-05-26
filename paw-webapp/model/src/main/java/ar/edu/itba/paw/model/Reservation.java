@@ -142,4 +142,8 @@ public class Reservation {
     public void setReservationDiscount(boolean reservationDiscount) {
         this.reservationDiscount = reservationDiscount;
     }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
 }

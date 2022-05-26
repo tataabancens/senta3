@@ -56,11 +56,6 @@ public class CustomerJpaDao implements CustomerDao {
     }
 
     @Override
-    public void updatePoints(long customerId, int points) {
-
-    }
-
-    @Override
     public void updateCustomerData(long customerId, String name, String phone, String mail) {
 
     }

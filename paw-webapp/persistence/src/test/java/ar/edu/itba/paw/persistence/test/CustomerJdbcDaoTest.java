@@ -200,14 +200,14 @@ public class CustomerJdbcDaoTest {
 
     @Test
     @Rollback
-    public void testUpdatePoints() {
+    public void testAddPoints() {
         // 1. Precondiciones
         cleanAllTables();
         Number userId = insertUser("username", "pass", Roles.CUSTOMER);
         Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
 
         // 2. Ejercitacion
-        customerDao.updatePoints(customerId.longValue(), 30);
+        customerDao.addPointsToCustomer(customerId.longValue(), 30);
 
         // 3. PostCondiciones
         Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
