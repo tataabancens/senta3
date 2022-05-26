@@ -65,7 +65,7 @@ public class ReservationServiceImpl implements ReservationService {
     public List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(status);
-        return reservationDao.getOrderItemsByStatusList(statusList);
+        return reservationDao.getOrderItemsByStatusListAndReservation(reservation, statusList);
     }
 
     @Transactional
@@ -223,7 +223,7 @@ public class ReservationServiceImpl implements ReservationService {
         statusList.add(OrderItemStatus.INCOMING);
         statusList.add(OrderItemStatus.DELIVERED);
 
-        return reservationDao.getOrderItemsByStatusList(statusList);
+        return reservationDao.getOrderItemsByStatusListAndReservation(reservation, statusList);
     }
 
     @Transactional
@@ -235,7 +235,7 @@ public class ReservationServiceImpl implements ReservationService {
         statusList.add(OrderItemStatus.DELIVERED);
         statusList.add(OrderItemStatus.FINISHED);
 
-        return reservationDao.getOrderItemsByStatusList(statusList);
+        return reservationDao.getOrderItemsByStatusListAndReservation(reservation, statusList);
     }
 
     @Transactional
