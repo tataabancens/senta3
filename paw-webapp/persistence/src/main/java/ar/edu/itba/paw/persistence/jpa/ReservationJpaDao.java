@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReservationJpaDao implements ReservationDao {
@@ -41,19 +44,91 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
-        // Esto es dummy hay que ver como se soluciona
-        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.restaurant.id = :restaurant_id", Reservation.class); //es hql, no sql
-        query.setParameter("restaurant_id", restaurantId);
-        query.setMaxResults(10);
-        query.setFirstResult(Math.abs(page-1)*10);
-        final List<Reservation> list = query.getResultList();
-        return list.isEmpty() ? new ArrayList<>() : list;
+        //preparo el sql string
+        String filterStatusString = "";
+        if(!Objects.equals(orderBy, "reservationid") && !Objects.equals(orderBy, "customerid") && !Objects.equals(orderBy, "qpeople") && !Objects.equals(orderBy, "reservationhour") && !Objects.equals(orderBy, "reservationstatus")) {
+            return new ArrayList<>();
+        } else if(!Objects.equals(direction, "ASC") && !Objects.equals(direction, "DESC")) {
+            return new ArrayList<>();
+        } else if(!filterStatus.matches("[0-9]*")) {
+            return new ArrayList<>();
+        }
+        if(!Objects.equals(filterStatus, "9")){
+            filterStatusString = " AND reservationStatus = " + filterStatus;
+        }
+
+        //técnica 1+1
+        final Query idQuery = em.createNativeQuery("SELECT reservationid FROM reservation NATURAL JOIN customer CROSS JOIN restaurant WHERE restaurant.restaurantid = :restaurantId" + filterStatusString +
+                " ORDER BY " + orderBy + " " + direction + " OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
+        idQuery.setParameter("restaurantId", restaurantId);
+        idQuery.setParameter("offset", Math.abs((page-1)*10));
+
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if(! ids.isEmpty()) {
+            final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.id IN :ids order by " + orderBy + " " + direction, Reservation.class); //es hql, no sql
+            query.setParameter("ids", ids);
+            final List<Reservation> list = query.getResultList();
+            return list.isEmpty() ? new ArrayList<>() : list;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public List<OrderItem> getOrderItemsByStatus(OrderItemStatus status) {
-        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status = :status", OrderItem.class); //es hql, no sql
-        query.setParameter("status", status);
+        //técnica 1+1
+        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem NATURAL JOIN dish WHERE status = :status ORDER BY id OFFSET 0 ROWS FETCH NEXT 200 ROWS ONLY");
+        idQuery.setParameter("status", status.ordinal());
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+        /*
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+         */
+        if(! ids.isEmpty()){
+            final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.id IN :ids order by id", OrderItem.class); //es hql, no sql
+            query.setParameter("ids", ids);
+            final List<OrderItem> list = query.getResultList();
+            return list.isEmpty() ? new ArrayList<>() : list;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems() {
+        //falta 1+1 TODO
+        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem ORDER BY id OFFSET 0 ROWS FETCH NEXT 500 ROWS ONLY");
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        //final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o", OrderItem.class); //es hql, no sql
+        //query.setMaxResults(200);
+        //query.setFirstResult(0);
+        //final List<OrderItem> list = query.getResultList();
+        //return list.isEmpty() ? new ArrayList<>() : list;
+        if(! ids.isEmpty()){
+            final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.id IN :ids order by id", OrderItem.class); //es hql, no sql
+            query.setParameter("ids", ids);
+            final List<OrderItem> list = query.getResultList();
+            return list.isEmpty() ? new ArrayList<>() : list;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemsByStatusListAndReservation(Reservation reservation, List<OrderItemStatus> statusList) {
+        final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.status in :statusList and o.reservation.id = :reservationid order by id", OrderItem.class); //es hql, no sql
+        query.setParameter("statusList", statusList);
+        query.setParameter("reservationid", reservation.getId());
+        query.setMaxResults(100);
+        query.setFirstResult(0);
         final List<OrderItem> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
     }
