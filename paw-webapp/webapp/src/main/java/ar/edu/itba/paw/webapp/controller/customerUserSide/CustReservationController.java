@@ -87,11 +87,41 @@ public class CustReservationController {
         res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
 
 
-        return new ModelAndView("redirect:/createReservation-2/" + reservation.getId());
+        return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
     }
 
     @RequestMapping(value = "/createReservation-2/{reservationId}")
     public ModelAndView createReservation_2(@PathVariable("reservationId") final String reservationIdP,
+                                            @ModelAttribute("qPeopleForm") final NumberForm form) {
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        long reservationId = Long.parseLong(reservationIdP);
+
+        return new ModelAndView("customerViews/reservation/createReservation_2_date");
+    }
+
+    @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
+                                                 @Valid @ModelAttribute("qPeopleForm") final NumberForm form,
+                                                 final BindingResult errors){
+        if (errors.hasErrors()){
+            //return createReservation_2(form);
+        }
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        Customer maybeCustomer = cs.getCustomerById(1).orElseThrow(CustomerNotFoundException::new);
+
+        Reservation reservation = res.createReservation(restaurant, maybeCustomer, 0, Integer.parseInt(form.getNumber()));
+        res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
+
+
+        return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
+    }
+
+
+    @RequestMapping(value = "/createReservation-3/{reservationId}")
+    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
                                             @Valid @ModelAttribute("hourForm") final NumberForm form) throws Exception {
 
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
@@ -106,12 +136,12 @@ public class CustReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
-    public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_3_POST(@PathVariable("reservationId") final String reservationIdP,
                                                  @Valid @ModelAttribute("hourForm") final NumberForm form,
                                                  final BindingResult errors) throws Exception {
         if (errors.hasErrors()){
-            return createReservation_2(reservationIdP, form);
+            return createReservation_3(reservationIdP, form);
         }
         ControllerUtils.longParser(reservationIdP, form.getNumber()).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
@@ -122,12 +152,12 @@ public class CustReservationController {
         Customer maybeCustomer = new Customer(1, "", "", "", 0);
         res.updateReservationById(reservation, maybeCustomer, hour, reservation.getqPeople());
 
-        return new ModelAndView("redirect:/createReservation-3/" + reservationId + "/redirect");
+        return new ModelAndView("redirect:/createReservation-4/" + reservationId);
 
     }
 
-    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.GET)
-    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-4/{reservationId}", method = RequestMethod.GET)
+    public ModelAndView createReservation_4(@PathVariable("reservationId") final String reservationIdP,
                                             @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
 
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
@@ -140,14 +170,14 @@ public class CustReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.POST)
-    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-4/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_4(@PathVariable("reservationId") final String reservationIdP,
                                             @Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         if (errors.hasErrors()){
-            return createReservation_3(reservationIdP, form);
+            return createReservation_4(reservationIdP, form);
         }
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());

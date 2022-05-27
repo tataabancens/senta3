@@ -32,6 +32,9 @@ public class Reservation {
     @Column(nullable = false)
     private Timestamp startedAtTime;
 
+    @Column(nullable = false)
+    private Timestamp reservationDate;
+
     @Enumerated
     @Column(nullable = false)
     private ReservationStatus reservationStatus;
@@ -49,13 +52,14 @@ public class Reservation {
         // Just for hibernate
     }
 
-    public Reservation(Restaurant restaurant, Customer customer, int reservationHour, int reservationStatus, int qPeople, Timestamp startedAtTime) {
+    public Reservation(Restaurant restaurant, Customer customer, int reservationHour, int reservationStatus, int qPeople, Timestamp startedAtTime, Timestamp reservationDate) {
         this.restaurant = restaurant;
         this.customer = customer;
         this.reservationHour = reservationHour;
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
         this.qPeople = qPeople;
         this.startedAtTime = startedAtTime;
+        this.reservationDate = reservationDate;
     }
     /* pasados al dao
     public List<OrderItem> getOrderItems() {
@@ -143,6 +147,13 @@ public class Reservation {
         this.reservationDiscount = reservationDiscount;
     }
 
+    public Timestamp getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(Timestamp reservationDate) {
+        this.reservationDate = reservationDate;
+    }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
 //    }
