@@ -99,7 +99,7 @@
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
-                            <div class="dish-card">
+                            <a class="dish-card" href="/createReservation-1">
                                 <div class="dish-img">
                                     <c:if test="${dish.imageId > 0}">
                                         <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
@@ -113,7 +113,7 @@
                                     <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
                                     <span class="text price info">$<c:out value="${dish.price}"/></span>
                                 </div>
-                            </div>
+                            </a>
                         </c:forEach>
                     </div>
                 </div>
