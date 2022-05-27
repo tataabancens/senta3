@@ -109,11 +109,15 @@ public class CustReservationController {
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
+        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
+
+        /*
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer maybeCustomer = cs.getCustomerById(1).orElseThrow(CustomerNotFoundException::new);
 
         Reservation reservation = res.createReservation(restaurant, maybeCustomer, 0, Integer.parseInt(form.getNumber()));
         res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
+         */
 
 
         return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
