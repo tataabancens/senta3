@@ -170,6 +170,79 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="orderList">
+            <div class="card order-card">
+                <!-- TODO i18n -->
+                <span class="presentation-text">Pedidos en camino</span>
+
+                    <div class="order-headers">
+                        <span class="presentation-text"><spring:message code="Order.dish"/></span>
+                        <span class="presentation-text"><spring:message code="Order.qty"/></span>
+                        <span class="presentation-text"><spring:message code="Order.total"/></span>
+                    </div>
+                    <hr class="solid-divider">
+                    <div class="order-info">
+                        <c:forEach var="orderItem" items="${incomingItems}">
+                            <div class="order-item">
+                                <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
+                                <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
+                                <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
+                                <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
+
+                            </div>
+                            <hr class="solid-divider">
+                        </c:forEach>
+                    </div>
+                    <div class="order-total">
+                        <div>
+                            <p class="presentation-text"><spring:message code="Order.total"/></p>
+                        </div>
+                        <div>
+                            <fmt:formatNumber var="totalIncomingPrice" type="number" value="${(totalIncoming * discountCoefficient)}" maxFractionDigits="2"/>
+                            <p class="presentation-text right">$<c:out value="${totalIncomingPrice}"/></p>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
+
+        <div class="orderList">
+            <div class="card order-card">
+                <span class="presentation-text"><spring:message code="Kitchen.old.orders.title"/></span>
+
+                <div class="order-headers">
+                    <span class="presentation-text"><spring:message code="Order.dish"/></span>
+                    <span class="presentation-text"><spring:message code="Order.qty"/></span>
+                    <span class="presentation-text"><spring:message code="Order.total"/></span>
+                </div>
+                <hr class="solid-divider">
+                <div class="order-info">
+                    <c:forEach var="orderItem" items="${oldItems}">
+                        <div class="order-item">
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
+                            <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
+
+                        </div>
+                        <hr class="solid-divider">
+                    </c:forEach>
+                </div>
+                <div class="order-total">
+                    <div>
+                        <p class="presentation-text"><spring:message code="Order.total"/></p>
+                    </div>
+                    <div>
+                        <fmt:formatNumber var="totalOldPrice" type="number" value="${(totalOld * discountCoefficient)}" maxFractionDigits="2"/>
+                        <p class="presentation-text right">$<c:out value="${totalOldPrice}"/></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
     <div class="dish-categories">
         <c:if test="${reservation.reservationStatus.name != 'SEATED'}">
