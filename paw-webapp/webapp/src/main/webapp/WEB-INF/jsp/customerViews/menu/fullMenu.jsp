@@ -175,7 +175,7 @@
         <div class="orderList">
             <div class="card order-card">
                 <!-- TODO i18n -->
-                <span class="presentation-text">Pedidos en camino</span>
+                <span class="presentation-text">PEDIDOS EN CAMINO</span>
 
                     <div class="order-headers">
                         <span class="presentation-text"><spring:message code="Order.dish"/></span>

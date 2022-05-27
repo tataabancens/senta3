@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gonza
-  Date: 01/05/2022
-  Time: 20:24
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -28,39 +22,39 @@
     </div>
 </div>
 <div class="contentContainer">
-    <div class="points">
+
+
         <div class="reservations-header">
-            <h3 class="presentation-text"><spring:message code="History.points" arguments="${customer.points}"/></h3>
+            <h3 class="presentation-text"><spring:message code="Kitchen.title"/></h3>
         </div>
-        <div class="progress-bar" style="--width:${progressBarNumber}"></div>
-        <c:if test="${progressBarNumber > 100}">
-            <span class="presentation-text">100%</span>
-        </c:if>
-        <c:if test="${progressBarNumber <= 100}">
-            <span class="presentation-text">${progressBarNumber}%</span>
-        </c:if>
-    </div>
-    <div class="reservations">
-        <div class="reservations-header">
-            <h3 class="presentation-text"><spring:message code="History.reservations"/></h3>
-        </div>
-        <div class="reservationList">
-            <c:forEach var="reservation" items="${reservations}">
-                <div class="card horizontal">
-                    <div class="card-stacked">
-                        <div class="card-content">
-                            <p class="presentation-text">${reservation.customer.customerName}</p>
-                            <p class="text description">Personas: ${reservation.qPeople}</p>
-                            <p class="text description">En ${reservation.restaurant.restaurantName}</p>
-                            <p  class="text description">El ${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
-                            <p  class="text description">A las ${reservation.reservationHour}</p>
-                            <a href="<c:url value="/history/reservation?reservationId=${reservation.id}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
-                        </div>
-                    </div>
+
+        <div class="orderList">
+            <div class="card order-card">
+                <div class="order-headers">
+                    <span class="presentation-text"><spring:message code="Order.dish"/></span>
+                    <span class="presentation-text"><spring:message code="Order.qty"/></span>
+                    <span class="presentation-text"><spring:message code="Order.total"/></span>
                 </div>
-            </c:forEach>
+                <hr class="solid-divider">
+                <div class="order-info">
+                    <c:forEach var="orderItem" items="${orderItemList}">
+                        <div class="order-item">
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.unitPrice}"/></span></div>
+
+                        </div>
+                        <hr class="solid-divider">
+                    </c:forEach>
+                </div>
+
+
+                </div>
+            </div>
         </div>
-    </div>
+
+
+
 </div>
 </body>
 </html>
