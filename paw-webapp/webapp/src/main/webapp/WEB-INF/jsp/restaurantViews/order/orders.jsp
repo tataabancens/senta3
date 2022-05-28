@@ -37,14 +37,14 @@
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${incomingItems}">
-                    <c:if test="${item.reservationId == reservation.reservationId}">
+                    <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                                <span class="card-title title text"><c:out value="${item.dish.dishName}"/></span>
                                 <p class="description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
-                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservationId}"/></p>
+                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
                             </div>
-                            <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.orderItemId}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <spring:message code="Button.finish" var="label"/>
                                 <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn blue center">
@@ -60,14 +60,14 @@
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
-                    <c:if test="${item.reservationId == reservation.reservationId}">
+                    <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="card-title title text"><c:out value="${item.dishName}"/></span>
+                                <span class="card-title title text"><c:out value="${item.dish.dishName}"/></span>
                                 <p class="description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
-                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservationId}"/></p>
+                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
                             </div>
-                            <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.orderItemId}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
                                 <spring:message code="Button.deliver" var="label"/>
                                 <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">

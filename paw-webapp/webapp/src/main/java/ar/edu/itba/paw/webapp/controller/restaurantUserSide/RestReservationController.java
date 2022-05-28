@@ -62,10 +62,10 @@ public class RestReservationController {
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
-        Customer customer = cs.getCustomerById(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
+        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
 
         ms.sendCancellationEmail(restaurant,customer,reservation);
 
@@ -90,10 +90,10 @@ public class RestReservationController {
         long restaurantId = Long.parseLong(restaurantIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
-        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, Integer.parseInt(page));
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, Integer.parseInt(page));
 
 
         filterForm.setFilterStatus(filterStatus);
@@ -132,8 +132,9 @@ public class RestReservationController {
                                      @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
+        res.updateReservationStatus(reservation, ReservationStatus.SEATED);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
@@ -152,8 +153,8 @@ public class RestReservationController {
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
-        Customer customer = cs.getCustomerById(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservation(reservation);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
         ModelAndView mav = new ModelAndView("restaurantViews/order/receipt");
 
@@ -180,8 +181,11 @@ public class RestReservationController {
                                        @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
         ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservation(reservation);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.FINISHED);
+        res.updateReservationStatus(reservation, ReservationStatus.FINISHED);
+        cs.addPointsToCustomer(reservation.getCustomer(), res.getTotal(orderItems));
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
@@ -197,8 +201,9 @@ public class RestReservationController {
                                            ) throws Exception {
         ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
+        res.updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);

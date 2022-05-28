@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.form.CustomValidator;
 
-import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.PasswordPair;
-import ar.edu.itba.paw.webapp.form.CustomerRegisterShortForm;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

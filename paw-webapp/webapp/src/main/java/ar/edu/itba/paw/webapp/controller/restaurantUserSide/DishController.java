@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Image;
-import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
