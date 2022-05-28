@@ -60,7 +60,7 @@ public class ControllerUtils {
 
     public static Optional<Timestamp> timestampParser(String strTime){
         try{
-            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(strTime + " 10:10:10.0");
+            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(strTime + " 23:59:59.99");
             return Optional.of(timestamp);
         } catch (Exception e) {
             return Optional.empty();

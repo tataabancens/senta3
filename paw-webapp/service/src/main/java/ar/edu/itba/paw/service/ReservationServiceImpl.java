@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import java.util.*;
@@ -116,6 +117,11 @@ public class ReservationServiceImpl implements ReservationService {
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
         List<Reservation> reservations = restaurant.getReservations();
 
+        Timestamp now = Timestamp.from(Instant.now());
+        if(reservationDate.before(now)){
+            return new ArrayList<>();
+        }
+
         List<ReservationStatus> ignoreStatus = new ArrayList<>();
         ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
         ignoreStatus.add(ReservationStatus.CANCELED);
@@ -126,12 +132,14 @@ public class ReservationServiceImpl implements ReservationService {
         Calendar calendar_reservationDate = new GregorianCalendar();
         Calendar calendar_compare = new GregorianCalendar();
         calendar_reservationDate.setTime(reservationDate);
-        for(Reservation reservation : reservations){
-            calendar_compare.setTime(reservation.getReservationDate());
+        int i;
+        for(i=0; i<reservations.size(); i++){
+        //for(Reservation reservation : reservations){
+            calendar_compare.setTime(reservations.get(i).getReservationDate());
             if(calendar_compare.get(Calendar.YEAR) != calendar_reservationDate.get(Calendar.YEAR) ||
                     calendar_compare.get(Calendar.MONTH) != calendar_reservationDate.get(Calendar.MONTH) ||
                     calendar_compare.get(Calendar.DAY_OF_MONTH) != calendar_reservationDate.get(Calendar.DAY_OF_MONTH)){
-                reservations.remove(reservation);
+                reservations.remove(i);
             }
         }
 
@@ -142,14 +150,14 @@ public class ReservationServiceImpl implements ReservationService {
 
         List<Integer> totalHours = new ArrayList<>();
         if (openHour < closeHour) {
-            for(int i = openHour; i < closeHour; i++) {
+            for(i = openHour; i < closeHour; i++) {
                 totalHours.add(i);
             }
         } else if( closeHour < openHour ) {
-            for (int i = openHour; i<24; i++) {
+            for (i = openHour; i<24; i++) {
                 totalHours.add(i);
             }
-            for (int i = 0; i < closeHour; i++) {
+            for (i = 0; i < closeHour; i++) {
                 totalHours.add(i);
             }
         }
