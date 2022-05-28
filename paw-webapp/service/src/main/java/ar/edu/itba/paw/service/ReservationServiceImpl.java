@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -80,6 +81,11 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getOrderItemById(orderItemId);
     }
 
+    @Override
+    public void updateReservationDateById(Reservation reservation, Timestamp reservationDate) {
+        reservation.setReservationDate(reservationDate);
+    }
+
     @Transactional
     @Override
     public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
@@ -105,7 +111,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
+    public List<Integer> getAvailableHours(long restaurantId, long qPeople, Timestamp reservationDate) {
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
         List<Reservation> reservations = restaurant.getReservations();
 
@@ -115,6 +121,19 @@ public class ReservationServiceImpl implements ReservationService {
         ignoreStatus.add(ReservationStatus.FINISHED);
 
         reservations.removeIf(res -> ignoreStatus.contains(res.getReservationStatus()));
+
+        Calendar calendar_reservationDate = new GregorianCalendar();
+        Calendar calendar_compare = new GregorianCalendar();
+        calendar_reservationDate.setTime(reservationDate);
+        for(Reservation reservation : reservations){
+            calendar_compare.setTime(reservation.getReservationDate());
+            if(calendar_compare.get(Calendar.YEAR) != calendar_reservationDate.get(Calendar.YEAR) ||
+                    calendar_compare.get(Calendar.MONTH) != calendar_reservationDate.get(Calendar.MONTH) ||
+                    calendar_compare.get(Calendar.DAY_OF_MONTH) != calendar_reservationDate.get(Calendar.DAY_OF_MONTH)){
+                reservations.remove(reservation);
+            }
+        }
+
 
 
         int openHour = restaurant.getOpenHour();
