@@ -58,6 +58,7 @@ public class CustReservationController {
 
         ModelAndView mav = new ModelAndView("customerViews/reservation/reservationHistory");
         mav.addObject(items);
+        mav.addObject(reservation);
         return mav;
     }
 
