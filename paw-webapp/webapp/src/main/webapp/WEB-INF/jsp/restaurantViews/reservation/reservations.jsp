@@ -75,6 +75,13 @@
         </div>
     </div>
 </form:form>
+
+<div>
+    <form action="/createReservation-1">
+        <input type="submit" value="Crear reserva"/>
+    </form>
+</div>
+
 <div class="content-container">
     <table class="reservations" id="myTable">
         <thead>

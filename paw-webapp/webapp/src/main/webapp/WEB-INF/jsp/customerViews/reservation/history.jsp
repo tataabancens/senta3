@@ -54,6 +54,9 @@
                             <p class="text description">En ${reservation.restaurant.restaurantName}</p>
                             <p  class="text description">El ${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
                             <p  class="text description">A las ${reservation.reservationHour}</p>
+                            <c:forEach var="orderItem" items="${reservation.orderItems}">
+                                <p  class="text description">Pediste ${orderItem.dish.dishName} x ${orderItem.quantity}</p>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>

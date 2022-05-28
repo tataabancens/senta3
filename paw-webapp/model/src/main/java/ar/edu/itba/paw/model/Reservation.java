@@ -57,15 +57,17 @@ public class Reservation {
         this.qPeople = qPeople;
         this.startedAtTime = startedAtTime;
     }
-
+    /* pasados al dao
     public List<OrderItem> getOrderItems() {
         return new ArrayList<>(orderItems);
     }
+
     public List<OrderItem> getOrderItemsByStatusList(List<OrderItemStatus> statusList) {
         List<OrderItem> toRet = new ArrayList<>(orderItems);
         toRet.removeIf(or -> !statusList.contains(or.getStatus()));
         return toRet;
     }
+     */
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
@@ -140,4 +142,8 @@ public class Reservation {
     public void setReservationDiscount(boolean reservationDiscount) {
         this.reservationDiscount = reservationDiscount;
     }
+
+//    public List<OrderItem> getOrderItems() {
+//        return orderItems;
+//    }
 }

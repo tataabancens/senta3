@@ -182,8 +182,10 @@ public class RestReservationController {
         ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservation(reservation);
 
         res.updateReservationStatus(reservation, ReservationStatus.FINISHED);
+        cs.addPointsToCustomer(reservation.getCustomer(), res.getTotal(orderItems));
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
