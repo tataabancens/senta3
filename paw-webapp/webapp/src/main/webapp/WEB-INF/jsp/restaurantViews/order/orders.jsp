@@ -148,13 +148,14 @@
         justify-content: center;
     }
 
-    .smaller{
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 0;
+    @media (max-width: 600px) {
+        .card.incoming-orders{
+            width: 100%;
+        }
+        .card.finished-orders{
+            width: 100%;
+        }
     }
-
-
 
 </style>
 

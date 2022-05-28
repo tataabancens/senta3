@@ -260,6 +260,9 @@
         .dish-categories{
             width: 100%;
         }
+        .card.left-section{
+            width: clamp(15em,100%,20em);
+        }
     }
 
 
