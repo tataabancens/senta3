@@ -142,8 +142,6 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
 
-
-
         int openHour = restaurant.getOpenHour();
         int closeHour = restaurant.getCloseHour();
 
@@ -161,6 +159,13 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
 
+        List<Integer> notAvailable = new ArrayList<>();
+
+        calendar_compare.setTime(now);
+        if(calendar_compare.get(Calendar.DAY_OF_MONTH) == calendar_reservationDate.get(Calendar.DAY_OF_MONTH)){
+            totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+        }
+
         Map<Integer, Integer> map = new HashMap<>();
         for(Reservation reservation :reservations){
             if(map.containsKey(reservation.getReservationHour())){
@@ -169,7 +174,6 @@ public class ReservationServiceImpl implements ReservationService {
                 map.put(reservation.getReservationHour(), reservation.getqPeople());
             }
         }
-        List<Integer> notAvailable = new ArrayList<>();
         for(Map.Entry<Integer, Integer> set :map.entrySet()){
             if(set.getValue() + qPeople > restaurant.getTotalChairs()){
                 notAvailable.add(set.getKey());
@@ -180,7 +184,7 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
-        totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+        //totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
     }
 
