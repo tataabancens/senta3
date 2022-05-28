@@ -110,15 +110,9 @@ public class CustReservationController {
         long reservationId = Long.parseLong(reservationIdP);
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-
-        /*
-        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer maybeCustomer = cs.getCustomerById(1).orElseThrow(CustomerNotFoundException::new);
 
-        Reservation reservation = res.createReservation(restaurant, maybeCustomer, 0, Integer.parseInt(form.getNumber()));
-        res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
-         */
-
+        //res.updateReservationDateById(reservation, form.getTimestamp());
 
         return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
     }
@@ -133,7 +127,7 @@ public class CustReservationController {
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         ModelAndView mav = new ModelAndView("customerViews/reservation/createReservation_3_time");
-        List<Integer> hours = res.getAvailableHours(reservation.getRestaurant().getId(), reservation.getqPeople());
+        List<Integer> hours = res.getAvailableHours(reservation.getRestaurant().getId(), reservation.getqPeople(), reservation.getReservationDate());
 
         mav.addObject("hours", hours);
         mav.addObject("people", reservation.getqPeople());
