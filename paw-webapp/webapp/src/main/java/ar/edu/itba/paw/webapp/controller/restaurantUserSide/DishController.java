@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.service.*;
@@ -82,8 +81,8 @@ public class DishController {
         ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
-        Image image = ims.createImage(photo);
-        ds.updateDishPhoto(dishId, image.getImageId());
+        long imageId = ims.createImage(photo);
+        ds.updateDishPhoto(dishId, imageId);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/confirmDish=" + dishId);
     }
