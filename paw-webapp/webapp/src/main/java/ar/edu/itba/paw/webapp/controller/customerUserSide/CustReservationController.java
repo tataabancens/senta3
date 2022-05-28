@@ -87,12 +87,12 @@ public class CustReservationController {
         res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
 
 
-        return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
+        return new ModelAndView("redirect:/createReservation-2/" + reservation.getId());
     }
 
     @RequestMapping(value = "/createReservation-2/{reservationId}")
     public ModelAndView createReservation_2(@PathVariable("reservationId") final String reservationIdP,
-                                            @ModelAttribute("ReservationForm") final ReservationForm form) {
+                                            @ModelAttribute("dateForm") final DateForm form) {
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -101,20 +101,13 @@ public class CustReservationController {
 
     @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
     public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
-                                                 @Valid @ModelAttribute("reservationForm") final ReservationForm form,
+                                                 @Valid @ModelAttribute("dateForm") final DateForm form,
                                                  final BindingResult errors){
         if (errors.hasErrors()){
-            //return createReservation_2(form);
+            return createReservation_2(reservationIdP,form);
         }
-        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        long reservationId = Long.parseLong(reservationIdP);
 
-        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-        Customer maybeCustomer = cs.getCustomerById(1).orElseThrow(CustomerNotFoundException::new);
-
-        //res.updateReservationDateById(reservation, form.getTimestamp());
-
-        return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
+        return new ModelAndView("redirect:/createReservation-3/" + reservationIdP);
     }
 
 

@@ -22,8 +22,6 @@ public class ReservationForm {
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
 
-    @DateConstraint
-    private LocalDate date;
 
     private int hour;
     private int qPeople;
@@ -52,13 +50,10 @@ public class ReservationForm {
         return mail;
     }
 
-    public LocalDate getDate() { return date;}
-
-    public void setDate(LocalDate date) { this.date = date;}
-
     public int getHour() {
         return hour;
     }
+
     public void setHour(int hour) {
         this.hour = hour;
     }
