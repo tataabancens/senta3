@@ -40,9 +40,9 @@
                     <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="card-title title text"><c:out value="${item.dish.dishName}"/></span>
-                                <p class="description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
-                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
+                                <span class="presentation-text"><c:out value="${item.dish.dishName}"/></span>
+                                <p class="text description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
+                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
@@ -63,9 +63,9 @@
                     <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="card-title title text"><c:out value="${item.dish.dishName}"/></span>
-                                <p class="description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
-                                <p class="description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
+                                <span class="presentation-text"><c:out value="${item.dish.dishName}"/></span>
+                                <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
+                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">

@@ -44,8 +44,8 @@
         </div>
         <div class="page-container">
             <div class="restaurant-content">
-                <div class="left-section">
-                    <div class="card client-actions center">
+                <div class="card left-section">
+                    <div class="client-actions center">
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
                         <sec:authorize access="!hasRole('RESTAURANT')">
                             <div class="reservation-action-btn">
@@ -73,7 +73,7 @@
                             </div>
                         </sec:authorize>
                     </div>
-                    <div class="card filter-box">
+                    <div class="filter-box">
                         <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                         <ul class="categories">
                             <c:forEach var="category" items="${categories}">
@@ -99,8 +99,8 @@
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
-                            <a class="dish-card" href="/createReservation-1">
-                                <div class="dish-img">
+                            <a class="card horizontal" href="/createReservation-1">
+                                <div class="card-image">
                                     <c:if test="${dish.imageId > 0}">
                                         <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
                                     </c:if>
@@ -108,10 +108,21 @@
                                         <img src="<c:url value="/resources/images/fotoDefault.png"/>" alt="Es una foto default"/>
                                     </c:if>
                                 </div>
-                                <div class="card-info">
-                                    <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
-                                    <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
-                                    <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                <div class="card-stacked">
+                                    <div class="card-content">
+                                        <div>
+                                            <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                            <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
+                                            <c:if test="${reservation.reservationDiscount}">
+                                                <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
+                                                <fmt:formatNumber var="dishPrice" type="number" value="${(dish.price * discountCoefficient)}" maxFractionDigits="2"/>
+                                                <span id="discounted-price" class="text price">$<c:out value="${dishPrice}"/></span>
+                                            </c:if>
+                                        </div>
+                                        <c:if test="${!reservation.reservationDiscount}">
+                                            <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </a>
                         </c:forEach>
@@ -123,7 +134,33 @@
 </html>
 
 <style>
-
+    .card.horizontal{
+        width: 27em;
+        height: 9rem;
+        margin: 1%;
+        box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
+        transition: 0.8s;
+    }
+    .card.horizontal:hover{
+        transform: scale(1.1);
+    }
+    .btn.confirm-btn{
+        margin-bottom: 0.5em;
+    }
+    .card.horizontal .card-image{
+        object-fit: fill;
+        max-width: 25%;
+        margin-left: 2%;
+    }
+    .card.horizontal .card-image img{
+        border-radius: .8rem;
+        width: clamp(5rem,100%,10rem);
+        height: clamp(5rem,100%,10rem);
+        aspect-ratio: 1/1;
+    }
+    .card-stacked{
+        height: 100%;
+    }
     .page-container{
         padding-left: 20px;
         padding-right: 20px;
@@ -139,94 +176,47 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
+    .card.left-section{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: clamp(10em,15%,15em);
+        height: clamp(34em,100%,40em);
+    }
     .categories{
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
     }
     .btn.text.description{
         color: white;
     }
-    .dish-card {
-        min-width: 30%;
-        height: 8rem;
+    .client-actions{
+        margin-top: 1em;
+    }
+    .filter-box{
+        display: flex;
+        margin-top: 1em;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
     .card-info p{
         margin-block-start: 0;
     }
-    @media screen and (max-width: 1920px){
-        .dish-card{
-            width: 25%;
-        }
-        .dish-img{
-            width: clamp(7rem,30%,10rem);
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
+    .presentation-text.info{
+        font-size: 1rem;
     }
-    @media screen and (max-width: 1350px){
-        .dish-card{
-            height: 40%;
-        }
-        .dish-img{
-            width: 30%;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
+    .text.description.info{
+        font-size: 0.8rem;
     }
-    @media screen and (max-width: 1080px){
-        .dish-card{
-            width: 70%;
-            height: clamp(5%,9%,20%);
-        }
-        p{
-            margin-block-start: 0.1em;
-        }
-        .dish-img{
-            width: 30%;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
-    }
-    @media screen and (max-width: 868px){
-        .dish-card{
-            padding: 2.5rem;
-            flex-direction: column;
-        }
-        .dish-img{
-            min-width: 100%;
-            max-width: 100%;
-        }
+    .text.price.info{
+        font-size: 0.8rem;
     }
 
-    @media screen and (max-width: 768px){
-        .dish-card{
-            padding: 2.5rem;
-            flex-direction: column;
-        }
-        .dish-img{
-            min-width: 90%;
-            max-width: 90%;
-        }
-    }
     .presentation-text.box-comments{
         color: #171616;
     }
@@ -237,47 +227,40 @@
     .reservation-action-btn{
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
-    }
-    a{
-        margin: 0.2vw;
         justify-content: center;
-        max-width: 200px;
-    }
-    .card{
-        display: flex;
-        border-radius: 16px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .card.client-actions{
-        flex-direction: column;
-        justify-content: space-evenly;
-        background-color: white;
-        padding: 10px;
-        min-height: 150px;
-        width: 100%;
     }
 
-    .left-section{
-        display: flex;
-        flex-direction: column;
-        width: 15%;
-    }
     .dish-categories{
-        padding: 0 2em;
-        width: 85%;
+        margin-left: 2em;
+        width: clamp(30em,79%,105em);
     }
     .dishList{
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
-        width: 100%;
-        height: fit-content;
+        width: clamp(30em,100%,105em);
     }
-    
+    @media (max-width: 600px){
+        .restaurant-content{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .card.left-section{
+            width: 100%;
+        }
+        .card.horizontal{
+            margin: 2%;
+        }
+        .card.horizontal:hover{
+            transform: scale(1.1);
+        }
+        .dish-categories{
+            width: 100%;
+        }
+    }
 
 
 </style>
