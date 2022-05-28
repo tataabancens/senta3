@@ -10,6 +10,7 @@ import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CustReservationController {
@@ -106,10 +114,17 @@ public class CustReservationController {
         if (errors.hasErrors()){
             return createReservation_2(reservationIdP,form);
         }
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        long reservationId = Long.parseLong(reservationIdP);
 
-        return new ModelAndView("redirect:/createReservation-3/" + reservationIdP);
+        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
+
+        ControllerUtils.timestampParser(form.getDate()).orElseThrow(() -> new LongParseException(reservationIdP)); //actúa como un isPresent
+        Timestamp reservationDate = ControllerUtils.timestampParser(form.getDate()).get();
+        res.updateReservationDateById(reservation, reservationDate);
+
+        return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
     }
-
 
     @RequestMapping(value = "/createReservation-3/{reservationId}")
     public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,

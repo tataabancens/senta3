@@ -81,6 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationDao.getOrderItemById(orderItemId);
     }
 
+    @Transactional
     @Override
     public void updateReservationDateById(Reservation reservation, Timestamp reservationDate) {
         reservation.setReservationDate(reservationDate);

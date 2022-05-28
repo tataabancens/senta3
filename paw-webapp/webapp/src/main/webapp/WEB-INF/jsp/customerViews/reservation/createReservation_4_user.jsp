@@ -22,7 +22,7 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation-3/${reservation.id}" var="postPath"/>
+    <c:url value="/createReservation-4/${reservation.id}" var="postPath"/>
 
     <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
         <div class="content-container">
