@@ -134,7 +134,6 @@ public class ReservationServiceImpl implements ReservationService {
         calendar_reservationDate.setTime(reservationDate);
         int i;
         for(i=0; i<reservations.size(); i++){
-        //for(Reservation reservation : reservations){
             calendar_compare.setTime(reservations.get(i).getReservationDate());
             if(calendar_compare.get(Calendar.YEAR) != calendar_reservationDate.get(Calendar.YEAR) ||
                     calendar_compare.get(Calendar.MONTH) != calendar_reservationDate.get(Calendar.MONTH) ||
