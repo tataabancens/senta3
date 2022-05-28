@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Image;
-import ar.edu.itba.paw.model.RawImage;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
@@ -18,18 +18,20 @@ public class ImageServiceImpl implements ImageService {
         this.imageDao = imageDao;
     }
 
+    @Transactional
     @Override
-    public Optional<RawImage> getImageById(long id) {
+    public Optional<Image> getImageById(long id) {
         return imageDao.getImageById(id);
     }
 
+    @Transactional
     @Override
-    public Image createImage(MultipartFile photo) {
+    public long createImage(MultipartFile photo) {
         try {
             return imageDao.create(photo);
         } catch(Exception e) {
             System.out.println(e.getMessage());
-            return null;
+            return -1;
         }
     }
 }
