@@ -21,16 +21,14 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation-1" var="postPath"/>
-    <form:form modelAttribute="numberForm" action="${postPath}" method="post">
+    <c:url value="/createReservation-2/" var="postPath"/>
+    <form:form modelAttribute="ReservationForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">
                 <span class="presentation-text"><spring:message code="Createreservation.day.title"/></span>
-
-                <div class="input-field">
-                    <form:select path="number">
-                        <form:options items="${dates}" />
-                    </form:select>
+                <div>
+                    <label for="reservation-date">Día</label>
+                    <input type="date" value="" id="reservation-date">
                 </div>
                 <div class="submit center">
                     <spring:message code="Button.confirm" var="label"/>

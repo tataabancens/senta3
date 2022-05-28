@@ -92,7 +92,7 @@ public class CustReservationController {
 
     @RequestMapping(value = "/createReservation-2/{reservationId}")
     public ModelAndView createReservation_2(@PathVariable("reservationId") final String reservationIdP,
-                                            @ModelAttribute("qPeopleForm") final NumberForm form) {
+                                            @ModelAttribute("ReservationForm") final ReservationForm form) {
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
@@ -101,7 +101,7 @@ public class CustReservationController {
 
     @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
     public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
-                                                 @Valid @ModelAttribute("qPeopleForm") final NumberForm form,
+                                                 @Valid @ModelAttribute("reservationForm") final ReservationForm form,
                                                  final BindingResult errors){
         if (errors.hasErrors()){
             //return createReservation_2(form);
