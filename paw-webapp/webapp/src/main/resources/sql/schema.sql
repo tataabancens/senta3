@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
 
-ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
+-- ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
 
 ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT NULL;
 
