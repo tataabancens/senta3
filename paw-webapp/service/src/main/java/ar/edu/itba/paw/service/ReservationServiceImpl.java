@@ -124,26 +124,7 @@ public class ReservationServiceImpl implements ReservationService {
             return new ArrayList<>();
         }
 
-        List<ReservationStatus> ignoreStatus = new ArrayList<>();
-        ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
-        ignoreStatus.add(ReservationStatus.CANCELED);
-        ignoreStatus.add(ReservationStatus.FINISHED);
-
-        reservations.removeIf(res -> ignoreStatus.contains(res.getReservationStatus()));
-
-        Calendar calendar_reservationDate = new GregorianCalendar();
-        Calendar calendar_compare = new GregorianCalendar();
-        calendar_reservationDate.setTime(reservationDate);
         int i;
-        for(i=0; i<reservations.size(); i++){
-            calendar_compare.setTime(reservations.get(i).getReservationDate());
-            if(calendar_compare.get(Calendar.YEAR) != calendar_reservationDate.get(Calendar.YEAR) ||
-                    calendar_compare.get(Calendar.MONTH) != calendar_reservationDate.get(Calendar.MONTH) ||
-                    calendar_compare.get(Calendar.DAY_OF_MONTH) != calendar_reservationDate.get(Calendar.DAY_OF_MONTH)){
-                reservations.remove(i);
-            }
-        }
-
         int openHour = restaurant.getOpenHour();
         int closeHour = restaurant.getCloseHour();
 
@@ -162,10 +143,9 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         List<Integer> notAvailable = new ArrayList<>();
-
-        calendar_compare.setTime(now);
-        if(calendar_compare.get(Calendar.DAY_OF_MONTH) == calendar_reservationDate.get(Calendar.DAY_OF_MONTH)){
+        if(now.toLocalDateTime().getDayOfMonth() == reservationDate.toLocalDateTime().getDayOfMonth()){
             totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+
         }
 
         Map<Integer, Integer> map = new HashMap<>();
@@ -186,7 +166,6 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
-        //totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
     }
 
