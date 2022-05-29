@@ -101,7 +101,17 @@ public class OrderController {
         mav.addObject("reservationId", reservationId);
         return mav;
     }
+    @RequestMapping("/order/order-confirmation")
+    public ModelAndView orderConfirmation(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP){
+        final ModelAndView mav = new ModelAndView("customerViews/order/OrderConfirmationNotification");
+        long reservationId = Long.parseLong(reservationIdP);
 
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+
+        mav.addObject("reservation",reservation);
+
+        return mav;
+    }
     @RequestMapping("/order/send-food")
     public ModelAndView orderFoodSend(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
                                   @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
@@ -138,7 +148,8 @@ public class OrderController {
 
         res.updateOrderItemsStatus(reservation, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        //return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        return new ModelAndView("redirect:/order/order-confirmation?reservationId="+ reservationIdP);
     }
 
     @RequestMapping("/order/send-receipt")

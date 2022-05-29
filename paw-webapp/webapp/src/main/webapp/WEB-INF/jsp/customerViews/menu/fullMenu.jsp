@@ -61,11 +61,11 @@
                 <c:if test="${!canOrderReceipt}">
                     <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
-                <div class="waves-effect waves-light btn confirm-btn click-to-toggle" style="background-color: forestgreen;margin-top: 2%;" id="shopping-cart" onclick="toggleMenu();">
-                    <i class="material-icons" style="color: white;margin-right: 0;">shopping_cart</i>
-                </div>
                 <div class="center div-padding">
                     <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                </div>
+                <div class="waves-effect waves-light btn confirm-btn click-to-toggle" style="background-color: forestgreen;margin-top: 2%;" id="shopping-cart" onclick="toggleMenu();">
+                    <i class="material-icons" style="color: white;margin-right: 0;">shopping_cart</i>
                 </div>
             </div>
             <div>
@@ -189,8 +189,8 @@
 </div>
 <div class="right-section" id="sideMenu">
     <div style="margin: 2%;">
-        <button class="small btn-floating" style="background-color: #757575;" onclick="hideSideMenu();">
-            <i class="material-icons clear-symbol">arrow_back</i>
+        <button class="small btn-floating" style="background-color: #f3864b;" onclick="hideSideMenu();">
+            <i class="material-icons clear-symbol">arrow_forward</i>
         </button>
         <div style="margin-top: 1.5em;margin-bottom: 1.5em;">
             <span class="presentation-text"><spring:message code="Order.title"/></span>
@@ -388,14 +388,17 @@
         margin-bottom: 5%;
     }
     .right-section{
-        display: none;
+        display: flex;
         background: rgb(255, 253, 253);
         height: 100%;
-        position: absolute;
-        z-index: 99;
+        position: fixed;
+        overflow-y: scroll;
+        z-index: 2;
         top: 0;
         right: 0;
-        width: clamp(21em,20%,30em);
+        width: 0;
+        overflow-x: hidden;
+        transition: 0.3s;
         flex-direction: column;
         margin-left: 1.2%;
     }
@@ -447,17 +450,7 @@
         min-width: 30%;
         width: 100%;
     }
-    .order-card{
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        max-height: 100%;
-        flex-direction: column;
-        min-width: 150px;
-        min-height: 250px;
-        padding: 20px;
-        width: 100%;
-    }
+
     .order-headers{
         display: flex;
         width: 100%;
@@ -524,14 +517,15 @@
 <script>
     const button_toggle = document.getElementById("shopping-cart");
     const sideMenu = document.getElementById("sideMenu");
+
     function toggleMenu(){
-        if (sideMenu.style.display === "none") {
-            sideMenu.style.display = "flex";
-        } else {
-            sideMenu.style.display = "none";
+        if(sideMenu.style.width === "22em"){
+            sideMenu.style.width = "0";
+        }else{
+            sideMenu.style.width = "22em";
         }
     }
     function hideSideMenu() {
-        sideMenu.style.display = "none";
+        sideMenu.style.width = "0";
     }
 </script>
