@@ -37,6 +37,7 @@ public class DishServiceImpl implements DishService {
         dish.setCategory(category);
     }
 
+    @Transactional
     @Override
     public void updateDishPhoto(long dishId, long imageId) {
         Optional<Dish> maybeDish = dishDao.getDishById(dishId);
@@ -45,10 +46,10 @@ public class DishServiceImpl implements DishService {
             if(dish.getImageId() > 1) {
                 imageDao.deleteImageById(dish.getImageId());
             }
-            dishDao.updateDishPhoto(dishId, imageId);
+            dish.setImageId(imageId);
         }
-
     }
+
     @Override
     public void deleteDish(long dishId) {
         dishDao.deleteDish(dishId);
