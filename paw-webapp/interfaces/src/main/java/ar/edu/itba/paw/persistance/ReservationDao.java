@@ -36,5 +36,7 @@ public interface ReservationDao {
     List<OrderItem> getOrderItems(Reservation reservation);
 
     List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, Timestamp now, Timestamp reservationDate);
+
+    List<Reservation> getReservationsOfToday(long restaurantId);
 }
 

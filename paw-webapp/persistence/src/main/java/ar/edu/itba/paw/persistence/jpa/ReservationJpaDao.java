@@ -12,6 +12,9 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -127,7 +130,6 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, Timestamp now, Timestamp reservationDate) {
-
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus NOT IN :statusList and r.reservationDate between :start and :finish", Reservation.class); //es hql, no sql
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.CANCELED);
@@ -137,6 +139,19 @@ public class ReservationJpaDao implements ReservationDao {
         query.setParameter("start", reservationDateStart);
         query.setParameter("finish", reservationDate);
         final List<Reservation> list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
+    }
+
+    @Override
+    public List<Reservation> getReservationsOfToday(long restaurantId) {
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationDate between :start and :finish", Reservation.class); //es hql, no sql
+        Timestamp startDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
+        Timestamp endDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
+        query.setParameter("start", startDay);
+        query.setParameter("finish", endDay);
+
+        final List<Reservation> list = query.getResultList();
+        System.out.println("DEBUG");
         return list.isEmpty() ? new ArrayList<>() : list;
     }
 

@@ -303,7 +303,9 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDateTime now = LocalDateTime.now();
         Restaurant restaurant = restaurantService.getRestaurantById(1).get();
 
-        List<Reservation> allReservations = restaurant.getReservations();
+        //List<Reservation> allReservations = restaurant.getReservations();
+        List<Reservation> allReservations = reservationDao.getReservationsOfToday(1);
+
         for(Reservation reservation :allReservations){
             if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
                 updateReservationStatus(reservation, ReservationStatus.CANCELED);
