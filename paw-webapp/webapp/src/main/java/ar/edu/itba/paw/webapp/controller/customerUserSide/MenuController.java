@@ -72,6 +72,8 @@ public class MenuController {
 
         List<OrderItem> orderedItems = res.getOrderItemsByReservationAndOrder(reservation);
         List<OrderItem> orderItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
+        List<OrderItem> incomingItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.ORDERED);
+        List<OrderItem> oldItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.DELIVERED);
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
 
@@ -90,6 +92,13 @@ public class MenuController {
         mav.addObject("selected", orderItems.size());
         mav.addObject("total", res.getTotal(orderItems));
 
+        mav.addObject("oldItems", oldItems);
+        mav.addObject("oldItemsSize", oldItems.size());
+        mav.addObject("totalOld", res.getTotal(oldItems));
+
+        mav.addObject("incomingItems", incomingItems);
+        mav.addObject("incomingItemsSize", incomingItems.size());
+        mav.addObject("totalIncoming", res.getTotal(incomingItems));
 
         mav.addObject("canOrderReceipt", canOrderReceipt);
 

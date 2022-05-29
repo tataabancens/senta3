@@ -4,10 +4,7 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
-import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.LongParseException;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,11 +42,27 @@ public class CustReservationController {
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         List<Reservation> reservations = res.getReservationsByCustomer(customer);
 
+
         mav.addObject("reservations", reservations);
         mav.addObject("customer", customer);
         mav.addObject("progressBarNumber", customer.getPoints());
         return mav;
     }
+
+    @RequestMapping(value = "/history/reservation", method = RequestMethod.GET)
+    public ModelAndView addOrderItemForm(@RequestParam(name = "reservationId") final Long reservationIdP){
+
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationIdP).orElseThrow(ReservationNotFoundException::new);
+
+        List<OrderItem> items = res.getAllOrderItemsByReservation(reservation);
+
+        ModelAndView mav = new ModelAndView("customerViews/reservation/reservationHistory");
+        mav.addObject(items);
+        mav.addObject(reservation);
+        return mav;
+    }
+
+
     @RequestMapping(value = "/active-reservations", method = RequestMethod.GET)
     public ModelAndView activeReservations(final Principal principal){
         ModelAndView mav = new ModelAndView("customerViews/reservation/CustomerActiveReservations");

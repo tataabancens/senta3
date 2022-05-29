@@ -50,13 +50,17 @@
                     <div class="card-stacked">
                         <div class="card-content">
                             <p class="presentation-text">${reservation.customer.customerName}</p>
-                            <p class="text description">Personas: ${reservation.qPeople}</p>
-                            <p class="text description">En ${reservation.restaurant.restaurantName}</p>
-                            <p  class="text description">El ${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
-                            <p  class="text description">A las ${reservation.reservationHour}</p>
-                            <c:forEach var="orderItem" items="${reservation.orderItems}">
-                                <p  class="text description">Pediste ${orderItem.dish.dishName} x ${orderItem.quantity}</p>
-                            </c:forEach>
+                            <p class="text description"><spring:message code="Reservations.people"/>: ${reservation.qPeople}</p>
+                            <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/> </p>
+                            <p  class="text description">${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
+                            <p  class="text description"><spring:message code="Customer.activereservations.hour" arguments=" ${reservation.reservationHour}"/></p>
+                            <p  class="text description"><spring:message code="Reservations.status"/>: ${reservation.reservationStatus}</p>
+                            <c:if test="${reservation.reservationStatus.name == 'OPEN' || reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHACK-ORDERED' }">
+                                <a href="<c:url value="/history/reservation?reservationId=${reservation.id}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
+                            </c:if>
+                            <c:if test="${reservation.reservationStatus.name == 'FINISHED' || reservation.reservationStatus.name == 'CANCELED'}">
+                                <a disabled href="<c:url value="/history/reservation?reservationId=${reservation.id}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
+                            </c:if>
                         </div>
                     </div>
                 </div>

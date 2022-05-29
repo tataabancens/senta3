@@ -37,7 +37,7 @@
                         <form:label path="orderItem.quantity" class="helper-text" data-error="wrong" data-success="right">QTY</form:label>
                         <form:input path="orderItem.quantity" type="number" min="1" max="50" required="required" value="0" cssClass="center"/>
                         <div class="submit center">
-                            <spring:message code="Button.confirm" var="label"/>
+                            <spring:message code="Button.addtocart" var="label"/>
                             <spring:message code="Button.loading" var="label2"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; ">
                         </div>
