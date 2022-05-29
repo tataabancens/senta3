@@ -30,7 +30,6 @@ public class Dish {
     @Column(nullable = false, length = 200)
     private String dishDescription;
 
-
     @Column(nullable = false)
     private long imageId;
 

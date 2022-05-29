@@ -1,29 +1,41 @@
 package ar.edu.itba.paw.model;
 
-import org.springframework.web.multipart.MultipartFile;
+//import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.*;
+
+@Entity
 public class Image {
-    private long imageId;
-    private MultipartFile photo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_imageid_seq")
+    @SequenceGenerator(sequenceName = "image_imageid_seq", name = "image_imageid_seq", allocationSize = 1)
+    @Column(name = "imageid")
+    private long id;
 
-    public Image(long imageId, MultipartFile photo) {
-        this.imageId = imageId;
-        this.photo = photo;
+    @Column(name = "bitmap")
+    private byte[] bytes;
+
+    /* default */ Image() {
+        // Just for hibernate
+    }
+
+    public Image(byte[] bytes) {
+        this.bytes = bytes;
     }
 
     public long getImageId() {
-        return imageId;
+        return id;
     }
 
     public void setImageId(long imageId) {
-        this.imageId = imageId;
+        this.id = imageId;
     }
 
-    public MultipartFile getPhoto() {
-        return photo;
+    public byte[] getBytes() {
+        return bytes;
     }
 
-    public void setPhoto(MultipartFile photo) {
-        this.photo = photo;
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 }
