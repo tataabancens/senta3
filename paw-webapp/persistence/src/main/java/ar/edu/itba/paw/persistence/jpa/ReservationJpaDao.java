@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -121,6 +123,21 @@ public class ReservationJpaDao implements ReservationDao {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, Timestamp now, Timestamp reservationDate) {
+
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus NOT IN :statusList and r.reservationDate between :start and :finish", Reservation.class); //es hql, no sql
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.CANCELED);
+        statusList.add(ReservationStatus.FINISHED);
+        query.setParameter("statusList", statusList);
+        Timestamp reservationDateStart = Timestamp.valueOf(reservationDate.toLocalDateTime().minusDays(1));
+        query.setParameter("start", reservationDateStart);
+        query.setParameter("finish", reservationDate);
+        final List<Reservation> list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
     }
 
     @Override

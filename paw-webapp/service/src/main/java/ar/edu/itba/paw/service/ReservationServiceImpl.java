@@ -115,9 +115,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Integer> getAvailableHours(long restaurantId, long qPeople, Timestamp reservationDate) {
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
-        List<Reservation> reservations = restaurant.getReservations();
+        //List<Reservation> reservations = restaurant.getReservations();
 
         Timestamp now = Timestamp.from(Instant.now());
+        List<Reservation> reservations = reservationDao.getReservationsToCalculateAvailableTables(restaurantId, now, reservationDate);
+
         if(reservationDate.before(now)){
             return new ArrayList<>();
         }
