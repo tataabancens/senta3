@@ -17,7 +17,6 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href=" <c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
-    <%--    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">--%>
 
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
@@ -51,7 +50,7 @@
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
     </div>
 </div>
-<div class="page-container">
+<div class="page-container" id="page-container">
     <div class="orders-and-info">
         <div class="card filter-box">
             <div class="client-actions">
@@ -62,8 +61,11 @@
                 <c:if test="${!canOrderReceipt}">
                     <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
+                <div class="waves-effect waves-light btn confirm-btn click-to-toggle" style="background-color: forestgreen;margin-top: 2%;" id="shopping-cart" onclick="toggleMenu();">
+                    <i class="material-icons" style="color: white;margin-right: 0;">shopping_cart</i>
+                </div>
                 <div class="center div-padding">
-                    <a class="waves-effect waves-light btn confirm-btn red text description " href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                    <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
                 </div>
             </div>
             <div>
@@ -184,110 +186,114 @@
             </c:forEach>
         </div>
     </div>
-    <div class="right-section">
-        <div class="orderList">
-            <div class="card order-card">
-                <span class="presentation-text"><spring:message code="Order.title"/></span>
+</div>
+<div class="right-section" id="sideMenu">
+    <div style="margin: 2%;">
+        <button class="small btn-floating" style="background-color: #757575;" onclick="hideSideMenu();">
+            <i class="material-icons clear-symbol">arrow_back</i>
+        </button>
+        <div style="margin-top: 1.5em;margin-bottom: 1.5em;">
+            <span class="presentation-text"><spring:message code="Order.title"/></span>
+            <div class="order-headers">
+                <span class="presentation-text"><spring:message code="Order.dish"/></span>
+                <span class="presentation-text"><spring:message code="Order.qty"/></span>
+                <span class="presentation-text"><spring:message code="Order.total"/></span>
+            </div>
+            <hr class="solid-divider">
+            <div class="order-info">
+                <c:forEach var="orderItem" items="${orderItems}">
+                    <div class="order-item">
+                        <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
+                        <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
+                        <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
+                        <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
+                        <c:url value="/order/remove-dish?orderItemId=${orderItem.id}&reservationId=${reservation.id}" var="postUrl_remDish"/>
+                        <form:form action="${postUrl_remDish}" method="post">
+                            <button type="submit" class="small btn-floating" style="background-color: #757575;">
+                                <i class="material-icons clear-symbol">clear</i>
+                            </button>
+                        </form:form>
+                    </div>
+                    <hr class="solid-divider">
+                </c:forEach>
+            </div>
+            <div class="order-total">
+                <div>
+                    <p class="presentation-text"><spring:message code="Order.total"/></p>
+                </div>
+                <div>
+                    <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
+                    <p class="presentation-text right">$<c:out value="${totalPrice}"/></p>
+                </div>
+            </div>
+            <div class="order-btn-row">
+                <div>
+                    <c:if test="${selected > 0}">
+                        <c:url value="/order/empty-cart?reservationId=${reservation.id}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <spring:message code="Order.empty" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red text description">
+                        </form:form>
+                    </c:if>
+                    <c:if test="${selected == 0}">
+                        <a disabled class="waves-effect waves-light btn confirm-btn red text description "><spring:message code="Order.empty"/></a>
+                    </c:if>
+                </div>
+                <div>
+                    <c:if test="${selected > 0}">
+                        <a class="waves-effect waves-light btn confirm-btn green text description " href="<c:url value="/order/send-food?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
+                    </c:if>
+                    <c:if test="${selected == 0}">
+                        <a disabled class="waves-effect waves-light btn confirm-btn green text description "><spring:message code="Button.continue"/></a>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="solid-divider"/>
+    <div style="margin: 1.2%;">
+        <div style="margin-bottom: 1.5em;">
+            <span class="presentation-text"><spring:message code="CookedItems.message"/></span>
+            <c:if test="${incomingItemsSize>0 && reservation.reservationStatus == 'SEATED'}">
                 <div class="order-headers">
                     <span class="presentation-text"><spring:message code="Order.dish"/></span>
                     <span class="presentation-text"><spring:message code="Order.qty"/></span>
-                    <span class="presentation-text"><spring:message code="Order.total"/></span>
                 </div>
                 <hr class="solid-divider">
                 <div class="order-info">
-                    <c:forEach var="orderItem" items="${orderItems}">
+                    <c:forEach var="orderItem" items="${incomingItems}">
                         <div class="order-item">
                             <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
                             <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
-                            <fmt:formatNumber var="orderItemPrice" type="number" value="${(orderItem.unitPrice * orderItem.quantity * discountCoefficient)}" maxFractionDigits="2"/>
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItemPrice}"/></span></div>
-                            <c:url value="/order/remove-dish?orderItemId=${orderItem.id}&reservationId=${reservation.id}" var="postUrl_remDish"/>
-                            <form:form action="${postUrl_remDish}" method="post">
-                                <button type="submit" class="small btn-floating" style="background-color: #757575">
-                                    <i class="material-icons clear-symbol">clear</i>
-                                </button>
-                            </form:form>
                         </div>
                         <hr class="solid-divider">
                     </c:forEach>
                 </div>
-                <div class="order-total">
-                    <div>
-                        <p class="presentation-text"><spring:message code="Order.total"/></p>
-                    </div>
-                    <div>
-                        <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="presentation-text right">$<c:out value="${totalPrice}"/></p>
-                    </div>
-                </div>
-                <div class="order-btn-row">
-                    <div>
-                        <c:if test="${selected > 0}">
-                            <c:url value="/order/empty-cart?reservationId=${reservation.id}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <spring:message code="Order.empty" var="label"/>
-                                <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red text description">
-                            </form:form>
-                        </c:if>
-                        <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn red text description "><spring:message code="Order.empty"/></a>
-                        </c:if>
-                    </div>
-                    <div>
-                        <c:if test="${selected > 0}">
-                            <a class="waves-effect waves-light btn confirm-btn green text description " href="<c:url value="/order/send-food?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Button.continue"/></a>
-                        </c:if>
-                        <c:if test="${selected == 0}">
-                            <a disabled class="waves-effect waves-light btn confirm-btn green text description "><spring:message code="Button.continue"/></a>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
+            </c:if>
         </div>
-        <div>
-            <div class="card order-card dish-tracking">
-                <span class="presentation-text"><spring:message code="CookedItems.message"/></span>
-                <c:if test="${incomingItemsSize>0 && reservation.reservationStatus == 'SEATED'}">
-                    <div class="order-headers">
-                        <span class="presentation-text"><spring:message code="Order.dish"/></span>
-                        <span class="presentation-text"><spring:message code="Order.qty"/></span>
-                    </div>
-                    <hr class="solid-divider">
-                    <div class="order-info">
-                        <c:forEach var="orderItem" items="${incomingItems}">
-                            <div class="order-item">
-                                <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
-                                <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
-                            </div>
-                            <hr class="solid-divider">
-                        </c:forEach>
-                    </div>
-                </c:if>
-            </div>
-        </div>
-        <div>
-            <div class="card order-card dish-tracking">
-                <span class="presentation-text"><spring:message code="ComingToTable.message"/></span>
-                <c:if test="${oldItemsSize>0 && reservation.reservationStatus == 'SEATED'}">
-                    <div class="order-headers">
-                        <span class="presentation-text"><spring:message code="Order.dish"/></span>
-                        <span class="presentation-text"><spring:message code="Order.qty"/></span>
-                    </div>
-                    <hr class="solid-divider">
-                    <div class="order-info">
-                        <c:forEach var="orderItem" items="${oldItems}">
-                            <div class="order-item">
-                                <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
-                                <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </c:if>
-            </div>
+    </div>
+    <hr class="solid-divider"/>
+    <div style="margin: 1.2%;">
+        <div class="dish-tracking">
+            <span class="presentation-text"><spring:message code="ComingToTable.message"/></span>
+            <c:if test="${oldItemsSize>0 && reservation.reservationStatus == 'SEATED'}">
+                <div class="order-headers">
+                    <span class="presentation-text"><spring:message code="Order.dish"/></span>
+                    <span class="presentation-text"><spring:message code="Order.qty"/></span>
+                </div>
+                <hr class="solid-divider">
+                <div class="order-info">
+                    <c:forEach var="orderItem" items="${oldItems}">
+                        <div class="order-item">
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
+                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
@@ -312,11 +318,12 @@
     .page-container{
         padding: 1%;
         display: flex;
+        position: relative;
         flex-wrap: wrap;
     }
     .card.horizontal{
-        width: clamp(30rem,40%,35rem);
-        height: clamp(9.5rem,15%,11rem);
+        width: clamp(28rem,33em,35rem);
+        height: clamp(8rem,9%,11rem);
         margin: 1%;
         box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
         transition: 0.8s;
@@ -336,8 +343,9 @@
         padding: 10px;
     }
     .card.horizontal .card-image{
-        object-fit: fill;
+        object-fit: cover;
         max-width: 25%;
+        height: 70%;
         margin-left: 2%;
     }
     .card.horizontal .card-image img{
@@ -348,10 +356,6 @@
     }
     .card-stacked{
         height: 100%;
-    }
-    .card.order-card.dish-tracking{
-        padding: 10px;
-        min-height: 6em;
     }
     .orders-and-info{
         display: flex;
@@ -366,7 +370,7 @@
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: clamp(15rem,70%,80rem);
+        width: clamp(15rem,85%,112rem);
     }
     .card.information{
         width: 100%;
@@ -384,7 +388,13 @@
         margin-bottom: 5%;
     }
     .right-section{
-        display: flex;
+        display: none;
+        background: rgb(255, 253, 253);
+        height: 100%;
+        position: absolute;
+        z-index: 99;
+        top: 0;
+        right: 0;
         width: clamp(21em,20%,30em);
         flex-direction: column;
         margin-left: 1.2%;
@@ -410,6 +420,7 @@
     .dishList{
         display: flex;
         flex-wrap: wrap;
+        min-width: 15rem;
         width: 100%;
         height: fit-content;
     }
@@ -435,10 +446,6 @@
         max-height: 250px;
         min-width: 30%;
         width: 100%;
-    }
-    .orderList{
-        width: 100%;
-        height: 100%;
     }
     .order-card{
         display: flex;
@@ -512,6 +519,19 @@
         margin-left: 12%;
     }
 
-
 </style>
 
+<script>
+    const button_toggle = document.getElementById("shopping-cart");
+    const sideMenu = document.getElementById("sideMenu");
+    function toggleMenu(){
+        if (sideMenu.style.display === "none") {
+            sideMenu.style.display = "flex";
+        } else {
+            sideMenu.style.display = "none";
+        }
+    }
+    function hideSideMenu() {
+        sideMenu.style.display = "none";
+    }
+</script>
