@@ -222,6 +222,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+        return customer.getReservationsByStatusList(statusList);
+    }
+
+    @Transactional
+    @Override
     public List<Reservation> getReservationsByCustomer(Customer customer) {
         return customer.getReservations();
     }

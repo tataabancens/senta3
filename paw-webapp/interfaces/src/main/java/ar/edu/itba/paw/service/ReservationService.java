@@ -72,4 +72,6 @@ public interface ReservationService {
     Optional<OrderItem> getOrderItemById(long orderItemId);
 
     void updateReservationDateById(Reservation reservation, Timestamp reservationDate);
+
+    List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status);
 }
