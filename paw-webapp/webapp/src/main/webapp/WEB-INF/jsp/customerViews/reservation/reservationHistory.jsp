@@ -18,46 +18,34 @@
 <%@ include file="../../components/navbar.jsp" %>
 <div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
     <div class="restaurant-info" style="margin-left: 2%;">
-        <h1 class="presentation-text header-title"><spring:message code="History.title"/></h1>
+        <h1 class="presentation-text header-title">Resumen del pedido<!--<spring:message code="Kitchen.title"/>--></h1>
     </div>
 </div>
 <div class="contentContainer">
 
-
-        <div class="reservations-header">
-            <h3 class="presentation-text"><spring:message code="Kitchen.title"/></h3>
-        </div>
-
-        <c:if test="${reservation.reservationStatus.ordinal() != 4}">
-
-        <div class="orderList">
-            <div class="card order-card">
-                <div class="order-headers">
-                    <span class="presentation-text"><spring:message code="Order.dish"/></span>
-                    <span class="presentation-text"><spring:message code="Order.qty"/></span>
-                    <span class="presentation-text"><spring:message code="Order.total"/></span>
-                </div>
-                <hr class="solid-divider">
-                <div class="order-info">
-                    <c:forEach var="orderItem" items="${orderItemList}">
-                        <div class="order-item">
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.dish.dishName}"/></span></div>
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.quantity}"/></span></div>
-                            <div class="order-field center"><span class="text description "><c:out value="${orderItem.unitPrice}"/></span></div>
-
-                        </div>
-                        <hr class="solid-divider">
-                    </c:forEach>
-                </div>
-                </div>
-            </div>
-        </div>
-        </c:if>
-
-
-
-
-
+    <table>
+        <thead>
+        <tr>
+            <th><h3 class="presentation-text"><spring:message code="Order.dish"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Order.qty"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Order.subtotal"/></h3></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="orderItem" items="${orderItemList}">
+            <tr>
+                <td data-label="Dish-name" class="table-cell"><span class="text description"><c:out value="${orderItem.dish.dishName}"/></span></td>
+                <td data-label="Dish-qty" class="table-cell"><span class="text description"><c:out value="${orderItem.quantity}"/></span></td>
+                <td data-label="Dish-price" class="table-cell"><span class="text description"><c:out value="${orderItem.unitPrice}"/></span></td>
+            </tr>
+            <hr class="solid-divider">
+        </c:forEach>
+        </tbody>
+    </table>
+    <div style="display: flex;justify-content: space-between;">
+        <span class="presentation-text" style="font-size: 2.3rem;"><spring:message code="Order.total"/></span>
+        <span class="presentation-text" style="font-size: 2.3rem;">$<c:out value="${total}"/></span>
+    </div>
 </div>
 </body>
 </html>
@@ -68,51 +56,9 @@
         flex-direction: column;
         padding: 0 2% 0 2%;
     }
-    .points{
+    table{
         width: 100%;
-        height: 30%;
-    }
-    .reservations{
-        width: 100%;
-        height: 70%;
-    }
-    .reservationList{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
-    .card.horizontal{
-        margin: 1%;
-        min-width: 20%;
-        max-width: 30%;
-        border-radius: .8rem;
-    }
-    .reservations-header{
-        justify-content: center;
-    }
-    .progress-bar{
-        position: relative;
-        width: 40%;
-        height: 3em;
-        background-color: white;
-        border-radius: 1.5em;
-        color: white;
-    }
-    .progress-bar::before{
-        content: attr(data-label);
-        display: flex;
-        align-items: center;
-        position: absolute;
-        left: .5em;
-        top: .5em;
-        bottom: .5em;
-        width: calc(var(--width,0) * 1%);
-        min-width: 2rem;
-        max-width: calc(100% - 1em);
-        background-color: green;
-        border-radius: 1em;
-        padding: 1em;
+        justify-content: space-evenly;
     }
 </style>
 <script type="text/javascript">

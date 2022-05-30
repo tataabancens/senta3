@@ -147,7 +147,7 @@
         background-color: whitesmoke;
         color: #171616;
     }
-    @media (max-width: 36em){
+    @media (max-width: 600px){
         .primary-navigation{
             position: fixed;
             --gap: 2em;

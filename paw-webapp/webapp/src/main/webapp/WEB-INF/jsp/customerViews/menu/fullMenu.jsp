@@ -322,7 +322,7 @@
         flex-wrap: wrap;
     }
     .card.horizontal{
-        width: clamp(28rem,33em,35rem);
+        width: clamp(28rem,29em,35rem);
         height: clamp(8rem,9%,11rem);
         margin: 1%;
         box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
@@ -370,7 +370,7 @@
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: clamp(15rem,85%,112rem);
+        width: clamp(15rem,81%,112rem);
     }
     .card.information{
         width: 100%;

@@ -48,7 +48,7 @@ public class CustReservationController {
         ModelAndView mav = new ModelAndView("customerViews/reservation/history");
         rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-        List<Reservation> reservations = res.getReservationsByCustomer(customer);
+        List<Reservation> reservations = res.getReservationsByCustomerAndStatus(customer, ReservationStatus.FINISHED);
 
 
         mav.addObject("reservations", reservations);
@@ -58,15 +58,20 @@ public class CustReservationController {
     }
 
     @RequestMapping(value = "/history/reservation", method = RequestMethod.GET)
-    public ModelAndView addOrderItemForm(@RequestParam(name = "reservationId") final Long reservationIdP){
+    public ModelAndView addOrderItemForm(@RequestParam(name = "reservationId") final String reservationIdP){
 
-        Reservation reservation = res.getReservationByIdAndIsActive(reservationIdP).orElseThrow(ReservationNotFoundException::new);
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         List<OrderItem> items = res.getAllOrderItemsByReservation(reservation);
+
 
         ModelAndView mav = new ModelAndView("customerViews/reservation/reservationHistory");
         mav.addObject(items);
         mav.addObject(reservation);
+        mav.addObject("total",res.getTotal(items));
         return mav;
     }
 
