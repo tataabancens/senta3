@@ -20,16 +20,14 @@ public class DateValidator implements ConstraintValidator<DateConstraint,String>
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if (s==null || s.compareTo("")==0)
+        if (s == null || s.compareTo("") == 0)
             return false;
-        Timestamp input = Timestamp.valueOf(s);
-        Timestamp oneYear = Timestamp.from(Instant.now());
-        Calendar cal = Calendar.getInstance();
-        if(input.before(cal.getTime()))
-            return false;
-        cal.add(Calendar.YEAR, 1);
-        cal.setTime(oneYear);
-        return !input.after(oneYear);
 
+        StringBuilder stringBuilder = new StringBuilder(s);
+        stringBuilder.append(" 23:59:59.99999");
+        Timestamp input = Timestamp.valueOf(stringBuilder.toString());
+        Timestamp now = Timestamp.from(Instant.now());
+
+        return input.after(now);
     }
 }

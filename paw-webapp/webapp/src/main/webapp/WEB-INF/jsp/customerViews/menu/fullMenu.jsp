@@ -254,7 +254,7 @@
     <div style="margin: 1.2%;">
         <div style="margin-bottom: 1.5em;">
             <span class="presentation-text"><spring:message code="CookedItems.message"/></span>
-            <c:if test="${incomingItemsSize>0 && reservation.reservationStatus == 'SEATED'}">
+            <c:if test="${incomingItemsSize > 0}">
                 <div class="order-headers">
                     <span class="presentation-text"><spring:message code="Order.dish"/></span>
                     <span class="presentation-text"><spring:message code="Order.qty"/></span>
@@ -276,7 +276,7 @@
     <div style="margin: 1.2%;">
         <div class="dish-tracking">
             <span class="presentation-text"><spring:message code="ComingToTable.message"/></span>
-            <c:if test="${oldItemsSize>0 && reservation.reservationStatus == 'SEATED'}">
+            <c:if test="${oldItemsSize > 0 && reservation.reservationStatus == 'SEATED'}">
                 <div class="order-headers">
                     <span class="presentation-text"><spring:message code="Order.dish"/></span>
                     <span class="presentation-text"><spring:message code="Order.qty"/></span>
