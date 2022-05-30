@@ -154,6 +154,16 @@ public class Reservation {
     public void setReservationDate(Timestamp reservationDate) {
         this.reservationDate = reservationDate;
     }
+
+    public String getReservationOnlyDate(){
+        StringBuilder date = new StringBuilder();
+        date.append(this.reservationDate.toLocalDateTime().getDayOfMonth());
+        date.append("/");
+        date.append(this.reservationDate.toLocalDateTime().getMonthValue());
+        date.append("/");
+        date.append(this.reservationDate.toLocalDateTime().getYear());
+        return date.toString();
+    }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
 //    }

@@ -26,7 +26,7 @@
         <div class="confirm-card">
             <div class="card">
                 <div class="card-content white-text center">
-                    <p class="text description"><spring:message code="Notifycustomer.TimeAndPlace" arguments="${restaurant.restaurantName}, ${reservation.reservationHour}"/></p>
+                    <p class="text description"><spring:message code="Notifycustomer.TimeAndPlace" arguments="${restaurant.restaurantName}, ${reservation.getReservationOnlyDate()}, ${reservation.reservationHour}"/></p>
                     <span class="text description"><spring:message code="Notifycustomer.subtitle"/></span>
                     <div class="with-margin">
                         <span class="text description"><c:out value="${reservation.id}"/></span>
