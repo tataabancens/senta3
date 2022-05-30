@@ -49,18 +49,13 @@
                 <div class="card horizontal">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <p class="presentation-text">${reservation.customer.customerName}</p>
-                            <p class="text description"><spring:message code="Reservations.people"/>: ${reservation.qPeople}</p>
-                            <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/> </p>
-                            <p  class="text description">${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
-                            <p  class="text description"><spring:message code="Customer.activereservations.hour" arguments=" ${reservation.reservationHour}"/></p>
+                            <span class="presentation-text">${customer.customerName}</span>
+                            <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
+                            <p  class="text description"><spring:message code="Createreservation.register.date" arguments="${reservation.reservationHour}"/> ${reservation.getReservationOnlyDate()}</p>
+                            <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/></p>
+                            <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/></p>
                             <p  class="text description"><spring:message code="Reservations.status"/>: ${reservation.reservationStatus}</p>
-                            <c:if test="${reservation.reservationStatus.name == 'OPEN' || reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHACK-ORDERED' }">
-                                <a href="<c:url value="/history/reservation?reservationId=${reservation.id}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
-                            </c:if>
-                            <c:if test="${reservation.reservationStatus.name == 'FINISHED' || reservation.reservationStatus.name == 'CANCELED'}">
-                                <a disabled href="<c:url value="/history/reservation?reservationId=${reservation.id}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
-                            </c:if>
+                            <a href="<c:url value="/history/reservation?reservationId=${reservation.id}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
                         </div>
                     </div>
                 </div>
