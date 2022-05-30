@@ -89,6 +89,7 @@
             <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.date"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.actions"/></h3></th>
@@ -100,6 +101,7 @@
                 <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.id}"/></span></td>
                 <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customer.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
+                <td data-label="Fecha" class="table-cell"><span class="text"><c:out value="${reservation.getReservationOnlyDate()}"/></span></td>
                 <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
