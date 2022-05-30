@@ -154,6 +154,15 @@ public class Reservation {
     public void setReservationDate(Timestamp reservationDate) {
         this.reservationDate = reservationDate;
     }
+
+    public String getReservationOnlyDate(){ //aparece que nadie lo usa pero si lo usan unos jsp
+        String date = this.reservationDate.toLocalDateTime().getDayOfMonth() +
+                "/" +
+                this.reservationDate.toLocalDateTime().getMonthValue() +
+                "/" +
+                this.reservationDate.toLocalDateTime().getYear();
+        return date;
+    }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
 //    }

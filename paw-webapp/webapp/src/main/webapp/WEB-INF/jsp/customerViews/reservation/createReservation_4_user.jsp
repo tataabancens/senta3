@@ -44,6 +44,9 @@
                     <form:input path="name" required="required" maxlength="50" type="text"/>
                 </div>
                 <div>
+                    <label style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.date"/><c:out value="${reservation.getReservationOnlyDate()}"/></label>
+                </div>
+                <div>
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.people"/><c:out value="${reservation.qPeople}"/></form:label>
                 </div>
                 <div>

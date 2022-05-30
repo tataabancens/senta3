@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="reservation-info" style="margin-right: 4%;">
-            <p class="presentation-text header-title info"><spring:message code="Reservation.header.date"/></p>
+            <p class="presentation-text header-title info"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
     </div>

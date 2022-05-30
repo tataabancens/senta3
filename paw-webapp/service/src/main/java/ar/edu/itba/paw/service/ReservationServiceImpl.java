@@ -145,7 +145,6 @@ public class ReservationServiceImpl implements ReservationService {
         List<Integer> notAvailable = new ArrayList<>();
         if(now.toLocalDateTime().getDayOfMonth() == reservationDate.toLocalDateTime().getDayOfMonth()){
             totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
-
         }
 
         Map<Integer, Integer> map = new HashMap<>();
