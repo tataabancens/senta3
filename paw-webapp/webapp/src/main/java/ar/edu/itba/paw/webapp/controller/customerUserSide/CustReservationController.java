@@ -7,6 +7,7 @@ import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CustReservationController {
@@ -105,6 +113,34 @@ public class CustReservationController {
 
     @RequestMapping(value = "/createReservation-2/{reservationId}")
     public ModelAndView createReservation_2(@PathVariable("reservationId") final String reservationIdP,
+                                            @ModelAttribute("dateForm") final DateForm form) {
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        long reservationId = Long.parseLong(reservationIdP);
+
+        return new ModelAndView("customerViews/reservation/createReservation_2_date");
+    }
+
+    @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
+                                                 @Valid @ModelAttribute("dateForm") final DateForm form,
+                                                 final BindingResult errors){
+        if (errors.hasErrors()){
+            return createReservation_2(reservationIdP,form);
+        }
+        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        long reservationId = Long.parseLong(reservationIdP);
+
+        Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
+
+        ControllerUtils.timestampParser(form.getDate()).orElseThrow(() -> new LongParseException(reservationIdP)); //actúa como un isPresent
+        Timestamp reservationDate = ControllerUtils.timestampParser(form.getDate()).get();
+        res.updateReservationDateById(reservation, reservationDate);
+
+        return new ModelAndView("redirect:/createReservation-3/" + reservation.getId());
+    }
+
+    @RequestMapping(value = "/createReservation-3/{reservationId}")
+    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
                                             @Valid @ModelAttribute("hourForm") final NumberForm form) throws Exception {
 
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
@@ -112,19 +148,19 @@ public class CustReservationController {
 
         Reservation reservation = res.getReservationByIdAndStatus(reservationId, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         ModelAndView mav = new ModelAndView("customerViews/reservation/createReservation_3_time");
-        List<Integer> hours = res.getAvailableHours(reservation.getRestaurant().getId(), reservation.getqPeople());
+        List<Integer> hours = res.getAvailableHours(reservation.getRestaurant().getId(), reservation.getqPeople(), reservation.getReservationDate());
 
         mav.addObject("hours", hours);
         mav.addObject("people", reservation.getqPeople());
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-2/{reservationId}", method = RequestMethod.POST)
-    public ModelAndView createReservation_2_POST(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_3_POST(@PathVariable("reservationId") final String reservationIdP,
                                                  @Valid @ModelAttribute("hourForm") final NumberForm form,
                                                  final BindingResult errors) throws Exception {
         if (errors.hasErrors()){
-            return createReservation_2(reservationIdP, form);
+            return createReservation_3(reservationIdP, form);
         }
         ControllerUtils.longParser(reservationIdP, form.getNumber()).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
@@ -135,12 +171,12 @@ public class CustReservationController {
         Customer maybeCustomer = new Customer(1, "", "", "", 0);
         res.updateReservationById(reservation, maybeCustomer, hour, reservation.getqPeople());
 
-        return new ModelAndView("redirect:/createReservation-3/" + reservationId + "/redirect");
+        return new ModelAndView("redirect:/createReservation-4/" + reservationId);
 
     }
 
-    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.GET)
-    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-4/{reservationId}", method = RequestMethod.GET)
+    public ModelAndView createReservation_4(@PathVariable("reservationId") final String reservationIdP,
                                             @ModelAttribute("reservationForm") final ReservationForm form) throws Exception {
 
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
@@ -153,14 +189,14 @@ public class CustReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/createReservation-3/{reservationId}", method = RequestMethod.POST)
-    public ModelAndView createReservation_3(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-4/{reservationId}", method = RequestMethod.POST)
+    public ModelAndView createReservation_4(@PathVariable("reservationId") final String reservationIdP,
                                             @Valid @ModelAttribute("reservationForm") final ReservationForm form, final BindingResult errors) throws Exception {
         ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
         long reservationId = Long.parseLong(reservationIdP);
 
         if (errors.hasErrors()){
-            return createReservation_3(reservationIdP, form);
+            return createReservation_4(reservationIdP, form);
         }
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());

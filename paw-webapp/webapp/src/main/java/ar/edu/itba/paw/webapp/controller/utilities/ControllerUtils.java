@@ -1,7 +1,11 @@
 package ar.edu.itba.paw.webapp.controller.utilities;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Date;
 
 public class ControllerUtils {
 
@@ -52,5 +56,14 @@ public class ControllerUtils {
             return Optional.empty();
         }
         return Optional.of(1);
+    }
+
+    public static Optional<Timestamp> timestampParser(String strTime){
+        try{
+            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(strTime + " 23:59:59.99");
+            return Optional.of(timestamp);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }

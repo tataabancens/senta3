@@ -66,8 +66,8 @@ public class Customer {
         this.points = points;
     }
 
-    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople, Timestamp startedAtTime) {
-        final Reservation reservation = new Reservation(restaurant, customer, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime);
+    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople, Timestamp startedAtTime, Timestamp reservationDate) {
+        final Reservation reservation = new Reservation(restaurant, customer, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime, reservationDate);
         reservations.add(reservation);
         return reservation;
     }

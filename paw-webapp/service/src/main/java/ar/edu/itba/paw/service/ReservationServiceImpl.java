@@ -10,7 +10,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import java.util.*;
@@ -82,8 +84,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public void updateReservationDateById(Reservation reservation, Timestamp reservationDate) {
+        reservation.setReservationDate(reservationDate);
+    }
+
+    @Transactional
+    @Override
     public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
-        return customer.createReservation(restaurant, customer, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()));
+        return customer.createReservation(restaurant, customer, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
     }
 
     @Transactional
@@ -105,33 +113,39 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public List<Integer> getAvailableHours(long restaurantId, long qPeople) {
+    public List<Integer> getAvailableHours(long restaurantId, long qPeople, Timestamp reservationDate) {
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
-        List<Reservation> reservations = restaurant.getReservations();
+        //List<Reservation> reservations = restaurant.getReservations();
 
-        List<ReservationStatus> ignoreStatus = new ArrayList<>();
-        ignoreStatus.add(ReservationStatus.MAYBE_RESERVATION);
-        ignoreStatus.add(ReservationStatus.CANCELED);
-        ignoreStatus.add(ReservationStatus.FINISHED);
+        Timestamp now = Timestamp.from(Instant.now());
+        List<Reservation> reservations = reservationDao.getReservationsToCalculateAvailableTables(restaurantId, now, reservationDate);
 
-        reservations.removeIf(res -> ignoreStatus.contains(res.getReservationStatus()));
+        if(reservationDate.before(now)){
+            return new ArrayList<>();
+        }
 
-
+        int i;
         int openHour = restaurant.getOpenHour();
         int closeHour = restaurant.getCloseHour();
 
         List<Integer> totalHours = new ArrayList<>();
         if (openHour < closeHour) {
-            for(int i = openHour; i < closeHour; i++) {
+            for(i = openHour; i < closeHour; i++) {
                 totalHours.add(i);
             }
         } else if( closeHour < openHour ) {
-            for (int i = openHour; i<24; i++) {
+            for (i = openHour; i<24; i++) {
                 totalHours.add(i);
             }
-            for (int i = 0; i < closeHour; i++) {
+            for (i = 0; i < closeHour; i++) {
                 totalHours.add(i);
             }
+        }
+
+        List<Integer> notAvailable = new ArrayList<>();
+        if(now.toLocalDateTime().getDayOfMonth() == reservationDate.toLocalDateTime().getDayOfMonth()){
+            totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+
         }
 
         Map<Integer, Integer> map = new HashMap<>();
@@ -142,7 +156,6 @@ public class ReservationServiceImpl implements ReservationService {
                 map.put(reservation.getReservationHour(), reservation.getqPeople());
             }
         }
-        List<Integer> notAvailable = new ArrayList<>();
         for(Map.Entry<Integer, Integer> set :map.entrySet()){
             if(set.getValue() + qPeople > restaurant.getTotalChairs()){
                 notAvailable.add(set.getKey());
@@ -153,7 +166,6 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             totalHours.removeAll(notAvailable);
         }
-        totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         return totalHours;
     }
 
@@ -291,7 +303,9 @@ public class ReservationServiceImpl implements ReservationService {
         LocalDateTime now = LocalDateTime.now();
         Restaurant restaurant = restaurantService.getRestaurantById(1).get();
 
-        List<Reservation> allReservations = restaurant.getReservations();
+        //List<Reservation> allReservations = restaurant.getReservations();
+        List<Reservation> allReservations = reservationDao.getReservationsOfToday(1);
+
         for(Reservation reservation :allReservations){
             if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
                 updateReservationStatus(reservation, ReservationStatus.CANCELED);

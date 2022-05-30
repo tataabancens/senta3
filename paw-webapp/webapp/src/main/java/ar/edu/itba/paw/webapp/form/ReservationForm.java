@@ -5,6 +5,7 @@ import ar.edu.itba.paw.webapp.form.CustomValidator.DateConstraint;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -20,6 +21,7 @@ public class ReservationForm {
     @Size(min = 9, max = 13)
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$")
     private String phone;
+
 
     private int hour;
     private int qPeople;
@@ -51,6 +53,7 @@ public class ReservationForm {
     public int getHour() {
         return hour;
     }
+
     public void setHour(int hour) {
         this.hour = hour;
     }

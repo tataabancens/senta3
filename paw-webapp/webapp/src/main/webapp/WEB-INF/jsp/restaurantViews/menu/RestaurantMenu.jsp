@@ -250,5 +250,26 @@
             min-width: auto;
         }
     }
-
+    @media (max-width: 600px){
+        .contentContainer{
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .dish-categories{
+            width: 100%;
+        }
+        .dish-card{
+            height: 10em;
+            flex-direction: column;
+        }
+        .dish-img{
+            width: 7em;
+            height: 7em;
+        }
+        .dish-card.card-content{
+            display: flex;
+            flex-direction: column;
+        }
+    }
 </style>
