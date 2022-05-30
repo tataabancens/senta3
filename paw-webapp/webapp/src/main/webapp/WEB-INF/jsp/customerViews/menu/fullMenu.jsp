@@ -44,11 +44,17 @@
             </div>
         </div>
     </div>
-    <div class="reservation-info" style="margin-right: 4%;">
+    <div class="restaurant-info" style="min-width: 15%">
+        <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 10%" id="shopping-cart" onclick="toggleMenu();">
+            <i class="material-icons" style="color: white;margin-right: 0;">shopping_cart</i>
+        </div>
+        <div style="margin-right: 0" class="reservation-info">
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
+        </div>
     </div>
+
 </div>
 <div class="page-container" id="page-container">
     <div class="orders-and-info">
@@ -63,9 +69,6 @@
                 </c:if>
                 <div class="center div-padding">
                     <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
-                </div>
-                <div class="waves-effect waves-light btn confirm-btn click-to-toggle" style="background-color: forestgreen;margin-top: 2%;" id="shopping-cart" onclick="toggleMenu();">
-                    <i class="material-icons" style="color: white;margin-right: 0;">shopping_cart</i>
                 </div>
             </div>
             <div>
