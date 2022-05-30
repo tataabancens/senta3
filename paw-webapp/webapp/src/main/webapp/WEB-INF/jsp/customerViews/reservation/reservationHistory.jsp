@@ -28,7 +28,7 @@
             <h3 class="presentation-text"><spring:message code="Kitchen.title"/></h3>
         </div>
 
-        <c:if test="${reservation.reservationStatus != 4}">
+        <c:if test="${reservation.reservationStatus.ordinal() != 4}">
 
         <div class="orderList">
             <div class="card order-card">
