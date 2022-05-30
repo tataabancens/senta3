@@ -78,7 +78,8 @@
 
 <div>
     <form action="/createReservation-1">
-        <input type="submit" value="Crear reserva"/>
+        <spring:message code="Createreservation.title" var="label"/>
+        <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
     </form>
 </div>
 
