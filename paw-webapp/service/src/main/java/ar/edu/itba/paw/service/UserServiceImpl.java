@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService {
     public void updateUsername(String oldUsername, String newUsername) {
         userDao.updateUsername(oldUsername, newUsername);
     }
+
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userDao.findByName(username);
+    }
 }
