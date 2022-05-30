@@ -40,7 +40,7 @@
                     <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="presentation-text"><c:out value="${item.dish.dishName}"/></span>
+                                <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
                                 <p class="text description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
                                 <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
                             </div>
@@ -63,7 +63,7 @@
                     <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="presentation-text"><c:out value="${item.dish.dishName}"/></span>
+                                <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
                                 <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
                                 <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
                             </div>
