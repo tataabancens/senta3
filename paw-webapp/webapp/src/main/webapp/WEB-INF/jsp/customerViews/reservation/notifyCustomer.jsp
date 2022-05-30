@@ -32,6 +32,7 @@
                         <span class="text description"><c:out value="${reservation.id}"/></span>
                     </div>
                     <p class="text description"><spring:message code="Notifycustomer.mail"/></p>
+                    <p>""</p>
                     <p class="text description"><spring:message code="Notifycustomer.register"/></p>
                     <div class="btn-row">
                         <sec:authorize access="!isAuthenticated()">

@@ -214,7 +214,7 @@ public class CustReservationController {
         return new ModelAndView("redirect:/notify/" + reservationId);
     }
 
-    @RequestMapping(value = "/confirmReservation/{reservationId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/confirmReservation/{reservationId}", method = RequestMethod.GET) //cuando crea una reserva un usuario registrado
     public ModelAndView confirmReservation(@PathVariable("reservationId") final String reservationIdP,
                                            final Principal principal,
                                            @ModelAttribute("confirmReservationForm") final ReservationForm form) throws Exception {

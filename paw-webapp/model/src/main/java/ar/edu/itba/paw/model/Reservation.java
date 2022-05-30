@@ -155,14 +155,13 @@ public class Reservation {
         this.reservationDate = reservationDate;
     }
 
-    public String getReservationOnlyDate(){
-        StringBuilder date = new StringBuilder();
-        date.append(this.reservationDate.toLocalDateTime().getDayOfMonth());
-        date.append("/");
-        date.append(this.reservationDate.toLocalDateTime().getMonthValue());
-        date.append("/");
-        date.append(this.reservationDate.toLocalDateTime().getYear());
-        return date.toString();
+    public String getReservationOnlyDate(){ //aparece que nadie lo usa pero si lo usan unos jsp
+        String date = this.reservationDate.toLocalDateTime().getDayOfMonth() +
+                "/" +
+                this.reservationDate.toLocalDateTime().getMonthValue() +
+                "/" +
+                this.reservationDate.toLocalDateTime().getYear();
+        return date;
     }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;

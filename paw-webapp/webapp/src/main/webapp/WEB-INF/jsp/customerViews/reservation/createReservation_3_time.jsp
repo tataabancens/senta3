@@ -39,7 +39,8 @@
             </c:if>
             <c:if test="${hours.size() == 0}">
                 <span class="presentation-text"><spring:message code="Createreservation.hour.error"/></span>
-                <a class="waves-effect waves-light btn confirm-btn text description center" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
+                <a class="waves-effect waves-light btn confirm-btn text description center" href="<c:url value="/createReservation-2/${reservationId}"/>"><spring:message code="Button.back"/></a>
+
             </c:if>
         </div>
     </div>
