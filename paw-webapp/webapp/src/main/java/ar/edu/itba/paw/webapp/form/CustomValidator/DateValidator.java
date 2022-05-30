@@ -24,7 +24,7 @@ public class DateValidator implements ConstraintValidator<DateConstraint,String>
             return false;
 
         StringBuilder stringBuilder = new StringBuilder(s);
-        stringBuilder.append(" 00:00:00.00001");
+        stringBuilder.append(" 23:59:59.99999");
         Timestamp input = Timestamp.valueOf(stringBuilder.toString());
         Timestamp now = Timestamp.from(Instant.now());
 
