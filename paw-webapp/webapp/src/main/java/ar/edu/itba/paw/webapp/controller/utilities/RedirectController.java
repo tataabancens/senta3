@@ -54,7 +54,7 @@ public class RedirectController {
                 }
             }
         }
-        return new ModelAndView("redirect:/createReservation-3/" + reservationIdP);
+        return new ModelAndView("redirect:/createReservation-4/" + reservationIdP);
     }
 
     @RequestMapping(value = "/profile")

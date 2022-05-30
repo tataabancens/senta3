@@ -48,7 +48,7 @@
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.people" arguments="${reservation.qPeople}"/></form:label>
                 </div>
                 <div style="margin-bottom: 3%">
-                    <span style="font-family: Lato,sans-serif;font-size:20px"><spring:message code="Confirmreservation.date" arguments="${reservation.getReservationOnlyDate()}"/></span>
+                    <span style="font-family: Lato,sans-serif;font-size:20px"><spring:message code="Createreservation.register.date" arguments="${reservation.getReservationOnlyDate()}"/></span>
                 </div>
                 <div style="margin-bottom: 1%">
                     <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/></form:label>

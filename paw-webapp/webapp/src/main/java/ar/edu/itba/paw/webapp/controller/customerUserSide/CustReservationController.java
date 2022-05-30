@@ -171,7 +171,7 @@ public class CustReservationController {
         Customer maybeCustomer = new Customer(1, "", "", "", 0);
         res.updateReservationById(reservation, maybeCustomer, hour, reservation.getqPeople());
 
-        return new ModelAndView("redirect:/createReservation-4/" + reservationId);
+        return new ModelAndView("redirect:/createReservation-3/" + reservationId + "/redirect");
 
     }
 
