@@ -5,6 +5,7 @@ import ar.edu.itba.paw.webapp.form.CustomValidator.DateConstraint;
 
 public class DateForm {
 
+    @DateConstraint
     private String date;
 
     public String getDate() {
