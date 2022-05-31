@@ -137,7 +137,7 @@
                                 </button>
                             </form:form>
                         </div>
-                        <a href="<c:url value="/menu/?reservationId=${reservation.securityCode}"/>" class="btn waves-effect waves-light green">
+                        <a href="<c:url value="/menu/?reservationSecurityCode=${reservation.reservationSecurityCode}"/>" class="btn waves-effect waves-light green">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.addOrder"/></span>
                         </a>
                     </td>

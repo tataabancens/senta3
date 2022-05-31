@@ -73,9 +73,9 @@ public class OrderController {
         res.createOrderItemByReservation(reservation, dish, form.getOrderItem().getQuantity());
 
         if (isFromOrder) {
-            return new ModelAndView("redirect:/order/send-food?reservationId=" + reservationSecurityCode + "&restaurantId=" + reservation.getRestaurant().getId());
+            return new ModelAndView("redirect:/order/send-food?reservationSecurityCode=" + reservationSecurityCode + "&restaurantId=" + reservation.getRestaurant().getId());
         }
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationSecurityCode);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationSecurityCode);
     }
 
     @RequestMapping("/order")
@@ -137,8 +137,7 @@ public class OrderController {
 
         res.updateOrderItemsStatus(reservation, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
-        //return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
-        return new ModelAndView("redirect:/order/order-confirmation?reservationId="+ reservationSecurityCode);
+        return new ModelAndView("redirect:/order/order-confirmation?reservationSecurityCode="+ reservationSecurityCode);
     }
 
     @RequestMapping("/order/send-receipt")
@@ -201,7 +200,7 @@ public class OrderController {
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
         res.deleteOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationSecurityCode);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationSecurityCode);
     }
 
     @RequestMapping(value= "/order/remove-dish", method = RequestMethod.POST)
@@ -215,6 +214,6 @@ public class OrderController {
         OrderItem orderItem = res.getOrderItemById(orderItemId).orElseThrow(OrderItemNotFoundException::new);
         res.deleteOrderItemByStatus(orderItem , OrderItemStatus.SELECTED);
 
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationSecurityCode);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationSecurityCode);
     }
 }

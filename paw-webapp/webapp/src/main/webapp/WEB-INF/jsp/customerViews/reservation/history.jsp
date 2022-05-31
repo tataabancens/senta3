@@ -55,7 +55,7 @@
                             <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/></p>
                             <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/></p>
                             <p  class="text description"><spring:message code="Reservations.status"/>: ${reservation.reservationStatus}</p>
-                            <a href="<c:url value="/history/reservation?reservationId=${reservation.securityCode}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
+                            <a href="<c:url value="/history/reservation?reservationSecurityCode=${reservation.securityCode}"/>" class="waves-effect waves-light btn confirm-btn green text description"><spring:message code="Kitchen.title"/></a>
                         </div>
                     </div>
                 </div>

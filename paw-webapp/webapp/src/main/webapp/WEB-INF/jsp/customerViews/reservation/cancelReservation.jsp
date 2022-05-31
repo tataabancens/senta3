@@ -31,7 +31,7 @@
             <div class="card-content white-text">
                 <span class="text description"><spring:message code="Cancel.subtitle"/></span>
                     <div class="center-btn">
-                        <c:url value="/reservation-cancel?reservationId=${reservationId}" var="postUrl"/>
+                        <c:url value="/reservation-cancel?reservationSecurityCode=${reservationSecurityCode}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.confirm" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red center">
