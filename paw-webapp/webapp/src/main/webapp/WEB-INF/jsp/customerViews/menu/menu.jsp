@@ -99,7 +99,8 @@
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
-                            <a class="card horizontal" href="/createReservation-1">
+                            <c:url value="/createReservation-1" var="postUrl"/>
+                            <a class="card horizontal" href="${postUrl}">
                                 <div class="card-image">
                                     <c:if test="${dish.imageId > 0}">
                                         <img src="<c:url value="/resources_/images/${dish.imageId}"/>" alt="La foto del plato"/>
