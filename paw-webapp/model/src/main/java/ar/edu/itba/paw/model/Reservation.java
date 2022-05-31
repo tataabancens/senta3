@@ -51,6 +51,9 @@ public class Reservation {
     @Column(nullable = false)
     private int tableNumber;
 
+    @Column(nullable = false, length = 6, columnDefinition = "varchar(6) default 'A'")
+    private String securityCode = String.valueOf('A');
+
     /* default */ Reservation() {
         // Just for hibernate
     }
@@ -169,6 +172,14 @@ public class Reservation {
 
     public int getTableNumber() {
         return tableNumber;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
     public void setTableNumber(int tableNumber) {

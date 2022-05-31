@@ -76,4 +76,6 @@ public interface ReservationService {
     List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status);
 
     void setTableNumber(Reservation reservation, int number);
+
+    void setReservationSecurityCode(Reservation reservation);
 }

@@ -91,7 +91,16 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
-        return customer.createReservation(restaurant, customer, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+        Reservation reservation = customer.createReservation(restaurant, customer, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+
+        return reservation;
+    }
+
+    @Transactional
+    @Override
+    public void setReservationSecurityCode(Reservation reservation) {
+        String securityCode = ServiceUtils.generateReservationSecurityCode(reservation);
+        reservation.setSecurityCode(securityCode);
     }
 
     @Transactional
