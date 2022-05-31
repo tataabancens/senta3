@@ -110,7 +110,10 @@
                     <td data-label="Confirmar" class="table-cell status">
                         <div style="margin-top: 15px">
                             <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
+                            <form:form action="${postUrl}" method="post" modelAttribute="seatForm">
+                                <form:errors path="number" element="p" cssStyle="color:red"/>
+                                <form:label path="number" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Input.seatNumber"/></form:label>
+                                <form:input path="number" type="number"/>
                                 <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
                                     <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.seat"/></span>
                                 </button>

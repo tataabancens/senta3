@@ -48,6 +48,9 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Column(nullable = false)
+    private int tableNumber;
+
     /* default */ Reservation() {
         // Just for hibernate
     }
@@ -162,6 +165,14 @@ public class Reservation {
                 "/" +
                 this.reservationDate.toLocalDateTime().getYear();
         return date;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;

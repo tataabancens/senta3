@@ -74,4 +74,6 @@ public interface ReservationService {
     void updateReservationDateById(Reservation reservation, Timestamp reservationDate);
 
     List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status);
+
+    void setTableNumber(Reservation reservation, int number);
 }

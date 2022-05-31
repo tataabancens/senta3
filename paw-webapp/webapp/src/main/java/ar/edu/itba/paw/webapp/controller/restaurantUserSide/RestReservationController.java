@@ -6,11 +6,14 @@ import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.FilterForm;
+import ar.edu.itba.paw.webapp.form.NumberForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -79,7 +82,8 @@ public class RestReservationController {
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                             @RequestParam(value = "filterStatus", defaultValue = "0") final String filterStatus,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
-                                            @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+                                            @ModelAttribute("filterForm") final FilterForm filterForm,
+                                            @ModelAttribute("seatForm") final NumberForm seatForm) throws Exception {
 
 
         ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
@@ -108,6 +112,7 @@ public class RestReservationController {
         mav.addObject("filterStatus", filterStatus);
         mav.addObject("page", Integer.parseInt(page));
 
+
         res.checkReservationTime();
 
         return mav;
@@ -129,12 +134,20 @@ public class RestReservationController {
                                      @RequestParam(value = "page", defaultValue = "1") final String page,
                                      @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                      @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
+                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
+                                     @ModelAttribute("filterForm") final FilterForm filterForm,
+                                     @Valid @ModelAttribute("seatForm") final NumberForm seatForm,
+                                     final BindingResult errors) throws Exception {
+        if (errors.hasErrors()){
+            return reservationsOrderBy(restaurantIdP, orderBy, direction, filterStatus, page, filterForm, seatForm);
+        }
+
         ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
         long reservationId = Long.parseLong(reservationIdP);
         Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
 
         res.updateReservationStatus(reservation, ReservationStatus.SEATED);
+        res.setTableNumber(reservation, Integer.parseInt(seatForm.getNumber()));
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);

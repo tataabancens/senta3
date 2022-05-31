@@ -230,6 +230,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public void setTableNumber(Reservation reservation, int number) {
+        reservation.setTableNumber(number);
+    }
+
+    @Transactional
+    @Override
     public List<Reservation> getReservationsByCustomer(Customer customer) {
         return customer.getReservations();
     }
