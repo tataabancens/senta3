@@ -77,7 +77,8 @@
 </form:form>
 
 <div>
-    <form action="/createReservation-1">
+    <c:url value="/createReservation-1" var="postUrl"/>
+    <form action="${postUrl}">
         <spring:message code="Createreservation.title" var="label"/>
         <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
     </form>
