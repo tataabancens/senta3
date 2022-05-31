@@ -112,7 +112,7 @@
                             <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
-                                    <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.confirm"/></span>
+                                    <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.seat"/></span>
                                 </button>
                             </form:form>
                         </div>
