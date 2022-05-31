@@ -67,9 +67,19 @@
                 <c:if test="${!canOrderReceipt}">
                     <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
                 </c:if>
-                <div class="center div-padding">
-                    <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
-                </div>
+
+                <c:if test="${canCancelReservation}">
+                    <div class="center div-padding">
+                        <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                    </div>
+                </c:if>
+
+                <c:if test="${!canCancelReservation}">
+                    <div class="center div-padding">
+                        <a class="waves-effect waves-light btn confirm-btn red text description disabled"><spring:message code="Fullmenu.reservation.cancel"/></a>
+                    </div>
+                </c:if>
+                
             </div>
             <div>
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
@@ -76,6 +77,7 @@ public class MenuController {
         List<OrderItem> oldItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.DELIVERED);
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
+        boolean canCancelReservation = reservation.getReservationStatus() == ReservationStatus.OPEN;
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
@@ -101,6 +103,7 @@ public class MenuController {
         mav.addObject("totalIncoming", res.getTotal(incomingItems));
 
         mav.addObject("canOrderReceipt", canOrderReceipt);
+        mav.addObject("canCancelReservation", canCancelReservation);
 
         mav.addObject("unavailable", res.getUnavailableItems(reservationId));
 
