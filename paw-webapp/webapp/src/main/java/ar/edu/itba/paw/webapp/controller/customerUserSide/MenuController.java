@@ -44,6 +44,8 @@ public class MenuController {
 
         LOGGER.info("Attempting to show menu");
 
+
+
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         //restaurant.setDishes(dishes);
