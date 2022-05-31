@@ -22,9 +22,21 @@ public class MailingServiceImpl implements MailingService{
     }
     private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
         String subject="Confirmacion de reserva";
-        String stringBuilder = "tu reserva fue confirmada\n" + "tu codigo de reserva es: "+reservation.getId()+'\n' +
-                "si necesitas contactar al restaurant, este es su email: " + restaurant.getMail() + '\n';
+        String stringBuilder = customerConfirmationTemplate(restaurant, reservation);
         sendEmail(props,customer.getMail(),subject, stringBuilder);
+    }
+    
+    private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation){
+        return "<div style=\"padding: 2%;background-color: rgb(255, 252, 249); \">" +
+                "<span style=\"font-style: italic; sans-serif; font-size: 1.9rem; font-weight: bold; color: rgb(255, 68, 31);\">Senta3</span>" +
+                "</div>" +
+                "<div style=\"text-align: center\">" +
+                "<div>" +
+                "<p style=\"font-size: 1.9rem\">Tu reserva fue confirmada!</p>" +
+                "</div>" +
+                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es:" + reservation.getId() + "</p>" +
+                "<p style=\"font-size: 1.1rem\">Si necesitas contactar al restaurant, este es su email:" + restaurant.getMail() + "</p>" +
+                "</div>";
     }
 
     private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
@@ -57,7 +69,7 @@ public class MailingServiceImpl implements MailingService{
     }
 
     public void sendEmail(Properties properties, String toEmailAddress,
-                          String subject, String messageText) {
+                          String subject, String messageContent) {
         new Thread(() -> {
 
             Session session = Session.getInstance(properties,
@@ -76,7 +88,8 @@ public class MailingServiceImpl implements MailingService{
                     InternetAddress.parse(toEmailAddress));
 
             msg.setSubject(subject);
-            msg.setText(messageText);
+            msg.setContent(messageContent, "text/html");
+            // msg.setText(messageText);
             Transport.send(msg);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -96,3 +109,5 @@ public class MailingServiceImpl implements MailingService{
     }
 
 }
+
+
