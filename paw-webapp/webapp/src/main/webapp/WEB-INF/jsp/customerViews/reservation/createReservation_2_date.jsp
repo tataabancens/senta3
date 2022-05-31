@@ -21,7 +21,7 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
+    <c:url value="/createReservation-2/${rese}" var="postPath"/>
     <form:form modelAttribute="dateForm" action="${postPath}" method="post">
         <div class="content-container">
             <div class="card register-card">

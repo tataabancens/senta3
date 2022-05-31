@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -36,8 +35,35 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public Optional<Reservation> getReservationById(long id) {
-        return reservationDao.getReservationById(id);
+    public Optional<Reservation> getReservationBySecurityCode(String securityCode) {
+        return reservationDao.getReservationBySecurityCode(securityCode);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Reservation> getReservationByIdAndIsActive(String securityCode) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(ReservationStatus.OPEN);
+        statusList.add(ReservationStatus.SEATED);
+
+        return reservationDao.getReservationBySecurityCodeAndStatus(securityCode, statusList);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, ReservationStatus status) {
+        List<ReservationStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+
+        return reservationDao.getReservationBySecurityCodeAndStatus(securityCode, statusList);
+    }
+
+    @Transactional
+    @Override
+    public void updateReservationById(Reservation reservation, Customer customer, long hour, int qPeople) {
+        reservation.setReservationHour((int) hour);
+        reservation.setCustomer(customer);
+        reservation.setqPeople(qPeople);
     }
 
     @Transactional
@@ -180,7 +206,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
-        Reservation reservation = getReservationById(reservationId).get();
+        Reservation reservation = reservationDao.getReservationById(reservationId).get();
         List<OrderItem> query = reservationDao.getOrderItems(reservation);
 
         List<Long> dishIds = new ArrayList<>();
@@ -201,24 +227,8 @@ public class ReservationServiceImpl implements ReservationService {
         return unavailableDishIds;
     }
 
-    @Transactional
-    @Override
-    public Optional<Reservation> getReservationByIdAndIsActive(long reservationId) {
-        List<ReservationStatus> statusList = new ArrayList<>();
-        statusList.add(ReservationStatus.OPEN);
-        statusList.add(ReservationStatus.SEATED);
 
-        return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
-    }
 
-    @Transactional
-    @Override
-    public Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus status) {
-        List<ReservationStatus> statusList = new ArrayList<>();
-        statusList.add(status);
-
-        return reservationDao.getReservationByIdAndStatus(reservationId, statusList);
-    }
 
     @Transactional
     @Override
@@ -310,13 +320,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReservationStatus(newStatus);
     }
 
-    @Transactional
-    @Override
-    public void updateReservationById(Reservation reservation, Customer customer, long hour, int qPeople) {
-        reservation.setReservationHour((int) hour);
-        reservation.setCustomer(customer);
-        reservation.setqPeople(qPeople);
-    }
+
 
     @Scheduled(cron = "0 1/31 * * * ?")
     @Transactional

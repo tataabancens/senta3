@@ -111,7 +111,7 @@
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="seatForm">
                                 <form:errors path="number" element="p" cssStyle="color:red"/>
                                 <form:label path="number" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Input.seatNumber"/></form:label>
@@ -121,7 +121,7 @@
                                 </button>
                             </form:form>
                         </div>
-                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.reject"/></span>
                         </a>
                     </td>
@@ -130,14 +130,14 @@
                 <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
                                     <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Receipt.ask"/></span>
                                 </button>
                             </form:form>
                         </div>
-                        <a href="<c:url value="/menu/?reservationId=${reservation.id}"/>" class="btn waves-effect waves-light green">
+                        <a href="<c:url value="/menu/?reservationId=${reservation.securityCode}"/>" class="btn waves-effect waves-light green">
                             <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.addOrder"/></span>
                         </a>
                     </td>
@@ -146,7 +146,7 @@
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
                                     <span class="text description" style="font-size: 0.8rem; color: white"><spring:message code="Receipt.view"/></span>
