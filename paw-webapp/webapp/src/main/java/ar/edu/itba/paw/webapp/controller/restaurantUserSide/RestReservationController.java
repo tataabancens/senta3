@@ -107,6 +107,15 @@ public class RestReservationController {
 
         return mav;
     }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/open", method = RequestMethod.POST)
+    public ModelAndView reservationsOpenOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                @ModelAttribute("filterForm") final FilterForm form){
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations/seated")
     public ModelAndView reservationsSeated(@PathVariable("restaurantId") final String restaurantIdP,
@@ -142,6 +151,15 @@ public class RestReservationController {
         res.checkReservationTime();
 
         return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/seated", method = RequestMethod.POST)
+    public ModelAndView reservationsSeatedOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                @ModelAttribute("filterForm") final FilterForm form){
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/seated?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
     }
 
     /*
