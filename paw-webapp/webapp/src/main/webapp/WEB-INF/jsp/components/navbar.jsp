@@ -61,7 +61,7 @@
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
 
-                    <a class="options" href="<c:url value="/restaurant=1/reservations"/>">
+                    <a class="options" href="<c:url value="/restaurant=1/reservations/open"/>">
                         <spring:message code="Navbar.option.reservations"/>
                     </a>
                 </li>
