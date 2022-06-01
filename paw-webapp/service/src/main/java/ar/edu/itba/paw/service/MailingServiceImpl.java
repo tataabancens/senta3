@@ -25,16 +25,16 @@ public class MailingServiceImpl implements MailingService{
         String stringBuilder = customerConfirmationTemplate(restaurant, reservation);
         sendEmail(props,customer.getMail(),subject, stringBuilder);
     }
-    
+
     private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation){
-        return "<div style=\"padding: 2%;background-color: rgb(255, 252, 249); \">" +
-                "<span style=\"font-style: italic; sans-serif; font-size: 1.9rem; font-weight: bold; color: rgb(255, 68, 31);\">Senta3</span>" +
+        return "<div style=\"padding:5px; background-color: #fff4e4; \">" +
+                "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
                 "</div>" +
                 "<div style=\"text-align: center\">" +
                 "<div>" +
-                "<p style=\"font-size: 1.9rem\">Tu reserva fue confirmada!</p>" +
+                "<p style=\"font-size: 1.9rem; font-weight:bold\">Tu reserva fue confirmada!</p>" +
                 "</div>" +
-                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es:" + reservation.getId() + "</p>" +
+                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es: " + reservation.getId() + "</p>" +
                 "<p style=\"font-size: 1.1rem\">Si necesitas contactar al restaurant, este es su email:" + restaurant.getMail() + "</p>" +
                 "</div>";
     }
