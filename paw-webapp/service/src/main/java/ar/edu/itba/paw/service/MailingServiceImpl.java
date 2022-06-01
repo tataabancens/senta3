@@ -48,8 +48,8 @@ public class MailingServiceImpl implements MailingService{
                 "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
                 "</div>" +
                 "<div style=\"text-align: center\">" +
-                "<p style=\"font-size: 1.9rem; font-weight:bold\">El cliente:" + customer.getCustomerName() + "</p>" +
-                "<p style=\"font-size: 1.4rem\">realizo una reserva para las : " + reservation.getReservationHour() +  "</p>" +
+                "<p style=\"font-size: 1.9rem; font-weight:bold\">El cliente: " + customer.getCustomerName() + "</p>" +
+                "<p style=\"font-size: 1.4rem\">realizo una reserva para las: " + reservation.getReservationHour() +  "</p>" +
                 "</div>";
     }
 
