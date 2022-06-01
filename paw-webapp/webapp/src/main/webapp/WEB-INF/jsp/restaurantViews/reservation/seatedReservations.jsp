@@ -35,28 +35,28 @@
     </div>
 </div>
 
-    <div class="tabs">
-        <div class=" active-category-tab">
-            <a class="secondary-text tab " href="<c:url value="/restaurant=${restaurantId}/reservations/open"/> ">OPEN</a>
-        </div>
-        <div class="category-tab">
-            <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/seated"/>" >SEATED</a>
-        </div>
-        <div class="category-tab">
-            <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/checkordered"/>" >CHECK ORDERED</a>
-        </div>
-        <div class="category-tab">
-            <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/finished"/>">FINISHED</a>
-        </div>
-        <div class="category-tab">
-            <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/canceled"/>">CANCELED</a>
-        </div>
-        <div class="category-tab">
-            <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/all"/>">ALL</a>
-        </div>
+<div class="tabs">
+    <div class="category-tab ">
+        <a class="secondary-text tab" href="<c:url value="/restaurant=${restaurantId}/reservations/open"/> ">OPEN</a>
     </div>
+    <div class="active-category-tab">
+        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/seated"/>" >SEATED</a>
+    </div>
+    <div class="category-tab">
+        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/checkordered"/>" >CHECK ORDERED</a>
+    </div>
+    <div class="category-tab">
+        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/finished"/>">FINISHED</a>
+    </div>
+    <div class="category-tab">
+        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/canceled"/>">CANCELED</a>
+    </div>
+    <div class="category-tab">
+        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/all"/>">ALL</a>
+    </div>
+</div>
 
-<c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
+<c:url value="/restaurant=${restaurantId}/reservations/seated" var="postUrl"/>
 <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
     <div class="filters-orderBy">
         <div class="orderBy">
@@ -115,18 +115,15 @@
                 <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
 
-                <td data-label="Confirmar" class="table-cell status">
+                <td data-label="Confirmar" class="table-cell">
                     <div style="margin-top: 15px">
-                        <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}" var="postUrl"/>
+                        <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
-                            <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
-                                <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.confirm"/></span>
+                            <button type="submit" class="btn waves-effect waves-light blue">
+                                <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Receipt.title"/></span>
                             </button>
                         </form:form>
                     </div>
-                    <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
-                        <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.reject"/></span>
-                    </a>
                 </td>
 
 

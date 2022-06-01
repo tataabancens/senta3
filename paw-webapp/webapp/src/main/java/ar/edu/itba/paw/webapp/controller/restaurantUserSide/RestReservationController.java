@@ -98,7 +98,41 @@ public class RestReservationController {
         filterForm.setDirection(direction);
         filterForm.setOrderBy(orderBy);
 
-        mav.addObject("ReservationStatus", ReservationStatus.values());
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("page", Integer.parseInt(page));
+
+        res.checkReservationTime();
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/seated")
+    public ModelAndView reservationsSeated(@PathVariable("restaurantId") final String restaurantIdP,
+                                         @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                         @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                         @RequestParam(value = "page", defaultValue = "1") final String page,
+                                         @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/seatedReservations");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "1", Integer.parseInt(page));
+
+
+        filterForm.setFilterStatus("1");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+
 
         mav.addObject("reservations", reservations);
         mav.addObject("orderBy", orderBy);
