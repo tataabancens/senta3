@@ -69,7 +69,7 @@ public class RestReservationController {
 
         ms.sendCancellationEmail(restaurant,customer,reservation);
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
@@ -184,7 +184,7 @@ public class RestReservationController {
 
         return mav;
     }
-     */
+
 
     @RequestMapping(value = "/restaurant={restaurantId}/reservations", method = RequestMethod.POST)
     public ModelAndView reservationsOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
@@ -195,6 +195,8 @@ public class RestReservationController {
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + form.getOrderBy() +
                 "&direction=" + form.getDirection() + "&filterStatus=" + form.getFilterStatus() + "&page=" + page);
     }
+
+     */
 
     @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}", method = RequestMethod.POST)
     public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
@@ -209,7 +211,7 @@ public class RestReservationController {
 
         res.updateReservationStatus(reservation, ReservationStatus.SEATED);
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
@@ -278,7 +280,7 @@ public class RestReservationController {
 
         res.updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/seated?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
