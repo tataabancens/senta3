@@ -35,8 +35,6 @@
     </div>
 </div>
 
-<c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
-<form:form method="post" action="${postUrl}" modelAttribute="filterForm">
     <div class="tabs">
         <div class=" active-category-tab">
             <a class="secondary-text tab " href="<c:url value="/restaurant=${restaurantId}/reservations/open"/> ">OPEN</a>
@@ -57,6 +55,9 @@
             <a class="tab secondary-text">ALL</a>
         </div>
     </div>
+
+<c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
+<form:form method="post" action="${postUrl}" modelAttribute="filterForm">
     <div class="filters-orderBy">
         <div class="orderBy">
             <div class="input-field">
@@ -65,7 +66,6 @@
                     <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
                     <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
                     <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
-                    <form:option value="reservationstatus"><spring:message code="Reservations.status"/></form:option>
                 </form:select>
             </div>
         </div>
