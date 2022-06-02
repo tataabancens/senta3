@@ -162,6 +162,50 @@ public class RestReservationController {
                 "&direction=" + form.getDirection() + "&page=" + page);
     }
 
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/checkordered")
+    public ModelAndView reservationsCheckOrdered(@PathVariable("restaurantId") final String restaurantIdP,
+                                         @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                         @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                         @RequestParam(value = "page", defaultValue = "1") final String page,
+                                         @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/checkOrderedReservations");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "2", Integer.parseInt(page));
+
+
+        filterForm.setFilterStatus("2");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("page", Integer.parseInt(page));
+
+        res.checkReservationTime();
+
+        return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/checkordered", method = RequestMethod.POST)
+    public ModelAndView reservationsCheckOrderedOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                    @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                    @ModelAttribute("filterForm") final FilterForm form){
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/checkordered?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
+
     /*
     @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
     public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
@@ -280,7 +324,7 @@ public class RestReservationController {
         res.updateReservationStatus(reservation, ReservationStatus.FINISHED);
         cs.addPointsToCustomer(reservation.getCustomer(), res.getTotal(orderItems));
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/checkordered?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
