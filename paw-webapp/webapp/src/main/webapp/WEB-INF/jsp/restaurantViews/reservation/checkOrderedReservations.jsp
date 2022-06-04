@@ -36,24 +36,24 @@
 </div>
 
 <div class="tabs">
-    <div class="category-tab">
-        <a class="secondary-text tab " href="<c:url value="/restaurant=${restaurantId}/reservations/open"/> ">OPEN</a>
-    </div>
-    <div class="category-tab">
-        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/seated"/>" >SEATED</a>
-    </div>
-    <div class="active-category-tab">
-        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/checkordered"/>" >CHECK ORDERED</a>
-    </div>
-    <div class="category-tab">
-        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/finished"/>">FINISHED</a>
-    </div>
-    <div class="category-tab">
-        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/canceled"/>">CANCELED</a>
-    </div>
-    <div class="category-tab">
-        <a class="tab secondary-text" href="<c:url value="/restaurant=${restaurantId}/reservations/all"/>">ALL</a>
-    </div>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/open"/>">
+        <span class="secondary-text tab">OPEN</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/seated"/>" >
+        <span class="tab secondary-text" >SEATED</span>
+    </a>
+    <a class="active-category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/checkordered"/>">
+        <span class="tab secondary-text"  >CHECK ORDERED</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/finished"/>">
+        <span class="tab secondary-text" >FINISHED</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/canceled"/>">
+        <span class="tab secondary-text" >CANCELED</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/all"/>">
+        <span class="tab secondary-text" >ALL</span>
+    </a>
 </div>
 
 <c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
