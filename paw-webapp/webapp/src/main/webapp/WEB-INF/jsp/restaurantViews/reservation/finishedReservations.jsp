@@ -102,7 +102,6 @@
             <th><h3 class="presentation-text"><spring:message code="Reservations.date"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.hour"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.status"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.actions"/></h3></th>
         </tr>
         </thead>
         <tbody>
