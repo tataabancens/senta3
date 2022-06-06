@@ -97,6 +97,7 @@
         <thead>
         <tr>
             <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
+            <th><h3 class="presentation-text"><spring:message code="Reservations.table"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.date"/></h3></th>
@@ -109,6 +110,7 @@
         <c:forEach var="reservation" items="${reservations}">
             <tr>
                 <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.id}"/></span></td>
+                <td data-label="Mesa" class="table-cell"><span class="text"><c:out value="${reservation.tableNumber}"/></span></td>
                 <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customer.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
                 <td data-label="Fecha" class="table-cell"><span class="text"><c:out value="${reservation.getReservationOnlyDate()}"/></span></td>

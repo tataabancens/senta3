@@ -79,7 +79,8 @@ public class RestReservationController {
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
-                                            @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+                                            @ModelAttribute("filterForm") final FilterForm filterForm,
+                                            @ModelAttribute("seatForm") final NumberForm seatForm) throws Exception {
 
 
         ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
