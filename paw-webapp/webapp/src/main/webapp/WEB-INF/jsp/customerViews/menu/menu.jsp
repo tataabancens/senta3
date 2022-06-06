@@ -78,14 +78,14 @@
                         <ul class="categories">
                             <c:forEach var="category" items="${categories}">
                                 <a href="<c:url value="/?category=${category}"/>">
-                                    <c:if test="${currentCategory.description == category.description}">
+                                    <c:if test="${currentCategory.name == category.name}">
                                         <button class="waves-effect waves-light btn confirm-btn text description">
-                                            <c:out value="${category.spanishDescr}"/>
+                                            <c:out value="${category.name}"/>
                                         </button>
                                     </c:if>
-                                    <c:if test="${currentCategory.description != category.description}">
+                                    <c:if test="${currentCategory.name != category.name}">
                                         <button class="waves-effect waves-light btn confirm-btn text description">
-                                            <c:out value="${category.spanishDescr}"/>
+                                            <c:out value="${category.name}"/>
                                         </button>
                                     </c:if>
                                 </a>
@@ -95,7 +95,7 @@
                 </div>
                 <div class="dish-categories">
                     <div>
-                        <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+                        <h3 class="presentation-text header-title"><c:out value="${currentCategory.name}"/></h3>
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">

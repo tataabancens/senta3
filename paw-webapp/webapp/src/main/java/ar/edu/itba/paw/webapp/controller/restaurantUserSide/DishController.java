@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
@@ -51,7 +51,10 @@ public class DishController {
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ModelAndView mav = new ModelAndView("restaurantViews/dish/createDish");
-        mav.addObject("categories", DishCategory.getAsMap());
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("categories", restaurant.getDishCategoriesAsMap());
 
         return mav;
     }
@@ -124,11 +127,13 @@ public class DishController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("restaurantViews/dish/editDish");
         mav.addObject("restaurantId", restaurantId);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
-        mav.addObject("categories", DishCategory.getAsMap());
+        mav.addObject("categories", restaurant.getDishCategoriesAsMap());
 
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
