@@ -56,7 +56,7 @@
     </a>
 </div>
 
-<c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
+<c:url value="/restaurant=${restaurantId}/reservations/canceled" var="postUrl"/>
 <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
     <div class="filters-orderBy">
         <div class="orderBy">
