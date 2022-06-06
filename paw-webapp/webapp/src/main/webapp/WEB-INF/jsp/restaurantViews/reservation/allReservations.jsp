@@ -35,54 +35,30 @@
     </div>
 </div>
 
-<c:url value="/restaurant=${restaurantId}/reservations" var="postUrl"/>
+<div class="tabs">
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/open"/>">
+        <span class="secondary-text tab">OPEN</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/seated"/>" >
+        <span class="tab secondary-text" >SEATED</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/checkordered"/>">
+        <span class="tab secondary-text"  >CHECK ORDERED</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/finished"/>">
+        <span class="tab secondary-text" >FINISHED</span>
+    </a>
+    <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/canceled"/>">
+        <span class="tab secondary-text" >CANCELED</span>
+    </a>
+    <a class="active-category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/all"/>">
+        <span class="tab secondary-text" >ALL</span>
+    </a>
+</div>
+
+<c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
 <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
-
-
-    <!-- <div class="tabs">
-
-        <div class="category-tab">
-            <span class="secondary-text tab ">OPEN</span>
-            <form:radiobutton value="0" path="filterStatus" />
-        </div>
-        <div class="category-tab">
-            <span class="secondary-text tab ">SEATED</span>
-            <form:radiobutton value="1" path="filterStatus"/>
-        </div>
-        <div class="category-tab">
-            <span class="secondary-text tab ">CHECK ORDERED</span>
-            <form:radiobutton value="2" path="filterStatus" />
-        </div>
-        <div class="category-tab">
-            <span class="secondary-text tab ">FINISHED</span>
-            <form:radiobutton value="3" path="filterStatus" />
-        </div>
-        <div class="category-tab">
-            <span class="secondary-text tab ">CANCELLED</span>
-            <form:radiobutton value="4" path="filterStatus" />
-        </div>
-        <div class="category-tab">
-            <span class="secondary-text tab ">ALL</span>
-            <form:radiobutton value="9" path="filterStatus" />
-        </div>
-
-
-    </div> -->
-
-
     <div class="filters-orderBy">
-        <div class="filters">
-            <div class="input-field">
-                <form id="filterStatus" path="filterStatus">
-                    <form:option value="0" label="OPEN"></form:option>
-                    <form:option value="1" label="SEATED"></form:option>
-                    <form:option value="2" label="CHECK_ORDERED"></form:option>
-                    <form:option value="3" label="FINISHED"></form:option>
-                    <form:option value="4" label="CANCELED"></form:option>
-                    <form:option value="9" label="ALL"></form:option>
-                </form>
-            </div>
-        </div>
         <div class="orderBy">
             <div class="input-field">
                 <form:select id="orderBy" path="orderBy">
@@ -90,7 +66,6 @@
                     <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
                     <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
                     <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
-                    <form:option value="reservationstatus"><spring:message code="Reservations.status"/></form:option>
                 </form:select>
             </div>
         </div>
@@ -111,8 +86,7 @@
 </form:form>
 
 <div>
-    <c:url value="/createReservation-1" var="postUrl"/>
-    <form action="${postUrl}">
+    <form action="/createReservation-1">
         <spring:message code="Createreservation.title" var="label"/>
         <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
     </form>
@@ -123,7 +97,6 @@
         <thead>
         <tr>
             <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.table"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.date"/></h3></th>
@@ -136,43 +109,24 @@
         <c:forEach var="reservation" items="${reservations}">
             <tr>
                 <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.id}"/></span></td>
-                <td data-label="Mesa" class="table-cell"><span class="text"><c:out value="${reservation.tableNumber}"/></span></td>
                 <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customer.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
                 <td data-label="Fecha" class="table-cell"><span class="text"><c:out value="${reservation.getReservationOnlyDate()}"/></span></td>
                 <td data-label="Hora" class="table-cell"><span class="text"><c:out value="${reservation.reservationHour}"/>:00</span></td>
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
+
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
                     <td data-label="Confirmar" class="table-cell status">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post" modelAttribute="seatForm">
-                                <form:errors path="number" element="p" cssStyle="color:red"/>
-                                <form:label path="number" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Input.seatNumber"/></form:label>
-                                <form:input path="number" type="number"/>
-                                <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
-                                    <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.seat"/></span>
-                                </button>
-                            </form:form>
-                        </div>
-                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}"/>" class="btn waves-effect waves-light red">
-                            <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.reject"/></span>
-                        </a>
-                    </td>
-                </c:if>
-
-                <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
-                    <td data-label="Confirmar" class="table-cell">
-                        <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
-                                <button type="submit" class="btn waves-effect waves-light blue">
-                                    <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Receipt.ask"/></span>
-                                </button>
+                                <spring:message code="Button.sit" var="label"/>
+                                <input type="submit" class="btn green" style="margin-right: 4%;" value="${label}"/>
                             </form:form>
                         </div>
-                        <a href="<c:url value="/menu/?reservationSecurityCode=${reservation.reservationSecurityCode}"/>" class="btn waves-effect waves-light green">
-                            <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.addOrder"/></span>
+                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}"/>" style="margin-top: 15px">
+                            <spring:message code="Button.reservation.cancel" var="label"/>
+                            <input type="submit" class="btn red" style="margin-right: 4%;" value="${label}"/>
                         </a>
                     </td>
                 </c:if>
@@ -180,15 +134,29 @@
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">
                     <td data-label="Confirmar" class="table-cell">
                         <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                                 <button type="submit" class="btn waves-effect waves-light blue">
-                                    <span class="text description" style="font-size: 0.8rem; color: white"><spring:message code="Receipt.view"/></span>
+                                    <span class="text description" style="font-size: 0.8rem; color: white"><spring:message code="Button.receipt.send"/></span>
                                 </button>
                             </form:form>
                         </div>
                     </td>
                 </c:if>
+
+                <c:if test="${reservation.reservationStatus.name == 'SEATED' }">
+                    <td data-label="Confirmar" class="table-cell">
+                        <div style="margin-top: 15px">
+                            <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                            <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
+                                <button type="submit" class="btn waves-effect waves-light blue">
+                                    <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Fullmenu.receipt"/></span>
+                                </button>
+                            </form:form>
+                        </div>
+                    </td>
+                </c:if>
+
             </tr>
         </c:forEach>
         </tbody>
@@ -295,6 +263,30 @@
         justify-content: space-evenly;
         align-items: center;
     }
+
+    .tabs{
+        display: flex;
+        background-color: transparent;
+
+        justify-content: space-around;
+    }
+    .category-tab{
+        color: black;
+        width: 100%;
+        text-align: center;
+        border: solid 1px grey;
+    }
+    .category-tab:hover{
+        background-color: #ddd;
+    }
+    .active-category-tab{
+        background-color: #ccc;
+        color: black;
+        width: 100%;
+        text-align: center;
+        border: solid 1px grey;
+    }
+
     @media (max-width: 768px) {
         .reservations thead{
             display: none;

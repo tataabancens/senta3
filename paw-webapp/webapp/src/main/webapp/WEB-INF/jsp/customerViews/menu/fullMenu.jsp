@@ -44,9 +44,17 @@
             </div>
         </div>
     </div>
-    <div class="restaurant-info" style="min-width: 15%">
+    <div class="restaurant-info" style="min-width: 25%">
+        <div style="margin-right: 10px">
+            <c:if test="${canOrderReceipt}">
+                <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
+            </c:if>
+            <c:if test="${!canOrderReceipt}">
+                <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
+            </c:if>
+        </div>
         <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 10%" id="shopping-cart" onclick="toggleMenu();">
-            <i class="material-icons" style="color: white;margin-right: 0;">shopping_cart</i>
+            <i class="material-icons" style="color: white; align-content: center; margin-right: 0">shopping_cart</i>
         </div>
         <div style="margin-right: 0" class="reservation-info">
             <p class="presentation-text header-title info"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
