@@ -27,4 +27,10 @@ public interface RestaurantService {
     void deleteDish(Restaurant restaurant, long dishId);
 
     Optional<DishCategory> getDishCategoryByName(String category);
+
+    void createDishCategory(Restaurant restaurant, String categoryName);
+
+    void editDishCategory(DishCategory dishCategory, String categoryName);
+
+     Optional<DishCategory> getDishCategoryById(long categoryId);
 }

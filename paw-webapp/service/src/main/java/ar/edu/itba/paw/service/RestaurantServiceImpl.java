@@ -82,4 +82,21 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Optional<DishCategory> getDishCategoryByName(String category) {
         return dishCategoryDao.getDishCategoryByName(category);
     }
+
+    @Transactional
+    @Override
+    public void createDishCategory(Restaurant restaurant, String categoryName) {
+        restaurant.createDishCategory(categoryName);
+    }
+
+    @Transactional
+    @Override
+    public void editDishCategory(DishCategory dishCategory, String categoryName) {
+        dishCategory.setName(categoryName);
+    }
+
+    @Override
+    public Optional<DishCategory> getDishCategoryById(long categoryId) {
+        return dishCategoryDao.getDishCategoryById(categoryId);
+    }
 }

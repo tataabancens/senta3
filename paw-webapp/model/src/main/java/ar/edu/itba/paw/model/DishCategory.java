@@ -7,6 +7,11 @@ import java.util.*;
 public class DishCategory {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dish_category_id_seq")
+    @SequenceGenerator(sequenceName = "dish_category_id_seq", name = "dish_category_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private long id;
+
     @Column(length = 50)
     private String name;
 
@@ -52,5 +57,25 @@ public class DishCategory {
     @Override
     public String toString() {
         return String.format("%s", getName());
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public List<Dish> getDish() {
+        return dish;
+    }
+
+    public void setDish(List<Dish> dish) {
+        this.dish = dish;
     }
 }

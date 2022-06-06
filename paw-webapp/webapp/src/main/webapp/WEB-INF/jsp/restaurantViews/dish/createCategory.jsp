@@ -21,7 +21,12 @@
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 <div class="form-container">
-    <c:url value="/restaurant=${restaurantId}/menu/create" var="postPath"/>
+    <c:if test="${category != null}">
+        <c:url value="/restaurant=${restaurantId}/category=${category}/edit" var="postPath"/>
+    </c:if>
+    <c:if test="${category == null}">
+        <c:url value="/restaurant=${restaurantId}/category/create" var="postPath"/>
+    </c:if>
     <form:form modelAttribute="createCategoryForm" action="${postPath}" method="post">
     <div class="card card-content">
         <span class="presentation-text"><spring:message code="Create.category.title"/></span>

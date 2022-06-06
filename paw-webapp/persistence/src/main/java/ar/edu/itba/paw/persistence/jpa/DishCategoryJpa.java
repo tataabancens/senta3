@@ -24,4 +24,9 @@ public class DishCategoryJpa implements DishCategoryDao {
         final List<DishCategory> list = query.getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
     }
+
+    @Override
+    public Optional<DishCategory> getDishCategoryById(long id) {
+        return Optional.of(em.find(DishCategory.class, id));
+    }
 }

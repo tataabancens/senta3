@@ -76,6 +76,23 @@ public class DishController {
 
         return mav;
     }
+    @RequestMapping(value = "/restaurant={restaurantId}/category/create", method = RequestMethod.POST)
+    public ModelAndView createCategory(@PathVariable ("restaurantId") final String restaurantIdP,
+                                       @Valid @ModelAttribute("createCategoryForm") final CategoryForm createCategoryForm, final BindingResult errors) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        if (errors.hasErrors()){
+            return createCategoryForm(restaurantIdP, createCategoryForm);
+        }
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        rs.createDishCategory(restaurant, createCategoryForm.getCategoryName());
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
+    }
+
     @RequestMapping(value = "/restaurant={restaurantId}/category={category}/edit", method = RequestMethod.GET)
     public ModelAndView editCategory(@PathVariable ("restaurantId") final String restaurantIdP,
                                      @PathVariable ("category") final String category,
@@ -94,9 +111,10 @@ public class DishController {
         return mav;
     }
 
-    /*@RequestMapping(value = "/restaurant={restaurantId}/category/create", method = RequestMethod.POST)
-    public ModelAndView createCategory(@PathVariable ("restaurantId") final String restaurantIdP,
-                                   @Valid @ModelAttribute("createCategoryForm") final CategoryForm createCategoryForm, final BindingResult errors) throws Exception {
+    @RequestMapping(value = "/restaurant={restaurantId}/category={category}/edit", method = RequestMethod.POST)
+    public ModelAndView editCategory(@PathVariable ("restaurantId") final String restaurantIdP,
+                                     @PathVariable ("category") final String category,
+                                     @Valid @ModelAttribute("createCategoryForm") final CategoryForm createCategoryForm, final BindingResult errors) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
@@ -106,10 +124,17 @@ public class DishController {
         }
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
+
+        rs.editDishCategory(dishCategory, createCategoryForm.getCategoryName());
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
     }
-    */
+
+
+
+
+
     @RequestMapping(value = "/restaurant={restaurantId}/category/delete", method = RequestMethod.GET)
     public ModelAndView deleteCategory(@PathVariable ("restaurantId") final String restaurantIdP) throws Exception {
 
