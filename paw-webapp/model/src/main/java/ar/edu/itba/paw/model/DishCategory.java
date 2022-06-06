@@ -25,6 +25,10 @@ public class DishCategory {
         // Just or hibernate
     }
 
+    public DishCategory(String categoryName) {
+        this.name = categoryName;
+    }
+
 //    public long getId() {
 //        return id;
 //    }
