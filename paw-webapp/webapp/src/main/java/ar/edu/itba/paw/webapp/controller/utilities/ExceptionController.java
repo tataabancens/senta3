@@ -45,13 +45,13 @@ public class ExceptionController {
     @ExceptionHandler(LongParseException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ModelAndView handleLongParseException(){
-        return new ModelAndView("error/error404");
+        return new ModelAndView("error/error400");
     }
 
     @ExceptionHandler(OrderByException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ModelAndView handleorderByParseException(){
-        return new ModelAndView("error/error404");
+        return new ModelAndView("error/error400");
     }
 
 

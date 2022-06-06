@@ -24,4 +24,11 @@ public class ErrorController {
     public ModelAndView accessDenied() {
         return new ModelAndView("error/403");
     }
+
+    @RequestMapping("/error400")
+    public ModelAndView error400() {
+
+        return new ModelAndView("error/error400");
+    }
+
 }
