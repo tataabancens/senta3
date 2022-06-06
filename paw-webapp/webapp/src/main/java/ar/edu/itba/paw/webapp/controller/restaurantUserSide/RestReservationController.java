@@ -7,6 +7,7 @@ import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.NumberForm;
+import ar.edu.itba.paw.webapp.form.TableNumberForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -80,7 +81,7 @@ public class RestReservationController {
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
                                             @ModelAttribute("filterForm") final FilterForm filterForm,
-                                            @ModelAttribute("seatForm") final NumberForm seatForm) throws Exception {
+                                            @ModelAttribute("seatForm") final TableNumberForm seatForm) throws Exception {
 
 
         ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
