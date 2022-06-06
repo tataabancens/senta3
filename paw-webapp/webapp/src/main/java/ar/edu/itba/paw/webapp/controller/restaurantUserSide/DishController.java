@@ -70,9 +70,10 @@ public class DishController {
         }
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(createDishForm.getCategory()).orElseThrow(DishNotFoundException::new);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
 
-        Dish dish = rs.createDish(restaurant, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, createDishForm.getCategory());
+        Dish dish = rs.createDish(restaurant, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, dishCategory);
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/confirmDish=" + dish.getId());
     }
 
@@ -138,7 +139,7 @@ public class DishController {
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
         form.setDishPrice("" + dish.getPrice());
-        form.setCategory(dish.getCategory());
+        form.setCategory(dish.getCategory().getName());
         return mav;
     }
 
@@ -154,9 +155,10 @@ public class DishController {
 
         ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
+        DishCategory dishCategory = rs.getDishCategoryByName(form.getCategory()).orElseThrow(DishNotFoundException::new);
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-        ds.updateDish(dish, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  form.getCategory());
+        ds.updateDish(dish, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  dishCategory);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
     }
