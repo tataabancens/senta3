@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.form.CategoryForm;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,38 @@ public class DishController {
 
         return mav;
     }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/category/create", method = RequestMethod.GET)
+    public ModelAndView createCategoryForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                           @ModelAttribute("createCategoryForm") final CategoryForm form) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/dish/createCategory");
+
+        mav.addObject("restaurant", restaurant);
+
+        return mav;
+    }
+
+    /*@RequestMapping(value = "/restaurant={restaurantId}/category/create", method = RequestMethod.POST)
+    public ModelAndView createCategory(@PathVariable ("restaurantId") final String restaurantIdP,
+                                   @Valid @ModelAttribute("createCategoryForm") final CategoryForm createCategoryForm, final BindingResult errors) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        if (errors.hasErrors()){
+            return createCategoryForm(restaurantIdP, createCategoryForm);
+        }
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
+    }*/
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
     public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
