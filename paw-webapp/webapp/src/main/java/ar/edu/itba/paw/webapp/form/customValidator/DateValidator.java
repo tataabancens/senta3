@@ -1,15 +1,9 @@
-package ar.edu.itba.paw.webapp.form.CustomValidator;
+package ar.edu.itba.paw.webapp.form.customValidator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 
 public class DateValidator implements ConstraintValidator<DateConstraint,String> {
 

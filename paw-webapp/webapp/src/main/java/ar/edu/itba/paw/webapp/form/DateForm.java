@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.form.CustomValidator.DateConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.DateConstraint;
 
 
 public class DateForm {
