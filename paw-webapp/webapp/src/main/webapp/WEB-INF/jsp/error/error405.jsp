@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -14,45 +13,59 @@
     <!-- Materialize CSS -->
 
     <link rel="stylesheet" href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>">
+
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
 
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
 </head>
 <body>
-<%@ include file="../../components/navbar.jsp" %>
-
+<%@ include file="../components/navbar.jsp" %>
 
 <div class="pageContainer">
-    <c:url value="/restaurant=${restaurantId}/menu/edit/deleteDish=${dishId}" var="postPath"/>
-    <form:form action="${postPath}" method="post">
-        <div class="card">
-            <span class="presentation-text"><spring:message code="Deletedish.sure" arguments="${dish.dishName}"/> </span>
-            <spring:message code="Button.confirm" var="label"/>
-            <input type="submit" value="${label}" class="btn confirm-btn"/>
+    <div class="card restaurant-card">
+        <div>
+            <p class="presentation-text center"><spring:message code="Error.title"/></p>
         </div>
-    </form:form>
+        <div>
+            <p class="text description"><spring:message code="Error.405"/></p>
+        </div>
+        <div>
+            <p class="text description"><spring:message code="Error.dontworry"/></p>
+        </div>
+        <div class="center">
+            <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
 
 <style>
+
+    .card{
+        border-radius: .8rem;
+    }
     .pageContainer{
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .card{
+    .center{
+        justify-content: center;
+    }
+    .text.description{
+        font-size: clamp(1rem,1vw,3rem);
+    }
+    .card.restaurant-card{
         padding: 1rem;
-        width: 40%;
-        border-radius: .8rem;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        min-width: 9em;
     }
     .btn.confirm-btn{
         margin-bottom: 2em;
-        background-color: red;
     }
 
     body{

@@ -119,7 +119,7 @@
 
                 <td data-label="Confirmar" class="table-cell">
                     <div style="margin-top: 15px">
-                        <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.id}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                        <c:url value="/restaurant=${restaurantId}/showReceipt=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
                             <button type="submit" class="btn waves-effect waves-light blue">
                                 <span class="text description" style="font-size: 0.8rem; color: white"><spring:message code="Button.receipt.send"/></span>

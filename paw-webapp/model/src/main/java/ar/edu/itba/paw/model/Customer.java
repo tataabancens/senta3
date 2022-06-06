@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.model;
 
-import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;

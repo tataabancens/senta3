@@ -2,23 +2,25 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
+import ar.edu.itba.paw.persistance.DishCategoryDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantDao restaurantDao;
+    private final DishCategoryDao dishCategoryDao;
 
     @Autowired
-    public RestaurantServiceImpl(final RestaurantDao restaurantDao) {
+    public RestaurantServiceImpl(final RestaurantDao restaurantDao, final DishCategoryDao dishCategoryDao) {
         this.restaurantDao = restaurantDao;
+        this.dishCategoryDao = dishCategoryDao;
     }
 
     @Override
@@ -74,5 +76,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public void deleteDish(Restaurant restaurant, long dishId) {
         restaurant.deleteDish(dishId);
+    }
+
+    @Override
+    public Optional<DishCategory> getDishCategoryByName(String category) {
+        return dishCategoryDao.getDishCategoryByName(category);
     }
 }

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -19,13 +19,13 @@ public class EditDishForm {
     @Pattern(regexp = "[1-9][0-9]+[.]?[0-9]?[0-9]?")
     private String dishPrice;
 
-    private DishCategory category;
+    private String category;
 
-    public DishCategory getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(DishCategory category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

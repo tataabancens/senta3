@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.lang.reflect.Type;
 import java.util.Optional;
 
 @Repository
