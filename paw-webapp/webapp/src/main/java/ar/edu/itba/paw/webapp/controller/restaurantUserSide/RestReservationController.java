@@ -405,9 +405,9 @@ public class RestReservationController {
                                      @ModelAttribute("filterForm") final FilterForm filterForm,
                                      @Valid @ModelAttribute("seatForm") final NumberForm seatForm,
                                      final BindingResult errors) throws Exception {
-        if (errors.hasErrors()){
-            return reservationsOrderBy(restaurantIdP, orderBy, direction, filterStatus, page, filterForm, seatForm);
-        }
+//        if (errors.hasErrors()){
+//            return reservationsOrderBy(restaurantIdP, orderBy, direction, filterStatus, page, filterForm, seatForm);
+//        }
 
         Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
 
