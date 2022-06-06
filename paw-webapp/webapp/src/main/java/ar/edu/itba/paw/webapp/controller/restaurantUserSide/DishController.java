@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
+import ar.edu.itba.paw.webapp.exceptions.DishCategoryNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
@@ -75,6 +76,23 @@ public class DishController {
 
         return mav;
     }
+    @RequestMapping(value = "/restaurant={restaurantId}/category={category}/edit", method = RequestMethod.GET)
+    public ModelAndView editCategory(@PathVariable ("restaurantId") final String restaurantIdP,
+                                     @PathVariable ("category") final String category,
+                                           @ModelAttribute("createCategoryForm") final CategoryForm form) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/dish/createCategory");
+        form.setCategoryName(dishCategory.getName());
+        mav.addObject("restaurant", restaurant);
+
+        return mav;
+    }
 
     /*@RequestMapping(value = "/restaurant={restaurantId}/category/create", method = RequestMethod.POST)
     public ModelAndView createCategory(@PathVariable ("restaurantId") final String restaurantIdP,
@@ -90,8 +108,8 @@ public class DishController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
-    }*/
-
+    }
+    */
     @RequestMapping(value = "/restaurant={restaurantId}/category/delete", method = RequestMethod.GET)
     public ModelAndView deleteCategory(@PathVariable ("restaurantId") final String restaurantIdP) throws Exception {
 

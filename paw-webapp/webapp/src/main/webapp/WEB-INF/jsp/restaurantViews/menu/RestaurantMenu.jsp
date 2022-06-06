@@ -53,9 +53,9 @@
                     <span class="presentation-text" style="color: rgb(255, 68, 31);font-size: 2.5em;">Crear categoria</span>
                 </a>
                 <div class="category-field">
-                    <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.spanishDescr}"/></h3>
+                    <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></h3>
                     <div style="display: flex;">
-                        <a href="">
+                        <a href="<c:url value="/restaurant=${restaurantId}/category=${currentCategory}/edit"/>">
                             <i class="small material-icons category-field">edit</i>
                         </a>
                         <a href="<c:url value="/restaurant=${restaurantId}/category/delete"/>" style="justify-self: end;">
@@ -190,7 +190,7 @@
         background-color: rgb(255, 68, 31);
         align-items: center;
         justify-content: space-between;
-        height: 2.8em;
+        height: 3em;
         border-radius: .8rem;
         display: flex;
         transition: 0.5s;
