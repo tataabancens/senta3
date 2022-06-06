@@ -38,7 +38,7 @@
                     </div>
                 </c:if>
                 <div>
-                    <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" href="<c:url value="/menu?reservationId=${reservation.id}"/>">Volver al menu</a>
+                    <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" href="<c:url value="/menu?reservationSecurityCode=${reservation.securityCode}"/>">Volver al menu</a>
                 </div>
             </div>
         </div>

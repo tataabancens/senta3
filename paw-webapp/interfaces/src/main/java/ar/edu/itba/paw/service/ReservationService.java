@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationService {
-    Optional<Reservation> getReservationById(long id);
+
+    Optional<Reservation> getReservationBySecurityCode(String securityCode);
 
     OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity);
 
@@ -37,7 +38,7 @@ public interface ReservationService {
 
     List<Reservation> getAllReservations(Restaurant restaurant);
 
-    Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
+    Optional<Reservation> getReservationByIdAndIsActive(String securityCode);
 
     List<OrderItem> getOrderItemsByReservationAndOrder(Reservation reservation);
 
@@ -63,7 +64,7 @@ public interface ReservationService {
 
     public List<Reservation> getReservationsSeated(Restaurant restaurant);
 
-    Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
+    Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, ReservationStatus maybeReservation);
 
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
@@ -74,4 +75,8 @@ public interface ReservationService {
     void updateReservationDateById(Reservation reservation, Timestamp reservationDate);
 
     List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status);
+
+    void setTableNumber(Reservation reservation, int number);
+
+    void setReservationSecurityCode(Reservation reservation);
 }

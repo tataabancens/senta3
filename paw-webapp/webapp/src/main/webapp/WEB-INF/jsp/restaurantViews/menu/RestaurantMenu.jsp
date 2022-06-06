@@ -33,14 +33,14 @@
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
                         <a href="<c:url value="/restaurant=1/menu?category=${category}"/>">
-                            <c:if test="${currentCategory.description == category.description}">
+                            <c:if test="${currentCategory.name == category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
+                                    <c:out value="${category.name}"/>
                                 </button>
                             </c:if>
-                            <c:if test="${currentCategory.description != category.description}">
+                            <c:if test="${currentCategory.name != category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
+                                    <c:out value="${category.name}"/>
                                 </button>
                             </c:if>
                         </a>

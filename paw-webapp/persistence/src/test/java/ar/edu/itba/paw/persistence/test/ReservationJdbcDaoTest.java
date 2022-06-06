@@ -1,27 +1,16 @@
 package ar.edu.itba.paw.persistence.test;
 
-import ar.edu.itba.paw.model.*;
-import ar.edu.itba.paw.model.enums.DishCategory;
-import ar.edu.itba.paw.model.enums.OrderItemStatus;
-import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistence.jpa.ReservationJpaDao;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-import java.util.*;
-
-import static ar.edu.itba.paw.model.enums.DishCategory.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)

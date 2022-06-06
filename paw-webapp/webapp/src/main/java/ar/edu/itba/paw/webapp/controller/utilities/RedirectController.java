@@ -40,8 +40,8 @@ public class RedirectController {
         }
         return new ModelAndView("redirect:/history");
     }
-    @RequestMapping(value = "/createReservation-3/{reservationId}/redirect")
-    public ModelAndView redirectCreateReservation(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-3/{reservationSecurityCode}/redirect")
+    public ModelAndView redirectCreateReservation(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                                   Authentication authentication, Principal principal) {
 
         if (authentication != null) {
@@ -50,11 +50,11 @@ public class RedirectController {
 
                 if (Objects.equals(role, "ROLE_CUSTOMER")) {
                     cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-                    return new ModelAndView("redirect:/confirmReservation/" + reservationIdP);
+                    return new ModelAndView("redirect:/confirmReservation/" + reservationSecurityCode);
                 }
             }
         }
-        return new ModelAndView("redirect:/createReservation-4/" + reservationIdP);
+        return new ModelAndView("redirect:/createReservation-4/" + reservationSecurityCode);
     }
 
     @RequestMapping(value = "/profile")

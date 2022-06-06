@@ -79,7 +79,7 @@
                 </div>
 
                 <div>
-                    <a class="waves-effect waves-light btn confirm-btn already-reserved-btn" href="menu?reservationId=${reservationId}"><spring:message code="Button.back"/></a>
+                    <a class="waves-effect waves-light btn confirm-btn already-reserved-btn" href="menu?reservationSecurityCode=${reservation.securityCode}"><spring:message code="Button.back"/></a>
 
                     <a class="waves-effect waves-light btn confirm-btn already-reserved-btn green" href=""><spring:message code="Button.continue"/></a>
                 </div>

@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
@@ -52,7 +52,10 @@ public class DishController {
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ModelAndView mav = new ModelAndView("restaurantViews/dish/createDish");
-        mav.addObject("categories", DishCategory.getAsMap());
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("categories", restaurant.getDishCategoriesAsMap());
 
         return mav;
     }
@@ -115,9 +118,10 @@ public class DishController {
         }
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(createDishForm.getCategory()).orElseThrow(DishNotFoundException::new);
         // Dish create(long restaurantId, String dishName, String dishDescription, double price);
 
-        Dish dish = rs.createDish(restaurant, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, createDishForm.getCategory());
+        Dish dish = rs.createDish(restaurant, createDishForm.getDishName(), createDishForm.getDishDesc(), Double.parseDouble(createDishForm.getDishPrice()), 0, dishCategory);
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/confirmDish=" + dish.getId());
     }
 
@@ -172,16 +176,18 @@ public class DishController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long dishId = Long.parseLong(dishIdP);
 
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
         final ModelAndView mav = new ModelAndView("restaurantViews/dish/editDish");
         mav.addObject("restaurantId", restaurantId);
         Dish dish =  ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
         mav.addObject("dish", dish);
-        mav.addObject("categories", DishCategory.getAsMap());
+        mav.addObject("categories", restaurant.getDishCategoriesAsMap());
 
         form.setDishName(dish.getDishName());
         form.setDishDesc(dish.getDishDescription());
         form.setDishPrice("" + dish.getPrice());
-        form.setCategory(dish.getCategory());
+        form.setCategory(dish.getCategory().getName());
         return mav;
     }
 
@@ -197,9 +203,10 @@ public class DishController {
 
         ControllerUtils.longParser(dishIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long dishId = Long.parseLong(dishIdP);
+        DishCategory dishCategory = rs.getDishCategoryByName(form.getCategory()).orElseThrow(DishNotFoundException::new);
 
         Dish dish = ds.getDishById(dishId).orElseThrow(DishNotFoundException::new);
-        ds.updateDish(dish, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  form.getCategory());
+        ds.updateDish(dish, form.getDishName(), form.getDishDesc(), Double.parseDouble(form.getDishPrice()),  dishCategory);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
     }
