@@ -33,14 +33,14 @@
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
                         <a href="<c:url value="/restaurant=1/menu?category=${category}"/>">
-                            <c:if test="${currentCategory.description == category.description}">
+                            <c:if test="${currentCategory.name == category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
+                                    <c:out value="${category.name}"/>
                                 </button>
                             </c:if>
-                            <c:if test="${currentCategory.description != category.description}">
+                            <c:if test="${currentCategory.name != category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
+                                    <c:out value="${category.name}"/>
                                 </button>
                             </c:if>
                         </a>
@@ -48,8 +48,20 @@
                 </ul>
             </div>
             <div class="dish-categories">
-                <div>
-                    <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+                <a href="<c:url value="/restaurant=${restaurantId}/category/create"/>" class="dish-card category-creation">
+                    <i class="large material-icons" style="color: rgb(255, 68, 31); ">add</i>
+                    <span class="presentation-text" style="color: rgb(255, 68, 31);font-size: 2.5em;">Crear categoria</span>
+                </a>
+                <div class="category-field">
+                    <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></h3>
+                    <div style="display: flex;">
+                        <a href="<c:url value="/restaurant=${restaurantId}/category=${currentCategory}/edit"/>">
+                            <i class="small material-icons category-field">edit</i>
+                        </a>
+                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete"/>" style="justify-self: end;">
+                            <i class="small material-icons category-field">delete</i>
+                        </a>
+                    </div>
                 </div>
                 <div class="dishList">
                     <a href="menu/create" class="dish-card dish-creation">
@@ -174,16 +186,34 @@
         justify-content: flex-end;
         padding-right: 1.5%;
     }
-    @media screen and (max-width: 1920px){
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
+    .category-field{
+        background-color: rgb(255, 68, 31);
+        align-items: center;
+        justify-content: space-between;
+        height: 3em;
+        border-radius: .8rem;
+        display: flex;
+        transition: 0.5s;
+    }
+    .small.material-icons.category-field{
+        color: white;
+        margin-left: 0.5%;
+        height: 2rem;
+        display: none;
+    }
+    .category-field:hover .small.material-icons.category-field{
+        display: block;
+    }
+    .dish-card.category-creation{
+        background-color: white;
+        width: 90%;
+        align-items: center;
+        transition: 1s;
+        height: 6em;
+        flex-direction: row;
+    }
+    .dish-card.category-creation:hover {
+        transform: scale(1.05);
     }
     @media screen and (max-width: 1350px){
         .dish-card{
@@ -191,15 +221,6 @@
         }
         .dish-img{
             width: auto;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 1080px){
@@ -212,15 +233,6 @@
         }
         .dish-img{
             width: auto;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 868px){

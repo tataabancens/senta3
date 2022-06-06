@@ -1,9 +1,10 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.*;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
+import ar.edu.itba.paw.webapp.exceptions.DishCategoryNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditPhoneForm;
@@ -56,12 +57,13 @@ public class RestController {
 
         final ModelAndView mav = new ModelAndView("restaurantViews/menu/RestaurantMenu");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
         // deprecated restaurant.setDishes(rs.getRestaurantDishesByCategory(restaurantId, DishCategory.valueOf(category)));
 
-        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
+        mav.addObject("dishes", restaurant.getDishesByCategory(dishCategory));
         mav.addObject("restaurant", restaurant);
-        mav.addObject("categories", DishCategory.getAsList());
-        mav.addObject("currentCategory", DishCategory.valueOf(category));
+        mav.addObject("categories", restaurant.getDishCategories());
+        mav.addObject("currentCategory", dishCategory);
         return mav;
     }
 

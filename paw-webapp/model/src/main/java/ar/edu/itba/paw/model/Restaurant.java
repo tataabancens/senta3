@@ -1,11 +1,13 @@
 package ar.edu.itba.paw.model;
 
-import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
+import jdk.jfr.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Restaurant {
@@ -30,6 +32,9 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DishCategory> dishCategories = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userid")
@@ -83,10 +88,24 @@ public class Restaurant {
         return dish;
     }
 
+    public DishCategory createDishCategory(String categoryName) {
+        DishCategory category = new DishCategory(categoryName);
+        dishCategories.add(category);
+        return category;
+    }
+
     public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
         List<Reservation> toRet = new ArrayList<>(reservations);
         toRet.removeIf(r -> !statusList.contains(r.getReservationStatus()));
         return toRet;
+    }
+
+    public List<DishCategory> getDishCategories() {
+        return new ArrayList<>(dishCategories);
+    }
+
+    public void setDishCategories(List<DishCategory> dishCategories) {
+        this.dishCategories = dishCategories;
     }
 
     public void deleteDish(long dishId) {
@@ -118,8 +137,14 @@ public class Restaurant {
     }
 
     public List<Dish> getDishesByCategory(DishCategory category) {
-        List<Dish> toRet = new ArrayList<>(dishes);
-        toRet.removeIf(d -> d.getCategory().ordinal() != category.ordinal());
+        return category.getDishes();
+    }
+
+    public Map<DishCategory, String> getDishCategoriesAsMap() {
+        Map<DishCategory, String> toRet = new LinkedHashMap<>();
+        for (DishCategory category: getDishCategories()) {
+            toRet.put(category, category.getName());
+        }
         return toRet;
     }
 

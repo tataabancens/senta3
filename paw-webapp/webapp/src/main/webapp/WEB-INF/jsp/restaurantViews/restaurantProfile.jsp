@@ -106,12 +106,6 @@
         flex-direction: column;
         justify-content: space-evenly;
     }
-    .imageContainer{
-        display: flex;
-        justify-content: center;
-        width: 50%;
-        height: 70%;
-    }
     img{
         border-radius: 16px;
         width: 50%;

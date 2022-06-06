@@ -1,12 +1,8 @@
 package ar.edu.itba.paw.persistence.test;
 
-import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.enums.DishCategory;
-import ar.edu.itba.paw.model.enums.OrderItemStatus;
-import ar.edu.itba.paw.model.enums.ReservationStatus;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.persistence.jdbc.DishJdbcDao;
 import ar.edu.itba.paw.persistence.jpa.ReservationJpaDao;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +17,6 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-
-import static ar.edu.itba.paw.model.enums.DishCategory.MAIN_DISH;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)

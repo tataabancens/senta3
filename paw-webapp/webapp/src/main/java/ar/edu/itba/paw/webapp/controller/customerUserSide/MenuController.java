@@ -1,15 +1,12 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.*;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
-import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.LongParseException;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +46,14 @@ public class MenuController {
 
 
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
         // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         //restaurant.setDishes(dishes);
 
         mav.addObject("restaurant", restaurant);
-        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
-        mav.addObject("categories", DishCategory.getAsList());
-        mav.addObject("currentCategory", DishCategory.valueOf(category));
+        mav.addObject("dishes", restaurant.getDishesByCategory(dishCategory));
+        mav.addObject("categories", restaurant.getDishCategories());
+        mav.addObject("currentCategory", dishCategory);
 
         /* ESTO SE DEBE CORRER 1 VEZ PARA ACTUALIZAR LOS SECURITY CODES
         for (Reservation reservation : restaurant.getReservations()) {
@@ -71,6 +69,7 @@ public class MenuController {
                              @RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
 
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
 //        deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
 //        restaurant.setDishes(dishes);
 
@@ -88,10 +87,10 @@ public class MenuController {
         final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservation.getId()));
         mav.addObject("restaurant", restaurant);
-        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
+        mav.addObject("dishes", restaurant.getDishesByCategory(dishCategory));
         mav.addObject("customer", customer);
-        mav.addObject("categories", DishCategory.getAsList());
-        mav.addObject("currentCategory", DishCategory.valueOf(category));
+        mav.addObject("categories", restaurant.getDishCategories());
+        mav.addObject("currentCategory", dishCategory);
 
         mav.addObject("reservation", reservation);
 
