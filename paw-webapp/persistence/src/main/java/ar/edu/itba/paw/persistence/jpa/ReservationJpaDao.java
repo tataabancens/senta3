@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,9 +27,18 @@ public class ReservationJpaDao implements ReservationDao {
     private EntityManager em;
 
     @Override
+    public Optional<Reservation> getReservationBySecurityCode(String securityCode) {
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.securityCode = :reservation_security_code",
+                Reservation.class); //es hql, no sql
+        query.setParameter("reservation_security_code", securityCode);
+        return query.getResultList().stream().findFirst();
+    }
+
+    @Override
     public Optional<Reservation> getReservationById(long id) {
         return Optional.of(em.find(Reservation.class, id));
     }
+
 
     @Override
     public Optional<OrderItem> getOrderItemById(long orderItemId) {
@@ -38,11 +46,11 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public Optional<Reservation> getReservationByIdAndStatus(long reservationId, List<ReservationStatus> status) {
-        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus in :status and r.id = :reservation_id",
+    public Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, List<ReservationStatus> status) {
+        final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus in :status and r.securityCode = :reservation_security_code",
                 Reservation.class); //es hql, no sql
         query.setParameter("status", status);
-        query.setParameter("reservation_id", reservationId);
+        query.setParameter("reservation_security_code", securityCode);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
     }

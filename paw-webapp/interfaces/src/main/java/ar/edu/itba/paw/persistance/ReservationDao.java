@@ -4,18 +4,15 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationDao {
 
+    Optional<Reservation> getReservationBySecurityCode(String securityCode);
 
-    Optional<Reservation> getReservationById(long id);
-
-    Optional<Reservation> getReservationByIdAndStatus(long id, List<ReservationStatus> status);
+    Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, List<ReservationStatus> status);
 
     List<OrderItem> getOrderItemsByStatus(OrderItemStatus status);
 
@@ -28,6 +25,8 @@ public interface ReservationDao {
 //    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
 
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
+
+    Optional<Reservation> getReservationById(long id);
 
     Optional<OrderItem> getOrderItemById(long orderItemId);
 

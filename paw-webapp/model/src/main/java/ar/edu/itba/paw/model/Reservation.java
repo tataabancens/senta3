@@ -48,6 +48,12 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Column(nullable = false)
+    private int tableNumber;
+
+    @Column(nullable = false, length = 6, columnDefinition = "varchar(6) default 'A'")
+    private String securityCode = String.valueOf('A');
+
     /* default */ Reservation() {
         // Just for hibernate
     }
@@ -162,6 +168,22 @@ public class Reservation {
                 "/" +
                 this.reservationDate.toLocalDateTime().getYear();
         return date;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;

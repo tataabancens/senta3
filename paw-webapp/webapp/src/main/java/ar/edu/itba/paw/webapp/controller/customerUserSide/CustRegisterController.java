@@ -43,9 +43,9 @@ public class CustRegisterController {
         this.us = us;
     }
 
-    @RequestMapping(value = "/registerShort/{customerId}/{reservationId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/registerShort/{customerId}/{reservationSecurityCode}", method = RequestMethod.GET)
     public ModelAndView userRegister(@PathVariable("customerId") final String customerIdP,
-                                     @PathVariable("reservationId") final String reservationIdP,
+                                     @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
         ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
@@ -55,14 +55,14 @@ public class CustRegisterController {
 
         ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
         mav.addObject("customerId", customerIdP);
-        mav.addObject("reservationId", reservationIdP);
+        mav.addObject("reservationSecurityCode", reservationSecurityCode);
 
         return mav;
     }
 
-    @RequestMapping(value = "/registerShort/{customerId}/{reservationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/registerShort/{customerId}/{reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView userRegister_POST(@PathVariable("customerId") final String customerIdP,
-                                          @PathVariable("reservationId") final String reservationIdP,
+                                          @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
                                           final HttpServletRequest request) throws Exception{
@@ -70,7 +70,7 @@ public class CustRegisterController {
         long customerId = Long.parseLong(customerIdP);
 
         if (errors.hasErrors()){
-            return userRegister(customerIdP, reservationIdP, form);
+            return userRegister(customerIdP, reservationSecurityCode, form);
         }
         User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
         Customer customer = cs.getCustomerById(customerId).orElseThrow(CustomerNotFoundException::new);
@@ -78,7 +78,7 @@ public class CustRegisterController {
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
-        return new ModelAndView("redirect:/menu?reservationId=" +  reservationIdP);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" +  reservationSecurityCode);
     }
 
 

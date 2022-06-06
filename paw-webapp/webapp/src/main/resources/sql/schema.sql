@@ -68,6 +68,8 @@ ALTER TABLE reservation ADD IF NOT EXISTS startedAtTime timestamp default now();
 
 ALTER TABLE reservation ADD IF NOT EXISTS reservationDate timestamp;
 
+ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
+
 
 
 CREATE TABLE IF NOT EXISTS users (

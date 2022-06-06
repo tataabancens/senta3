@@ -4,14 +4,13 @@ import javax.validation.constraints.Min;
 
 public class FindReservationForm {
 
-    @Min(value=1,message = "debe ser un numero positivo")
-    private long reservationId;
+    private String securityCode;
 
-    public long getReservationId() {
-        return reservationId;
+    public String getSecurityCode() {
+        return securityCode;
     }
 
-    public void setReservationId(long reservationId) {
-        this.reservationId = reservationId;
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 }

@@ -94,7 +94,7 @@
                     <sec:authorize access="!hasRole('RESTAURANT')">
                         <div>
                             <c:if test="${canOrderReceipt}">
-                                <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                                <c:url value="/order/send-receipt?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
                                     <spring:message code="Button.confirm" var="label"/>
                                     <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">
@@ -107,7 +107,7 @@
                     </sec:authorize>
                 <sec:authorize access="hasRole('RESTAURANT')">
                     <div>
-                        <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                        <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservationSecurityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.finishres" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">

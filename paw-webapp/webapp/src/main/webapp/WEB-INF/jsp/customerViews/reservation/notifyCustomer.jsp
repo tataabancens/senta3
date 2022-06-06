@@ -29,7 +29,7 @@
                     <p class="text description"><spring:message code="Notifycustomer.TimeAndPlace" arguments="${restaurant.restaurantName}, ${reservation.getReservationOnlyDate()}, ${reservation.reservationHour}"/></p>
                     <span class="text description"><spring:message code="Notifycustomer.subtitle"/></span>
                     <div class="with-margin">
-                        <span class="text description"><c:out value="${reservation.id}"/></span>
+                        <span class="text description"><c:out value="${reservation.securityCode}"/></span>
                     </div>
                     <p class="text description"><spring:message code="Notifycustomer.mail"/></p>
                     <p>""</p>
@@ -37,12 +37,12 @@
                     <div class="btn-row">
                         <sec:authorize access="!isAuthenticated()">
                             <div class="center">
-                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customer.id}/${reservation.id}"/>"><spring:message code="Button.register"/></a>
-                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationId=${reservation.id}"/>"><spring:message code="Button.no.register"/></a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/registerShort/${reservation.customer.id}/${reservation.securityCode}"/>"><spring:message code="Button.register"/></a>
+                                <a class="waves-effect waves-light btn confirm-btn" href="<c:url value="/menu?reservationSecurityCode=${reservation.securityCode}"/>"><spring:message code="Button.no.register"/></a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="isAuthenticated()">
-                            <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" href="<c:url value="/menu?reservationId=${reservation.id}"/>"><spring:message code="Button.continue"/></a>
+                            <a class="waves-effect waves-light btn confirm-btn"  style="margin-top: 5%;" href="<c:url value="/menu?reservationSecurityCode=${reservation.securityCode}"/>"><spring:message code="Button.continue"/></a>
                         </sec:authorize>
                     </div>
                 </div>

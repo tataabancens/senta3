@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
+import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
@@ -43,6 +44,8 @@ public class MenuController {
 
         LOGGER.info("Attempting to show menu");
 
+
+
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         //restaurant.setDishes(dishes);
@@ -55,20 +58,15 @@ public class MenuController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public ModelAndView menu(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
+    public ModelAndView menu(@RequestParam(name = "reservationSecurityCode", defaultValue = "1") final String reservationSecurityCode,
                              @RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
-
-        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        long reservationId = Long.parseLong(reservationIdP);
-
 
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
 //        deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
 //        restaurant.setDishes(dishes);
 
-        Reservation reservation = res.getReservationByIdAndIsActive(reservationId).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = res.getReservationByIdAndIsActive(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
-
 
         List<OrderItem> orderedItems = res.getOrderItemsByReservationAndOrder(reservation);
         List<OrderItem> orderItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
@@ -76,9 +74,10 @@ public class MenuController {
         List<OrderItem> oldItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.DELIVERED);
 
         boolean canOrderReceipt = res.canOrderReceipt(reservation, orderedItems.size() > 0);
+        boolean canCancelReservation = reservation.getReservationStatus() == ReservationStatus.OPEN;
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/fullMenu");
-        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservation.getId()));
         mav.addObject("restaurant", restaurant);
         mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
         mav.addObject("customer", customer);
@@ -101,8 +100,9 @@ public class MenuController {
         mav.addObject("totalIncoming", res.getTotal(incomingItems));
 
         mav.addObject("canOrderReceipt", canOrderReceipt);
+        mav.addObject("canCancelReservation", canCancelReservation);
 
-        mav.addObject("unavailable", res.getUnavailableItems(reservationId));
+        mav.addObject("unavailable", res.getUnavailableItems(reservation.getId()));
 
         return mav;
     }

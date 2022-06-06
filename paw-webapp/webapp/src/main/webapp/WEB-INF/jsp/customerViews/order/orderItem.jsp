@@ -27,7 +27,7 @@
 <div class="form-container">
             <div class="card card-content">
                 <span class="presentation-text"><c:out value="${dish.dishName}"/></span>
-                <c:url value="/menu/orderItem?reservationId=${reservationId}&dishId=${dish.id}&isFromOrder=${isFromOrder}" var="postUrl"/>
+                <c:url value="/menu/orderItem?reservationSecurityCode=${reservation.securityCode}&dishId=${dish.id}&isFromOrder=${isFromOrder}" var="postUrl"/>
                 <form:form modelAttribute="orderForm" action="${postUrl}" method="post">
                     <div class ="orderItem">
                         <p class="text description"><c:out value="${dish.dishDescription}"/></p>
