@@ -89,6 +89,21 @@ public class DishController {
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
     }*/
 
+    @RequestMapping(value = "/restaurant={restaurantId}/category/delete", method = RequestMethod.GET)
+    public ModelAndView deleteCategory(@PathVariable ("restaurantId") final String restaurantIdP) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/dish/deleteCategoryConfirmation");
+
+        mav.addObject("restaurant", restaurant);
+
+        return mav;
+    }
+
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
     public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
                                    @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {

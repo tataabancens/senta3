@@ -37,24 +37,15 @@
 </html>
 
 <style>
-
-    .card{
-        border-radius: .8rem;
-    }
     .pageContainer{
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .center{
-        justify-content: center;
-    }
-    .text.description{
-        font-size: clamp(1rem,1vw,3rem);
-    }
     .card{
         padding: 1rem;
         width: 40%;
+        border-radius: .8rem;
         justify-content: center;
         align-items: center;
         flex-direction: column;

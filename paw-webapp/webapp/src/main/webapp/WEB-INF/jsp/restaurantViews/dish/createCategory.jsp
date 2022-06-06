@@ -24,9 +24,9 @@
     <c:url value="/restaurant=${restaurantId}/menu/create" var="postPath"/>
     <form:form modelAttribute="createCategoryForm" action="${postPath}" method="post">
     <div class="card card-content">
-        <span class="presentation-text"><spring:message code="Createdish.title"/></span>
+        <span class="presentation-text"><spring:message code="Create.category.title"/></span>
         <div style="margin: 30px">
-            <div class="disName">
+            <div>
                 <form:errors path="categoryName" element="p" cssStyle="color:red"/>
                 <form:label path="categoryName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
                 <form:input path="categoryName" required="required" type="text"/>

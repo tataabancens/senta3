@@ -54,9 +54,14 @@
                 </a>
                 <div class="category-field">
                     <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.spanishDescr}"/></h3>
-                    <a href="">
-                        <i class="small material-icons category-field">edit</i>
-                    </a>
+                    <div style="display: flex;">
+                        <a href="">
+                            <i class="small material-icons category-field">edit</i>
+                        </a>
+                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete"/>" style="justify-self: end;">
+                            <i class="small material-icons category-field">delete</i>
+                        </a>
+                    </div>
                 </div>
                 <div class="dishList">
                     <a href="menu/create" class="dish-card dish-creation">
@@ -184,6 +189,7 @@
     .category-field{
         background-color: rgb(255, 68, 31);
         align-items: center;
+        justify-content: space-between;
         height: 2.8em;
         border-radius: .8rem;
         display: flex;
