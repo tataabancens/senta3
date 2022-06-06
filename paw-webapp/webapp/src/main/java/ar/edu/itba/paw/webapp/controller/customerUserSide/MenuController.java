@@ -46,6 +46,8 @@ public class MenuController {
 
 
 
+
+
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         //restaurant.setDishes(dishes);
@@ -54,6 +56,13 @@ public class MenuController {
         mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
         mav.addObject("categories", DishCategory.getAsList());
         mav.addObject("currentCategory", DishCategory.valueOf(category));
+
+        /* ESTO SE DEBE CORRER 1 VEZ PARA ACTUALIZAR LOS SECURITY CODES
+        for (Reservation reservation : restaurant.getReservations()) {
+            res.setReservationSecurityCode(reservation);
+        }
+         */
+
         return mav;
     }
 
