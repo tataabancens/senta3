@@ -33,7 +33,7 @@
         <div style="margin: 30px">
             <div>
                 <form:errors path="categoryName" element="p" cssStyle="color:red"/>
-                <form:label path="categoryName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
+                <form:label path="categoryName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Create.category.name"/></form:label>
                 <form:input path="categoryName" required="required" type="text"/>
             </div>
             <div class="col s12 center" style="margin-top: 10%;">
