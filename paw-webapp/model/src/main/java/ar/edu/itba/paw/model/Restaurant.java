@@ -89,7 +89,7 @@ public class Restaurant {
     }
 
     public DishCategory createDishCategory(String categoryName) {
-        DishCategory category = new DishCategory(categoryName);
+        DishCategory category = new DishCategory(this, categoryName);
         dishCategories.add(category);
         return category;
     }

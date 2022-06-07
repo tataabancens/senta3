@@ -7,8 +7,8 @@ import java.util.*;
 public class DishCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dish_category_id_seq")
-    @SequenceGenerator(sequenceName = "dish_category_id_seq", name = "dish_category_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dishcategory_id_seq")
+    @SequenceGenerator(sequenceName = "dishcategory_id_seq", name = "dishcategory_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 
@@ -16,7 +16,7 @@ public class DishCategory {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "restaurantid", nullable = false)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,7 +30,8 @@ public class DishCategory {
         // Just or hibernate
     }
 
-    public DishCategory(String categoryName) {
+    public DishCategory(Restaurant restaurant, String categoryName) {
+        this.restaurant = restaurant;
         this.name = categoryName;
     }
 

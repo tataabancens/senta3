@@ -50,7 +50,7 @@ public class RestController {
 
     @RequestMapping("/restaurant={restaurantId}/menu")
     public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP,
-                                       @RequestParam(name = "categoryId", defaultValue = "2") final String categoryIdP) throws Exception {
+                                       @RequestParam(name = "category", defaultValue = "2") final String categoryIdP) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP, categoryIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
