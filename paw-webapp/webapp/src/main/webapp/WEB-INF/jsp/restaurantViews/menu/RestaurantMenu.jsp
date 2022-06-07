@@ -29,6 +29,11 @@
         </div>
         <div class="contentContainer">
             <div class="card filter-box">
+                <a href="<c:url value="/restaurant=${restaurantId}/category/create"/>" class="dish-card category-creation">
+                    <i class="medium material-icons" style="color: rgb(255, 68, 31); ">add</i>
+                    <span class="presentation-text" style="color: rgb(255, 68, 31);font-size: 1.5em;">Crear categoria</span>
+                </a>
+                <hr class="solid-divider" style="background-color: #171616;"/>
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
@@ -48,10 +53,6 @@
                 </ul>
             </div>
             <div class="dish-categories">
-                <a href="<c:url value="/restaurant=${restaurantId}/category/create"/>" class="dish-card category-creation">
-                    <i class="large material-icons" style="color: rgb(255, 68, 31); ">add</i>
-                    <span class="presentation-text" style="color: rgb(255, 68, 31);font-size: 2.5em;">Crear categoria</span>
-                </a>
                 <div class="category-field">
                     <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></h3>
                     <div style="display: flex;">
@@ -154,7 +155,7 @@
     .card.filter-box{
         min-width: 10rem;
         width: 15%;
-        max-height: 20em;
+        height: fit-content;
     }
     .text.price{
         font-weight: 600;
@@ -206,10 +207,10 @@
     }
     .dish-card.category-creation{
         background-color: white;
-        width: 90%;
+        width: 85%;
         align-items: center;
         transition: 1s;
-        height: 6em;
+        height: 4em;
         flex-direction: row;
     }
     .dish-card.category-creation:hover {
