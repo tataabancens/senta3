@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.form.CustomValidator.CategoryConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.CategoryConstraint;
 
 import javax.validation.constraints.Size;
 

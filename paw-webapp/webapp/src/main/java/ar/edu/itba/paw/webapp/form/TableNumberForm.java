@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 public class TableNumberForm {
 
     @TableNumberConstraint
-    @Pattern(regexp = "[1-9][0-9]+")
+    @Pattern(regexp = "[1-9][0-9]+|[1-9]")
     String number;
 
     public String getNumber() {
