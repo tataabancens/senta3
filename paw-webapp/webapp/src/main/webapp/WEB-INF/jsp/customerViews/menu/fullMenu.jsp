@@ -46,7 +46,7 @@
     </div>
     <div style="margin-right: 2%; display: flex;align-items: center;">
             <div class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em; margin-right: 1%;" id="reservation-toggle" onclick="toggleReservationMenu()" >
-                <span>ver reserva</span>
+                <span><spring:message code="Fullmenu.yourReservation"/></span>
             </div>
             <c:if test="${canOrderReceipt}">
                 <a class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em;"  href="<c:url value="/order/send-receipt?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}"/>">
@@ -314,7 +314,7 @@
             <i class="material-icons clear-symbol">arrow_forward</i>
         </button>
         <div class="reservation-info">
-            <span class="presentation-text">Tu reserva:</span>
+            <span class="presentation-text"><spring:message code="Fullmenu.sideMenu.yourReservation"/></span>
             <hr class="solid-divider">
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
