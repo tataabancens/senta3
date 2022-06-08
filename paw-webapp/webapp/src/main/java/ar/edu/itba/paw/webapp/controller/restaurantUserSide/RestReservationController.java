@@ -6,7 +6,6 @@ import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.FilterForm;
-import ar.edu.itba.paw.webapp.form.NumberForm;
 import ar.edu.itba.paw.webapp.form.TableNumberForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -100,6 +99,8 @@ public class RestReservationController {
         filterForm.setFilterStatus("0");
         filterForm.setDirection(direction);
         filterForm.setOrderBy(orderBy);
+
+        seatForm.setNumber("0");
 
         mav.addObject("reservations", reservations);
         mav.addObject("orderBy", orderBy);
@@ -405,11 +406,11 @@ public class RestReservationController {
                                      @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                      @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                      @ModelAttribute("filterForm") final FilterForm filterForm,
-                                     @Valid @ModelAttribute("seatForm") final NumberForm seatForm,
+                                     @Valid @ModelAttribute("seatForm") final TableNumberForm seatForm,
                                      final BindingResult errors) throws Exception {
-//        if (errors.hasErrors()){
-//            return reservationsOrderBy(restaurantIdP, orderBy, direction, filterStatus, page, filterForm, seatForm);
-//        }
+        if (errors.hasErrors()){
+            return reservationsOpen(restaurantIdP, orderBy, direction, page, filterForm, seatForm);
+        }
 
         Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
 
