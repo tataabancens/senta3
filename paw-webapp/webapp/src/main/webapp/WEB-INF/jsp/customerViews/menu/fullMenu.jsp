@@ -319,7 +319,7 @@
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
-            <p class="presentation-text header-title info" style="color: #171616;">codigo: <c:out value="${reservation.securityCode}"/></p>
+            <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="FullMenu.Code"/> <c:out value="${reservation.securityCode}"/></p>
         </div>
     </div>
 </div>
