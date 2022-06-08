@@ -44,22 +44,37 @@
             </div>
         </div>
     </div>
-    <div class="restaurant-info" style="min-width: 25%">
-        <div style="margin-right: 10px">
+    <div style="margin-right: 2%; display: flex;align-items: center;">
+            <div class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em; margin-right: 1%;" id="reservation-toggle" onclick="toggleReservationMenu()" >
+                <span><spring:message code="Fullmenu.yourReservation"/></span>
+            </div>
             <c:if test="${canOrderReceipt}">
-                <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationId=${reservation.id}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
+                <a class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em;"  href="<c:url value="/order/send-receipt?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}"/>">
+                    <span><spring:message code="Fullmenu.receipt"/></span>
+                </a>
             </c:if>
             <c:if test="${!canOrderReceipt}">
-                <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
+                <a disabled class="waves-effect waves-light btn confirm-btn text description " href="" style="width: 12.5em;" >
+                    <span><spring:message code="Fullmenu.receipt"/></span>
+                </a>
             </c:if>
-        </div>
+
+            <c:if test="${canCancelReservation}">
+                <div class="center div-padding">
+                    <a class="waves-effect waves-light btn confirm-btn red text description" style="width: 12.5em;" href="<c:url value="/reservation-cancel?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}"/>">
+                        <span><spring:message code="Fullmenu.reservation.cancel"/></span>
+                    </a>
+                </div>
+            </c:if>
+            <c:if test="${!canCancelReservation}">
+                <div class="center div-padding">
+                    <a class="waves-effect waves-light btn confirm-btn red text description disabled" style="width: 12.5em;" >
+                        <span><spring:message code="Fullmenu.reservation.cancel"/></span>
+                    </a>
+                </div>
+            </c:if>
         <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 10%" id="shopping-cart" onclick="toggleMenu();">
             <i class="material-icons" style="color: white; align-content: center; margin-right: 0">shopping_cart</i>
-        </div>
-        <div style="margin-right: 0" class="reservation-info">
-            <p class="presentation-text header-title info"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
-            <p class="presentation-text header-title info"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
-            <p class="presentation-text header-title info"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
         </div>
     </div>
 
@@ -67,32 +82,11 @@
 <div class="page-container" id="page-container">
     <div class="orders-and-info">
         <div class="card filter-box">
-            <div class="client-actions">
-                <span class="presentation-text text-center"><spring:message code="Fullmenu.reservation.number"/> <c:out value="${reservation.id}"/></span>
-                <c:if test="${canOrderReceipt}">
-                    <a class="waves-effect waves-light btn confirm-btn text description " href="<c:url value="/order/send-receipt?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.receipt"/></a>
-                </c:if>
-                <c:if test="${!canOrderReceipt}">
-                    <a disabled class="waves-effect waves-light btn confirm-btn text description " href=""><spring:message code="Fullmenu.receipt"/></a>
-                </c:if>
-
-                <c:if test="${canCancelReservation}">
-                    <div class="center div-padding">
-                        <a class="waves-effect waves-light btn confirm-btn red text description" href="<c:url value="/reservation-cancel?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}"/>"><spring:message code="Fullmenu.reservation.cancel"/></a>
-                    </div>
-                </c:if>
-                <c:if test="${!canCancelReservation}">
-                    <div class="center div-padding">
-                        <a class="waves-effect waves-light btn confirm-btn red text description disabled"><spring:message code="Fullmenu.reservation.cancel"/></a>
-                    </div>
-                </c:if>
-
-            </div>
             <div>
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
-                        <a href="<c:url value="/menu?reservationSecurityCode=${reservation.securityCode}&category=${category}"/>" style="margin: 0.2vw">
+                        <a href="<c:url value="/menu?reservationSecurityCode=${reservation.securityCode}&category=${category.id}"/>" style="margin: 0.2vw">
                             <c:if test="${currentCategory.name == category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
                                     <c:out value="${category.name}"/>
@@ -314,7 +308,21 @@
         </div>
     </div>
 </div>
-
+<div class="right-section" id="reservationMenu">
+    <div style="margin: 2%;">
+        <button class="small btn-floating" style="background-color: #f3864b;" onclick="hideReservationMenu();">
+            <i class="material-icons clear-symbol">arrow_forward</i>
+        </button>
+        <div class="reservation-info">
+            <span class="presentation-text"><spring:message code="Fullmenu.sideMenu.yourReservation"/></span>
+            <hr class="solid-divider">
+            <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
+            <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
+            <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.status"/><c:out value="${reservation.reservationStatus}"/></p>
+            <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="FullMenu.Code"/> <c:out value="${reservation.securityCode}"/></p>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
@@ -414,7 +422,7 @@
         position: fixed;
         overflow-y: scroll;
         z-index: 2;
-        top: 0;
+        top: 165px;
         right: 0;
         width: 0;
         overflow-x: hidden;
@@ -536,9 +544,26 @@
 
 <script>
     const button_toggle = document.getElementById("shopping-cart");
+    const reservation_toggle = document.getElementById("reservation-toggle");
     const sideMenu = document.getElementById("sideMenu");
-
+    const reservationMenu = document.getElementById("reservationMenu");
+    function toggleReservationMenu(){
+        if(sideMenu.style.width === "22em"){
+            sideMenu.style.width = "0";
+        }
+        if(reservationMenu.style.width === "22em"){
+            reservationMenu.style.width = "0";
+        }else{
+            reservationMenu.style.width = "22em";
+        }
+    }
+    function hideReservationMenu() {
+        reservationMenu.style.width = "0";
+    }
     function toggleMenu(){
+        if(reservationMenu.style.width === "22em"){
+            reservationMenu.style.width = "0";
+        }
         if(sideMenu.style.width === "22em"){
             sideMenu.style.width = "0";
         }else{

@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.ReservationStatus;
-import jdk.jfr.Category;
+//import jdk.jfr.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class Restaurant {
     }
 
     public DishCategory createDishCategory(String categoryName) {
-        DishCategory category = new DishCategory(categoryName);
+        DishCategory category = new DishCategory(this, categoryName);
         dishCategories.add(category);
         return category;
     }

@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.webapp.form.CustomValidator.OrderConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.OrderConstraint;
 
 public class OrderForm {
     @OrderConstraint

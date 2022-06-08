@@ -35,18 +35,16 @@ public class MenuController {
     }
 
     @RequestMapping("/")
-    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category ) {
+    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "2") final String categoryIdP ) {
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
-
+        ControllerUtils.longParser(categoryIdP).orElseThrow(DishCategoryNotFoundException::new);
+        long categoryId = Long.parseLong(categoryIdP);
         LOGGER.info("Attempting to show menu");
 
-
-
-
-
         Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
+
         // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
         //restaurant.setDishes(dishes);
 
@@ -66,10 +64,13 @@ public class MenuController {
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public ModelAndView menu(@RequestParam(name = "reservationSecurityCode", defaultValue = "1") final String reservationSecurityCode,
-                             @RequestParam(name = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
+                             @RequestParam(name = "category", defaultValue = "2") final String categoryIdP) throws Exception {
+
+        ControllerUtils.longParser(categoryIdP).orElseThrow(DishCategoryNotFoundException::new);
+        long categoryId = Long.parseLong(categoryIdP);
 
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
-        DishCategory dishCategory = rs.getDishCategoryByName(category).orElseThrow(DishCategoryNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
 //        deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
 //        restaurant.setDishes(dishes);
 

@@ -16,11 +16,8 @@ public class Dish {
     private Restaurant restaurant;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private DishCategory category;
-
-    @Deprecated
-    //private long restaurantId;
 
     @Column(length = 100, nullable = false)
     private String dishName;

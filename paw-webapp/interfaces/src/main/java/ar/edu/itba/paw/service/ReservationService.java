@@ -62,7 +62,7 @@ public interface ReservationService {
 
     boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
 
-    public List<Reservation> getReservationsSeated(Restaurant restaurant);
+    List<Reservation> getReservationsSeated(Restaurant restaurant);
 
     Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, ReservationStatus maybeReservation);
 

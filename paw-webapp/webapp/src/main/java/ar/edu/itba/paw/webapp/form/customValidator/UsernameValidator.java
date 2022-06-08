@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form.CustomValidator;
+package ar.edu.itba.paw.webapp.form.customValidator;
 
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.service.UserService;
@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Optional;
 
 public class UsernameValidator implements ConstraintValidator<UsernameConstraint, String> {

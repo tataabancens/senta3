@@ -1,13 +1,12 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.PasswordPair;
-import ar.edu.itba.paw.webapp.form.CustomValidator.PasswordConstraint;
-import ar.edu.itba.paw.webapp.form.CustomValidator.PasswordLengthConstraint;
-import ar.edu.itba.paw.webapp.form.CustomValidator.UsernameConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.PasswordConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.PasswordLengthConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.UsernameConstraint;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.beans.Transient;
 
 public class CustomerRegisterShortForm {
 
