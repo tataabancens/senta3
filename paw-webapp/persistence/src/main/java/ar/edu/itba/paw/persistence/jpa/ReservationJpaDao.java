@@ -69,10 +69,15 @@ public class ReservationJpaDao implements ReservationDao {
         if(!Objects.equals(filterStatus, "9")){
             filterStatusString = " AND reservationStatus = " + filterStatus;
         }
+        String orderByString = orderBy;
+        if(Objects.equals(orderBy, "reservationdate")){
+            orderByString += " " + direction + ", reservationhour";
+        }
+
 
         //técnica 1+1
         final Query idQuery = em.createNativeQuery("SELECT reservationid FROM reservation NATURAL JOIN customer CROSS JOIN restaurant WHERE restaurant.restaurantid = :restaurantId" + filterStatusString +
-                " ORDER BY " + orderBy + " " + direction + " OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
+                " ORDER BY " + orderByString + " " + direction + " OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
         idQuery.setParameter("restaurantId", restaurantId);
         idQuery.setParameter("offset", Math.abs((page-1)*10));
 
