@@ -47,6 +47,7 @@
             <div class="input-field">
                 <form:select  path="category">
                     <form:options items="${categories}"></form:options>
+                    <form:option  value="${category}" selected="${category}"></form:option>
                 </form:select>
             </div>
             <div class="col s12 center">

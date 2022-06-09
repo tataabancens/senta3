@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div class="dishList">
-                    <a href="menu/create" class="dish-card dish-creation">
+                    <a href="menu/create?currentCategory=${currentCategory.id}" class="dish-card dish-creation">
                         <i class="large material-icons" style="color: rgba(183, 179, 179, 0.87); ">add</i>
                         <span class="main-title" style="color: rgba(183, 179, 179, 0.87); "><spring:message code="Restaurant.createdish"/></span>
                     </a>

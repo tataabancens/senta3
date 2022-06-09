@@ -195,4 +195,13 @@ public class Restaurant {
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
+
+    public String getDishCategoryOfId(long categoryId) {
+        for(DishCategory category : this.dishCategories){
+            if(category.getId()==categoryId){
+                return category.getName();
+            }
+        }
+        return this.dishCategories.get(0).getName();
+    }
 }

@@ -50,13 +50,16 @@ public class DishController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
     public ModelAndView createDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
+                                       @RequestParam (name="currentCategory", defaultValue = "2") final String categoryIdP,
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ModelAndView mav = new ModelAndView("restaurantViews/dish/createDish");
         long restaurantId = Long.parseLong(restaurantIdP);
+        long categoryId = Long.parseLong(categoryIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("categories", restaurant.getDishCategoriesAsMap());
+        mav.addObject("category", restaurant.getDishCategoryOfId(categoryId));
 
         return mav;
     }
@@ -152,12 +155,14 @@ public class DishController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
     public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
+                                   @RequestParam ( name = "currentCategory", defaultValue = "2") final String categoryIdP,
                                    @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
+        long categoryId = Long.parseLong(categoryIdP);
 
         if (errors.hasErrors()){
-            return createDishForm(restaurantIdP, createDishForm);
+            return createDishForm(restaurantIdP, categoryIdP,createDishForm);
         }
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
