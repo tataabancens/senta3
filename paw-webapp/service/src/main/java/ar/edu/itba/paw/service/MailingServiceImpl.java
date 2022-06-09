@@ -1,11 +1,15 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Locale;
 import java.util.Properties;
 
 @Service
@@ -13,6 +17,12 @@ public class MailingServiceImpl implements MailingService{
     private final String FROMADDRESS="noreply@sentate.com";
     private final String USERNAME="sentate.paw";
     private final String PASSWORD="xblgoodfhlnunfmq";
+
+
+    @Autowired
+    private MessageSource messageSource;
+//    @Value("${Mail.message}")
+//    private String message;
 
     @Override
     public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
@@ -27,14 +37,9 @@ public class MailingServiceImpl implements MailingService{
     }
 
     private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation){
-        return "<div style=\"padding:5px; background-color: #fff4e4; \">" +
-                "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
-                "</div>" +
-                "<div style=\"text-align: center\">" +
-                "<p style=\"font-size: 1.9rem; font-weight:bold\">Tu reserva fue confirmada!</p>" +
-                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es: " + reservation.getSecurityCode() + "</p>" +
-                "<p style=\"font-size: 1.1rem\">Si necesitas contactar al restaurant, este es su email:" + restaurant.getMail() + "</p>" +
-                "</div>";
+        Locale locale = new Locale("");
+        return messageSource.getMessage("Mail.message", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+        //<spring:message code="Deletedish.sure" arguments="${dish.dishName}"/>;
     }
 
     private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){

@@ -53,12 +53,6 @@ public class MenuController {
         mav.addObject("categories", restaurant.getDishCategories());
         mav.addObject("currentCategory", dishCategory);
 
-        /* ESTO SE DEBE CORRER 1 VEZ PARA ACTUALIZAR LOS SECURITY CODES
-        for (Reservation reservation : restaurant.getReservations()) {
-            res.setReservationSecurityCode(reservation);
-        }
-         */
-
         return mav;
     }
 
