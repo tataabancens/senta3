@@ -128,7 +128,7 @@
                             </button>
                         </form:form>
                     </div>
-                    <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}"/>" style="margin-top: 15px">
+                    <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/securityCode=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}"/>" style="margin-top: 15px">
                         <spring:message code="Button.reservation.cancel" var="label"/>
                         <input type="submit" class="btn red" style="margin-right: 4%;" value="${label} " onclick="this.form.submit();"/>
                     </a>

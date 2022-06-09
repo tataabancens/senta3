@@ -32,7 +32,7 @@ public class RestReservationController {
         this.ms = ms;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationSecurityCode}", method = RequestMethod.GET)
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/securityCode={reservationSecurityCode}", method = RequestMethod.GET)
     public ModelAndView cancelReservationConfirmation(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                                       @PathVariable("restaurantId") final String restaurantIdP,
                                                       @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
@@ -53,7 +53,7 @@ public class RestReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationSecurityCode}", method = RequestMethod.POST)
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/securityCode={reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                                           @PathVariable("restaurantId") final String restaurantIdP,
                                                           @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
