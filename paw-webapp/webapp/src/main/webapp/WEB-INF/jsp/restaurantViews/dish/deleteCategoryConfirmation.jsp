@@ -23,8 +23,16 @@
 <div class="page-container">
     <div class="card">
         <span class="presentation-text"><spring:message code="Category.delete.confirm"/></span>
+        <span>${categoryName}</span>
         <spring:message code="Button.confirm" var="label"/>
-        <input type="submit" value="${label}" class="btn confirm-btn"/>
+        <c:if test="${canBeDeleted}">
+            <input type="submit" value="${label}" class="btn confirm-btn"/>
+        </c:if>
+        <c:if test="${!canBeDeleted}">
+            <input type="submit" value="${label}" class="btn confirm-btn disabled"/>
+            <span align="center"><spring:message code="Category.delete.cant"/></span>
+        </c:if>
+
     </div>
 </div>
 </body>

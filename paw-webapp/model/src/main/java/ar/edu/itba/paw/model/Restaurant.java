@@ -204,4 +204,13 @@ public class Restaurant {
         }
         return this.dishCategories.get(0).getName();
     }
+
+    public Object canCategoryBeDeleted(long categoryId) {
+        for(DishCategory category : this.dishCategories){
+            if(category.getId()==categoryId){
+                return category.getDishes().isEmpty();
+            }
+        }
+        return false;
+    }
 }

@@ -59,7 +59,7 @@
                         <a href="<c:url value="/restaurant=${restaurantId}/category=${currentCategory}/edit"/>">
                             <i class="small material-icons category-field">edit</i>
                         </a>
-                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete"/>" style="justify-self: end;">
+                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete?categoryId=${currentCategory.id}"/>" style="justify-self: end;">
                             <i class="small material-icons category-field">delete</i>
                         </a>
                     </div>

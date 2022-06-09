@@ -139,16 +139,20 @@ public class DishController {
 
 
     @RequestMapping(value = "/restaurant={restaurantId}/category/delete", method = RequestMethod.GET)
-    public ModelAndView deleteCategory(@PathVariable ("restaurantId") final String restaurantIdP) throws Exception {
+    public ModelAndView deleteCategory(@PathVariable ("restaurantId") final String restaurantIdP,
+                                       @RequestParam (name="categoryId") final String categoryIdP) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
+        long categoryId = Long.parseLong(categoryIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/dish/deleteCategoryConfirmation");
 
         mav.addObject("restaurant", restaurant);
+        mav.addObject("categoryName", restaurant.getDishCategoryOfId(categoryId));
+        mav.addObject("canBeDeleted", restaurant.canCategoryBeDeleted(categoryId));
 
         return mav;
     }
