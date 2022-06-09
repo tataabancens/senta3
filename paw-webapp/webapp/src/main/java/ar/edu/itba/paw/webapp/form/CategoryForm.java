@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class CategoryForm {
 
     @CategoryConstraint
-    @Size(min = 6, max = 50)
+    @Size(min = 3, max = 20)
     String categoryName;
 
     public String getCategoryName() {
