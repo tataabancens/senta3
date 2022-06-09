@@ -86,7 +86,7 @@ public class ReservationJpaDao implements ReservationDao {
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
         if(! ids.isEmpty()) {
-            final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.id IN :ids order by " + orderBy + " " + direction, Reservation.class); //es hql, no sql
+            final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.id IN :ids order by " + orderByString + " " + direction, Reservation.class); //es hql, no sql
             query.setParameter("ids", ids);
             final List<Reservation> list = query.getResultList();
             return list.isEmpty() ? new ArrayList<>() : list;
