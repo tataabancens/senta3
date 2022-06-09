@@ -30,6 +30,13 @@
             </li>
             <sec:authorize access="hasRole('CUSTOMER')">
                 <li>
+                    <a class="options" href="<c:url value="/"/>" >
+                        <spring:message code="Navbar.option.customer.menu"/>
+                    </a>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasRole('CUSTOMER')">
+                <li>
 
                     <a class="options" href="<c:url value="/history"/>">
                         <spring:message code="Navbar.option.history"/>
@@ -44,6 +51,7 @@
                     </a>
                 </li>
             </sec:authorize>
+
             <sec:authorize access="hasRole('RESTAURANT')">
                 <li>
                     <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
@@ -97,7 +105,7 @@
                     <li>
                         <a class="options" href="<c:url value="/profile"/>" >
                             <spring:message code="Navbar.option.profile"/>
-                                ${reservation.customer.user.getUsername()}
+                                ${customer.user.getUsername()}
                         </a>
                     </li>
                 </sec:authorize>
