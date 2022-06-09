@@ -45,7 +45,7 @@ public class ControllerUtils {
     }
 
     public static Optional<Integer> orderByParser(String string) {
-        if(!Objects.equals(string, "reservationid") && !Objects.equals(string, "customerid") && !Objects.equals(string, "qpeople") && !Objects.equals(string, "reservationhour") && !Objects.equals(string, "reservationstatus")){
+        if(!Objects.equals(string, "reservationid") && !Objects.equals(string, "customerid") && !Objects.equals(string, "qpeople") && !Objects.equals(string, "reservationhour") && !Objects.equals(string, "reservationdate") && !Objects.equals(string, "reservationstatus")){
             return Optional.empty();
         }
         return Optional.of(1);

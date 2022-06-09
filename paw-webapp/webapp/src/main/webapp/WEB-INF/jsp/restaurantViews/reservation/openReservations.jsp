@@ -66,6 +66,7 @@
                     <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
                     <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
                     <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
+                    <form:option value="reservationdate"><spring:message code="Reservations.date"/></form:option>
                 </form:select>
             </div>
         </div>
@@ -97,7 +98,6 @@
         <thead>
         <tr>
             <th><h3 class="presentation-text"><spring:message code="Reservations.reservation"/></h3></th>
-            <th><h3 class="presentation-text"><spring:message code="Reservations.table"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.name"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.people"/></h3></th>
             <th><h3 class="presentation-text"><spring:message code="Reservations.date"/></h3></th>
@@ -109,8 +109,7 @@
         <tbody>
         <c:forEach var="reservation" items="${reservations}">
             <tr>
-                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.id}"/></span></td>
-                <td data-label="Mesa" class="table-cell"><span class="text"><c:out value="${reservation.tableNumber}"/></span></td>
+                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.securityCode}"/></span></td>
                 <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customer.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
                 <td data-label="Fecha" class="table-cell"><span class="text"><c:out value="${reservation.getReservationOnlyDate()}"/></span></td>
@@ -134,9 +133,6 @@
                         <input type="submit" class="btn red" style="margin-right: 4%;" value="${label} " onclick="this.form.submit();"/>
                     </a>
                 </td>
-
-
-
             </tr>
         </c:forEach>
         </tbody>

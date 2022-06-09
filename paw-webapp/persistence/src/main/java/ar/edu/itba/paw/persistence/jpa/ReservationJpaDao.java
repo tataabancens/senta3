@@ -59,7 +59,7 @@ public class ReservationJpaDao implements ReservationDao {
     public List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page) {
         //preparo el sql string
         String filterStatusString = "";
-        if(!Objects.equals(orderBy, "reservationid") && !Objects.equals(orderBy, "customerid") && !Objects.equals(orderBy, "qpeople") && !Objects.equals(orderBy, "reservationhour") && !Objects.equals(orderBy, "reservationstatus")) {
+        if(!Objects.equals(orderBy, "reservationid") && !Objects.equals(orderBy, "customerid") && !Objects.equals(orderBy, "qpeople") && !Objects.equals(orderBy, "reservationhour") && !Objects.equals(orderBy, "reservationdate") && !Objects.equals(orderBy, "reservationstatus")) {
             return new ArrayList<>();
         } else if(!Objects.equals(direction, "ASC") && !Objects.equals(direction, "DESC")) {
             return new ArrayList<>();
