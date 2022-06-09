@@ -85,15 +85,26 @@
                 </sec:authorize>
             </c:if>
             <sec:authorize access="isAuthenticated()">
-                <li>
-                    <a class="options" href="<c:url value="/profile"/>" >
-                        <spring:message code="Navbar.option.profile"/>
-                    </a>
-                </li>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/profile"/>" >
+                            <spring:message code="Navbar.option.profile"/>
+                                ${restaurant.getRestaurantName()}
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options" href="<c:url value="/profile"/>" >
+                            <spring:message code="Navbar.option.profile"/>
+                                ${reservation.customer.user.getUsername()}
+                        </a>
+                    </li>
+                </sec:authorize>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li>
-                    <a class="options" href="${pageContext.request.contextPath}/logout" >
+                    <a class="options" href="${pageContext.request.contextPath}/logout">
                         <spring:message code="Navbar.option.logout"/>
                     </a>
                 </li>
