@@ -119,6 +119,9 @@
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
 
                 <td data-label="Confirmar" class="table-cell">
+                    <a href="<c:url value="/menu/?reservationSecurityCode=${reservation.securityCode}"/>" class="btn waves-effect waves-light green">
+                        <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.addOrder"/></span>
+                    </a>
                     <div style="margin-top: 15px">
                         <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post" modelAttribute="filterForm">

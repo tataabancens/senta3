@@ -43,7 +43,7 @@
                                 <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
                                 <p class="text description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
                                 <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
+                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
@@ -67,7 +67,7 @@
                                 <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
                                 <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
                                 <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.id}"/></p>
+                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
