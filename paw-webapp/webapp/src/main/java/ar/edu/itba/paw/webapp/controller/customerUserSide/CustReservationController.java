@@ -85,13 +85,13 @@ public class CustReservationController {
     }
 
     @RequestMapping(value = "/createReservation-1")
-    public ModelAndView createReservation_1(@ModelAttribute("qPeopleForm") final NumberForm form) {
+    public ModelAndView createReservation_1(@ModelAttribute("qPeopleForm") final qPeopleForm form) {
 
         return new ModelAndView("customerViews/reservation/createReservation_1_people");
     }
 
     @RequestMapping(value = "/createReservation-1", method = RequestMethod.POST)
-    public ModelAndView createReservation_1_POST(@Valid @ModelAttribute("qPeopleForm") final NumberForm form,
+    public ModelAndView createReservation_1_POST(@Valid @ModelAttribute("qPeopleForm") final qPeopleForm form,
                                                  final BindingResult errors){
         if (errors.hasErrors()){
             return createReservation_1(form);
