@@ -32,7 +32,7 @@ public class MailingServiceImpl implements MailingService{
                 "</div>" +
                 "<div style=\"text-align: center\">" +
                 "<p style=\"font-size: 1.9rem; font-weight:bold\">Tu reserva fue confirmada!</p>" +
-                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es: " + reservation.getId() + "</p>" +
+                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es: " + reservation.getSecurityCode() + "</p>" +
                 "<p style=\"font-size: 1.1rem\">Si necesitas contactar al restaurant, este es su email:" + restaurant.getMail() + "</p>" +
                 "</div>";
     }
