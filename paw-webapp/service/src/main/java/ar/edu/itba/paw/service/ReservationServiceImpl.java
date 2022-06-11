@@ -355,22 +355,26 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> allReservations = reservationDao.getReservationsOfToday(1);
 
         for(Reservation reservation :allReservations){
-            if(reservation.getStartedAtTime().toLocalDateTime().getMonthValue() < now.getMonthValue()){
-                updateReservationStatus(reservation, ReservationStatus.CANCELED);
-            } else if (reservation.getStartedAtTime().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()){
-                updateReservationStatus(reservation, ReservationStatus.CANCELED);
-            } else {
-                if(now.getHour() > reservation.getReservationHour()){
-                    if(reservation.getReservationStatus() == ReservationStatus.SEATED){
-                        updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
+            if(reservation.getReservationStatus() != ReservationStatus.FINISHED && reservation.getReservationStatus() != ReservationStatus.CANCELED) {
+                if (reservation.getReservationDate().toLocalDateTime().getYear() < now.getYear()) {
+                    updateReservationStatus(reservation, ReservationStatus.CANCELED);
+                } else if (reservation.getReservationDate().toLocalDateTime().getMonthValue() < now.getMonthValue()) {
+                    updateReservationStatus(reservation, ReservationStatus.CANCELED);
+                } else if (reservation.getReservationDate().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()) {
+                    updateReservationStatus(reservation, ReservationStatus.CANCELED);//
+                } else {
+                    if (now.getHour() > reservation.getReservationHour()) {
+                        if (reservation.getReservationStatus() == ReservationStatus.SEATED) {
+                            updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
+                        }
+                        if (reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED) {
+                            updateReservationStatus(reservation, ReservationStatus.CANCELED);//
+                        }
                     }
-                    if(reservation.getReservationStatus() != ReservationStatus.CHECK_ORDERED && reservation.getReservationStatus() != ReservationStatus.FINISHED){
-                        updateReservationStatus(reservation, ReservationStatus.CANCELED);
-                    }
-                }
-                if(now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
-                    if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
-                        updateReservationStatus(reservation, ReservationStatus.CANCELED);
+                    if (now.getHour() == reservation.getReservationHour() && now.getMinute() > 30) {
+                        if (reservation.getReservationStatus() == ReservationStatus.OPEN) {
+                            updateReservationStatus(reservation, ReservationStatus.CANCELED);
+                        }
                     }
                 }
             }
@@ -381,12 +385,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public void cleanMaybeReservations() {
-        List<ReservationStatus> statusList = new ArrayList<>();
-        statusList.add(ReservationStatus.MAYBE_RESERVATION);
         LocalDateTime now = LocalDateTime.now();
         Restaurant restaurant = restaurantService.getRestaurantById(1).get();
 
-        List<Reservation> allMaybeReservations = restaurant.getReservationsByStatusList(statusList);
+        List<Reservation> allMaybeReservations = restaurant.getReservationsByStatusList(Collections.singletonList(ReservationStatus.MAYBE_RESERVATION));
         for (Reservation reservation : allMaybeReservations) {
             LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
             if (now.compareTo(tenMinutesLater) > 0) {
