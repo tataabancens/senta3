@@ -30,6 +30,7 @@ public class ReservationServiceImplTest {
     private CustomerDao custDao;
     private ReservationServiceImpl resService;
     private CustomerService custService;
+    private MailingService mailingService;
 
     @Before
     public void setUp() {
@@ -37,7 +38,7 @@ public class ReservationServiceImplTest {
         restDao = Mockito.mock(RestaurantDao.class);
         custDao = Mockito.mock(CustomerDao.class);
         custService = new CustomerServiceImpl(custDao);
-        resService = new ReservationServiceImpl(resDao, restDao, custService, null);
+        resService = new ReservationServiceImpl(resDao, restDao, custService, null, mailingService);
     }
     @Test
     public void testGetTotal(){

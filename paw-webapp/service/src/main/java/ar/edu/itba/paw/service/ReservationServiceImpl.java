@@ -22,15 +22,17 @@ public class ReservationServiceImpl implements ReservationService {
     private final RestaurantDao restaurantDao;
     private final CustomerService customerService;
     private final RestaurantService restaurantService;
+    private final MailingService mailingService;
     private static final int POINTS_TO_DISCOUNT = 100;
 
     @Autowired
     public ReservationServiceImpl(final ReservationDao reservationDao, final RestaurantDao restaurantDao,
-                                    final CustomerService customerService, final RestaurantService restaurantService) {
+                                    final CustomerService customerService, final RestaurantService restaurantService, final MailingService mailingService) {
         this.reservationDao = reservationDao;
         this.restaurantDao = restaurantDao;
         this.customerService = customerService;
         this.restaurantService = restaurantService;
+        this.mailingService = mailingService;
     }
 
     @Transactional
@@ -149,6 +151,21 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
         return false;
+    }
+
+    @Transactional
+    @Override
+    public void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
+        updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
+        updateReservationStatus(reservation, ReservationStatus.OPEN);
+        mailingService.sendConfirmationEmail(restaurant, customer, reservation);
+    }
+
+    @Transactional
+    @Override
+    public void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
+        updateReservationStatus(reservation, ReservationStatus.CANCELED);
+        mailingService.sendCancellationEmail(restaurant,customer,reservation);
     }
 
     @Transactional

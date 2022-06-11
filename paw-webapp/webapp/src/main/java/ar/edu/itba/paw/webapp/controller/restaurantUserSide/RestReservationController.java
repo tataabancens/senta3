@@ -66,9 +66,9 @@ public class RestReservationController {
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
-        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
-
-        ms.sendCancellationEmail(restaurant,customer,reservation);
+//        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
+//        ms.sendCancellationEmail(restaurant,customer,reservation);
+        res.cancelReservation(restaurant, customer, reservation);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);

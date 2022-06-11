@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CustReservationController {
@@ -183,13 +184,15 @@ public class CustReservationController {
         }
 
         Customer customer = cs.create(form.getName(), form.getPhone(), form.getMail());
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
 
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-        res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
-        res.updateReservationStatus(reservation, ReservationStatus.OPEN);
+//        res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
+//        res.updateReservationStatus(reservation, ReservationStatus.OPEN);
+//        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
+//                customer,reservation);
 
-        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-                customer,reservation);
+        res.finishReservation(restaurant, customer, reservation);
 
         return new ModelAndView("redirect:/notify/" + reservationSecurityCode);
     }
@@ -225,10 +228,11 @@ public class CustReservationController {
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
-        ms.sendConfirmationEmail(restaurant, customer, reservation);
 
-        res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
-        res.updateReservationStatus(reservation, ReservationStatus.OPEN);
+        //ms.sendConfirmationEmail(restaurant, customer, reservation);
+        //res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
+        //res.updateReservationStatus(reservation, ReservationStatus.OPEN);
+        res.finishReservation(restaurant, customer, reservation);
 
         return new ModelAndView("redirect:/notify/" + reservationSecurityCode);
     }
@@ -286,9 +290,10 @@ public class CustReservationController {
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
-        ms.sendCancellationEmail(restaurant,customer,reservation);
-
-        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
+//        ms.sendCancellationEmail(restaurant,customer,reservation);
+//        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
+        res.cancelReservation(restaurant, customer, reservation);
+        
         return new ModelAndView("redirect:/");
     }
 }

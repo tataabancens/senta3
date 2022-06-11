@@ -83,4 +83,8 @@ public interface ReservationService {
     void raiseHand(String reservationIdP);
 
     boolean isRepeating(Customer customer, Reservation reservation);
+
+    void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation);
+
+    void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation);
 }
