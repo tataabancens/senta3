@@ -40,8 +40,8 @@
                     <c:if test="${reservation.hand}">
                         <div class="card order-card">
                             <div class="card-content white-text">
-                                <span class="presentation-text" style="color: #171616;"><c:out value="${reservation.tableNumber}"/></span>
-                                <span class="presentation-text" style="color: #171616;"><c:out value="${reservation.customer.user.username}"/></span>
+                                <p class="presentation-text" style="color: #171616;"><spring:message code="Kitchen.order.table"/> <c:out value="${reservation.tableNumber}"/></p>
+                                <p class="presentation-text" style="color: #171616;"><spring:message code="Kitchen.order.name"/> <c:out value="${reservation.customer.user.username}"/></p>
                             </div>
                             <c:url value="/restaurant=${restaurantId}/waiter/lowerHand-${reservation.securityCode}" var="postUrl"/>
                             <form:form action="${postUrl}" method="post">
