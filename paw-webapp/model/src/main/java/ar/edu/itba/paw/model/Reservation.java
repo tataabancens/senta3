@@ -56,6 +56,9 @@ public class Reservation {
     @Column(nullable = false)
     private boolean hand;
 
+    @Column(nullable = false)
+    private boolean isToday;
+
     /* default */ Reservation() {
         // Just for hibernate
     }
@@ -196,6 +199,14 @@ public class Reservation {
 
     public void setHand(boolean hand) {
         this.hand = hand;
+    }
+
+    public void setIsToday(boolean b) {
+        this.isToday=b;
+    }
+
+    public boolean getIsToday() {
+        return this.isToday;
     }
 //    }
 }

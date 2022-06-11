@@ -118,6 +118,7 @@
 
                 <td data-label="Confirmar" class="table-cell status">
                     <div style="margin-top: 15px">
+                        <c:if test="${reservation.isToday}">
                         <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post" modelAttribute="seatForm">
                             <form:errors path="number" element="p" cssStyle="color:red"/>
@@ -127,6 +128,8 @@
                                 <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.seat"/></span>
                             </button>
                         </form:form>
+                        </c:if>
+
                     </div>
                     <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/securityCode=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}"/>" style="margin-top: 15px">
                         <spring:message code="Button.reservation.cancel" var="label"/>

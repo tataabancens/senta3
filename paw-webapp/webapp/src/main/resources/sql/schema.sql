@@ -72,6 +72,9 @@ ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
 
 ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT NULL;
 
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS isToday boolean default false NOT NULL;
+
+
 
 
 

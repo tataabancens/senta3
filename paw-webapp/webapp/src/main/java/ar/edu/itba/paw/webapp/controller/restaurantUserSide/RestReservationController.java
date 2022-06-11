@@ -82,7 +82,6 @@ public class RestReservationController {
                                             @ModelAttribute("filterForm") final FilterForm filterForm,
                                             @ModelAttribute("seatForm") final TableNumberForm seatForm) throws Exception {
 
-
         ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));

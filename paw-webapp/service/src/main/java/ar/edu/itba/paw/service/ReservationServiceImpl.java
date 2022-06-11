@@ -363,6 +363,7 @@ public class ReservationServiceImpl implements ReservationService {
                 } else if (reservation.getReservationDate().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()) {
                     updateReservationStatus(reservation, ReservationStatus.CANCELED);//
                 } else {
+                    reservation.setIsToday(true);
                     if (now.getHour() > reservation.getReservationHour()) {
                         if (reservation.getReservationStatus() == ReservationStatus.SEATED) {
                             updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
