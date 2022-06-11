@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Date;
 
-public class ControllerUtils {
+public enum ControllerUtils {;
 
     public static Optional<Integer> longParser(Object... str) {
         if(str.length > 0){
