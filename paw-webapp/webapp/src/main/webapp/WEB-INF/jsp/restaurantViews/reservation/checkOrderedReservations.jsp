@@ -65,8 +65,9 @@
                     <form:option value="reservationid"><spring:message code="Reservations.reservation"/></form:option>
                     <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
                     <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
-                    <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
                     <form:option value="reservationdate"><spring:message code="Reservations.date"/></form:option>
+                    <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
+                    <form:option value="tablenumber"><spring:message code="Reservations.table"/></form:option>
                 </form:select>
             </div>
         </div>
