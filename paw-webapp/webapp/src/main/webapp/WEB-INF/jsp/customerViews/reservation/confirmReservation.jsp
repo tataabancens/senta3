@@ -60,6 +60,13 @@
                         <input type="submit" value="${label}" class="btn confirm-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
                     </div>
                 </c:if>
+                <c:if test="${isRepeating}">
+                    <div class="submit center">
+                        <spring:message code="Button.confirm" var="label"/>
+                        <p><spring:message code="Reservation.cant.repeated"/></p>
+                        <input type="submit" value="${label}" class="btn confirm-btn" disabled/>
+                    </div>
+                </c:if>
 
             </div>
         </div>
