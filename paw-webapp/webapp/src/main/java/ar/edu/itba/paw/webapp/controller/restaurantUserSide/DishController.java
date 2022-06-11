@@ -66,7 +66,7 @@ public class DishController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/category/create", method = RequestMethod.GET)
     public ModelAndView createCategoryForm(@PathVariable ("restaurantId") final String restaurantIdP,
-                                           @ModelAttribute("createCategoryForm") final CategoryForm form) throws Exception {
+                                           @ModelAttribute("createCategoryForm") final CategoryForm createCategoryForm) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);

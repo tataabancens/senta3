@@ -293,7 +293,7 @@ public class CustReservationController {
 //        ms.sendCancellationEmail(restaurant,customer,reservation);
 //        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
         res.cancelReservation(restaurant, customer, reservation);
-        
+
         return new ModelAndView("redirect:/");
     }
 }
