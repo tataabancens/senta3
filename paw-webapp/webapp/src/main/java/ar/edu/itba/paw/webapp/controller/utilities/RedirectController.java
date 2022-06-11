@@ -38,7 +38,7 @@ public class RedirectController {
                 return new ModelAndView("redirect:/restaurant=" + restaurant.getId() + "/menu");
             }
         }
-        return new ModelAndView("redirect:/history");
+        return new ModelAndView("redirect:/active-reservations");
     }
     @RequestMapping(value = "/createReservation-3/{reservationSecurityCode}/redirect")
     public ModelAndView redirectCreateReservation(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
