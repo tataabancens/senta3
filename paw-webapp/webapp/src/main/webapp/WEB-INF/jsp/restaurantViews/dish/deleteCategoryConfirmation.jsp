@@ -26,7 +26,10 @@
         <span>${categoryName}</span>
         <spring:message code="Button.confirm" var="label"/>
         <c:if test="${canBeDeleted}">
-            <input type="submit" value="${label}" class="btn confirm-btn"/>
+            <c:url value="/restaurant=${restaurantId}/category/delete?categoryId=${categoryId}" var="postUrl"/>
+            <form:form action="${postUrl}" method="post">
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
+            </form:form>
         </c:if>
         <c:if test="${!canBeDeleted}">
             <input type="submit" value="${label}" class="btn confirm-btn disabled"/>

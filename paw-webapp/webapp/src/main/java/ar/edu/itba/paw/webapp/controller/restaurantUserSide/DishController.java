@@ -152,9 +152,23 @@ public class DishController {
 
         mav.addObject("restaurant", restaurant);
         mav.addObject("categoryName", restaurant.getDishCategoryOfId(categoryId));
+        mav.addObject("categoryId", categoryId);
         mav.addObject("canBeDeleted", restaurant.canCategoryBeDeleted(categoryId));
 
         return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/category/delete", method = RequestMethod.POST)
+    public ModelAndView deleteCategory_post(@PathVariable ("restaurantId") final String restaurantIdP,
+                                       @RequestParam (name="categoryId") final String categoryIdP) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        long restaurantId = Long.parseLong(restaurantIdP);
+        long categoryId = Long.parseLong(categoryIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        rs.deleteCategory(restaurant, categoryId);
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/menu");
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)

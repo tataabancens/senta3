@@ -213,4 +213,8 @@ public class Restaurant {
         }
         return false;
     }
+
+    public void deleteCategory(long categoryId) {
+        this.dishCategories.removeIf(category -> category.getId() == categoryId);
+    }
 }
