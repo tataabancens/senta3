@@ -136,6 +136,21 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.ifPresent(value -> value.setHand(!value.isHand()));
     }
 
+    @Override
+    public boolean isRepeating(Customer customer, Reservation reservation) {
+        List<Reservation> reservations = customer.getReservationsByStatusList(Collections.singletonList(ReservationStatus.OPEN));
+        for(Reservation reservation1 : reservations){
+            if(reservation1.getReservationDate().equals(reservation.getReservationDate())){
+                if(reservation1.getReservationHour() == reservation.getReservationHour()) {
+                    if (!Objects.equals(reservation1.getSecurityCode(), reservation.getSecurityCode())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     @Transactional
     @Override
     public OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity) {

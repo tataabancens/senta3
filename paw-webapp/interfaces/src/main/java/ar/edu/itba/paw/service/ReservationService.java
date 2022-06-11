@@ -81,4 +81,6 @@ public interface ReservationService {
     void setReservationSecurityCode(Reservation reservation);
 
     void raiseHand(String reservationIdP);
+
+    boolean isRepeating(Customer customer, Reservation reservation);
 }

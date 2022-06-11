@@ -210,6 +210,7 @@ public class CustReservationController {
 
         mav.addObject("reservation", reservation);
         mav.addObject("customer", customer);
+        mav.addObject("isRepeating", res.isRepeating(customer, reservation));
         return mav;
     }
 
