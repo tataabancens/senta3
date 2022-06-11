@@ -45,6 +45,22 @@
         </div>
     </div>
     <div style="margin-right: 2%; display: flex;align-items: center;">
+            <c:if test="${reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHECK_ORDERED'}">
+                <c:if test="${!reservation.hand}">
+                    <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
+                    <form:form action="${postUrl_hand}" method="post">
+                        <spring:message code="Fullmenu.waiter.call" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
+                    </form:form>
+                </c:if>
+                <c:if test="${reservation.hand}">
+                    <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
+                    <form:form action="${postUrl_hand}" method="post">
+                        <spring:message code="Fullmenu.waiter.call.no" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
+                    </form:form>
+                </c:if>
+            </c:if>
             <div class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em; margin-right: 1%;" id="reservation-toggle" onclick="toggleReservationMenu()" >
                 <span><spring:message code="Fullmenu.yourReservation"/></span>
             </div>
@@ -107,7 +123,7 @@
                 <c:if test="${customer.points >= 100}">
                     <div class="card client-actions discounts">
                         <span class="presentation-text discounts"><spring:message code="Fullmenu.discount"/></span>
-                        <c:url value="/menu/applyDiscount/${reservation.id}" var="postUrl_actDisc"/>
+                        <c:url value="/menu/applyDiscount/${reservation.securityCode}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
                             <spring:message code="Button.activate" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
@@ -118,7 +134,7 @@
             <c:if test="${reservation.reservationDiscount}">
                 <div class="card client-actions discounts">
                     <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
-                    <c:url value="/menu/cancelDiscount/${reservation.id}" var="postUrl_undoDisc"/>
+                    <c:url value="/menu/cancelDiscount/${reservation.securityCode}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
                         <spring:message code="Button.cancel" var="label"/>
                         <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
@@ -314,7 +330,7 @@
             <i class="material-icons clear-symbol">arrow_forward</i>
         </button>
         <div class="reservation-info">
-            <span class="presentation-text"><spring:message code="Fullmenu.sideMenu.yourReservation"/></span>
+            <span class="presentation-text"><spring:message code="Fullmenu.sideMenu.yourReservation"/> <c:out value="${reservation.securityCode}"/></span>
             <hr class="solid-divider">
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>

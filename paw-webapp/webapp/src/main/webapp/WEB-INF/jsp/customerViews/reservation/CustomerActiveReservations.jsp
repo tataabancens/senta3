@@ -30,6 +30,7 @@
                     <div class="card-stacked">
                         <div class="card-content">
                             <span class="presentation-text">${customer.customerName}</span>
+                            <p class="text description"><spring:message code="Customer.activereservations.code" arguments="${reservation.securityCode}"/></p>
                             <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
                             <p  class="text description"><spring:message code="Createreservation.register.date" arguments="${reservation.reservationHour}"/> ${reservation.getReservationOnlyDate()}</p>
                             <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/></p>

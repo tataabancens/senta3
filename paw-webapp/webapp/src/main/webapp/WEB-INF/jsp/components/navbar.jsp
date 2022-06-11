@@ -74,6 +74,13 @@
                     </a>
                 </li>
             </sec:authorize>
+            <sec:authorize access="hasRole('RESTAURANT')">
+                <li>
+                    <a class="options" href="<c:url value="/restaurant=1/waiter"/>">
+                        <spring:message code="Navbar.option.waiter"/>
+                    </a>
+                </li>
+            </sec:authorize>
         </div>
         <div class="right-side">
             <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/menu'}">

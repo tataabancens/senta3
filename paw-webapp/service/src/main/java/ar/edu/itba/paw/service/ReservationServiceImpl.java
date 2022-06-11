@@ -131,6 +131,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public void raiseHand(String reservationIdP) {
+        Optional<Reservation> reservation = reservationDao.getReservationBySecurityCode(reservationIdP);
+        reservation.ifPresent(value -> value.setHand(!value.isHand()));
+    }
+
+    @Transactional
+    @Override
     public OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity) {
         return reservation.createOrderItem(dish, quantity);
     }
@@ -376,8 +383,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void applyDiscount(long reservationId) {
-        Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
+    public void applyDiscount(String reservationSecurityCode) {
+        Optional<Reservation> maybeReservation = reservationDao.getReservationBySecurityCode(reservationSecurityCode);
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
             Customer customer = customerService.getCustomerById(reservation.getCustomer().getId()).get();
@@ -392,8 +399,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void cancelDiscount(long reservationId) {
-        Optional<Reservation> maybeReservation = reservationDao.getReservationById(reservationId);
+    public void cancelDiscount(String reservationSecurityCode) {
+        Optional<Reservation> maybeReservation = reservationDao.getReservationBySecurityCode(reservationSecurityCode);
         if (maybeReservation.isPresent()) {
             Reservation reservation = maybeReservation.get();
             Customer customer = customerService.getCustomerById(reservation.getCustomer().getId()).get();

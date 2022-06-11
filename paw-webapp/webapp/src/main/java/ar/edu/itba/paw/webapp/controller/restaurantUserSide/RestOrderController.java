@@ -96,10 +96,9 @@ public class RestOrderController {
     }
 
     @RequestMapping(value = "/restaurant={restaurantId}/waiter")
-    public ModelAndView waiterOrders(@RequestParam(name = "reservationId", defaultValue = "1") final String reservationIdP,
-                                         @PathVariable("restaurantId") final String restaurantIdP) throws Exception {
+    public ModelAndView waiterOrders(@PathVariable("restaurantId") final String restaurantIdP) throws Exception {
 
-        ControllerUtils.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
@@ -115,6 +114,20 @@ public class RestOrderController {
         mav.addObject("reservations", reservations);
         mav.addObject("finishedItems", finishedItems);
         return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/waiter/lowerHand-{reservationSecurityCode}")
+    public ModelAndView waiterLowerHand(@PathVariable("restaurantId") final String restaurantIdP,
+                                        @PathVariable("reservationSecurityCode") final String reservationSecurityCodeP) throws Exception {
+
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+
+        res.raiseHand(reservationSecurityCodeP);
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantId + "/waiter");
+
     }
 
 }

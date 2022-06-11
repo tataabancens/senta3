@@ -53,6 +53,9 @@ public class Reservation {
     @Column(nullable = false, length = 6, columnDefinition = "varchar(6) default 'A'")
     private String securityCode = String.valueOf('A');
 
+    @Column(nullable = false)
+    private boolean hand;
+
     /* default */ Reservation() {
         // Just for hibernate
     }
@@ -186,5 +189,13 @@ public class Reservation {
     }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
+
+    public boolean isHand() {
+        return hand;
+    }
+
+    public void setHand(boolean hand) {
+        this.hand = hand;
+    }
 //    }
 }

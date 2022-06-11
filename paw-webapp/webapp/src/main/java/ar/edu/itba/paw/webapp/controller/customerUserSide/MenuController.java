@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class MenuController {
@@ -110,24 +111,32 @@ public class MenuController {
         return mav;
     }
 
-    @RequestMapping(value= "/menu/applyDiscount/{reservationId}", method = RequestMethod.POST)
-    public ModelAndView applyDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
+    @RequestMapping(value= "/menu/applyDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
+    public ModelAndView applyDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
 
-        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        long reservationId = Long.parseLong(reservationIdP);
+        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        //long reservationId = Long.parseLong(reservationIdP);
 
-        res.applyDiscount(reservationId);
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        res.applyDiscount(reservationIdP);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationIdP);
     }
 
-    @RequestMapping(value= "/menu/cancelDiscount/{reservationId}", method = RequestMethod.POST)
-    public ModelAndView cancelDiscount(@PathVariable("reservationId") final String reservationIdP) throws Exception {
+    @RequestMapping(value= "/menu/cancelDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
+    public ModelAndView cancelDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
 
-        ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        long reservationId = Long.parseLong(reservationIdP);
+        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        //long reservationId = Long.parseLong(reservationIdP);
 
-        res.cancelDiscount(reservationId);
-        return new ModelAndView("redirect:/menu?reservationId=" + reservationId);
+        res.cancelDiscount(reservationIdP);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationIdP);
+    }
+
+    @RequestMapping(value= "/menu/raiseHand/{reservationSecurityCode}", method = RequestMethod.POST)
+    public ModelAndView raiseOrLowerHand(@PathVariable("reservationSecurityCode") final String reservationIdP) {
+
+        res.raiseHand(reservationIdP);
+
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationIdP);
     }
 
 }

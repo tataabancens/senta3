@@ -54,9 +54,9 @@ public interface ReservationService {
 
     void cleanMaybeReservations();
 
-    void applyDiscount(long reservationId);
+    void applyDiscount(String reservationSecurityCode);
 
-    void cancelDiscount(long reservationId);
+    void cancelDiscount(String reservationSecurityCode);
 
     float getDiscountCoefficient(long reservationId);
 
@@ -79,4 +79,6 @@ public interface ReservationService {
     void setTableNumber(Reservation reservation, int number);
 
     void setReservationSecurityCode(Reservation reservation);
+
+    void raiseHand(String reservationIdP);
 }

@@ -26,6 +26,7 @@ ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS userId int DEFAULT 1;
 -- ALTER TABLE restaurant
 --     ADD CONSTRAINT IF NOT EXISTS fk_restaurant_users FOREIGN KEY (userId) REFERENCES users (userId);
 
+
 CREATE TABLE IF NOT EXISTS image
 (
     imageId serial PRIMARY KEY,
@@ -68,6 +69,9 @@ ALTER TABLE reservation ADD IF NOT EXISTS startedAtTime timestamp default now();
 ALTER TABLE reservation ADD IF NOT EXISTS reservationDate timestamp;
 
 ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
+
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT NULL;
+
 
 
 
