@@ -17,9 +17,13 @@ import java.util.Properties;
 
 @Service
 public class MailingServiceImpl implements MailingService{
-    private final String FROMADDRESS="noreply@sentate.com";
-    private final String USERNAME="sentate.paw";
-    private final String PASSWORD="xblgoodfhlnunfmq";
+
+    @Value("${mail.from}")
+    private String FROMADDRESS;
+    @Value("${mail.username}")
+    private String USERNAME;
+    @Value("${mail.password}")
+    private String PASSWORD;
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MailingServiceImpl.class);
 
