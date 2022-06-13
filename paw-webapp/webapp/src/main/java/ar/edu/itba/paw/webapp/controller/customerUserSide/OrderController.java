@@ -16,6 +16,7 @@ import ar.edu.itba.paw.webapp.form.OrderForm;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class OrderController {
@@ -115,17 +116,17 @@ public class OrderController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         List<OrderItem> orderItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
 
-        Dish recommendedDish = ds.getRecommendedDish(reservation.getId());
-        boolean isPresent = ds.isPresent(recommendedDish);
+        Optional<Dish> recommendedDish = ds.getRecommendedDish(reservation.getId());
 
         final ModelAndView mav = new ModelAndView("customerViews/order/completeOrder");
+
+        recommendedDish.ifPresent(dish -> mav.addObject("recommendedDish", dish));
+        mav.addObject("isPresent", recommendedDish.isPresent());
         mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservation.getId()));
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservation", reservation);
-        mav.addObject("isPresent", isPresent);
-        mav.addObject("recommendedDish", recommendedDish);
 
         return mav;
     }

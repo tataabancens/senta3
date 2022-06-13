@@ -8,7 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class DishJpaDao implements DishDao {
@@ -67,11 +69,25 @@ public class DishJpaDao implements DishDao {
                 "                                               from CTE)");
         idQuery.setParameter("reservationid", reservationId);
 
-        final Long id = Integer.toUnsignedLong((Integer)idQuery.getResultList().stream().findFirst().get());
+        if (idQuery.getSingleResult() == null) {
+            return Optional.empty();
+        }
 
+//        @SuppressWarnings("unchecked")
+//        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+//                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+//
+//        if (!ids.isEmpty()) {
+
+//        } else {
+//            return Optional.empty();
+//        }
+
+        final Long id = Integer.toUnsignedLong((Integer)idQuery.getResultList().stream().findFirst().get());
 
         final TypedQuery<Dish> query = em.createQuery("from Dish where id = :id", Dish.class);
         query.setParameter("id", id);
         return query.getResultList().stream().findFirst();
+
     }
 }

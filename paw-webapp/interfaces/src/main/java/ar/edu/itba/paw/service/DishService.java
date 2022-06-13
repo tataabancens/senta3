@@ -15,7 +15,7 @@ public interface DishService {
 
     void deleteDish(long dishId);
 
-    Dish getRecommendedDish(long reservationId);
+    Optional<Dish> getRecommendedDish(long reservationId);
 
     boolean isPresent(Dish recommendedDish);
 }
