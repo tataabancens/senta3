@@ -142,14 +142,15 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, Timestamp now, Timestamp reservationDate) {
+    public List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, LocalDateTime reservationDate) {
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus NOT IN :statusList and r.reservationDate between :start and :finish", Reservation.class); //es hql, no sql
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.CANCELED);
         statusList.add(ReservationStatus.FINISHED);
         query.setParameter("statusList", statusList);
-        Timestamp reservationDateStart = Timestamp.valueOf(reservationDate.toLocalDateTime().minusDays(1));
-        query.setParameter("start", reservationDateStart);
+//        query.setParameter("start", Timestamp.valueOf(reservationDate.minusDays(1)));
+//        query.setParameter("finish", Timestamp.valueOf(reservationDate));
+        query.setParameter("start", reservationDate.minusDays(1));
         query.setParameter("finish", reservationDate);
         final List<Reservation> list = query.getResultList();
         return list.isEmpty() ? new ArrayList<>() : list;
@@ -158,10 +159,12 @@ public class ReservationJpaDao implements ReservationDao {
     @Override
     public List<Reservation> getReservationsOfToday(long restaurantId) {
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationDate between :start and :finish", Reservation.class); //es hql, no sql
-        Timestamp startDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
-        Timestamp endDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
-        query.setParameter("start", startDay);
-        query.setParameter("finish", endDay);
+//        Timestamp startDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
+//        Timestamp endDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
+//        query.setParameter("start", startDay);
+//        query.setParameter("finish", endDay);
+        query.setParameter("start", LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
+        query.setParameter("finish", LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
 
         final List<Reservation> list = query.getResultList();
         System.out.println("DEBUG");

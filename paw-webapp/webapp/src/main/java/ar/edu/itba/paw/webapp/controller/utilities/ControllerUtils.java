@@ -1,8 +1,9 @@
 package ar.edu.itba.paw.webapp.controller.utilities;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Date;
@@ -86,10 +87,12 @@ public enum ControllerUtils {;
         return Optional.of(1);
     }
 
-    public static Optional<Timestamp> timestampParser(String strTime){
+    public static Optional<LocalDateTime> timestampParser(String strTime){
         try{
-            java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(strTime + " 23:59:59.99");
-            return Optional.of(timestamp);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String str = strTime + " 23:59:59";
+            LocalDateTime time = LocalDateTime.parse(str, formatter);
+            return Optional.of(time);
         } catch (Exception e) {
             return Optional.empty();
         }
