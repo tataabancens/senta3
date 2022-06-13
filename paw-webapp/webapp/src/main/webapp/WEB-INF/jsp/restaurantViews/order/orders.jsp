@@ -35,33 +35,33 @@
     <div class="card incoming-orders">
         <span class="presentation-text title"><h5><spring:message code="Kitchen.new.orders.title"/></h5></span>
         <div class="cardContainer">
-            <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${incomingItems}">
-                    <c:if test="${item.reservation.id == reservation.id}">
-                        <div class="card order-card">
-                            <div class="card-content white-text">
-                                <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
-                                <p class="text description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
-                            </div>
-                            <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.id}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <spring:message code="Button.finish" var="label"/>
-                                <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn blue center">
-                            </form:form>
-                        </div>
-                    </c:if>
-                </c:forEach>
+            <c:if test="${incomingItems.size() == 0}">
+                <span class="presentation-text title"><h11><spring:message code="Kitchen.new.no"/></h11></span>
+            </c:if>
+            <c:forEach var="item" items="${incomingItems}">
+                <div class="card order-card">
+                    <div class="card-content white-text">
+                        <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
+                        <p class="text description"><spring:message code="Kitchen.order.qty"/> <c:out value="${item.quantity}"/></p>
+                        <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
+                        <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
+                    </div>
+                    <c:url value="/restaurant=${restaurantId}/orders/incomingToFinished-${item.id}" var="postUrl"/>
+                    <form:form action="${postUrl}" method="post">
+                        <spring:message code="Button.finish" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn blue center">
+                    </form:form>
+                </div>
             </c:forEach>
         </div>
     </div>
     <div class="card finished-orders">
         <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
         <div class="cardContainer">
-            <c:forEach var="reservation" items="${reservations}">
+            <c:if test="${finishedItems.size() == 0}">
+                <span class="presentation-text title"><h11><spring:message code="Kitchen.order.no"/></h11></span>
+            </c:if>
                 <c:forEach var="item" items="${finishedItems}">
-                    <c:if test="${item.reservation.id == reservation.id}">
                         <div class="card order-card">
                             <div class="card-content white-text">
                                 <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
@@ -75,9 +75,7 @@
                                 <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
                             </form:form>
                         </div>
-                    </c:if>
                 </c:forEach>
-            </c:forEach>
         </div>
     </div>
 </div>
