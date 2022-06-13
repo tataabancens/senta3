@@ -16,7 +16,7 @@ public class EditDishForm {
     private String dishDesc;
 
     @Size(min = 1, max = 10)
-    @Pattern(regexp = "[1-9][0-9]+[.]?[0-9]?[0-9]?")
+    @Pattern(regexp = "[1-9][0-9]+")
     private String dishPrice;
 
     private String category;

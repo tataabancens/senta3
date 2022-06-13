@@ -37,6 +37,34 @@ public enum ControllerUtils {;
         return Optional.of(1);
     }
 
+    public static Optional<Integer> intParser(Object... str) {
+        if(str.length > 0){
+            try{
+                Integer str0 = Integer.parseInt((String) str[0]);
+            } catch (NumberFormatException e) {
+                //throw new Exception(str[0] + " is not a number");
+                return Optional.empty();
+            }
+        }
+        if(str.length > 1){
+            try{
+                Integer str1 = Integer.parseInt((String) str[1]);
+            } catch (NumberFormatException e) {
+                //throw new Exception(str[1] + " is not a number");
+                return Optional.empty();
+            }
+        }
+        if(str.length > 2){
+            try{
+                Integer str2 = Integer.parseInt((String) str[2]);
+            } catch (NumberFormatException e) {
+                //throw new Exception(str[2] + " is not a number");
+                return Optional.empty();
+            }
+        }
+        return Optional.of(1);
+    }
+
     public static Optional<Integer> filterStatusParser(String filterStatus) {
         if(Objects.equals(filterStatus, "9")) {
             return Optional.of(1);
