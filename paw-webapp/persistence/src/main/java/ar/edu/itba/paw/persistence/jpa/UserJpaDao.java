@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence.jpa;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.persistance.UserDao;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -34,16 +35,5 @@ public class UserJpaDao implements UserDao {
         query.setParameter("username", username);
         final List<User> list = query.getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
-    }
-
-    //falta versión hibernate:
-    @Override
-    public void updatePassword(String username, String newPassword) {
-
-    }
-
-    @Override
-    public void updateUsername(String oldUsername, String newUsername) {
-
     }
 }

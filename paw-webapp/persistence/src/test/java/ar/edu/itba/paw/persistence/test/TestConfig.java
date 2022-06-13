@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence.test;
 import org.hsqldb.jdbc.JDBCDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -21,6 +22,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+@ComponentScan({"ar.edu.itba.paw.persistence", "ar.edu.itba.paw.model"})
 @EnableTransactionManagement
 @Configuration
 public class TestConfig {
@@ -50,7 +52,7 @@ public class TestConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
+        factoryBean.setPackagesToScan("ar.edu.itba.paw.model");
         factoryBean.setDataSource(dataSource());
 
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -64,20 +66,4 @@ public class TestConfig {
 
         return factoryBean;
     }
-
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer() {
-//        DataSourceInitializer dsi = new DataSourceInitializer();
-//        dsi.setDataSource(dataSource());
-//        dsi.setDatabasePopulator(databasePopulator());
-//
-//        return dsi;
-//    }
-//
-//    public DatabasePopulator databasePopulator() {
-//        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-//        populator.addScript(hsqldbSql);
-//        populator.addScript(schemaSql);
-//        return populator;
-//    }
 }

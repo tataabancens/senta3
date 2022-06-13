@@ -5,30 +5,27 @@ import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.persistence.jpa.CustomerJpaDao;
 import ar.edu.itba.paw.persistence.jpa.UserJpaDao;
-import org.hibernate.id.uuid.CustomVersionOneStrategy;
+
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@Sql("classpath:sql/schema.sql")
 @Transactional
 public class CustomerJpaDaoTest {
 
@@ -41,11 +38,9 @@ public class CustomerJpaDaoTest {
 
 
     @Autowired
-    private DataSource ds;
-
-
     private CustomerJpaDao customerDao;
 
+    @Autowired
     private UserJpaDao userDao;
 
     private JdbcTemplate jdbcTemplate;
@@ -56,13 +51,6 @@ public class CustomerJpaDaoTest {
     private EntityManager em;
 
     //private ReservationJdbcDao reservationDao = new ReservationJdbcDao(null);
-
-    @Before
-    public void setUp(){
-        customerDao = new CustomerJpaDao();
-        userDao = new UserJpaDao();
-        jdbcTemplate = new JdbcTemplate(ds);
-    }
 
     private Number insertCustomer(String customerName, String phone, String mail, long userId){
         Customer newCustomer = new Customer(customerName, phone, mail, userId, 0);
@@ -101,19 +89,17 @@ public class CustomerJpaDaoTest {
         //Number userId = insertUser("username", "pass", Roles.CUSTOMER);
         //Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
         //User user = userDao.create("username", "pass", Roles.CUSTOMER);
-        User user = new User("username", "pass", Roles.CUSTOMER.getDescription());
-        em.persist(user);
-        Customer customer = new Customer("Pepe", "123456789", "pepe@gmail.com", user.getId(), 0);
-        em.persist(customer);
-        long customerId = customer.getId();
+        //User user = new User("username", "pass", Roles.CUSTOMER.getDescription());
+//        Customer customer = new Customer("Juancho", "123456789", "juan@gmail.com", 2, 0);
+//        long customerId = customer.getId();
 
 
         // 2. Ejercitacion
-        Optional<Customer> maybeCustomer = customerDao.getCustomerById(customer.getId());
+        Optional<Customer> maybeCustomer = customerDao.getCustomerById(1);
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeCustomer.isPresent());
-        Assert.assertEquals(customerId, maybeCustomer.get().getId());
+        Assert.assertEquals(1, maybeCustomer.get().getId());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, CUSTOMER_TABLE));
     }
 

@@ -20,7 +20,7 @@ public class CustomerJpaDao implements CustomerDao {
 
     @Override
     public Optional<Customer> getCustomerById(long id) {
-        return Optional.of(em.find(Customer.class, id));
+        return Optional.ofNullable(em.find(Customer.class, id));
     }
 
     @Override

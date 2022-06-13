@@ -23,7 +23,7 @@ public class RestaurantJpaDao implements RestaurantDao {
         if(id != 1){
             return Optional.empty();
         }
-        Optional<Restaurant> ret = Optional.of(em.find(Restaurant.class, id));
+        Optional<Restaurant> ret = Optional.ofNullable(em.find(Restaurant.class, id));
         return ret;
     }
 

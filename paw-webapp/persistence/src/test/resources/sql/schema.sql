@@ -1,3 +1,5 @@
+SET DATABASE SQL SYNTAX PGS TRUE;
+
 drop table if exists customer cascade;
 drop table if exists restaurant cascade;
 drop table if exists dish cascade;
@@ -63,13 +65,17 @@ CREATE TABLE IF NOT EXISTS reservation (
     qPeople integer default 1,
     reservationDiscount boolean default false not null,
     startedAtTime timestamp default now(),
+    reservationDate timestamp,
+    tableNumber integer default 0,
+    hand boolean default false NOT NULL,
+    isToday boolean default false NOT NULL,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
     );
-ALTER TABLE reservation ADD IF NOT EXISTS reservationDate timestamp;
-ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
-ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT NULL;
-ALTER TABLE reservation ADD COLUMN IF NOT EXISTS isToday boolean default false NOT NULL;
+-- ALTER TABLE reservation ADD IF NOT EXISTS reservationDate timestamp;
+-- ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
+-- ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT NULL;
+-- ALTER TABLE reservation ADD COLUMN IF NOT EXISTS isToday boolean default false NOT NULL;
 
 
 CREATE TABLE IF NOT EXISTS orderItem
@@ -84,13 +90,13 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
     );
 
-INSERT INTO users (username, password)
-VALUES ('Pepito', '123');
-INSERT INTO users (username, password)
-VALUES ('Juancho', '123');
+INSERT INTO users (userId, username, password)
+VALUES (1, 'Pepito', '123');
+INSERT INTO users (userId, username, password)
+VALUES (2, 'Juancho', '123');
 
-INSERT INTO customer (customerName, Phone, Mail, userId)
-VALUES ('Juancho', 541124557633, 'juan@gmail.com', 2);
+INSERT INTO customer (customerId, customerName, Phone, Mail, userId)
+VALUES (1, 'Juancho', 541124557633, 'juan@gmail.com', 2);
 
 INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
 VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
