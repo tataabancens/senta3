@@ -1,9 +1,7 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.persistance.CustomerDao;
-import ar.edu.itba.paw.persistence.jdbc.CustomerJdbcDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

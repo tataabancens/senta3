@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
@@ -112,15 +111,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void updateReservationDateById(Reservation reservation, Timestamp reservationDate) {
+    public void updateReservationDateById(Reservation reservation, LocalDateTime reservationDate) {
         reservation.setReservationDate(reservationDate);
     }
 
     @Transactional
     @Override
     public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
-        Reservation reservation = customer.createReservation(restaurant, customer, reservationHour, qPeople, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
-
+        Reservation reservation = customer.createReservation(restaurant, customer, reservationHour, qPeople, LocalDateTime.now(), LocalDateTime.now());
         return reservation;
     }
 
@@ -187,14 +185,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public List<Integer> getAvailableHours(long restaurantId, long qPeople, Timestamp reservationDate) {
+    public List<Integer> getAvailableHours(long restaurantId, long qPeople, LocalDateTime reservationDate) {
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
         //List<Reservation> reservations = restaurant.getReservations();
 
-        Timestamp now = Timestamp.from(Instant.now());
-        List<Reservation> reservations = reservationDao.getReservationsToCalculateAvailableTables(restaurantId, now, reservationDate);
+        LocalDateTime now = LocalDateTime.from(Instant.now());
+        List<Reservation> reservations = reservationDao.getReservationsToCalculateAvailableTables(restaurantId, reservationDate);
 
-        if(reservationDate.before(now)){
+        if(reservationDate.isBefore(now)){
             return new ArrayList<>();
         }
 
@@ -217,7 +215,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         List<Integer> notAvailable = new ArrayList<>();
-        if(now.toLocalDateTime().getDayOfMonth() == reservationDate.toLocalDateTime().getDayOfMonth()){
+        if(now.getDayOfMonth() == reservationDate.getDayOfMonth()){
             totalHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
         }
 
@@ -373,11 +371,11 @@ public class ReservationServiceImpl implements ReservationService {
 
         for(Reservation reservation :allReservations){
             if(reservation.getReservationStatus() != ReservationStatus.FINISHED && reservation.getReservationStatus() != ReservationStatus.CANCELED) {
-                if (reservation.getReservationDate().toLocalDateTime().getYear() < now.getYear()) {
+                if (reservation.getReservationDate().getYear() < now.getYear()) {
                     updateReservationStatus(reservation, ReservationStatus.CANCELED);
-                } else if (reservation.getReservationDate().toLocalDateTime().getMonthValue() < now.getMonthValue()) {
+                } else if (reservation.getReservationDate().getMonthValue() < now.getMonthValue()) {
                     updateReservationStatus(reservation, ReservationStatus.CANCELED);
-                } else if (reservation.getReservationDate().toLocalDateTime().getDayOfMonth() < now.getDayOfMonth()) {
+                } else if (reservation.getReservationDate().getDayOfMonth() < now.getDayOfMonth()) {
                     updateReservationStatus(reservation, ReservationStatus.CANCELED);//
                 } else {
                     reservation.setIsToday(true);
@@ -408,7 +406,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         List<Reservation> allMaybeReservations = restaurant.getReservationsByStatusList(Collections.singletonList(ReservationStatus.MAYBE_RESERVATION));
         for (Reservation reservation : allMaybeReservations) {
-            LocalDateTime tenMinutesLater = reservation.getStartedAtTime().toLocalDateTime().plusMinutes(10);
+            LocalDateTime tenMinutesLater = reservation.getStartedAtTime().plusMinutes(10);
             if (now.compareTo(tenMinutesLater) > 0) {
                 reservation.setReservationStatus(ReservationStatus.CANCELED);
             }

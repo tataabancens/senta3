@@ -2,8 +2,8 @@ package ar.edu.itba.paw.webapp.form.customValidator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class DateValidator implements ConstraintValidator<DateConstraint,String> {
 
@@ -19,9 +19,9 @@ public class DateValidator implements ConstraintValidator<DateConstraint,String>
 
         StringBuilder stringBuilder = new StringBuilder(s);
         stringBuilder.append(" 23:59:59.99999");
-        Timestamp input = Timestamp.valueOf(stringBuilder.toString());
-        Timestamp now = Timestamp.from(Instant.now());
+        LocalDateTime input = LocalDateTime.parse(stringBuilder.toString());
+        LocalDateTime now = LocalDateTime.from(Instant.now());
 
-        return input.after(now);
+        return input.isAfter(now);
     }
 }

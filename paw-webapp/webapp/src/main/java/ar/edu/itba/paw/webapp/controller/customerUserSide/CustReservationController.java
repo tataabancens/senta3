@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,7 +126,7 @@ public class CustReservationController {
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
 
         ControllerUtils.timestampParser(form.getDate()).orElseThrow(() -> new LongParseException("" + reservation.getId())); //actúa como un isPresent
-        Timestamp reservationDate = ControllerUtils.timestampParser(form.getDate()).get();
+        LocalDateTime reservationDate = ControllerUtils.timestampParser(form.getDate()).get();
         res.updateReservationDateById(reservation, reservationDate);
 
         return new ModelAndView("redirect:/createReservation-3/" + reservation.getSecurityCode());
