@@ -25,6 +25,30 @@
 <%@ include file="../../components/navbar.jsp" %>
 <div class="page-container">
     <div class="recommendations">
+        <sec:authorize access="isAuthenticated()">
+            <c:if test="${!reservation.reservationDiscount}">
+                <c:if test="${customer.points >= 100}">
+                    <div class="card client-actions discounts">
+                        <span class="presentation-text discounts"><spring:message code="Fullmenu.discount"/></span>
+                        <c:url value="/order/applyDiscount/${reservation.securityCode}" var="postUrl_actDisc"/>
+                        <form:form action="${postUrl_actDisc}" method="post">
+                            <spring:message code="Button.activate" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
+                        </form:form>
+                    </div>
+                </c:if>
+            </c:if>
+            <c:if test="${reservation.reservationDiscount}">
+                <div class="card client-actions discounts">
+                    <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
+                    <c:url value="/order/cancelDiscount/${reservation.securityCode}" var="postUrl_undoDisc"/>
+                    <form:form action="${postUrl_undoDisc}" method="post">
+                        <spring:message code="Button.cancel" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
+                    </form:form>
+                </div>
+            </c:if>
+        </sec:authorize>
         <c:if test="${isPresent}">
             <h3 class="summary presentation-text"><spring:message code="Order.othercustomers"/>:</h3>
                 <a href="<c:url value="/menu/orderItem?reservationSecurityCode=${reservation.securityCode}&dishId=${recommendedDish.id}&isFromOrder=true"/>" class="card horizontal">

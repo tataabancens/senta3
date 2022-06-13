@@ -115,6 +115,7 @@ public class OrderController {
         Reservation reservation = res.getReservationByIdAndIsActive(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         List<OrderItem> orderItems = res.getOrderItemsByReservationAndStatus(reservation, OrderItemStatus.SELECTED);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
         Optional<Dish> recommendedDish = ds.getRecommendedDish(reservation.getId());
 
@@ -127,6 +128,7 @@ public class OrderController {
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
         mav.addObject("reservation", reservation);
+        mav.addObject("customer", customer);
 
         return mav;
     }
@@ -139,6 +141,26 @@ public class OrderController {
         res.updateOrderItemsStatus(reservation, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
         return new ModelAndView("redirect:/order/order-confirmation?reservationSecurityCode="+ reservationSecurityCode);
+    }
+
+    @RequestMapping(value= "/order/applyDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
+    public ModelAndView order_applyDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
+
+        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        //long reservationId = Long.parseLong(reservationIdP);
+
+        res.applyDiscount(reservationIdP);
+        return new ModelAndView("redirect:/order/send-food?reservationSecurityCode=" + reservationIdP);
+    }
+
+    @RequestMapping(value= "/order/cancelDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
+    public ModelAndView order_cancelDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
+
+        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
+        //long reservationId = Long.parseLong(reservationIdP);
+
+        res.cancelDiscount(reservationIdP);
+        return new ModelAndView("redirect:/order/send-food?reservationSecurityCode=" + reservationIdP);
     }
 
     @RequestMapping("/order/send-receipt")
