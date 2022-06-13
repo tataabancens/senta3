@@ -18,7 +18,7 @@ public class UserJpaDao implements UserDao {
 
     @Override
     public User create(final String username, final String password, Roles role) {
-        final User user = new User(username, password, role.getDescription()); //no entendí que hizo con el password enconder. lo movió acá?
+        final User user = new User(username, password, role.getDescription());
         em.persist(user);
         return user;
     }

@@ -66,6 +66,10 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
     );
+ALTER TABLE reservation ADD IF NOT EXISTS reservationDate timestamp;
+ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT NULL;
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS isToday boolean default false NOT NULL;
 
 
 CREATE TABLE IF NOT EXISTS orderItem

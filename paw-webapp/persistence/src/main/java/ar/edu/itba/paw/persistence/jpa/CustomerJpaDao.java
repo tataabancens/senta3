@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.persistance.CustomerDao;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
+
 
 @Repository
 public class CustomerJpaDao implements CustomerDao {
