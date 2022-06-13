@@ -37,6 +37,12 @@ public class RedirectController {
                 Restaurant restaurant = rs.getRestaurantByUsername(principal.getName()).orElseThrow(RestaurantNotFoundException::new);
                 return new ModelAndView("redirect:/restaurant=" + restaurant.getId() + "/menu");
             }
+            if (Objects.equals(role, "ROLE_WAITER")) {
+                return new ModelAndView("redirect:/restaurant=1/waiter");
+            }
+            if (Objects.equals(role, "ROLE_KITCHEN")) {
+                return new ModelAndView("redirect:/restaurant=1/orders");
+            }
         }
         return new ModelAndView("redirect:/active-reservations");
     }
