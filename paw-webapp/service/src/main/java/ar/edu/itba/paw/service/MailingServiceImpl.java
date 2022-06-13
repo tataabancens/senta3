@@ -1,9 +1,12 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -14,9 +17,15 @@ import java.util.Properties;
 
 @Service
 public class MailingServiceImpl implements MailingService{
-    private final String FROMADDRESS="noreply@sentate.com";
-    private final String USERNAME="sentate.paw";
-    private final String PASSWORD="xblgoodfhlnunfmq";
+
+    @Value("${mail.from}")
+    private String FROMADDRESS;
+    @Value("${mail.username}")
+    private String USERNAME;
+    @Value("${mail.password}")
+    private String PASSWORD;
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(MailingServiceImpl.class);
 
 
     @Autowired
@@ -24,6 +33,7 @@ public class MailingServiceImpl implements MailingService{
 //    @Value("${Mail.message}")
 //    private String message;
 
+    @Async
     @Override
     public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
         Properties properties=setProperties();
@@ -54,6 +64,7 @@ public class MailingServiceImpl implements MailingService{
         return messageSource.getMessage("Mail.message.restaurant", new Object[]{customer.getCustomerName(), reservation.getReservationOnlyDate(), reservation.getReservationHour()}, locale);
     }
 
+    @Async
     @Override
     public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation){
         Properties properties=setProperties();
@@ -87,9 +98,7 @@ public class MailingServiceImpl implements MailingService{
 
     public void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageContent) {
-        new Thread(() -> {
-
-            Session session = Session.getInstance(properties,
+        Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication
@@ -109,8 +118,8 @@ public class MailingServiceImpl implements MailingService{
             // msg.setText(messageText);
             Transport.send(msg);
         } catch (Exception ex) {
-            ex.printStackTrace();
-        }}).start();
+            LOGGER.error("Email failed ", ex);
+        };
     }
 
 
