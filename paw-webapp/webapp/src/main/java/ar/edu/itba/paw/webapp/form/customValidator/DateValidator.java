@@ -4,6 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateValidator implements ConstraintValidator<DateConstraint,String> {
 
@@ -17,11 +18,12 @@ public class DateValidator implements ConstraintValidator<DateConstraint,String>
         if (s == null || s.compareTo("") == 0)
             return false;
 
-        StringBuilder stringBuilder = new StringBuilder(s);
-        stringBuilder.append(" 23:59:59.99999");
-        LocalDateTime input = LocalDateTime.parse(stringBuilder.toString());
-        LocalDateTime now = LocalDateTime.from(Instant.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String str = s + " 23:59:59";
+        LocalDateTime time = LocalDateTime.parse(str, formatter);
+        LocalDateTime now = LocalDateTime.now();
 
-        return input.isAfter(now);
+        return time.isAfter(now) && time.isBefore(now.plusYears(1));
+        //return true;
     }
 }

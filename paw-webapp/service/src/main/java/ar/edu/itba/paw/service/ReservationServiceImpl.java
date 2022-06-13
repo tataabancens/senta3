@@ -189,7 +189,7 @@ public class ReservationServiceImpl implements ReservationService {
         Restaurant restaurant = restaurantDao.getRestaurantById(restaurantId).get();
         //List<Reservation> reservations = restaurant.getReservations();
 
-        LocalDateTime now = LocalDateTime.from(Instant.now());
+        LocalDateTime now = LocalDateTime.now();
         List<Reservation> reservations = reservationDao.getReservationsToCalculateAvailableTables(restaurantId, reservationDate);
 
         if(reservationDate.isBefore(now)){

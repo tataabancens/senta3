@@ -29,11 +29,9 @@ public class Reservation {
     private int reservationHour;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime startedAtTime;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime reservationDate;
 
     @Enumerated
