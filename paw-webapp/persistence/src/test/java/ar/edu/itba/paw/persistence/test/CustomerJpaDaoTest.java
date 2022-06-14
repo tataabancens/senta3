@@ -3,6 +3,8 @@ package ar.edu.itba.paw.persistence.test;
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.enums.Roles;
+import ar.edu.itba.paw.persistance.CustomerDao;
+import ar.edu.itba.paw.persistance.UserDao;
 import ar.edu.itba.paw.persistence.jpa.CustomerJpaDao;
 import ar.edu.itba.paw.persistence.jpa.UserJpaDao;
 import org.hibernate.id.uuid.CustomVersionOneStrategy;
@@ -43,9 +45,9 @@ public class CustomerJpaDaoTest {
     @Autowired
     private DataSource ds;
 
+    private CustomerDao customerDao;
 
-    private CustomerJpaDao customerDao;
-
+    @Autowired
     private UserJpaDao userDao;
 
     private JdbcTemplate jdbcTemplate;
@@ -56,13 +58,6 @@ public class CustomerJpaDaoTest {
     private EntityManager em;
 
     //private ReservationJdbcDao reservationDao = new ReservationJdbcDao(null);
-
-    @Before
-    public void setUp(){
-        customerDao = new CustomerJpaDao();
-        userDao = new UserJpaDao();
-        jdbcTemplate = new JdbcTemplate(ds);
-    }
 
     private Number insertCustomer(String customerName, String phone, String mail, long userId){
         Customer newCustomer = new Customer(customerName, phone, mail, userId, 0);
