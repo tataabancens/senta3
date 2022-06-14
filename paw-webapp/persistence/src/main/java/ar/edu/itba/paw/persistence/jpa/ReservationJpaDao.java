@@ -36,13 +36,13 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public Optional<Reservation> getReservationById(long id) {
-        return Optional.of(em.find(Reservation.class, id));
+        return Optional.ofNullable(em.find(Reservation.class, id));
     }
 
 
     @Override
     public Optional<OrderItem> getOrderItemById(long orderItemId) {
-        return Optional.of(em.find(OrderItem.class, orderItemId));
+        return Optional.ofNullable(em.find(OrderItem.class, orderItemId));
     }
 
     @Override

@@ -7,45 +7,41 @@ import ar.edu.itba.paw.persistance.CustomerDao;
 import ar.edu.itba.paw.persistance.UserDao;
 import ar.edu.itba.paw.persistence.jpa.CustomerJpaDao;
 import ar.edu.itba.paw.persistence.jpa.UserJpaDao;
-import org.hibernate.id.uuid.CustomVersionOneStrategy;
+
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@Sql("classpath:sql/schema.sql")
 @Transactional
 public class CustomerJpaDaoTest {
 
-    private static final String RESTAURANT_TABLE = "restaurant";
-    private static final String USER_TABLE = "users";
-    private static final String CUSTOMER_TABLE = "customer";
-    private static final String DISH_TABLE = "dish";
-    private static final String RESERVATION_TABLE = "reservation";
-    private static final String ORDER_ITEM_TABLE = "orderItem";
+    private static final long USERID_EXISTS = 1;
+    private static final long USERID_NOT_EXISTS = 9999;
 
+    private static final long CUSTOMERID_EXISTS = 1;
+
+    private static final String USERNAME_EXIST = "Juancho";
+    private static final String USERNAME_NOT_EXIST = "Juancho el inexistente";
 
     @Autowired
-    private DataSource ds;
-
-    private CustomerDao customerDao;
+    private CustomerJpaDao customerDao;
 
     @Autowired
     private UserJpaDao userDao;
@@ -78,158 +74,68 @@ public class CustomerJpaDaoTest {
         return user.getId();
     }
 
-//    private void cleanAllTables(){
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, ORDER_ITEM_TABLE);
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, RESERVATION_TABLE);
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, DISH_TABLE);
-//        //JdbcTestUtils.deleteFromTables(jdbcTemplate, RESTAURANT_TABLE);
-//        JdbcTestUtils.deleteFromTables(jdbcTemplate, CUSTOMER_TABLE);
-//        //JdbcTestUtils.deleteFromTables(jdbcTemplate, USER_TABLE);
-//        jdbcTemplate.execute("DELETE FROM users WHERE userId NOT IN ( 1 )");
-//    }
-
     @Rollback
     @Test
     public void testGetCustomerById_Exists(){
         // 1. Precondiciones
-        //cleanAllTables();
-        //Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-        //Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
-        //User user = userDao.create("username", "pass", Roles.CUSTOMER);
-        User user = new User("username", "pass", Roles.CUSTOMER.getDescription());
-        em.persist(user);
-        Customer customer = new Customer("Pepe", "123456789", "pepe@gmail.com", user.getId(), 0);
-        em.persist(customer);
-        long customerId = customer.getId();
-
 
         // 2. Ejercitacion
-        Optional<Customer> maybeCustomer = customerDao.getCustomerById(customer.getId());
+        Optional<Customer> maybeCustomer = customerDao.getCustomerById(USERID_EXISTS);
 
         // 3. PostCondiciones
         Assert.assertTrue(maybeCustomer.isPresent());
-        Assert.assertEquals(customerId, maybeCustomer.get().getId());
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, CUSTOMER_TABLE));
+        Assert.assertEquals(USERID_EXISTS, maybeCustomer.get().getId());
     }
 
-//    @Rollback
-//    @Test
-//    public void testGetCustomerById_NotExists(){
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-//        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
-//
-//        // 2. Ejercitacion
-//        Optional<Customer> maybeCustomer = customerDao.getCustomerById(customerId.longValue()+1);
-//
-//        // 3. PostCondiciones
-//        Assert.assertFalse(maybeCustomer.isPresent());
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testGetCustomerByUsername(){
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-//        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
-//
-//        // 2. Ejercitacion
-//        Optional<Customer> maybeCustomer = customerDao.getCustomerByUsername("Pepito");
-//
-//        // 3. PostCondiciones
-//        Assert.assertNotNull(maybeCustomer);
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testGetCustomerByUsername_NotExists(){
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        //insertCustomer("Pepito", "123456789", "pepe@gmail.com");
-//
-//        // 2. Ejercitacion
-//        Optional<Customer> maybeCustomer = customerDao.getCustomerByUsername("Pepitooooo");
-//
-//        // 3. PostCondiciones
-//        Assert.assertFalse(maybeCustomer.isPresent());
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testAddPointsToCustomer(){
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-//        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
-//
-//        // 2. Ejercitacion
-//        customerDao.addPointsToCustomer(customerId.longValue(), 15);
-//
-//        // 3. PostCondiciones
-//        //Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
-//        Optional<Customer> customer = em.createQuery("SELECT * FROM customer WHERE customerId = 1");
-//        Assert.assertTrue(customer.isPresent());
-//        Assert.assertEquals(customerId.longValue(), customer.get().getId());
-//        Assert.assertEquals(15, customer.get().getPoints());
-//
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testAddPoints() {
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-//        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.intValue());
-//
-//        // 2. Ejercitacion
-//        customerDao.addPointsToCustomer(customerId.longValue(), 30);
-//
-//        // 3. PostCondiciones
-//        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER).stream().findFirst();
-//        Assert.assertTrue(customer.isPresent());
-//        Assert.assertEquals(customerId.longValue(), customer.get().getId());
-//        Assert.assertEquals(30, customer.get().getPoints());
-//
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testLinkCustomerToUserId(){
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        Number user = insertUser("username", "pass", Roles.CUSTOMER);
-//        Number user2 = insertUser("username2", "pass", Roles.CUSTOMER);
-//        Number customerId = insertCustomer("PepeCapo", "123456789", "pepe@gmail.com", user.longValue());
-//
-//        // 2. Ejercitacion
-//        customerDao.linkCustomerToUserId(customerId.longValue(), user2.longValue());
-//
-//        // 3. PostCondiciones
-//        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER_WITH_USERID).stream().findFirst();
-//        Assert.assertTrue(customer.isPresent());
-//        Assert.assertEquals(customerId.longValue(), customer.get().getId());
-//        Assert.assertEquals(user2.longValue(), customer.get().getUserId());
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testUpdateCustomerData(){
-//        // 1. Precondiciones
-//        //cleanAllTables();
-//        Number userId = insertUser("username", "pass", Roles.CUSTOMER);
-//        Number customerId = insertCustomer("Pepe", "123456789", "pepe@gmail.com", userId.longValue());
-//
-//        // 2. Ejercitacion
-//        customerDao.updateCustomerData(customerId.longValue(), "pepito", "789456789", "elpepe@gmail.com");
-//
-//        // 3. PostCondiciones
-//        Optional<Customer> customer = jdbcTemplate.query("SELECT * FROM customer WHERE customerId = ?", new Object[]{customerId.longValue()}, ROW_MAPPER_WITH_USERID).stream().findFirst();
-//        Assert.assertTrue(customer.isPresent());
-//        Assert.assertEquals(customerId.longValue(), customer.get().getId());
-//        Assert.assertEquals("pepito", customer.get().getCustomerName());
-//    }
+    @Rollback
+    @Test
+    public void testGetCustomerById_NotExists(){
+        // 1. Precondiciones
 
+        // 2. Ejercitacion
+        Optional<Customer> maybeCustomer = customerDao.getCustomerById(USERID_NOT_EXISTS);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeCustomer.isPresent());
+    }
+
+    @Rollback
+    @Test
+    public void testGetCustomerByUsername(){
+        // 1. Precondiciones
+
+        // 2. Ejercitacion
+        Optional<Customer> maybeCustomer = customerDao.getCustomerByUsername(USERNAME_EXIST);
+
+        // 3. PostCondiciones
+        Assert.assertNotNull(maybeCustomer);
+    }
+//
+    @Rollback
+    @Test
+    public void testGetCustomerByUsername_NotExists(){
+        // 1. Precondiciones
+
+        // 2. Ejercitacion
+        Optional<Customer> maybeCustomer = customerDao.getCustomerByUsername(USERNAME_NOT_EXIST);
+
+        // 3. PostCondiciones
+        Assert.assertFalse(maybeCustomer.isPresent());
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testCreateCustomer(){
+        // 1. Precondiciones
+
+        // 2. Ejercitacion
+        //customerDao.create("new name", CUSTOMERID_EXISTS, 15);
+
+        // 3. PostCondiciones
+        Optional<Customer> maybeCustomer = Optional.ofNullable(em.find(Customer.class, CUSTOMERID_EXISTS));
+        Assert.assertTrue(maybeCustomer.isPresent());
+        Assert.assertEquals(CUSTOMERID_EXISTS, maybeCustomer.get().getId());
+        Assert.assertEquals(15, maybeCustomer.get().getPoints());
+    }
 }

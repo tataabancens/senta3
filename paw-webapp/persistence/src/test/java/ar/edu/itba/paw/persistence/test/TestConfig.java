@@ -52,7 +52,7 @@ public class TestConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setPackagesToScan("ar.edu.itba.paw.models");
+        factoryBean.setPackagesToScan("ar.edu.itba.paw.model");
         factoryBean.setDataSource(dataSource());
 
         final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -66,20 +66,4 @@ public class TestConfig {
 
         return factoryBean;
     }
-
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer() {
-//        DataSourceInitializer dsi = new DataSourceInitializer();
-//        dsi.setDataSource(dataSource());
-//        dsi.setDatabasePopulator(databasePopulator());
-//
-//        return dsi;
-//    }
-//
-//    public DatabasePopulator databasePopulator() {
-//        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-//        populator.addScript(hsqldbSql);
-//        populator.addScript(schemaSql);
-//        return populator;
-//    }
 }
