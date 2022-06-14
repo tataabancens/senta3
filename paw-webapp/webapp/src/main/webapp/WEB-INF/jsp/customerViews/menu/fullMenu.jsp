@@ -300,6 +300,11 @@
                     </c:forEach>
                 </div>
             </c:if>
+            <c:if test="${incomingItemsSize = 0}">
+                <div class="order-headers">
+                    <span class="presentation-text"><spring:message code="Order.noIncomingDishes"/></span>
+                </div>
+            </c:if>
         </div>
     </div>
     <hr class="solid-divider"/>

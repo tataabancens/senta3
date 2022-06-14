@@ -83,8 +83,8 @@
                                 </div>
                                 <div class="card-info">
                                     <div class="btn-row-card">
-                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
-                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="<c:url value="/restaurant=1/menu/edit/dishId=${dish.id}"/>"><i class="material-icons">edit</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="<c:url value="/restaurant=1/menu/edit/deleteDish=${dish.id}"/>"><i class="material-icons">delete</i></a>
                                     </div>
                                     <span class="presentation-text dish-title"><c:out value="${dish.dishName}"/></span>
                                     <p class="text description"><c:out value="${dish.dishDescription}"/></p>

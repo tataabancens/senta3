@@ -51,7 +51,7 @@
                     <label style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.date"/><c:out value="${reservation.getReservationOnlyDate()}"/></label>
                 </div>
                 <div style="margin-bottom: 1%">
-                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/></form:label>
+                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/>hs</form:label>
                 </div>
                 <c:if test="${!isRepeating}">
                     <div class="submit center">

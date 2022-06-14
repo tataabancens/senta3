@@ -99,7 +99,12 @@
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
-                            <c:url value="/createReservation-1" var="postUrl"/>
+                            <sec:authorize access="!hasRole('RESTAURANT')">
+                                <c:url value="/createReservation-1" var="postUrl"/>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('RESTAURANT')">
+                                <c:url value="/restaurant=1/menu/edit/dishId=${dish.id}" var="postUrl"/>
+                            </sec:authorize>
                             <a class="card horizontal" href="${postUrl}">
                                 <div class="card-image">
                                     <c:if test="${dish.imageId > 0}">

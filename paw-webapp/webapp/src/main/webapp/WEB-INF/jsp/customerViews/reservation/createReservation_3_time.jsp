@@ -31,7 +31,9 @@
                 <form:form modelAttribute="hourForm" action="${postPath}" method="post">
                     <div class="input-field">
                         <form:select  path="number">
-                            <form:options items="${hours}"></form:options>
+                            <c:forEach var="item" items="${hours}">
+                                <form:option value="${item}" label="${item}:00"></form:option>
+                            </c:forEach>
                         </form:select>
                     </div>
                     <spring:message code="Button.continue" var="label"/>
