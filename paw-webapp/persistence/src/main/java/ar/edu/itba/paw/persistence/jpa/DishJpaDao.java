@@ -20,7 +20,7 @@ public class DishJpaDao implements DishDao {
 
     @Override
     public Optional<Dish> getDishById(long id) {
-        return Optional.of(em.find(Dish.class, id));
+        return Optional.ofNullable(em.find(Dish.class, id));
     }
 
     @Override

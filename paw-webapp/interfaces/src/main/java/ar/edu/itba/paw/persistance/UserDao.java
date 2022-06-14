@@ -13,8 +13,4 @@ public interface UserDao {
     User create(String username, String password, Roles role);
 
     Optional<User> findByName(String username);
-
-    void updatePassword(String username, String newPassword);
-
-    void updateUsername(String oldUsername, String newUsername);
 }

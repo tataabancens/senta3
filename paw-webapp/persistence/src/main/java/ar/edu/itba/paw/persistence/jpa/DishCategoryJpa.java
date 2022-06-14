@@ -27,7 +27,7 @@ public class DishCategoryJpa implements DishCategoryDao {
 
     @Override
     public Optional<DishCategory> getDishCategoryById(long id) {
-        Optional<DishCategory> maybeDishCategory = Optional.of(em.find(DishCategory.class, id));
+        Optional<DishCategory> maybeDishCategory = Optional.ofNullable(em.find(DishCategory.class, id));
         return maybeDishCategory;
     }
 }
