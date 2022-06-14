@@ -39,24 +39,9 @@ public class CustomerJpaDao implements CustomerDao {
     }
 
     @Override
-    public void addPointsToCustomer(long customerId, int points) {
-
-    }
-
-    @Override
     public Customer create(String customerName, String phone, String mail, long id) {
         final Customer customer = new Customer(customerName, phone, mail, id, 0);
         em.persist(customer);
         return customer;
-    }
-
-    @Override
-    public void linkCustomerToUserId(long customerId, long userId) {
-
-    }
-
-    @Override
-    public void updateCustomerData(long customerId, String name, String phone, String mail) {
-
     }
 }
