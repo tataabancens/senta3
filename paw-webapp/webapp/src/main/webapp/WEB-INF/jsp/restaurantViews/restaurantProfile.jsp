@@ -28,9 +28,9 @@
     </div>
 </div>
 <div class="contentContainer">
-    <div class="info">
+    <div class="info" style="background-color: #F0F0F0;border-radius: .8rem;padding: 1.5%;">
         <div class="profile-field icon-row" style="display: flex;flex-direction: column; align-items:flex-start; width: fit-content">
-            <div>
+            <div style="position: relative;">
                 <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="<c:url value="/restaurant=${restaurantId}/editTables"/>">
                     <i class="material-icons table-and-hours">edit</i>
                 </a>
@@ -106,11 +106,12 @@
         flex-direction: column;
         justify-content: space-evenly;
     }
-    .imageContainer{
-        display: flex;
-        justify-content: center;
-        width: 50%;
-        height: 70%;
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
     img{
         border-radius: 16px;
@@ -145,9 +146,9 @@
 
     .profile-field.icon-row:hover .tables-and-hours{
         display: block;
-        position: relative;
-        left: 240;
-        bottom: 0;
+        position: absolute;
+        right: -145px;
+        top: 0;
         background-color: white;
     }
     .tables-and-hours i{
