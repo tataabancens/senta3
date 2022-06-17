@@ -25,14 +25,14 @@
     <c:url value="/profile/editName" var="postPath"/>
     <form:form modelAttribute="editNameForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="presentation-text"><spring:message code="Customer.edit.name"/></span>
+            <span class="presentation-text" style="margin-bottom: 5%;"><spring:message code="Customer.edit.name"/></span>
             <div class="disName">
                 <form:errors path="name" element="p" cssStyle="color:red"/>
                 <form:input path="name" type="text"/>
             </div>
             <div class="submit center">
                 <spring:message code="Button.confirm" var="label"/>
-                <input type="submit" value="${label}" class="btn confirm-btn"/>
+                <input type="submit" value="${label}" style="margin-top: 10%;" class="btn confirm-btn"/>
             </div>
         </div>
     </form:form>
@@ -41,7 +41,13 @@
 </html>
 
 <style>
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .form-container{
         display: flex;
         padding-top: 30px;

@@ -177,16 +177,14 @@
                     <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/profile'}">
                         <li>
                             <a class="options selected" style="color: white;" href="<c:url value="/profile"/>" >
-                                <spring:message code="Navbar.option.profile"/>
-                                    ${restaurant.getRestaurantName()}
+                                <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
                             </a>
                         </li>
                     </c:if>
                     <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/restaurant=1/profile'}">
                         <li>
                             <a class="options" href="<c:url value="/profile"/>" >
-                                <spring:message code="Navbar.option.profile"/>
-                                    ${restaurant.getRestaurantName()}
+                                <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
                             </a>
                         </li>
                     </c:if>
@@ -195,8 +193,7 @@
                     <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/customerProfile'}">
                         <li>
                             <a class="options selected" style="color: white;" href="<c:url value="/profile"/>" >
-                                <spring:message code="Navbar.option.profile"/>
-                                    ${customer.user.getUsername()}
+                                <spring:message code="Navbar.option.profile"/><c:out value="${customer.user.getUsername()}"/>
                             </a>
                         </li>
                     </c:if>

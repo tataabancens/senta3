@@ -25,14 +25,14 @@
     <c:url value="/profile/editUsername" var="postPath"/>
     <form:form modelAttribute="editUsernameForm" action="${postPath}" method="post">
         <div class="card card-content">
-            <span class="presentation-text"><spring:message code="Editrestaurant.name"/></span>
+            <span class="presentation-text" style="margin-bottom: 5%;"><spring:message code="Editrestaurant.name"/></span>
             <div class="disName">
                 <form:errors path="name" element="p" cssStyle="color:red"/>
                 <form:input path="name" type="text"/>
             </div>
             <div class="submit center">
                 <spring:message code="Button.confirm" var="label"/>
-                <input type="submit" value="${label}" class="btn confirm-btn" style="margin-top: 5%;"/>
+                <input type="submit" value="${label}" style="margin-top: 10%;" class="btn confirm-btn" style="margin-top: 5%;"/>
             </div>
         </div>
     </form:form>

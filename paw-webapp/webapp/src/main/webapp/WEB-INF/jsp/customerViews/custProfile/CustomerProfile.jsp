@@ -27,7 +27,7 @@
     </div>
 </div>
 <div class="contentContainer">
-    <div class="info">
+    <div class="info" style="background-color: whitesmoke;border-radius: .8rem;padding-left: 1.5%;">
         <div class="profile-field" style="display: flex; align-items:center; width: fit-content">
             <div class="restaurant-field">
                 <span class="presentation-text"><spring:message code="Customer.name"/> </span>
@@ -84,6 +84,13 @@
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+    }
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
     .presentation-text{
         font-size: clamp(1rem,1.25rem + 1vw,5rem);
