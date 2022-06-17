@@ -51,7 +51,7 @@
                 </div>
                 <div>
                     <form:errors path="psPair" element="p" cssStyle="color:red"/>
-                    <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                    <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.RepeatPassword"/></form:label>
                     <form:input path="psPair.checkPassword" type="password"/>
                 </div>
                 <spring:message code="Button.continue" var="label"/>

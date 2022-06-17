@@ -30,7 +30,7 @@
 <div class="contentContainer">
     <div class="info" style="background-color: #F0F0F0;border-radius: .8rem;padding: 1.5%;">
         <div class="profile-field icon-row" style="display: flex;flex-direction: column; align-items:flex-start; width: fit-content">
-            <div style="position: relative;">
+            <div style="position: relative;width: 100%;">
                 <a class="waves-effect waves-light btn-floating btn-small plus-btn tables-and-hours" href="<c:url value="/restaurant=${restaurantId}/editTables"/>">
                     <i class="material-icons table-and-hours">edit</i>
                 </a>
@@ -124,6 +124,13 @@
     .profile-field{
         transition: 0.7s;
     }
+    .profile-field.icon-row{
+        display: flex;
+        flex-direction: column;
+        align-items:flex-start;
+        width: fit-content;
+        position: relative;
+    }
     .profile-field.icon-row .tables-and-hours{
         display: none;
         transition: 0.7s;
@@ -147,8 +154,8 @@
     .profile-field.icon-row:hover .tables-and-hours{
         display: block;
         position: absolute;
-        right: -145px;
         top: 0;
+        right: 0;
         background-color: white;
     }
     .tables-and-hours i{
