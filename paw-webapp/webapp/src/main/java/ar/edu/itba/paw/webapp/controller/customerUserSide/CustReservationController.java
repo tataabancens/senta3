@@ -74,6 +74,7 @@ public class CustReservationController {
         List<Reservation> reservations = res.getReservationsByCustomerAndActive(customer);
 
         mav.addObject("reservations", reservations);
+        mav.addObject("reservationList", reservations.size());
         mav.addObject("customer", customer);
         return mav;
     }

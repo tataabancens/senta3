@@ -22,27 +22,40 @@
         <h1 class="presentation-text header-title"><spring:message code="Reservation.active"/></h1>
     </div>
 </div>
-<div class="contentContainer">
-    <div class="reservation-list">
-        <c:forEach var="reservation" items="${reservations}">
-            <div class="card horizontal">
-                <a href="<c:url value="menu/?reservationSecurityCode=${reservation.securityCode}"/>">
-                    <div class="card-stacked">
-                        <div class="card-content">
-                            <span class="presentation-text">${reservation.restaurant.restaurantName}</span>
-                            <p class="text description"><spring:message code="Customer.activereservations.code" arguments="${reservation.securityCode}"/></p>
-                            <p class="text description"><spring:message code="Createreservation.register.date"/> ${reservation.getReservationOnlyDate()}</p>
-                            <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/>hs</p>
-                            <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
-                            <p class="text description"><spring:message code="Customer.activereservations.who" arguments="${customer.customerName}"/></p>
-
-                        </div>
-                    </div>
-                </a>
+    <c:if test="${reservationList == 0}">
+        <div class="contentContainer" style="background-color: white;">
+            <div style="display: flex;width: 100%;margin-top: 5%; justify-content: center;">
+                <img src="${pageContext.request.contextPath}/resources/images/vector%20image.jpg"  style="border-radius: 1.2rem;width: 28em;height:23em;" alt="vector img">
+                <div style="display: flex;flex-direction: column;margin-left: 2%;">
+                    <span class="presentation-text" style="margin-top: 5%;"><spring:message code="EmptyReservations"/></span>
+                    <p class="text description"><spring:message code="EmptyReservations.description"/></p>
+                </div>
             </div>
-        </c:forEach>
-    </div>
-</div>
+        </div>
+    </c:if>
+    <c:if test="${reservationList > 0}">
+        <div class="contentContainer">
+            <div class="reservation-list">
+                <c:forEach var="reservation" items="${reservations}">
+                    <div class="card horizontal">
+                        <a href="<c:url value="menu/?reservationSecurityCode=${reservation.securityCode}"/>">
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <span class="presentation-text">${reservation.restaurant.restaurantName}</span>
+                                    <p class="text description"><spring:message code="Customer.activereservations.code" arguments="${reservation.securityCode}"/></p>
+                                    <p class="text description"><spring:message code="Createreservation.register.date"/> ${reservation.getReservationOnlyDate()}</p>
+                                    <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/>hs</p>
+                                    <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
+                                    <p class="text description"><spring:message code="Customer.activereservations.who" arguments="${customer.customerName}"/></p>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </c:if>
 </body>
 </html>
 <style>
