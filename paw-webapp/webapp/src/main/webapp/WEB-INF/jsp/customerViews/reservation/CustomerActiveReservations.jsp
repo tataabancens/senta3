@@ -26,14 +26,16 @@
     <div class="reservation-list">
         <c:forEach var="reservation" items="${reservations}">
             <div class="card horizontal">
-                <a href="<c:url value="menu/?reservationId=${reservation.id}"/>">
+                <a href="<c:url value="menu/?reservationSecurityCode=${reservation.securityCode}"/>">
                     <div class="card-stacked">
                         <div class="card-content">
-                            <span class="presentation-text">${customer.customerName}</span>
+                            <span class="presentation-text">${reservation.restaurant.restaurantName}</span>
+                            <p class="text description"><spring:message code="Customer.activereservations.code" arguments="${reservation.securityCode}"/></p>
+                            <p class="text description"><spring:message code="Createreservation.register.date"/> ${reservation.getReservationOnlyDate()}</p>
+                            <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/>hs</p>
                             <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
-                            <p class="text description"><spring:message code="Customer.activereservations.where" arguments="${reservation.restaurant.restaurantName}"/></p>
-                            <p  class="text description">${reservation.startedAtTime.toLocalDateTime().dayOfMonth}/${reservation.startedAtTime.toLocalDateTime().monthValue}/${reservation.startedAtTime.toLocalDateTime().year}</p>
-                            <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/></p>
+                            <p class="text description"><spring:message code="Customer.activereservations.who" arguments="${customer.customerName}"/></p>
+
                         </div>
                     </div>
                 </a>

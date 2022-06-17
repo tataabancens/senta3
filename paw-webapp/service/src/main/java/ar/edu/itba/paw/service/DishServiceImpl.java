@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,7 @@ public class DishServiceImpl implements DishService {
         dish.setCategory(category);
     }
 
+    @Transactional
     @Override
     public void updateDishPhoto(long dishId, long imageId) {
         Optional<Dish> maybeDish = dishDao.getDishById(dishId);
@@ -45,19 +45,18 @@ public class DishServiceImpl implements DishService {
             if(dish.getImageId() > 1) {
                 imageDao.deleteImageById(dish.getImageId());
             }
-            dishDao.updateDishPhoto(dishId, imageId);
+            dish.setImageId(imageId);
         }
-
     }
+
     @Override
     public void deleteDish(long dishId) {
         dishDao.deleteDish(dishId);
     }
 
     @Override
-    public Dish getRecommendedDish(long reservationId) {
-        Optional<Dish> maybeDish = dishDao.getRecommendedDish(reservationId);
-        return maybeDish.orElse(null);
+    public Optional<Dish> getRecommendedDish(long reservationId) {
+        return dishDao.getRecommendedDish(reservationId);
     }
 
     @Override

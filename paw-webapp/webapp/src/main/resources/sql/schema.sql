@@ -26,6 +26,7 @@ ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS userId int DEFAULT 1;
 -- ALTER TABLE restaurant
 --     ADD CONSTRAINT IF NOT EXISTS fk_restaurant_users FOREIGN KEY (userId) REFERENCES users (userId);
 
+
 CREATE TABLE IF NOT EXISTS image
 (
     imageId serial PRIMARY KEY,
@@ -44,7 +45,6 @@ CREATE TABLE IF NOT EXISTS dish (
 ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
 ALTER TABLE dish ADD IF NOT EXISTS category varchar(100) DEFAULT 'MAIN_DISH' NOT NULL;
 
-
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,
     restaurantId    integer NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (customerId) REFERENCES customer (customerId)
 );
 
-ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
+-- ALTER TABLE reservation DROP COLUMN IF EXISTS reservationDate;
 
 ALTER TABLE reservation ADD IF NOT EXISTS reservationHour integer default 0 NOT NULL;
 
@@ -65,6 +65,17 @@ ALTER TABLE reservation ADD IF NOT EXISTS reservationDiscount boolean default fa
 ALTER TABLE reservation ADD IF NOT EXISTS qPeople integer default 1;
 
 ALTER TABLE reservation ADD IF NOT EXISTS startedAtTime timestamp default now();
+
+ALTER TABLE reservation ADD IF NOT EXISTS reservationDate timestamp;
+
+ALTER TABLE reservation ADD IF NOT EXISTS tableNumber integer default 0;
+
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT NULL;
+
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS isToday boolean default false NOT NULL;
+
+
+
 
 
 CREATE TABLE IF NOT EXISTS users (
@@ -88,7 +99,7 @@ CREATE TABLE IF NOT EXISTS orderItem
     FOREIGN KEY ( dishId ) REFERENCES dish ( dishId ) ON DELETE CASCADE
 );
 
---CREATE TABLE IF NOT EXISTS dishCategories
+
 
 -- INSERT INTO users(username, password, role)
 -- values('Juancho Capo', '12345678', 'ROLE_CUSTOMER');

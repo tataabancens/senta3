@@ -21,7 +21,7 @@
 <div class="content">
         <div class="card register-card">
             <span class="presentation-text"><spring:message code="Register.title"/></span>
-            <c:url value="/registerShort/${customerId}/${reservationId}" var="postPath"/>
+            <c:url value="/registerShort/${customerId}/${reservationSecurityCode}" var="postPath"/>
             <form:form modelAttribute="customerRegisterShortForm" action="${postPath}" method="post">
                 <div class="input-field col s12 input">
                     <div class="input-field input" style="margin-bottom: 1%">

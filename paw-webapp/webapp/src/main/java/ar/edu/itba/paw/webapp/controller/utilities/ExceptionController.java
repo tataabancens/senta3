@@ -12,26 +12,31 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionController {
 
     @ExceptionHandler(ReservationNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ModelAndView handleReservationNotFoundException(){
         return new ModelAndView("error/reservationNotFound");
     }
 
-
     @ExceptionHandler(RestaurantNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ModelAndView handleRestaurantNotFoundException(){
         return new ModelAndView("error/restaurantNotFound");
     }
 
     @ExceptionHandler(DishNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ModelAndView handleDishNotFoundException(){
         return new ModelAndView("error/dishNotFound");
     }
 
+    @ExceptionHandler(DishCategoryNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ModelAndView handleDishCategoryNotFoundException(){
+        return new ModelAndView("error/dishCategoryNotFound");
+    }
+
     @ExceptionHandler(CustomerNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ModelAndView handleCustomerNotFoundException(){
         return new ModelAndView("error/customerNotFound");
     }
@@ -43,15 +48,27 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(LongParseException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ModelAndView handleLongParseException(){
-        return new ModelAndView("error/error404");
+        return new ModelAndView("error/error400");
     }
 
     @ExceptionHandler(OrderByException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ModelAndView handleorderByParseException(){
-        return new ModelAndView("error/error404");
+        return new ModelAndView("error/error400");
+    }
+
+    @ExceptionHandler(OrderItemNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ModelAndView handleOrderItemNotFoundException(){
+        return new ModelAndView("error/orderItemNotFound");
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView handleUserNotFoundException(){
+        return new ModelAndView("error/userNotFound");
     }
 
 

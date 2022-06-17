@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.model;
 
 
-import ar.edu.itba.paw.model.enums.DishCategory;
-
 import javax.persistence.*;
 
 @Entity
@@ -17,8 +15,9 @@ public class Dish {
     @JoinColumn(name = "restaurantid", nullable = false)
     private Restaurant restaurant;
 
-    @Deprecated
-    //private long restaurantId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private DishCategory category;
 
     @Column(length = 100, nullable = false)
     private String dishName;
@@ -30,13 +29,8 @@ public class Dish {
     @Column(nullable = false, length = 200)
     private String dishDescription;
 
-
     @Column(nullable = false)
     private long imageId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
-    private DishCategory category;
 
     public void setCategory(DishCategory category) {
         this.category = category;

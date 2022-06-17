@@ -28,9 +28,9 @@
                 <form:form modelAttribute="findReservationForm" action="${postUrl}" method="post">
                     <div class="reservationId">
                         <div>
-                            <form:errors path="reservationId" element="p" cssClass="error"/>
-                            <form:label path="reservationId">Codigo:</form:label>
-                            <form:input type="number" path="reservationId" min="1"/>
+                            <form:errors path="securityCode" element="p" cssClass="error"/>
+                            <form:label path="securityCode">Codigo:</form:label>
+                            <form:input type="text" path="securityCode"/>
                         </div>
                     </div>
                     <div class="submit center">

@@ -37,11 +37,17 @@ public class RedirectController {
                 Restaurant restaurant = rs.getRestaurantByUsername(principal.getName()).orElseThrow(RestaurantNotFoundException::new);
                 return new ModelAndView("redirect:/restaurant=" + restaurant.getId() + "/menu");
             }
+            if (Objects.equals(role, "ROLE_WAITER")) {
+                return new ModelAndView("redirect:/restaurant=1/waiter");
+            }
+            if (Objects.equals(role, "ROLE_KITCHEN")) {
+                return new ModelAndView("redirect:/restaurant=1/orders");
+            }
         }
-        return new ModelAndView("redirect:/history");
+        return new ModelAndView("redirect:/active-reservations");
     }
-    @RequestMapping(value = "/createReservation-3/{reservationId}/redirect")
-    public ModelAndView redirectCreateReservation(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/createReservation-3/{reservationSecurityCode}/redirect")
+    public ModelAndView redirectCreateReservation(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                                   Authentication authentication, Principal principal) {
 
         if (authentication != null) {
@@ -50,11 +56,11 @@ public class RedirectController {
 
                 if (Objects.equals(role, "ROLE_CUSTOMER")) {
                     cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
-                    return new ModelAndView("redirect:/confirmReservation/" + reservationIdP);
+                    return new ModelAndView("redirect:/confirmReservation/" + reservationSecurityCode);
                 }
             }
         }
-        return new ModelAndView("redirect:/createReservation-3/" + reservationIdP);
+        return new ModelAndView("redirect:/createReservation-4/" + reservationSecurityCode);
     }
 
     @RequestMapping(value = "/profile")

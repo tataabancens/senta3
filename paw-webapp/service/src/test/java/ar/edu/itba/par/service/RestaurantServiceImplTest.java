@@ -28,11 +28,11 @@ public class RestaurantServiceImplTest {
     private RestaurantDao resDao;
     private RestaurantServiceImpl resService;
 
-    @Before
-    public void setUp() {
-        resDao = Mockito.mock(RestaurantDao.class);
-        resService = new RestaurantServiceImpl(resDao);
-    }
+//    @Before
+//    public void setUp() {
+//        resDao = Mockito.mock(RestaurantDao.class);
+//        resService = new RestaurantServiceImpl(resDao);
+//    }
     @Test
     public void testCreateRestaurant() {
         // 1. Setup

@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.form.CustomValidator.OpenCloseHoursConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.OpenCloseHoursConstraint;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 

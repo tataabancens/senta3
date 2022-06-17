@@ -22,7 +22,7 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/confirmReservation/${reservation.id}" var="postPath"/>
+    <c:url value="/confirmReservation/${reservation.securityCode}" var="postPath"/>
 
     <form:form modelAttribute="confirmReservationForm" action="${postPath}" method="post">
         <div class="content-container">
@@ -48,16 +48,26 @@
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.people" arguments="${reservation.qPeople}"/></form:label>
                 </div>
                 <div style="margin-bottom: 3%">
-                    <span style="font-family: Lato,sans-serif;font-size:20px"><spring:message code="Confirmreservation.date"/></span>
+                    <label style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.date"/><c:out value="${reservation.getReservationOnlyDate()}"/></label>
                 </div>
                 <div style="margin-bottom: 1%">
-                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/></form:label>
+                    <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/>hs</form:label>
                 </div>
-                <div class="submit center">
-                    <spring:message code="Button.confirm" var="label"/>
-                    <spring:message code="Button.loading" var="label2"/>
-                    <input type="submit" value="${label}" class="btn confirm-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
-                </div>
+                <c:if test="${!isRepeating}">
+                    <div class="submit center">
+                        <spring:message code="Button.confirm" var="label"/>
+                        <spring:message code="Button.loading" var="label2"/>
+                        <input type="submit" value="${label}" class="btn confirm-btn" onclick="this.form.submit(); this.disabled=true;this.value=${label2}; "/>
+                    </div>
+                </c:if>
+                <c:if test="${isRepeating}">
+                    <div class="submit center">
+                        <spring:message code="Button.confirm" var="label"/>
+                        <p><spring:message code="Reservation.cant.repeated"/></p>
+                        <input type="submit" value="${label}" class="btn confirm-btn" disabled/>
+                    </div>
+                </c:if>
+
             </div>
         </div>
     </form:form>

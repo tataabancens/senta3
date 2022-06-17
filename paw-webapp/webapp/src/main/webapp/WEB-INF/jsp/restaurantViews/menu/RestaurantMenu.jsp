@@ -29,18 +29,23 @@
         </div>
         <div class="contentContainer">
             <div class="card filter-box">
+                <a href="<c:url value="/restaurant=${restaurantId}/category/create"/>" class="dish-card category-creation">
+                    <i class="medium material-icons" style="color: rgb(255, 68, 31); ">add</i>
+                    <span class="presentation-text" style="color: rgb(255, 68, 31);font-size: 1.5em;">Crear categoria</span>
+                </a>
+                <hr class="solid-divider" style="background-color: #171616;"/>
                 <span class="presentation-text"><spring:message code="FilterBox.title"/></span>
                 <ul class="categories">
                     <c:forEach var="category" items="${categories}">
-                        <a href="<c:url value="/restaurant=1/menu?category=${category}"/>">
-                            <c:if test="${currentCategory.description == category.description}">
+                        <a href="<c:url value="/restaurant=1/menu?category=${category.id}"/>">
+                            <c:if test="${currentCategory.name == category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
+                                    <c:out value="${category.name}"/>
                                 </button>
                             </c:if>
-                            <c:if test="${currentCategory.description != category.description}">
+                            <c:if test="${currentCategory.name != category.name}">
                                 <button class="waves-effect waves-light btn confirm-btn text description">
-                                    <c:out value="${category.spanishDescr}"/>
+                                    <c:out value="${category.name}"/>
                                 </button>
                             </c:if>
                         </a>
@@ -48,11 +53,19 @@
                 </ul>
             </div>
             <div class="dish-categories">
-                <div>
-                    <h3 class="presentation-text header-title"><c:out value="${currentCategory.spanishDescr}"/></h3>
+                <div class="category-field">
+                    <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></h3>
+                    <div style="display: flex;">
+                        <a href="<c:url value="/restaurant=${restaurantId}/category=${currentCategory}/edit"/>">
+                            <i class="small material-icons category-field">edit</i>
+                        </a>
+                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete?categoryId=${currentCategory.id}"/>" style="justify-self: end;">
+                            <i class="small material-icons category-field">delete</i>
+                        </a>
+                    </div>
                 </div>
                 <div class="dishList">
-                    <a href="menu/create" class="dish-card dish-creation">
+                    <a href="menu/create?currentCategory=${currentCategory.id}" class="dish-card dish-creation">
                         <i class="large material-icons" style="color: rgba(183, 179, 179, 0.87); ">add</i>
                         <span class="main-title" style="color: rgba(183, 179, 179, 0.87); "><spring:message code="Restaurant.createdish"/></span>
                     </a>
@@ -70,8 +83,8 @@
                                 </div>
                                 <div class="card-info">
                                     <div class="btn-row-card">
-                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
-                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="<c:url value="/restaurant=1/menu/edit/dishId=${dish.id}"/>"><i class="material-icons">edit</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="<c:url value="/restaurant=1/menu/edit/deleteDish=${dish.id}"/>"><i class="material-icons">delete</i></a>
                                     </div>
                                     <span class="presentation-text dish-title"><c:out value="${dish.dishName}"/></span>
                                     <p class="text description"><c:out value="${dish.dishDescription}"/></p>
@@ -142,7 +155,7 @@
     .card.filter-box{
         min-width: 10rem;
         width: 15%;
-        max-height: 20em;
+        height: fit-content;
     }
     .text.price{
         font-weight: 600;
@@ -178,16 +191,34 @@
         justify-content: flex-end;
         padding-right: 1.5%;
     }
-    @media screen and (max-width: 1920px){
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
-        }
+    .category-field{
+        background-color: rgb(255, 68, 31);
+        align-items: center;
+        justify-content: space-between;
+        height: 3em;
+        border-radius: .8rem;
+        display: flex;
+        transition: 0.5s;
+    }
+    .small.material-icons.category-field{
+        color: white;
+        margin-left: 0.5%;
+        height: 2rem;
+        display: none;
+    }
+    .category-field:hover .small.material-icons.category-field{
+        display: block;
+    }
+    .dish-card.category-creation{
+        background-color: white;
+        width: 85%;
+        align-items: center;
+        transition: 1s;
+        height: 4em;
+        flex-direction: row;
+    }
+    .dish-card.category-creation:hover {
+        transform: scale(1.05);
     }
     @media screen and (max-width: 1350px){
         .dish-card{
@@ -195,15 +226,6 @@
         }
         .dish-img{
             width: auto;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 1080px){
@@ -216,15 +238,6 @@
         }
         .dish-img{
             width: auto;
-        }
-        .presentation-text.info{
-            font-size: 1rem;
-        }
-        .text.description.info{
-            font-size: 0.8rem;
-        }
-        .text.price.info{
-            font-size: 0.8rem;
         }
     }
     @media screen and (max-width: 868px){
@@ -254,5 +267,26 @@
             min-width: auto;
         }
     }
-
+    @media (max-width: 600px){
+        .contentContainer{
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .dish-categories{
+            width: 100%;
+        }
+        .dish-card{
+            height: 10em;
+            flex-direction: column;
+        }
+        .dish-img{
+            width: 7em;
+            height: 7em;
+        }
+        .dish-card.card-content{
+            display: flex;
+            flex-direction: column;
+        }
+    }
 </style>

@@ -2,8 +2,7 @@ package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +20,11 @@ public class RestaurantJpaDao implements RestaurantDao {
 
     @Override
     public Optional<Restaurant> getRestaurantById(long id) {
-        return Optional.of(em.find(Restaurant.class, id));
+        if(id != 1){
+            return Optional.empty();
+        }
+        Optional<Restaurant> ret = Optional.ofNullable(em.find(Restaurant.class, id));
+        return ret;
     }
 
     @Override

@@ -42,11 +42,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(String username, String newPassword) {
-        userDao.updatePassword(username, passwordEncoder.encode(newPassword));
+//        userDao.updatePassword(username, passwordEncoder.encode(newPassword));
     }
 
     @Override
     public void updateUsername(String oldUsername, String newUsername) {
-        userDao.updateUsername(oldUsername, newUsername);
+//        userDao.updateUsername(oldUsername, newUsername);
+    }
+
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userDao.findByName(username);
     }
 }

@@ -4,11 +4,13 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationService {
-    Optional<Reservation> getReservationById(long id);
+
+    Optional<Reservation> getReservationBySecurityCode(String securityCode);
 
     OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity);
 
@@ -30,13 +32,13 @@ public interface ReservationService {
 
     void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status);
 
-    List<Integer> getAvailableHours(long restaurantId, long qPeople);
+    List<Integer> getAvailableHours(long restaurantId, long qPeople, LocalDateTime reservationDate);
 
     List<Long> getUnavailableItems(long reservationId);
 
     List<Reservation> getAllReservations(Restaurant restaurant);
 
-    Optional<Reservation> getReservationByIdAndIsActive(long reservationId);
+    Optional<Reservation> getReservationByIdAndIsActive(String securityCode);
 
     List<OrderItem> getOrderItemsByReservationAndOrder(Reservation reservation);
 
@@ -52,21 +54,37 @@ public interface ReservationService {
 
     void cleanMaybeReservations();
 
-    void applyDiscount(long reservationId);
+    void applyDiscount(String reservationSecurityCode);
 
-    void cancelDiscount(long reservationId);
+    void cancelDiscount(String reservationSecurityCode);
 
     float getDiscountCoefficient(long reservationId);
 
     boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
 
-    public List<Reservation> getReservationsSeated(Restaurant restaurant);
+    List<Reservation> getReservationsSeated(Restaurant restaurant);
 
-    Optional<Reservation> getReservationByIdAndStatus(long reservationId, ReservationStatus maybeReservation);
+    Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, ReservationStatus maybeReservation);
 
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
 
     boolean isFromOrder(String isFromOrderP);
 
     Optional<OrderItem> getOrderItemById(long orderItemId);
+
+    void updateReservationDateById(Reservation reservation, LocalDateTime reservationDate);
+
+    List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status);
+
+    void setTableNumber(Reservation reservation, int number);
+
+    void setReservationSecurityCode(Reservation reservation);
+
+    void raiseHand(String reservationIdP);
+
+    boolean isRepeating(Customer customer, Reservation reservation);
+
+    void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation);
+
+    void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation);
 }

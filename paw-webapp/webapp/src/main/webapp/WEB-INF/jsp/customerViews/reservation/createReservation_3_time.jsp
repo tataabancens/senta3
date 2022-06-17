@@ -25,13 +25,15 @@
     <div class="content-container">
         <div class="card register-card">
             <c:if test="${hours.size() > 0}">
-                <span class="presentation-text"><spring:message code="Createreservation.today"/></span>
                 <span class="presentation-text"><spring:message code="Createreservation.hour.title"/></span>
-                <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
+                <span class="presentation-text"><spring:message code="Createreservation.disclaimer"/></span>
+                <c:url value="/createReservation-3/${reservationSecurityCode}" var="postPath"/>
                 <form:form modelAttribute="hourForm" action="${postPath}" method="post">
                     <div class="input-field">
                         <form:select  path="number">
-                            <form:options items="${hours}"></form:options>
+                            <c:forEach var="item" items="${hours}">
+                                <form:option value="${item}" label="${item}:00"></form:option>
+                            </c:forEach>
                         </form:select>
                     </div>
                     <spring:message code="Button.continue" var="label"/>
@@ -40,7 +42,8 @@
             </c:if>
             <c:if test="${hours.size() == 0}">
                 <span class="presentation-text"><spring:message code="Createreservation.hour.error"/></span>
-                <a class="waves-effect waves-light btn confirm-btn text description center" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
+                <a class="waves-effect waves-light btn confirm-btn text description center" href="<c:url value="/createReservation-2/${reservationSecurityCode}"/>"><spring:message code="Button.back"/></a>
+
             </c:if>
         </div>
     </div>

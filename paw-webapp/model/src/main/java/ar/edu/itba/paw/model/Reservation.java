@@ -1,11 +1,10 @@
 package ar.edu.itba.paw.model;
 
-import ar.edu.itba.paw.model.enums.DishCategory;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,10 @@ public class Reservation {
     private int reservationHour;
 
     @Column(nullable = false)
-    private Timestamp startedAtTime;
+    private LocalDateTime startedAtTime;
+
+    @Column(nullable = false)
+    private LocalDateTime reservationDate;
 
     @Enumerated
     @Column(nullable = false)
@@ -45,27 +47,42 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Column(nullable = false)
+    private int tableNumber;
+
+    @Column(nullable = false, length = 6, columnDefinition = "varchar(6) default 'A'")
+    private String securityCode = String.valueOf('A');
+
+    @Column(nullable = false)
+    private boolean hand;
+
+    @Column(nullable = false)
+    private boolean isToday;
+
     /* default */ Reservation() {
         // Just for hibernate
     }
 
-    public Reservation(Restaurant restaurant, Customer customer, int reservationHour, int reservationStatus, int qPeople, Timestamp startedAtTime) {
+    public Reservation(Restaurant restaurant, Customer customer, int reservationHour, int reservationStatus, int qPeople, LocalDateTime startedAtTime, LocalDateTime reservationDate) {
         this.restaurant = restaurant;
         this.customer = customer;
         this.reservationHour = reservationHour;
         this.reservationStatus = ReservationStatus.values()[reservationStatus];
         this.qPeople = qPeople;
         this.startedAtTime = startedAtTime;
+        this.reservationDate = reservationDate;
     }
-
+    /* pasados al dao
     public List<OrderItem> getOrderItems() {
         return new ArrayList<>(orderItems);
     }
+
     public List<OrderItem> getOrderItemsByStatusList(List<OrderItemStatus> statusList) {
         List<OrderItem> toRet = new ArrayList<>(orderItems);
         toRet.removeIf(or -> !statusList.contains(or.getStatus()));
         return toRet;
     }
+     */
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
@@ -77,11 +94,11 @@ public class Reservation {
         return orderItem;
     }
 
-    public Timestamp getStartedAtTime() {
+    public LocalDateTime getStartedAtTime() {
         return startedAtTime;
     }
 
-    public void setStartedAtTime(Timestamp startedAtTime) {
+    public void setStartedAtTime(LocalDateTime startedAtTime) {
         this.startedAtTime = startedAtTime;
     }
 
@@ -140,4 +157,56 @@ public class Reservation {
     public void setReservationDiscount(boolean reservationDiscount) {
         this.reservationDiscount = reservationDiscount;
     }
+
+    public LocalDateTime getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(LocalDateTime reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public String getReservationOnlyDate(){ //aparece que nadie lo usa pero si lo usan unos jsp
+        String date = this.reservationDate.getDayOfMonth() +
+                "/" +
+                this.reservationDate.getMonthValue() +
+                "/" +
+                this.reservationDate.getYear();
+        return date;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+//    public List<OrderItem> getOrderItems() {
+//        return orderItems;
+
+    public boolean isHand() {
+        return hand;
+    }
+
+    public void setHand(boolean hand) {
+        this.hand = hand;
+    }
+
+    public void setIsToday(boolean b) {
+        this.isToday=b;
+    }
+
+    public boolean getIsToday() {
+        return this.isToday;
+    }
+//    }
 }

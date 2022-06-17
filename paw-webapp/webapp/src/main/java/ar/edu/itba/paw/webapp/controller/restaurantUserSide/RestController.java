@@ -1,9 +1,10 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.*;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
+import ar.edu.itba.paw.webapp.exceptions.DishCategoryNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.EditPhoneForm;
@@ -49,19 +50,21 @@ public class RestController {
 
     @RequestMapping("/restaurant={restaurantId}/menu")
     public ModelAndView menuRestaurant(@PathVariable("restaurantId") final String restaurantIdP,
-                                       @RequestParam(value = "category", defaultValue = "MAIN_DISH") final String category) throws Exception {
+                                       @RequestParam(name = "category", defaultValue = "2") final String categoryIdP) throws Exception {
 
-        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.longParser(restaurantIdP, categoryIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
+        long categoryId = Long.parseLong(categoryIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/menu/RestaurantMenu");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
         // deprecated restaurant.setDishes(rs.getRestaurantDishesByCategory(restaurantId, DishCategory.valueOf(category)));
 
-        mav.addObject("dishes", restaurant.getDishesByCategory(DishCategory.valueOf(category)));
+        mav.addObject("dishes", restaurant.getDishesByCategory(dishCategory));
         mav.addObject("restaurant", restaurant);
-        mav.addObject("categories", DishCategory.getAsList());
-        mav.addObject("currentCategory", DishCategory.valueOf(category));
+        mav.addObject("categories", restaurant.getDishCategories());
+        mav.addObject("currentCategory", dishCategory);
         return mav;
     }
 

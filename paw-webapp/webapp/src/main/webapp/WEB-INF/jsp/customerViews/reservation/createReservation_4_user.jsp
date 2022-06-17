@@ -22,7 +22,7 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="content">
-    <c:url value="/createReservation-3/${reservation.id}" var="postPath"/>
+    <c:url value="/createReservation-4/${reservation.securityCode}" var="postPath"/>
 
     <form:form modelAttribute="reservationForm" action="${postPath}" method="post">
         <div class="content-container">
@@ -42,6 +42,9 @@
                     <form:errors path="name" element="p" cssStyle="color: red"/>
                     <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.name"/></form:label>
                     <form:input path="name" required="required" maxlength="50" type="text"/>
+                </div>
+                <div>
+                    <label style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.date"/><c:out value="${reservation.getReservationOnlyDate()}"/></label>
                 </div>
                 <div>
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.people"/><c:out value="${reservation.qPeople}"/></form:label>
