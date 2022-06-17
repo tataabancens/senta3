@@ -100,7 +100,7 @@
     }
     .dish-card{
         flex-direction: column;
-        width: 100%;
+        width: 45%;
         height: 9.7rem;
         transition: 0.7s;
     }
@@ -154,6 +154,10 @@
         padding: 8px;
         justify-content: center;
         align-items: center;
+        transition: 0.3s;
+    }
+    .dish-card.dish-creation:hover{
+        transform: scale(1.05);
     }
     .dishList{
         display: flex;

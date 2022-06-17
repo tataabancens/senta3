@@ -81,7 +81,8 @@
         flex-direction: column;
         align-items: center;
         padding: 1%;
-        min-width: 25%;
+        min-width: 20em;
+        width: 30em;
         border-radius: .8rem;
     }
     .presentation-text.title{
