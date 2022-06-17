@@ -113,8 +113,8 @@
 <div>
     <c:url value="/createReservation-1" var="postUrl"/>
     <form action="${postUrl}">
-        <spring:message code="Createreservation.title" var="label"/>
-        <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
+        <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Createreservation.title" var="label"/></span>
+        <input class = "btn confirm-btn" style="margin-left: 5%; border-radius: .8rem;background-color: forestgreen;" type="submit" value='${label}'/>
     </form>
 </div>
 
@@ -213,12 +213,10 @@
     .filters-orderBy{
         display: flex;
         flex-wrap: wrap;
-        width: fit-content;
         min-width: 50rem;
-        flex-direction: row;
         align-items: center;
-        justify-content: center;
-        margin-left: 1%;
+        justify-content: flex-end;
+        margin-right: 1%;
     }
     .order-orientation{
         display: flex;

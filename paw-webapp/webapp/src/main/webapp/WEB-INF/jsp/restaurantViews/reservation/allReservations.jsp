@@ -89,11 +89,10 @@
 
 <div>
     <form action="/createReservation-1">
-        <spring:message code="Createreservation.title" var="label"/>
-        <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
+        <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Createreservation.title" var="label"/></span>
+        <input class = "btn confirm-btn" style="margin-left: 5%; border-radius: .8rem;background-color: forestgreen;" type="submit" value='${label}'/>
     </form>
 </div>
-
 <div class="content-container">
     <table class="reservations" id="myTable">
         <thead>

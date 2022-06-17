@@ -56,41 +56,44 @@
         </a>
     </div>
 
-<c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
-<form:form method="post" action="${postUrl}" modelAttribute="filterForm">
-    <div class="filters-orderBy">
-        <div class="orderBy">
-            <div class="input-field">
-                <form:select id="orderBy" path="orderBy">
-                    <form:option value="reservationid"><spring:message code="Reservations.reservation"/></form:option>
-                    <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
-                    <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
-                    <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
-                    <form:option value="reservationdate"><spring:message code="Reservations.date"/></form:option>
-                </form:select>
+<div style="display: flex;align-items: center;justify-content: flex-end;margin-right: 1.5%;">
+    <div>
+        <c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
+        <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
+            <div class="filters-orderBy">
+                <div class="orderBy">
+                    <div class="input-field">
+                        <form:select id="orderBy" path="orderBy">
+                            <form:option value="reservationid"><spring:message code="Reservations.reservation"/></form:option>
+                            <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
+                            <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
+                            <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
+                            <form:option value="reservationdate"><spring:message code="Reservations.date"/></form:option>
+                        </form:select>
+                    </div>
+                </div>
+                <div class="order-orientation">
+                    <div class="input-field">
+                        <form:select id="orderDirection" path="direction">
+                            <form:option value="ASC"><spring:message code="Reservations.order.asc"/></form:option>
+                            <form:option value="DESC"><spring:message code="Reservations.order.dec"/></form:option>
+                        </form:select>
+                    </div>
+                </div>
+                <div style="display: flex;align-items: center;">
+                    <button type="submit" class="btn waves-effect waves-light confirm-btn">
+                        <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Button.confirm"/></span>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="order-orientation">
-            <div class="input-field">
-                <form:select id="orderDirection" path="direction">
-                    <form:option value="ASC"><spring:message code="Reservations.order.asc"/></form:option>
-                    <form:option value="DESC"><spring:message code="Reservations.order.dec"/></form:option>
-                </form:select>
-            </div>
-        </div>
-        <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
-            <button type="submit" class="btn waves-effect waves-light confirm-btn">
-                <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Button.confirm"/></span>
-            </button>
-        </div>
+        </form:form>
     </div>
-</form:form>
-
-<div>
-    <form action="/createReservation-1">
-        <spring:message code="Createreservation.title" var="label"/>
-        <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
-    </form>
+    <div>
+        <form action="/createReservation-1">
+            <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Createreservation.title" var="label"/></span>
+            <input class = "btn confirm-btn" style="margin-left: 5%; border-radius: .8rem;background-color: forestgreen;" type="submit" value='${label}'/>
+        </form>
+    </div>
 </div>
 
 <div class="content-container">
@@ -162,19 +165,12 @@
         flex-wrap: wrap;
         width: fit-content;
         min-width: 50rem;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
-        margin-left: 1%;
     }
     .order-orientation{
         display: flex;
         align-items: center;
-        margin-left: 2%;
-        margin-right: 2%;
-    }
-    .filters{
-        display: flex;
         margin-left: 2%;
         margin-right: 2%;
     }

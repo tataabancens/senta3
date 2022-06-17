@@ -33,30 +33,34 @@
 </div>
 <div class="content-container">
     <div class="card finished-orders">
-        <span class="presentation-text title"><h5><spring:message code="Waiter.hands"/></h5></span>
+        <div style="position: absolute;top: 0;">
+            <span class="presentation-text title"><h5><spring:message code="Waiter.hands"/></h5></span>
+        </div>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
 
-                    <c:if test="${reservation.hand}">
-                        <div class="card order-card">
-                            <div class="card-content white-text">
-                                <p class="presentation-text" style="color: #171616;"><spring:message code="Kitchen.order.table"/> <c:out value="${reservation.tableNumber}"/></p>
-                                <p class="presentation-text" style="color: #171616;"><spring:message code="Kitchen.order.name"/> <c:out value="${reservation.customer.user.username}"/></p>
-                            </div>
-                            <c:url value="/restaurant=${restaurantId}/waiter/lowerHand-${reservation.securityCode}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <spring:message code="Button.attended" var="label"/>
-                                <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
-                            </form:form>
+                <c:if test="${reservation.hand}">
+                    <div class="card order-card">
+                        <div class="card-content white-text">
+                            <p class="presentation-text" style="color: #171616;"><spring:message code="Kitchen.order.table"/> <c:out value="${reservation.tableNumber}"/></p>
+                            <p class="presentation-text" style="color: #171616;"><spring:message code="Kitchen.order.name"/> <c:out value="${reservation.customer.user.username}"/></p>
                         </div>
-                    </c:if>
+                        <c:url value="/restaurant=${restaurantId}/waiter/lowerHand-${reservation.securityCode}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post">
+                            <spring:message code="Button.attended" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
+                        </form:form>
+                    </div>
+                </c:if>
 
             </c:forEach>
         </div>
     </div>
 
     <div class="card finished-orders">
-        <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
+        <div style="position: absolute;top: 0;">
+            <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
+        </div>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
@@ -123,6 +127,7 @@
         justify-content: center;
         padding: 10px;
         width: 48%;
+        min-height: 30em;
         height: 100%;
         margin: 10px;
     }

@@ -33,10 +33,14 @@
 </div>
 <div class="content-container">
     <div class="card incoming-orders">
-        <span class="presentation-text title"><h5><spring:message code="Kitchen.new.orders.title"/></h5></span>
+        <div style="position: absolute;top: 0;">
+            <span class="presentation-text title"><h5><spring:message code="Kitchen.new.orders.title"/></h5></span>
+        </div>
         <div class="cardContainer">
             <c:if test="${incomingItems.size() == 0}">
-                <span class="presentation-text title"><h11><spring:message code="Kitchen.new.no"/></h11></span>
+                <div style="display: flex; justify-content: center;width: 100%;">
+                    <span class="presentation-text title"><h11><spring:message code="Kitchen.new.no"/></h11></span>
+                </div>
             </c:if>
             <c:forEach var="item" items="${incomingItems}">
                 <div class="card order-card">
@@ -56,26 +60,30 @@
         </div>
     </div>
     <div class="card finished-orders">
-        <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
+        <div style="position: absolute;top: 0;">
+            <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
+        </div>
         <div class="cardContainer">
             <c:if test="${finishedItems.size() == 0}">
-                <span class="presentation-text title"><h11><spring:message code="Kitchen.order.no"/></h11></span>
+                <div style="display: flex; justify-content: center;width: 100%;">
+                    <span class="presentation-text title"><h11><spring:message code="Kitchen.order.no"/></h11></span>
+                </div>
             </c:if>
-                <c:forEach var="item" items="${finishedItems}">
-                        <div class="card order-card">
-                            <div class="card-content white-text">
-                                <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
-                                <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
-                            </div>
-                            <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <spring:message code="Button.deliver" var="label"/>
-                                <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
-                            </form:form>
-                        </div>
-                </c:forEach>
+            <c:forEach var="item" items="${finishedItems}">
+                <div class="card order-card">
+                    <div class="card-content white-text">
+                        <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
+                        <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
+                        <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
+                        <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
+                    </div>
+                    <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
+                    <form:form action="${postUrl}" method="post">
+                        <spring:message code="Button.deliver" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
+                    </form:form>
+                </div>
+            </c:forEach>
         </div>
     </div>
 </div>
@@ -112,6 +120,7 @@
         flex-wrap: wrap;
         justify-content: center;
         padding: 10px;
+        min-height: 30em;
         width: 48%;
         height: 100%;
         margin: 10px;
@@ -122,6 +131,7 @@
         justify-content: center;
         padding: 10px;
         width: 48%;
+        min-height: 30em;
         height: 100%;
         margin: 10px;
     }
