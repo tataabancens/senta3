@@ -20,7 +20,7 @@ public class CategoryValidator implements ConstraintValidator<CategoryConstraint
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        Optional<DishCategory> maybeCategory= rs.getDishCategoryByName(s);
+        Optional<DishCategory> maybeCategory= rs.getDishCategoryByName(s.toUpperCase());
         return !maybeCategory.isPresent();
     }
 
