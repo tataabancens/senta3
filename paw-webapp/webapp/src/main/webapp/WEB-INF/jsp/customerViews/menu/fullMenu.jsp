@@ -300,7 +300,7 @@
                     </c:forEach>
                 </div>
             </c:if>
-            <c:if test="${incomingItemsSize = 0}">
+            <c:if test="${incomingItemsSize == 0}">
                 <div class="order-headers">
                     <span class="presentation-text"><spring:message code="Order.noIncomingDishes"/></span>
                 </div>
@@ -335,7 +335,7 @@
             <i class="material-icons clear-symbol">arrow_forward</i>
         </button>
         <div class="reservation-info">
-            <span class="presentation-text"><spring:message code="Fullmenu.sideMenu.yourReservation"/> <c:out value="${reservation.securityCode}"/></span>
+            <span class="presentation-text"><spring:message code="Fullmenu.sideMenu.yourReservation"/></span>
             <hr class="solid-divider">
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.date" arguments="${reservation.getReservationOnlyDate()}"/></p>
             <p class="presentation-text header-title info" style="color: #171616;"><spring:message code="Reservation.header.time"/><c:out value="${reservation.reservationHour}"/>:00</p>
@@ -409,7 +409,7 @@
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: clamp(11em,15%,15em);
+        width: clamp(10rem,15%,17em);
         margin-right: 2%;
         height: 100%;
     }

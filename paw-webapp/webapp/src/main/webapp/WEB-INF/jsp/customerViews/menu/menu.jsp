@@ -154,7 +154,7 @@
         margin-bottom: 0.5em;
     }
     .card.horizontal .card-image{
-        object-fit: fill;
+        object-fit: cover;
         max-width: 25%;
         margin-left: 2%;
     }
@@ -187,7 +187,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: clamp(10em,15%,15em);
+        width: clamp(10rem,15%,17em);
         height: clamp(34em,100%,40em);
     }
     .categories{

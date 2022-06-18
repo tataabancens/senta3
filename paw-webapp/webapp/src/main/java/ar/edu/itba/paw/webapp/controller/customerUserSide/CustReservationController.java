@@ -132,7 +132,11 @@ public class CustReservationController {
 
         return new ModelAndView("redirect:/createReservation-3/" + reservation.getSecurityCode());
     }
+    @RequestMapping(value = "/createReservation-3-login")
+    public ModelAndView createReservation_1() {
 
+        return new ModelAndView("customerViews/reservation/loginCheck_3.5");
+    }
     @RequestMapping(value = "/createReservation-3/{reservationSecurityCode}")
     public ModelAndView createReservation_3(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                             @Valid @ModelAttribute("hourForm") final NumberForm form) throws Exception {

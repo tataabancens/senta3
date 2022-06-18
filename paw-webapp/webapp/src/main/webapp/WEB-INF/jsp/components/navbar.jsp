@@ -156,22 +156,24 @@
             </c:if>
         </div>
         <div class="right-side">
-            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/menu'}">
-                <sec:authorize access="!isAuthenticated()">
-                    <li>
-                        <a class="options" href="<c:url value="/register"/>">
-                            <spring:message code="Navbar.option.register"/>
-                        </a>
-                    </li>
-                </sec:authorize>
-                <sec:authorize access="!isAuthenticated()">
-                    <li>
-                        <a class="options" href="<c:url value="/login"/>">
-                            <spring:message code="Navbar.option.login"/>
-                        </a>
-                    </li>
-                </sec:authorize>
-            </c:if>
+                <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/register'}">
+                    <sec:authorize access="!isAuthenticated()">
+                        <li>
+                            <a class="options" href="<c:url value="/register"/>">
+                                <spring:message code="Navbar.option.register"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                </c:if>
+                <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/login'}">
+                    <sec:authorize access="!isAuthenticated()">
+                        <li>
+                            <a class="options" href="<c:url value="/login"/>">
+                                <spring:message code="Navbar.option.login"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                </c:if>
             <sec:authorize access="isAuthenticated()">
                 <sec:authorize access="hasRole('RESTAURANT')">
                     <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/profile'}">
@@ -206,6 +208,11 @@
                         </li>
                     </c:if>
                 </sec:authorize>
+                <li>
+                    <a class="options" href="${pageContext.request.contextPath}/logout">
+                        <spring:message code="Navbar.option.logout"/>
+                    </a>
+                </li>
             </sec:authorize>
         </div>
 

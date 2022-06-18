@@ -1,4 +1,3 @@
-<%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -17,28 +16,18 @@
     <title>Senta3</title>
     <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico" />" type="image/x-icon">
     <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet">
-
+</head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-
-    <c:url value="/createReservation-1" var="postPath"/>
 <div style="display: flex;justify-content: center;margin-top: 5%;">
-    <div class="card register-card">
-        <span class="presentation-text"><spring:message code="Createreservation.people.title"/></span>
-        <c:url value="/createReservation-1" var="postPath"/>
-        <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
-            <div class="input-field">
-                <form:errors path="number" element="p" cssStyle="color:red"/>
-                <form:label path="number" class="helper-text" data-error="wrong" data-success="right"/>
-                <form:input path="number" required="required" type="text"/>
-            </div>
-            <spring:message code="Button.confirm" var="label"/>
-            <input type="submit" value="${label}" class="btn confirm-btn center"/>
-        </form:form>
+    <div class="card">
+        <span class="presentation-text">¿Tenes cuenta?</span>
+        <div style="display: flex;flex-direction: column;margin-top: 7%;">
+            <a href="" class="btn confirm-btn" style="margin-bottom: 7%;">Login</a>
+            <a href="" class="btn confirm-btn">Continuar sin logearse</a>
+        </div>
     </div>
 </div>
-
-
 </body>
 </html>
 
@@ -55,40 +44,11 @@
         display: flex;
         flex-wrap: wrap;
         margin: 10px;
-        justify-content: space-evenly;
         align-content: center;
         flex-direction: column;
         min-height: 250px;
         min-width: 450px;
+        width: 30%;
         padding: 20px;
     }
-
-    .btn.confirm-btn{
-        margin-left: 20%;
-    }
-    select{
-        display: flex;
-    }
-    .back-btn{
-        border-radius: 16px;
-        margin-top: 5%;
-        background-color: #E63737 ;
-        opacity: 87%;
-    }
-
-    .back-btn:hover{
-        border-radius: 16px;
-        margin-top: 5%;
-        background-color: #E63737 ;
-        opacity: 100%;
-    }
-
-    .input{
-        margin-bottom: 1px;
-    }
-
-    .center{
-        align-items: center;
-    }
-
 </style>
