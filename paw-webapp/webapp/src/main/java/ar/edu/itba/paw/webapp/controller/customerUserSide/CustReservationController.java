@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class CustReservationController {
@@ -69,7 +68,7 @@ public class CustReservationController {
 
     @RequestMapping(value = "/active-reservations", method = RequestMethod.GET)
     public ModelAndView activeReservations(final Principal principal){
-        ModelAndView mav = new ModelAndView("customerViews/reservation/CustomerActiveReservations");
+        ModelAndView mav = new ModelAndView("customerViews/reservation/activeReservations");
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         List<Reservation> reservations = res.getReservationsByCustomerAndActive(customer);
 

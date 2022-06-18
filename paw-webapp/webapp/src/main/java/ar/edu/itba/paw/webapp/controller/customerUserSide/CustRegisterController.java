@@ -53,7 +53,7 @@ public class CustRegisterController {
 
         form.setMail(customer.getMail());
 
-        ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
+        ModelAndView mav = new ModelAndView("customerViews/customerRegisterShort");
         mav.addObject("customerId", customerIdP);
         mav.addObject("reservationSecurityCode", reservationSecurityCode);
 
@@ -86,7 +86,7 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
 
-        return new ModelAndView("customerViews/CustomerRegister");
+        return new ModelAndView("customerRegister");
     }
 
 

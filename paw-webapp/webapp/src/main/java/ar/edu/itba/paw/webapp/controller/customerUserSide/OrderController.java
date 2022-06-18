@@ -98,7 +98,7 @@ public class OrderController {
     }
     @RequestMapping("/order/order-confirmation")
     public ModelAndView orderConfirmation(@RequestParam(name = "reservationSecurityCode", defaultValue = "1") final String reservationSecurityCode){
-        final ModelAndView mav = new ModelAndView("customerViews/order/OrderConfirmationNotification");
+        final ModelAndView mav = new ModelAndView("customerViews/order/orderConfirmationNotification");
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
 

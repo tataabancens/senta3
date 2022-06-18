@@ -56,7 +56,7 @@ public class RestController {
         long restaurantId = Long.parseLong(restaurantIdP);
         long categoryId = Long.parseLong(categoryIdP);
 
-        final ModelAndView mav = new ModelAndView("restaurantViews/menu/RestaurantMenu");
+        final ModelAndView mav = new ModelAndView("restaurantViews/menu/restaurantMenu");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
 

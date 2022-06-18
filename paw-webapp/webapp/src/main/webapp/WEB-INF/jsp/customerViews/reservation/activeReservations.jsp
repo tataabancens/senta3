@@ -23,7 +23,7 @@
     </div>
 </div>
     <c:if test="${reservationList == 0}">
-        <div class="contentContainer" style="background-color: white;">
+        <div class="contentContainer">
             <div style="display: flex;width: 100%;margin-top: 5%; justify-content: center;">
                 <img src="${pageContext.request.contextPath}/resources/images/vector%20image.jpg"  style="border-radius: 1.2rem;width: 28em;height:23em;" alt="vector img">
                 <div style="display: flex;flex-direction: column;margin-left: 2%;">

@@ -4,10 +4,7 @@ import ar.edu.itba.paw.model.enums.ReservationStatus;
 //import jdk.jfr.Category;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 public class Restaurant {
@@ -89,7 +86,7 @@ public class Restaurant {
     }
 
     public DishCategory createDishCategory(String categoryName) {
-        DishCategory category = new DishCategory(this, categoryName);
+        DishCategory category = new DishCategory(this, categoryName.toUpperCase());
         dishCategories.add(category);
         return category;
     }
