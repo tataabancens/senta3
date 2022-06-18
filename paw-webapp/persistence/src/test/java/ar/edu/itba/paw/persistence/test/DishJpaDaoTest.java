@@ -35,11 +35,17 @@ public class DishJpaDaoTest {
     private static final String USERNAME_EXIST = "Juancho";
     private static final String USERNAME_NOT_EXIST = "Juancho el inexistente";
 
+    private static final String CATEGORY_EXIST = "testCategory";
+    private static final String DISH_EXIST = "testFood";
+    private static final String DISH_EXIST_DESC = "testDescription";
+
+
+
     @Autowired
     private DishJpaDao dishDao;
 
-    @Autowired
-    private UserJpaDao userDao;
+//    @Autowired
+//    private UserJpaDao userDao;
 
     private JdbcTemplate jdbcTemplate;
     private SimpleJdbcInsert jdbcInsertCustomer;
@@ -48,33 +54,32 @@ public class DishJpaDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    //
-//    @Test
-//    @Rollback
-//    public void testGetDishById() {
-//        // 1. Precondiciones
-//
-//
-//        // 2. Ejercitacion
-//        Optional<Dish> dish = dishDao.getDishById(dishId.longValue());
-//
-//        // 3. PostCondiciones
-//        Assert.assertTrue(dish.isPresent());
-//        Assert.assertEquals(dishId.longValue(), dish.get().getId());
-//    }
+
+    @Rollback
+    @Test
+    public void testGetDishById() {
+        // 1. Precondiciones
+
+        // 2. Ejercitacion
+        Optional<Dish> maybeDish = dishDao.getDishById(1);
+
+        // 3. PostCondiciones
+        Assert.assertTrue(maybeDish.isPresent());
+        Assert.assertEquals(1, maybeDish.get().getId());
+    }
 //
 //    @Test
 //    @Rollback
 //    public void testGetDishById_invalid() {
 //        // 1. Precondiciones
-////        cleanAllTables();
-////        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
-////
-////        // 2. Ejercitacion
-////        Optional<Dish> dish = dishDao.getDishById(dishId.longValue()+1);
-////
-////        // 3. PostCondiciones
-////        Assert.assertFalse(dish.isPresent());
+//        cleanAllTables();
+//        Number dishId = insertDish("Empanada", "sin pasas de uva", 100, 1, 1, MAIN_DISH);
+//
+//        // 2. Ejercitacion
+//        Optional<Dish> dish = dishDao.getDishById(dishId.longValue()+1);
+//
+//        // 3. PostCondiciones
+//        Assert.assertFalse(dish.isPresent());
 //    }
 //
 //    @Test
