@@ -6,6 +6,7 @@ import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -35,65 +36,57 @@ public class MailingServiceImpl implements MailingService{
 
     @Async
     @Override
-    public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
+    public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation) {
         Properties properties=setProperties();
         sendCustomerConfirmation(restaurant,customer,reservation,properties);
         sendRestaurantConfirmation(restaurant,customer,reservation,properties);
     }
-    private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
-        Locale locale = new Locale("");
-        String subject = messageSource.getMessage("Mail.subject.customer", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+    private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props) {
+        String subject = messageSource.getMessage("Mail.subject.customer", new Object[]{reservation.getSecurityCode(), restaurant.getMail()},  LocaleContextHolder.getLocale());
         String stringBuilder = customerConfirmationTemplate(restaurant, reservation);
         sendEmail(props,customer.getMail(),subject, stringBuilder);
     }
 
-    private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation){
-        Locale locale = new Locale("");
-        return messageSource.getMessage("Mail.message.customer", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+    private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation) {
+        return messageSource.getMessage("Mail.message.customer", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, LocaleContextHolder.getLocale());
     }
 
-    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
-        Locale locale = new Locale("");
-        String subject = messageSource.getMessage("Mail.subject.restaurant", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties) {
+        String subject = messageSource.getMessage("Mail.subject.restaurant", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, LocaleContextHolder.getLocale());
         String message= restaurantConfirmationTemplate(customer, reservation);
         sendEmail(properties,restaurant.getMail(),subject,message);
     }
 
-    private String restaurantConfirmationTemplate(Customer customer , Reservation reservation){
-        Locale locale = new Locale("");
-        return messageSource.getMessage("Mail.message.restaurant", new Object[]{customer.getCustomerName(), reservation.getReservationOnlyDate(), reservation.getReservationHour()}, locale);
+    private String restaurantConfirmationTemplate(Customer customer , Reservation reservation) {
+        return messageSource.getMessage("Mail.message.restaurant", new Object[]{customer.getCustomerName(), reservation.getReservationOnlyDate(), reservation.getReservationHour()}, LocaleContextHolder.getLocale());
     }
 
     @Async
     @Override
-    public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation){
+    public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation) {
         Properties properties=setProperties();
         sendCustomerCancellation(restaurant,customer,reservation,properties);
         sendRestaurantCancellation(restaurant,customer,reservation,properties);
     }
 
-    private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties){
-        Locale locale = new Locale("");
-        String subject = messageSource.getMessage("Mail.subject.customer.cancel", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+    private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties) {
+        String subject = messageSource.getMessage("Mail.subject.customer.cancel", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, LocaleContextHolder.getLocale());
         String message=customerCancellationTemplate(restaurant, reservation);
         sendEmail(properties,customer.getMail(),subject,message);
     }
 
-    private String customerCancellationTemplate(Restaurant restaurant, Reservation reservation){
-        Locale locale = new Locale("");
-        return messageSource.getMessage("Mail.message.customer.cancel", new Object[]{reservation.getReservationOnlyDate(), reservation.getReservationHour(), restaurant.getRestaurantName()}, locale);
+    private String customerCancellationTemplate(Restaurant restaurant, Reservation reservation) {
+        return messageSource.getMessage("Mail.message.customer.cancel", new Object[]{reservation.getReservationOnlyDate(), reservation.getReservationHour(), restaurant.getRestaurantName()}, LocaleContextHolder.getLocale());
     }
 
-    private void sendRestaurantCancellation(Restaurant restaurant,Customer customer,Reservation reservation,Properties properties){
-        Locale locale = new Locale("");
-        String subject = messageSource.getMessage("Mail.subject.restaurant.cancel", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+    private void sendRestaurantCancellation(Restaurant restaurant,Customer customer,Reservation reservation,Properties properties) {
+        String subject = messageSource.getMessage("Mail.subject.restaurant.cancel", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, LocaleContextHolder.getLocale());
         String message=restaurantCancellationTemplate(customer, reservation);
         sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
-    private String restaurantCancellationTemplate(Customer customer, Reservation reservation){
-        Locale locale = new Locale("");
-        return messageSource.getMessage("Mail.message.restaurant.cancel", new Object[]{reservation.getReservationOnlyDate(), reservation.getReservationHour(), customer.getCustomerName()}, locale);
+    private String restaurantCancellationTemplate(Customer customer, Reservation reservation) {
+        return messageSource.getMessage("Mail.message.restaurant.cancel", new Object[]{reservation.getReservationOnlyDate(), reservation.getReservationHour(), customer.getCustomerName()}, LocaleContextHolder.getLocale());
     }
 
     public void sendEmail(Properties properties, String toEmailAddress,
@@ -123,7 +116,7 @@ public class MailingServiceImpl implements MailingService{
     }
 
 
-    private Properties setProperties(){
+    private Properties setProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.socketFactory.port", "465");
