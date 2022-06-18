@@ -117,7 +117,7 @@
                                 <div class="card-stacked">
                                     <div class="card-content">
                                         <div>
-                                            <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                            <span class="presentation-text info" style="color: #171616;font-size: 1.1rem;"><c:out value="${dish.dishName}"/></span>
                                             <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
                                             <c:if test="${reservation.reservationDiscount}">
                                                 <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
@@ -126,7 +126,7 @@
                                             </c:if>
                                         </div>
                                         <c:if test="${!reservation.reservationDiscount}">
-                                            <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                            <span class="text price info" style="font-weight: 700;font-size: 0.8rem;">$<c:out value="${dish.price}"/></span>
                                         </c:if>
                                     </div>
                                 </div>
@@ -141,8 +141,8 @@
 
 <style>
     .card.horizontal{
-        width: 27em;
-        height: 9rem;
+        width: 30em;
+        height: 8rem;
         margin: 1%;
         box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
         transition: 0.8s;
@@ -155,7 +155,7 @@
     }
     .card.horizontal .card-image{
         object-fit: cover;
-        max-width: 25%;
+        max-width: 20%;
         margin-left: 2%;
     }
     .card.horizontal .card-image img{
@@ -238,12 +238,14 @@
 
     .dish-categories{
         margin-left: 2em;
+        min-width: 500px;
+        width: 80%;
     }
     .dishList{
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
-        width: clamp(30em,100%,105em);
+        width: 100%;
     }
     @media (max-width: 600px){
         .restaurant-content{

@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div style="margin: 0.5%; display: flex;flex-wrap: wrap; align-items: center; min-width: 56em;">
+    <div style="margin: 0.5%; display: flex;flex-wrap: wrap-reverse; align-items: center; min-width: 650px;">
             <c:if test="${reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHECK_ORDERED'}">
                 <c:if test="${!reservation.hand}">
                     <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
@@ -422,7 +422,8 @@
     .dish-categories{
         display: flex;
         flex-direction: column;
-        /*width: clamp(15rem,81%,112rem);*/
+        min-width: 40rem;
+        width: 80%;
     }
     .card.information{
         width: 100%;
@@ -475,8 +476,6 @@
     .dishList{
         display: flex;
         flex-wrap: wrap;
-        min-width: 15rem;
-        width: 100%;
         height: fit-content;
     }
     .categories{
@@ -563,7 +562,13 @@
         color: blue;
         margin-left: 16%;
     }
-
+    @media (max-width: 1100px){
+        .restaurant-header{
+            flex-direction: column;
+            overflow-x: scroll;
+            max-height: 230px;
+        }
+    }
 </style>
 
 <script>

@@ -227,7 +227,7 @@
         overflow-x: hidden;
     }
     nav{
-        background-color: whitesmoke;
+        background-color: white;
     }
     .flex{
         display: flex;
@@ -267,7 +267,7 @@
         background-color: rgb(245, 135, 21);
         color: white;
     }
-    @media (max-width: 600px){
+    @media (max-width: 1100px){
         .primary-navigation{
             position: fixed;
             --gap: 2em;
