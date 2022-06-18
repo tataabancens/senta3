@@ -20,11 +20,6 @@
     <div class="restaurant-info" style="margin-left: 2%;">
         <h1 class="presentation-text header-title"><spring:message code="Customer.profile"/></h1>
     </div>
-    <div style="margin-right: 1.5%;">
-        <a class="btn confirm-btn" href="${pageContext.request.contextPath}/logout">
-            <spring:message code="Navbar.option.logout"/>
-        </a>
-    </div>
 </div>
 <div class="contentContainer">
     <div class="info" style="background-color: whitesmoke;border-radius: .8rem;padding-left: 1.5%;">

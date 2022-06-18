@@ -25,7 +25,6 @@
     <c:url value="/confirmReservation/${reservation.securityCode}" var="postPath"/>
 
     <form:form modelAttribute="confirmReservationForm" action="${postPath}" method="post">
-        <div class="content-container">
             <div class="card register-card">
                 <span class="presentation-text"><spring:message code="Reservation.confirm.check"/></span>
                 <div class="input-field input" style="margin-bottom: 1%">
@@ -44,13 +43,13 @@
                     <form:label path="name" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.name"/></form:label>
                     <form:input path="name"  style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" required="required" maxlength="50" type="text"/>
                 </div>
-                <div style="margin-bottom: 1%">
+                <div style="margin-bottom: 3%">
                     <form:label path="qPeople" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.people" arguments="${reservation.qPeople}"/></form:label>
                 </div>
                 <div style="margin-bottom: 3%">
                     <label style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createreservation.register.date"/><c:out value="${reservation.getReservationOnlyDate()}"/></label>
                 </div>
-                <div style="margin-bottom: 1%">
+                <div style="margin-bottom: 3%">
                     <form:label path="hour" style="font-size:20px; font-family: Lato,sans-serif; color:#463f3f;" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Confirmreservation.hour" arguments="${reservation.reservationHour}"/>hs</form:label>
                 </div>
                 <c:if test="${!isRepeating}">
@@ -67,11 +66,8 @@
                         <input type="submit" value="${label}" class="btn confirm-btn" disabled/>
                     </div>
                 </c:if>
-
             </div>
-        </div>
     </form:form>
-</div>
 
 </body>
 </html>
@@ -92,11 +88,9 @@
     justify-content: center;
     align-content: center;
     flex-direction: column;
-    min-height: 300px;
-    height: 100%;
-    min-width: 250px;
-    width: 100%;
-    padding: 20px;
+    min-width: 20em;
+    width: 30em;
+    padding: 10px;
 }
 form{
     display: flex;

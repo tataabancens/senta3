@@ -66,21 +66,14 @@
     height: 100%;
     padding: 1%;
 }
-.filter-box{
-    width: 20%;
-    height: 100%;
-    padding: 1.1%;
-    border-radius: 1.25em;
-    background-color: white;
-    justify-content: center;
-}
 .presentation-text{
     color: black;
 }
 .card.horizontal{
     border-radius: .8rem;
     margin: 1%;
-    max-height: 11rem;
+    min-height: 18em;
+    height: 25%;
     transition: 0.5s;
 }
 .reservation-list{

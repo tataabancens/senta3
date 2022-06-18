@@ -44,21 +44,25 @@
             </div>
         </div>
     </div>
-    <div style="margin-right: 2%; display: flex;align-items: center;">
+    <div style="margin: 0.5%; display: flex;flex-wrap: wrap; align-items: center; min-width: 56em;">
             <c:if test="${reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHECK_ORDERED'}">
                 <c:if test="${!reservation.hand}">
                     <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
-                    <form:form action="${postUrl_hand}" method="post">
-                        <spring:message code="Fullmenu.waiter.call" var="label"/>
-                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
-                    </form:form>
+                    <div style="margin-right: 1%;">
+                        <form:form action="${postUrl_hand}" method="post">
+                            <spring:message code="Fullmenu.waiter.call" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
+                        </form:form>
+                    </div>
                 </c:if>
                 <c:if test="${reservation.hand}">
                     <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
-                    <form:form action="${postUrl_hand}" method="post">
-                        <spring:message code="Fullmenu.waiter.call.no" var="label"/>
-                        <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
-                    </form:form>
+                    <div style="margin-right: 1%;">
+                        <form:form action="${postUrl_hand}" method="post">
+                            <spring:message code="Fullmenu.waiter.call.no" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description">
+                        </form:form>
+                    </div>
                 </c:if>
             </c:if>
             <div class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em; margin-right: 1%;" id="reservation-toggle" onclick="toggleReservationMenu()" >
@@ -89,7 +93,7 @@
                     </a>
                 </div>
             </c:if>
-        <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 10%" id="shopping-cart" onclick="toggleMenu();">
+        <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 1%;" id="shopping-cart" onclick="toggleMenu();">
             <i class="material-icons" style="color: white; align-content: center; margin-right: 0">shopping_cart</i>
         </div>
     </div>
@@ -360,6 +364,9 @@
         background-color: rgb(255, 242, 229);
         border-radius: 0px;
     }
+    .restaurant-info{
+        min-width: 17em;
+    }
     .presentation-text.header-title.info{
         color: #E63737;
         font-size: clamp(1rem,1.2vw,2rem);
@@ -409,17 +416,13 @@
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: clamp(10rem,15%,17em);
         margin-right: 2%;
         height: 100%;
-    }
-    .presentation-text.text-center{
-        text-align: center;
     }
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: clamp(15rem,81%,112rem);
+        /*width: clamp(15rem,81%,112rem);*/
     }
     .card.information{
         width: 100%;
@@ -558,7 +561,7 @@
     }
     #discounted-price{
         color: blue;
-        margin-left: 12%;
+        margin-left: 16%;
     }
 
 </style>

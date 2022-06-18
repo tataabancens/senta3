@@ -36,7 +36,7 @@ public class MenuController {
     }
 
     @RequestMapping("/")
-    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "2") final String categoryIdP ) {
+    public ModelAndView helloWorld(@RequestParam(name = "category", defaultValue = "1") final String categoryIdP ) {
 
         final ModelAndView mav = new ModelAndView("customerViews/menu/menu");
         ControllerUtils.longParser(categoryIdP).orElseThrow(DishCategoryNotFoundException::new);
@@ -59,7 +59,7 @@ public class MenuController {
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public ModelAndView menu(@RequestParam(name = "reservationSecurityCode", defaultValue = "1") final String reservationSecurityCode,
-                             @RequestParam(name = "category", defaultValue = "2") final String categoryIdP) throws Exception {
+                             @RequestParam(name = "category", defaultValue = "1") final String categoryIdP) throws Exception {
 
         ControllerUtils.longParser(categoryIdP).orElseThrow(DishCategoryNotFoundException::new);
         long categoryId = Long.parseLong(categoryIdP);

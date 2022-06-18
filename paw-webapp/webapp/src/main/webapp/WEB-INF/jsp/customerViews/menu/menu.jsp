@@ -187,7 +187,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: clamp(10rem,15%,17em);
+        padding: 10px;
         height: clamp(34em,100%,40em);
     }
     .categories{
@@ -238,7 +238,6 @@
 
     .dish-categories{
         margin-left: 2em;
-        width: clamp(30em,79%,105em);
     }
     .dishList{
         display: flex;

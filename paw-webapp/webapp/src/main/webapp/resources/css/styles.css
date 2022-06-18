@@ -64,7 +64,6 @@ body{
     align-items: center;
     justify-content: flex-start;
     min-height: 100px;
-    max-height: 150px;
 }
 .presentation-text.restaurant-description{
     color: rgb(255, 68, 31);
