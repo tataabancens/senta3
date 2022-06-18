@@ -33,17 +33,34 @@ CREATE TABLE IF NOT EXISTS image
     bitmap bytea
 );
 
+
+CREATE TABLE IF NOT EXISTS dishcategory (
+    id SERIAL PRIMARY KEY,
+    name varchar(50),
+    restaurant_id int,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (restaurantId)
+);
+
+
+
 CREATE TABLE IF NOT EXISTS dish (
-  dishId SERIAL PRIMARY KEY,
-  restaurantId int NOT NULL,
-  dishName varchar(100) NOT NULL,
-  price int NOT NULL,
-  dishDescription varchar(200) NOT NULL,
-  FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
+    dishId SERIAL PRIMARY KEY,
+    restaurantId int NOT NULL,
+    dishName varchar(100) NOT NULL,
+    price int NOT NULL,
+    dishDescription varchar(200) NOT NULL,
+    imageId int default 1 not null,
+    category_id int default 1 not null,
+    category varchar(100) default 'MAIN_DISH' not null,
+    FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
+    FOREIGN KEY (category_id) REFERENCES dishcategory (id)
 );
 
 ALTER TABLE dish ADD IF NOT EXISTS imageId integer default 1 NOT NULL;
 ALTER TABLE dish ADD IF NOT EXISTS category varchar(100) DEFAULT 'MAIN_DISH' NOT NULL;
+-- ALTER TABLE dish ADD IF NOT EXISTS category_id int default 1 not null
+-- Constraint fk_category_id references dishcategory on update cascade;
+
 
 CREATE TABLE IF NOT EXISTS reservation (
     reservationId   SERIAL PRIMARY KEY,

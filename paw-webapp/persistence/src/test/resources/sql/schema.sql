@@ -44,6 +44,14 @@ CREATE TABLE IF NOT EXISTS restaurant (
 --     bitmap bytea
 -- );
 
+
+CREATE TABLE IF NOT EXISTS dishcategory (
+    id SERIAL PRIMARY KEY,
+    name varchar(50),
+    restaurant_id int,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (restaurantId)
+    );
+
 CREATE TABLE IF NOT EXISTS dish (
     dishId SERIAL PRIMARY KEY,
     restaurantId int NOT NULL,
@@ -51,8 +59,10 @@ CREATE TABLE IF NOT EXISTS dish (
     price int NOT NULL,
     dishDescription varchar(200) NOT NULL,
     imageId int default 1 not null,
+    category_id int default 1 not null,
     category varchar(100) default 'MAIN_DISH' not null,
-    FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId)
+    FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
+    FOREIGN KEY (category_id) REFERENCES dishcategory (id)
     );
 
 
@@ -100,6 +110,11 @@ VALUES (1, 'Juancho', 541124557633, 'juan@gmail.com', 2);
 
 INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
 VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
+
+INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category)
+VALUES (1, 1, "Empanada", 100, "De carne", 1, "TEST_DISH");
+
+
 
 
 

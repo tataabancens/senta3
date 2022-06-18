@@ -53,7 +53,6 @@ public class CustomerJpaDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    //private ReservationJdbcDao reservationDao = new ReservationJdbcDao(null);
 
     private Number insertCustomer(String customerName, String phone, String mail, long userId){
         Customer newCustomer = new Customer(customerName, phone, mail, userId, 0);
