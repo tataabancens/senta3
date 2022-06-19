@@ -103,9 +103,13 @@ INSERT INTO users (userId, username, password)
 VALUES (1, 'Pepito', '123');
 INSERT INTO users (userId, username, password)
 VALUES (2, 'Juancho', '123');
+INSERT INTO users (userId, username, password)
+VALUES (3, 'Camila', '123');
 
 INSERT INTO customer (customerId, customerName, Phone, Mail, userId)
 VALUES (1, 'Juancho', 541124557633, 'juan@gmail.com', 2);
+INSERT INTO customer (customerId, customerName, Phone, Mail, userId)
+VALUES (2, 'Camila', 541124557634, 'juan@gmail.com', 3);
 
 INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
 VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
@@ -115,6 +119,22 @@ VALUES (1, 'testCategory', 1);
 
 INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
 VALUES (1, 1, 'testFood', 100, 'testDescription', 1, 1);
+INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
+VALUES (2, 1, 'testFood2', 100, 'testDescription', 1, 1);
+INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
+VALUES (3, 1, 'testFood3', 100, 'testDescription', 1, 1);
+
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, reservationDate, tableNumber, hand, isToday)
+VALUES (1, 1, 1, 12, 1, 1, false, now(), 1, false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, reservationDate, tableNumber, hand, isToday)
+VALUES (2, 1, 2, 12, 1, 1, false, now(), 1, false, true);
+
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (1, 1, 1, 100, 1, 1);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (2, 2, 1, 100, 1, 1);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (3, 1, 2, 100, 1, 0);
 
 
 
