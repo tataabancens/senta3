@@ -30,23 +30,26 @@
                 <div class="title">
                     <span class="presentation-text"><spring:message code="Register.login"/></span>
                 </div>
-            <div>
-                <label for="username"><spring:message code="Register.user"/> </label>
-                <input id="username" name="username" type="text"/>
-            </div>
-            <div>
-                <label for="password"><spring:message code="Register.password"/></label>
-                <input id="password" name="password" type="password"/>
-            </div>
-            <div class="rememberme">
-                <label>
-                    <input type="checkbox" class="filled-in blue" name="rememberme"/>
-                    <span><spring:message code="Register.rememberme"/></span>
-                </label>
-            </div>
-            <div class="row center smaller">
-                <input class="btn confirm-btn center" type="submit" value="Ingresar"/>
-            </div>
+                <c:if test="${param.error!=null}">
+                    <p style="color: red"><spring:message code="Register.failed"/></p>
+                </c:if>
+                <div>
+                    <label for="username"><spring:message code="Register.user"/> </label>
+                    <input id="username" name="username" type="text"/>
+                </div>
+                <div>
+                    <label for="password"><spring:message code="Register.password"/></label>
+                    <input id="password" name="password" type="password"/>
+                </div>
+                <div class="rememberme">
+                    <label>
+                        <input type="checkbox" class="filled-in blue" name="rememberme"/>
+                        <span><spring:message code="Register.rememberme"/></span>
+                    </label>
+                </div>
+                <div class="row center smaller">
+                    <input class="btn confirm-btn center" type="submit" value="Ingresar"/>
+                </div>
             </div>
         </form>
 </div>

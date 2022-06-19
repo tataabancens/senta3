@@ -86,7 +86,7 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
 
-        return new ModelAndView("customerRegister");
+        return new ModelAndView("customerViews/customerRegister");
     }
 
 
