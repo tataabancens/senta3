@@ -33,7 +33,7 @@
 </div>
 <div class="content-container">
     <div class="card incoming-orders">
-        <div style="position: absolute;top: 0;">
+        <div>
             <span class="presentation-text title"><h5><spring:message code="Kitchen.new.orders.title"/></h5></span>
         </div>
         <div class="cardContainer">
@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="card finished-orders">
-        <div style="position: absolute;top: 0;">
+        <div>
             <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
         </div>
         <div class="cardContainer">
@@ -118,7 +118,6 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        justify-content: center;
         padding: 10px;
         min-height: 30em;
         width: 48%;
@@ -128,7 +127,6 @@
     .card.finished-orders{
         display: flex;
         flex-direction: column;
-        justify-content: center;
         padding: 10px;
         width: 48%;
         min-height: 30em;

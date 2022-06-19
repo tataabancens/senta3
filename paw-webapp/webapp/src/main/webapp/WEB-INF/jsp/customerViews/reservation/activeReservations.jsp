@@ -38,8 +38,7 @@
             <div class="reservation-list">
                 <c:forEach var="reservation" items="${reservations}">
                     <div class="card horizontal">
-                        <a href="<c:url value="menu/?reservationSecurityCode=${reservation.securityCode}"/>">
-                            <div class="card-stacked">
+                        <a href="<c:url value="menu/?reservationSecurityCode=${reservation.securityCode}"/>" class="card-stacked">
                                 <div class="card-content">
                                     <span class="presentation-text">${reservation.restaurant.restaurantName}</span>
                                     <p class="text description"><spring:message code="Customer.activereservations.code" arguments="${reservation.securityCode}"/></p>
@@ -47,9 +46,7 @@
                                     <p class="text description"><spring:message code="Customer.activereservations.hour" arguments="${reservation.reservationHour}"/>hs</p>
                                     <p class="text description"><spring:message code="Customer.activereservations.people" arguments="${reservation.qPeople}"/></p>
                                     <p class="text description"><spring:message code="Customer.activereservations.who" arguments="${customer.customerName}"/></p>
-
                                 </div>
-                            </div>
                         </a>
                     </div>
                 </c:forEach>
