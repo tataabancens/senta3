@@ -29,13 +29,8 @@
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
-    <div class="restaurant-info" style="margin-left: 2%;">
-        <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
-    </div>
-</div>
 
-<div class="tabs">
+<div class="tabs" >
     <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/open"/>">
         <span class="secondary-text tab">OPEN</span>
     </a>
@@ -223,20 +218,12 @@
     .blue {
         background-color: blue;
     }
-    .red{
-        background-color: red;
-    }
     .pagination-indicator{
         display: flex;
         justify-content: center;
         align-items: center;
         align-self: end;
         margin-top: 2rem;
-    }
-    .table-cell.status{
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
     }
 
     .tabs{
