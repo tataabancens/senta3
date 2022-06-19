@@ -175,6 +175,9 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public List<OrderItem> getOrderItemsByStatusListAndReservation(Long reservationId, List<OrderItemStatus> statusList) {
+        if(statusList.isEmpty()){
+            return new ArrayList<>();
+        }
         final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
         idQuery.setParameter("reservationid", reservationId);
         @SuppressWarnings("unchecked")

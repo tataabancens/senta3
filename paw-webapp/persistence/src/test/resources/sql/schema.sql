@@ -133,6 +133,8 @@ INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour
 VALUES (3, 1, 1, 12, 0, 1, false, now(), now(), 3, 'AAAAA2', false, true);
 INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
 VALUES (4, 1, 2, 12, 0, 1, false, now(), now(), 4, 'BBBBB2', false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (5, 1, 2, 12, 0, 1, false, now(), NOW() + INTERVAL 1 DAY, 4, 'BBBBB2', false, true);
 
 INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
 VALUES (1, 1, 1, 100, 1, 1);
@@ -140,6 +142,10 @@ INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
 VALUES (2, 2, 1, 100, 1, 1);
 INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
 VALUES (3, 1, 2, 100, 1, 0);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (4, 1, 2, 100, 1, 2);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (5, 1, 2, 100, 1, 1);
 
 
 
