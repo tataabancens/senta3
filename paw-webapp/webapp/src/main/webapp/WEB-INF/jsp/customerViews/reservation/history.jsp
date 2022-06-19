@@ -22,11 +22,6 @@
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
-<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
-    <div class="restaurant-info" style="margin-left: 2%;">
-        <h1 class="presentation-text header-title"><spring:message code="History.title"/></h1>
-    </div>
-</div>
 <div class="contentContainer">
     <div class="points">
         <div class="reservations-header">
