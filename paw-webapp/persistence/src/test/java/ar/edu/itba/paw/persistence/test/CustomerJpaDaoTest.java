@@ -46,10 +46,6 @@ public class CustomerJpaDaoTest {
     @Autowired
     private UserJpaDao userDao;
 
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsertCustomer;
-    private SimpleJdbcInsert jdbcInsertUser;
-
     @PersistenceContext
     private EntityManager em;
 

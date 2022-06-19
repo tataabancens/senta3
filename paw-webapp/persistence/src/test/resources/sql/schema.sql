@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     startedAtTime timestamp default now(),
     reservationDate timestamp,
     tableNumber integer default 0,
+    securityCode varchar(6),
     hand boolean default false NOT NULL,
     isToday boolean default false NOT NULL,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
@@ -124,10 +125,10 @@ VALUES (2, 1, 'testFood2', 100, 'testDescription', 1, 1);
 INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
 VALUES (3, 1, 'testFood3', 100, 'testDescription', 1, 1);
 
-INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, reservationDate, tableNumber, hand, isToday)
-VALUES (1, 1, 1, 12, 1, 1, false, now(), 1, false, true);
-INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, reservationDate, tableNumber, hand, isToday)
-VALUES (2, 1, 2, 12, 1, 1, false, now(), 1, false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (1, 1, 1, 12, 1, 1, false, now(), now(), 1, 'AAAAAA', false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (2, 1, 2, 12, 1, 1, false, now(), now(), 2, 'BBBBBB', false, true);
 
 INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
 VALUES (1, 1, 1, 100, 1, 1);
