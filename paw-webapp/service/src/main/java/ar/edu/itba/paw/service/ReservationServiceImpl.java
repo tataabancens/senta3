@@ -6,6 +6,7 @@ import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,14 +157,14 @@ public class ReservationServiceImpl implements ReservationService {
     public void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
         updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
         updateReservationStatus(reservation, ReservationStatus.OPEN);
-        mailingService.sendConfirmationEmail(restaurant, customer, reservation);
+        mailingService.sendConfirmationEmail(restaurant, customer, reservation , LocaleContextHolder.getLocale());
     }
 
     @Transactional
     @Override
     public void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
         updateReservationStatus(reservation, ReservationStatus.CANCELED);
-        mailingService.sendCancellationEmail(restaurant,customer,reservation);
+        mailingService.sendCancellationEmail(restaurant,customer,reservation, LocaleContextHolder.getLocale());
     }
 
     @Transactional
