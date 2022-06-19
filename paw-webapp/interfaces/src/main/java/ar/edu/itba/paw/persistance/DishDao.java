@@ -8,7 +8,6 @@ public interface DishDao {
 
     Optional<Dish> getDishById(long id);
 
-    void updateDishPhoto(long dishId, long imageId);
 
     void deleteDish(long dishId);
 

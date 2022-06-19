@@ -24,11 +24,6 @@ public class DishJpaDao implements DishDao {
     }
 
     @Override
-    public void updateDishPhoto(long dishId, long imageId) {
-
-    }
-
-    @Override
     public void deleteDish(long dishId) {
 
     }
@@ -42,11 +37,11 @@ public class DishJpaDao implements DishDao {
                 "              where orderitem.reservationid = :reservationid and reservation.reservationid = orderitem.reservationid\n" +
                 "              group by dishid, reservation.reservationid)\n" +
                 "\n" +
-                "        (select customersOrdered.dishId as defDishId, sum(customersOrdered.sum) as defsum\n" +
+                "        (select customersOrdered.dishId as defDishId, sum(customersOrdered.suma) as defsum\n" +
                 "         from (select dishid, sum(quantity), reservation.reservationId\n" +
                 "               from orderitem, reservation\n" +
                 "               where orderitem.reservationid = reservation.reservationid\n" +
-                "               group by dishid, reservation.reservationid) as customersOrdered (dishId, sum, reservationId),\n" +
+                "               group by dishid, reservation.reservationid) as customersOrdered (dishId, suma, reservationId),\n" +
                 "              currentOrderedCTE as currentOrdered (currentDish, currentReservationId)\n" +
                 "         where currentReservationId <> customersOrdered.reservationId\n" +
                 "           and dishId not in (select dishId from currentOrderedCTE)\n" +
@@ -72,16 +67,6 @@ public class DishJpaDao implements DishDao {
         if (idQuery.getSingleResult() == null) {
             return Optional.empty();
         }
-
-//        @SuppressWarnings("unchecked")
-//        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
-//                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
-//
-//        if (!ids.isEmpty()) {
-
-//        } else {
-//            return Optional.empty();
-//        }
 
         final Long id = Integer.toUnsignedLong((Integer)idQuery.getResultList().stream().findFirst().get());
 
