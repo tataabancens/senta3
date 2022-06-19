@@ -416,6 +416,8 @@
     .orders-and-info{
         display: flex;
         flex-direction: column;
+        min-width: 18rem;
+        width: 15%;
         margin-right: 2%;
         height: 100%;
     }

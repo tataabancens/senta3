@@ -64,7 +64,7 @@
 .card.horizontal{
     border-radius: .8rem;
     margin: 1%;
-    min-height: 18em;
+    min-height: 12em;
     height: 25%;
     transition: 0.5s;
 }

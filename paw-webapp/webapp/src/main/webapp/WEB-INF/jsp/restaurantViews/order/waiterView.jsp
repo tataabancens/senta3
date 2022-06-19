@@ -33,7 +33,6 @@
         </div>
         <div class="cardContainer">
             <c:forEach var="reservation" items="${reservations}">
-
                 <c:if test="${reservation.hand}">
                     <div class="card order-card">
                         <div class="card-content white-text">
@@ -57,6 +56,11 @@
             <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
         </div>
         <div class="cardContainer">
+            <c:if test="${finishedItems.size() == 0}">
+                <div style="display: flex; justify-content: center;width: 100%;">
+                    <span class="presentation-text title"><h11><spring:message code="Kitchen.order.no"/></h11></span>
+                </div>
+            </c:if>
             <c:forEach var="reservation" items="${reservations}">
                 <c:forEach var="item" items="${finishedItems}">
                     <c:if test="${item.reservation.id == reservation.id}">

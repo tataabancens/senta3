@@ -49,7 +49,7 @@
             </div>
             <div class="dish-categories">
                 <div class="category-field">
-                    <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></h3>
+                    <span class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></span>
                     <div style="display: flex;">
                         <a href="<c:url value="/restaurant=${restaurantId}/category=${currentCategory}/edit"/>">
                             <i class="small material-icons category-field">edit</i>

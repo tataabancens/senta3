@@ -60,7 +60,7 @@
         </div>
         <div class="cardContainer">
             <c:if test="${finishedItems.size() == 0}">
-                <div style="display: flex; justify-content: center;width: 100%;">
+                <div style="display: flex; justify-content: center;align-items: center;margin-top: 20%; width: 100%;">
                     <span class="presentation-text title"><h11><spring:message code="Kitchen.order.no"/></h11></span>
                 </div>
             </c:if>

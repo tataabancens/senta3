@@ -94,8 +94,8 @@
                     </div>
                 </div>
                 <div class="dish-categories">
-                    <div>
-                        <h3 class="presentation-text header-title"><c:out value="${currentCategory.name}"/></h3>
+                    <div class="category-field">
+                        <span class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></span>
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
@@ -235,7 +235,14 @@
         flex-direction: row;
         justify-content: center;
     }
-
+    .category-field{
+        background-color: rgb(255, 68, 31);
+        align-items: center;
+        justify-content: space-between;
+        height: 3em;
+        border-radius: .8rem;
+        display: flex;
+    }
     .dish-categories{
         margin-left: 2em;
         min-width: 500px;
