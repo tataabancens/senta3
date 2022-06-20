@@ -30,7 +30,7 @@
                         <div>
                             <form:errors path="securityCode" element="p" cssClass="error"/>
                             <form:label path="securityCode">Codigo:</form:label>
-                            <form:input type="text" path="securityCode"/>
+                            <form:input type="text" path="securityCode" required="required"/>
                         </div>
                     </div>
                     <div class="submit center">
@@ -44,7 +44,13 @@
 </html>
 
 <style>
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
     .form-container{
         display: flex;
         padding-top: 30px;

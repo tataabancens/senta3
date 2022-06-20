@@ -132,29 +132,4 @@ public class CustProfileController {
         return new ModelAndView("redirect:/profile");
     }
 
-    @RequestMapping(value = "/profile/editUsername", method = RequestMethod.GET)
-    public ModelAndView profileEditUsername(final Principal principal,
-                                        @ModelAttribute("editUsernameForm") final EditNameForm form){
-
-        String username = principal.getName();
-
-        ModelAndView mav = new ModelAndView("customerViews/custProfile/editUsername");
-        form.setName(username);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/profile/editUsername", method = RequestMethod.POST)
-    public ModelAndView profileEditUsernamePost(final Principal principal,
-                                                @Valid @ModelAttribute("editNameForm") final EditNameForm form,
-                                                final BindingResult errors){
-        if (errors.hasErrors()) {
-            return profileEditUsername(principal, form);
-        }
-
-        us.updateUsername(principal.getName(), form.getName());
-
-        return new ModelAndView("redirect:/profile");
-    }
-
 }

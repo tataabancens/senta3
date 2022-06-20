@@ -78,9 +78,6 @@
                 <span class="presentation-text"><spring:message code="Register.user"/> </span>
                 <span class="text description">${username}</span>
             </div>
-            <a class="waves-effect waves-light btn-floating btn-small plus-btn info-field" style="margin-left: 10px;" href="<c:url value="/profile/editUsername"/>">
-                <i class="material-icons info-field">edit</i>
-            </a>
         </div>
     </div>
 </div>
