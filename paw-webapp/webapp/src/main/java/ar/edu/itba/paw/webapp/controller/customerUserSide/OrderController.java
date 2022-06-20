@@ -137,7 +137,6 @@ public class OrderController {
                                       @RequestParam(name = "restaurantId", defaultValue = "1") final String restaurantIdP) throws Exception {
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
-
         res.updateOrderItemsStatus(reservation, OrderItemStatus.SELECTED, OrderItemStatus.ORDERED);
 
         return new ModelAndView("redirect:/order/order-confirmation?reservationSecurityCode="+ reservationSecurityCode);
@@ -146,18 +145,12 @@ public class OrderController {
     @RequestMapping(value= "/order/applyDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView order_applyDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
 
-        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        //long reservationId = Long.parseLong(reservationIdP);
-
         res.applyDiscount(reservationIdP);
         return new ModelAndView("redirect:/order/send-food?reservationSecurityCode=" + reservationIdP);
     }
 
     @RequestMapping(value= "/order/cancelDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView order_cancelDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
-
-        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        //long reservationId = Long.parseLong(reservationIdP);
 
         res.cancelDiscount(reservationIdP);
         return new ModelAndView("redirect:/order/send-food?reservationSecurityCode=" + reservationIdP);
@@ -194,11 +187,7 @@ public class OrderController {
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
         List<OrderItem> orderItems = res.getAllOrderItemsByReservation(reservation);
 
-        cs.addPointsToCustomer(customer, res.getTotal(orderItems));
-
-        res.updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
-        res.updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
-
+        res.orderReceipt(reservation, customer, orderItems);
         return new ModelAndView("redirect:/order/send-receipt/confirmed?restaurantId=" + restaurantId + "&points=" + cs.getPoints(res.getTotal(orderItems)));
     }
 

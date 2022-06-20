@@ -43,11 +43,8 @@ public class MenuController {
         long categoryId = Long.parseLong(categoryIdP);
         LOGGER.info("Attempting to show menu");
 
-        Restaurant restaurant=rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
-
-        // deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
-        //restaurant.setDishes(dishes);
 
         mav.addObject("restaurant", restaurant);
         mav.addObject("dishes", restaurant.getDishesByCategory(dishCategory));
@@ -66,8 +63,6 @@ public class MenuController {
 
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
-//        deprecated List<Dish> dishes = rs.getRestaurantDishesByCategory(1, DishCategory.valueOf(category));
-//        restaurant.setDishes(dishes);
 
         Reservation reservation = res.getReservationByIdAndIsActive(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
@@ -114,18 +109,12 @@ public class MenuController {
     @RequestMapping(value= "/menu/applyDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView applyDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
 
-        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        //long reservationId = Long.parseLong(reservationIdP);
-
         res.applyDiscount(reservationIdP);
         return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationIdP);
     }
 
     @RequestMapping(value= "/menu/cancelDiscount/{reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView cancelDiscount(@PathVariable("reservationSecurityCode") final String reservationIdP) throws Exception {
-
-        //ControllerUtils.longParser(reservationIdP).orElseThrow(() -> new LongParseException(reservationIdP));
-        //long reservationId = Long.parseLong(reservationIdP);
 
         res.cancelDiscount(reservationIdP);
         return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationIdP);
@@ -135,7 +124,6 @@ public class MenuController {
     public ModelAndView raiseOrLowerHand(@PathVariable("reservationSecurityCode") final String reservationIdP) {
 
         res.raiseHand(reservationIdP);
-
         return new ModelAndView("redirect:/menu?reservationSecurityCode=" + reservationIdP);
     }
 

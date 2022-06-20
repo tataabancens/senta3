@@ -7,7 +7,9 @@ import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -38,7 +40,8 @@ public class DishServiceImpl implements DishService {
 
     @Transactional
     @Override
-    public void updateDishPhoto(long dishId, long imageId) {
+    public void updateDishPhoto(long dishId, CommonsMultipartFile photo) throws IOException {
+        long imageId = imageDao.create(photo);
         Optional<Dish> maybeDish = dishDao.getDishById(dishId);
         if(maybeDish.isPresent()) {
             Dish dish = maybeDish.get();

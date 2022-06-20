@@ -124,6 +124,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public void orderReceipt(Reservation reservation, Customer customer, List<OrderItem> orderItems) {
+        updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
+        updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
+        customerService.addPointsToCustomer(customer, getTotal(orderItems));
+    }
+
+    @Transactional
+    @Override
     public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
         Reservation reservation = customer.createReservation(restaurant, reservationHour, qPeople, LocalDateTime.now(), LocalDateTime.now());
         return reservation;

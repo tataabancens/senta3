@@ -91,4 +91,6 @@ public interface ReservationService {
     Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople);
 
     void updateReservationHourBySecurityCode(Reservation reservation, int hour, int getqPeople);
+
+    void orderReceipt(Reservation reservation, Customer customer, List<OrderItem> orderItems);
 }
