@@ -69,11 +69,11 @@ public class CustProfileController {
         }
         String username = principal.getName();
 
-        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer, form.getName(), customer.getPhone(), customer.getMail());
+        cs.updateCustomerNameByUsername(username, form.getName());
 
         return new ModelAndView("redirect:/profile");
     }
+
     @RequestMapping(value = "/profile/editPhone", method = RequestMethod.GET)
     public ModelAndView profileEditPhone(final Principal principal,
                                         @ModelAttribute("editPhoneForm") final EditPhoneForm form){
@@ -97,8 +97,7 @@ public class CustProfileController {
         }
         String username = principal.getName();
 
-        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer, customer.getCustomerName(), form.getPhone(), customer.getMail());
+        cs.updateCustomerPhoneByUsername(username, form.getPhone());
 
         return new ModelAndView("redirect:/profile");
     }
@@ -125,9 +124,7 @@ public class CustProfileController {
             return profileEditMail(principal, form);
         }
         String username = principal.getName();
-
-        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer, customer.getCustomerName(), customer.getPhone(), form.getMail());
+        cs.updateCustomerMailByUsername(username, form.getMail());
 
         return new ModelAndView("redirect:/profile");
     }

@@ -58,10 +58,33 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public void updateCustomerData(Customer customer, String name, String phone, String mail) {
-        customer.setCustomerName(name);
-        customer.setPhone(phone);
-        customer.setMail(mail);
+    public void updateCustomerDataByUsername(String username, String name, String phone, String mail) {
+        customerDao.getCustomerByUsername(username).ifPresent(c -> {
+            c.setCustomerName(name);
+            c.setPhone(phone);
+            c.setMail(mail);
+        });
+    }
+
+    @Override
+    public void updateCustomerNameByUsername(String username, String name) {
+        customerDao.getCustomerByUsername(username).ifPresent(c -> {
+            c.setMail(name);
+        });
+    }
+
+    @Override
+    public void updateCustomerMailByUsername(String username, String mail) {
+        customerDao.getCustomerByUsername(username).ifPresent(c -> {
+            c.setMail(mail);
+        });
+    }
+
+    @Override
+    public void updateCustomerPhoneByUsername(String username, String phone) {
+        customerDao.getCustomerByUsername(username).ifPresent(c -> {
+            c.setPhone(phone);
+        });
     }
 
     public float getDiscountCoefficient() {

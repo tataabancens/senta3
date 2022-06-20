@@ -22,5 +22,11 @@ public interface CustomerService {
 
     int getPoints(float total);
 
-    void updateCustomerData(Customer customer, String name, String phone, String mail);
+    void updateCustomerDataByUsername(String username, String name, String phone, String mail);
+
+    void updateCustomerMailByUsername(String username, String mail);
+
+    void updateCustomerPhoneByUsername(String username, String phone);
+
+    void updateCustomerNameByUsername(String username, String name);
 }
