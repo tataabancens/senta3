@@ -93,4 +93,8 @@ public interface ReservationService {
     void updateReservationHourBySecurityCode(Reservation reservation, int hour, int getqPeople);
 
     void orderReceipt(Reservation reservation, Customer customer, List<OrderItem> orderItems);
+
+    void seatCustomer(Reservation reservation, int seatNumber);
+
+    void finishCustomerReservation(Reservation reservation);
 }

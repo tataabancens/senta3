@@ -386,16 +386,28 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReservationStatus(newStatus);
     }
 
+    @Transactional
+    @Override
+    public void seatCustomer(Reservation reservation, int seatNumber) {
+        updateReservationStatus(reservation, ReservationStatus.SEATED);
+        updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
+        setTableNumber(reservation, seatNumber);
+    }
 
+    @Transactional
+    @Override
+    public void finishCustomerReservation(Reservation reservation) {
+        List<OrderItem> orderItems = getAllOrderItemsByReservation(reservation);
+        updateReservationStatus(reservation, ReservationStatus.FINISHED);
+        customerService.addPointsToCustomer(reservation.getCustomer(), getTotal(orderItems));
+    }
 
     @Scheduled(cron = "0 1/31 * * * ?")
     @Transactional
     @Override
     public void checkReservationTime() {
         LocalDateTime now = LocalDateTime.now();
-        Restaurant restaurant = restaurantService.getRestaurantById(1).get();
 
-        //List<Reservation> allReservations = restaurant.getReservations();
         List<Reservation> allReservations = reservationDao.getReservationsOfToday(1);
 
         for(Reservation reservation :allReservations){

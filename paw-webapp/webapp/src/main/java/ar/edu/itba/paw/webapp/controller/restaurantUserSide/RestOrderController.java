@@ -41,10 +41,6 @@ public class RestOrderController {
 
         final ModelAndView mav = new ModelAndView("restaurantViews/order/orders");
         List<Reservation> reservations = res.getReservationsSeated(restaurant);
-
-        for (Reservation reservation : reservations) {
-            res.updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
-        }
         List<OrderItem> incomingItems = res.getOrderItemsByStatus(OrderItemStatus.INCOMING);
         List<OrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
 
@@ -101,15 +97,10 @@ public class RestOrderController {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        List<Reservation> reservations = res.getReservationsSeated(restaurant);
+        List<OrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/order/waiterView");
-        List<Reservation> reservations = res.getReservationsSeated(restaurant);
-
-        for (Reservation reservation : reservations) {
-            res.updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
-        }
-
-        List<OrderItem> finishedItems = res.getOrderItemsByStatus(OrderItemStatus.FINISHED);
 
         mav.addObject("reservations", reservations);
         mav.addObject("finishedItems", finishedItems);
@@ -123,11 +114,8 @@ public class RestOrderController {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
 
-
         res.raiseHand(reservationSecurityCodeP);
-
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/waiter");
 
     }
-
 }

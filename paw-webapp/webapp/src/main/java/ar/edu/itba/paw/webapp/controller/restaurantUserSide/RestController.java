@@ -39,9 +39,9 @@ public class RestController {
                                           final Principal principal) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
-        Restaurant restaurant=rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(Long.parseLong(restaurantIdP)).orElseThrow(RestaurantNotFoundException::new);
 
-        ModelAndView mav=new ModelAndView("restaurantViews/restaurantProfile");
+        ModelAndView mav = new ModelAndView("restaurantViews/restaurantProfile");
         mav.addObject("restaurant", restaurant);
         mav.addObject("username", principal.getName());
         return mav;
@@ -111,11 +111,10 @@ public class RestController {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantName");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
+        final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantName");
         mav.addObject("restaurant", restaurant);
-
         form.setName(restaurant.getRestaurantName());
         return mav;
     }
@@ -142,12 +141,10 @@ public class RestController {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
-
-        final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantPhone");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
+        final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantPhone");
         mav.addObject("restaurant", restaurant);
-
         form.setPhone(restaurant.getPhone());
         return mav;
     }
@@ -175,12 +172,10 @@ public class RestController {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
-
-        final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantEmail");
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
+        final ModelAndView mav = new ModelAndView("restaurantViews/editRestaurant/editRestaurantEmail");
         mav.addObject("restaurant", restaurant);
-
         form.setMail(restaurant.getMail());
         return mav;
     }
@@ -192,13 +187,11 @@ public class RestController {
         if (errors.hasErrors()) {
             return editEmailForm(restaurantIdP, form);
         }
-
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
+
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         rs.updateRestaurantEmail(restaurant, form.getMail());
-
         return new ModelAndView("redirect:/restaurant=" + restaurantId + "/profile");
     }
-
 }
