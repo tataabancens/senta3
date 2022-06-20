@@ -87,4 +87,8 @@ public interface ReservationService {
     void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation);
 
     void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation);
+
+    Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople);
+
+    void updateReservationHourBySecurityCode(Reservation reservation, int hour, int getqPeople);
 }

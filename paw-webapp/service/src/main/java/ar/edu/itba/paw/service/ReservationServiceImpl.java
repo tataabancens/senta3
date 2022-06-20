@@ -118,8 +118,23 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public void updateReservationHourBySecurityCode(Reservation reservation, int hour, int getqPeople) {
+        reservation.setReservationHour(hour);
+    }
+
+    @Transactional
+    @Override
     public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople) {
-        Reservation reservation = customer.createReservation(restaurant, customer, reservationHour, qPeople, LocalDateTime.now(), LocalDateTime.now());
+        Reservation reservation = customer.createReservation(restaurant, reservationHour, qPeople, LocalDateTime.now(), LocalDateTime.now());
+        return reservation;
+    }
+
+    @Transactional
+    @Override
+    public Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople) {
+        Reservation reservation = customer.createReservation(restaurant, 0, qPeople, LocalDateTime.now(), LocalDateTime.now());
+        setReservationSecurityCode(reservation);
+        updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
         return reservation;
     }
 

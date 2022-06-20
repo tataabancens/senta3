@@ -39,6 +39,7 @@ public class CustReservationController {
                                     final Principal principal){
 
         ModelAndView mav = new ModelAndView("customerViews/reservation/history");
+
         rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
         List<Reservation> reservations = res.getReservationsByCustomerAndStatus(customer, ReservationStatus.FINISHED);
@@ -100,10 +101,7 @@ public class CustReservationController {
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
         Customer maybeCustomer = cs.getCustomerById(1).orElseThrow(CustomerNotFoundException::new);
 
-        Reservation reservation = res.createReservation(restaurant, maybeCustomer, 0, Integer.parseInt(form.getNumber()));
-        res.setReservationSecurityCode(reservation);
-        res.updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
-
+        Reservation reservation = res.createMaybeReservation(restaurant, maybeCustomer, Integer.parseInt(form.getNumber()));
 
         return new ModelAndView("redirect:/createReservation-2/" + reservation.getSecurityCode());
     }
@@ -126,6 +124,7 @@ public class CustReservationController {
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
 
         ControllerUtils.timestampParser(form.getDate()).orElseThrow(() -> new LongParseException("" + reservation.getId())); //actúa como un isPresent
+
         LocalDateTime reservationDate = ControllerUtils.timestampParser(form.getDate()).get();
         res.updateReservationDateById(reservation, reservationDate);
 
@@ -157,12 +156,10 @@ public class CustReservationController {
             return createReservation_3(reservationSecurityCode, form);
         }
 
-        long hour = Long.parseLong(form.getNumber());
-
+        int hour = Integer.parseInt(form.getNumber());
 
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-        Customer maybeCustomer = new Customer(1, "", "", "", 0);
-        res.updateReservationById(reservation, maybeCustomer, hour, reservation.getqPeople());
+        res.updateReservationHourBySecurityCode(reservation, hour, reservation.getqPeople());
 
         return new ModelAndView("redirect:/createReservation-3/" + reservation.getSecurityCode() + "/redirect");
 
@@ -191,11 +188,6 @@ public class CustReservationController {
         Restaurant restaurant = rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new);
 
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
-//        res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
-//        res.updateReservationStatus(reservation, ReservationStatus.OPEN);
-//        ms.sendConfirmationEmail(rs.getRestaurantById(1).orElseThrow(RestaurantNotFoundException::new),
-//                customer,reservation);
-
         res.finishReservation(restaurant, customer, reservation);
 
         return new ModelAndView("redirect:/notify/" + reservationSecurityCode);
@@ -233,9 +225,6 @@ public class CustReservationController {
         Reservation reservation = res.getReservationBySecurityCodeAndStatus(reservationSecurityCode, ReservationStatus.MAYBE_RESERVATION).orElseThrow(ReservationNotFoundException::new);
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
 
-        //ms.sendConfirmationEmail(restaurant, customer, reservation);
-        //res.updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
-        //res.updateReservationStatus(reservation, ReservationStatus.OPEN);
         res.finishReservation(restaurant, customer, reservation);
 
         return new ModelAndView("redirect:/notify/" + reservationSecurityCode);
@@ -294,8 +283,6 @@ public class CustReservationController {
         Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
         Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
-//        ms.sendCancellationEmail(restaurant,customer,reservation);
-//        res.updateReservationStatus(reservation, ReservationStatus.CANCELED);
         res.cancelReservation(restaurant, customer, reservation);
 
         return new ModelAndView("redirect:/");
