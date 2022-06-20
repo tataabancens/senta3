@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -25,9 +23,6 @@ public class MailingServiceImpl implements MailingService{
     private String USERNAME;
     @Value("${mail.password}")
     private String PASSWORD;
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(MailingServiceImpl.class);
-
 
     @Autowired
     private MessageSource messageSource;
@@ -111,7 +106,7 @@ public class MailingServiceImpl implements MailingService{
             // msg.setText(messageText);
             Transport.send(msg);
         } catch (Exception ex) {
-            LOGGER.error("Email failed ", ex);
+//            LOGGER.error("Email failed ", ex);
         };
     }
 
