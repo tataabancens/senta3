@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistence.jpa.ReservationJpaDao;
@@ -13,15 +12,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ar.edu.itba.paw.persistence.jpa.UserJpaDao;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,23 +29,8 @@ import static java.time.LocalDateTime.now;
 @Transactional
 public class ReservationJpaDaoTest {
 
-    private static final long USERID_EXISTS = 1;
-    private static final long USERID_NOT_EXISTS = 9999;
-
-    private static final long CUSTOMERID_EXISTS = 1;
-
-    private static final String USERNAME_EXIST = "Juancho";
-    private static final String USERNAME_NOT_EXIST = "Juancho el inexistente";
-
-
     @Autowired
     private ReservationJpaDao reservationDao;
-
-    @Autowired
-    private UserJpaDao userDao;
-
-    @PersistenceContext
-    private EntityManager em;
 
 
     @Rollback
