@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -143,6 +145,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = customer.createReservation(restaurant, 0, qPeople, LocalDateTime.now(), LocalDateTime.now());
         setReservationSecurityCode(reservation);
         updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
+
         return reservation;
     }
 
@@ -180,6 +183,9 @@ public class ReservationServiceImpl implements ReservationService {
     public void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
         updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
         updateReservationStatus(reservation, ReservationStatus.OPEN);
+        if (reservation.getReservationDate().isBefore(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT))) {
+            reservation.setIsToday(true);
+        }
         mailingService.sendConfirmationEmail(restaurant, customer, reservation , LocaleContextHolder.getLocale());
     }
 
