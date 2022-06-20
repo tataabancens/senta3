@@ -410,11 +410,13 @@ public class RestReservationController {
         if (errors.hasErrors()){
             return reservationsOpen(restaurantIdP, orderBy, direction, page, filterForm, seatForm);
         }
+        ControllerUtils.intParser(seatForm.getNumber()).orElseThrow(() -> new LongParseException(""));
+        int seatNumber = Integer.parseInt(seatForm.getNumber());
 
         Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
 
         res.updateReservationStatus(reservation, ReservationStatus.SEATED);
-        res.setTableNumber(reservation, Integer.parseInt(seatForm.getNumber()));
+        res.setTableNumber(reservation, seatNumber);
 
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);

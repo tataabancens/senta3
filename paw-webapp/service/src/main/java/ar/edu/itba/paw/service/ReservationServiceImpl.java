@@ -243,7 +243,12 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
-        Reservation reservation = reservationDao.getReservationById(reservationId).get();
+        Optional<Reservation> maybeRes =  reservationDao.getReservationById(reservationId);
+        if(! maybeRes.isPresent()){
+            return new ArrayList<>();
+        }
+
+        Reservation reservation = maybeRes.get();
         List<OrderItem> query = reservationDao.getOrderItems(reservation.getId());
 
         List<Long> dishIds = new ArrayList<>();
