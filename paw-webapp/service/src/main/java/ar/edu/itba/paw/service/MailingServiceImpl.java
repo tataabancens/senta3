@@ -23,7 +23,6 @@ public class MailingServiceImpl implements MailingService{
     @Value("${mail.password}")
     private String PASSWORD;
 
-
     @Autowired
     private MessageSource messageSource;
 //    @Value("${Mail.message}")

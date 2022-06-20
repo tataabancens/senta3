@@ -117,80 +117,51 @@ public class ReservationServiceImplTest {
     public void testGetAvailableHoursExists() {
         // 1. Setup
         Customer cust1 = new Customer("user", "123", "a@b.com", 0);
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 3, 23);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14);
 
-        DishCategory dishCat = new DishCategory(rest, "cat 1");
-
-        Reservation res1 = new Reservation(rest, cust1, 12, ReservationStatus.OPEN.ordinal(), 10, LocalDateTime.now(), LocalDateTime.now());
+        LocalDateTime tommorrow = LocalDateTime.now().plusDays(1);
+        Reservation res1 = new Reservation(rest, cust1, 12, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);
 
         List<Reservation> mockList = new ArrayList<>();
-//        for(int i = 1; i < 6; i++) {
-//            mockList.add(new Reservation(i, 1, i, 13 + i, 1,
-//                    30, "Carlos", "CarlosResto", Timestamp.from(Instant.now())));
-//        }
-       // Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
-        Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(new Restaurant(1, "El Pepito",
-                "456789456", "elpepito@gmail.com",
-                35, 12, 20)));
-        List<Integer> expectedHours = new ArrayList<>();
-        expectedHours.add(12);
-        expectedHours.add(13);
-        expectedHours.add(19);
-        expectedHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+        mockList.add(res1);
+        Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(rest));
+        Mockito.when(resDao.getReservationsToCalculateAvailableTables(1, tommorrow)).thenReturn(mockList);
 
 
         // 2. ejercicio
-        List<Integer> hours = resService.getAvailableHours(1, 1, LocalDateTime.now());
+        List<Integer> hours = resService.getAvailableHours(1, 1, tommorrow);
 
         // 3. asserts
-        /*
         Assert.assertNotNull(hours);
-        for(int j = 0; j < expectedHours.size(); j++) {
-            Assert.assertEquals(expectedHours.get(j), hours.get(j));
-        }
-         */
+        Assert.assertFalse(hours.contains(12));
     }
 
     @Test
     public void testGetAvailableHoursEmpty() {
         // 1. Setup
+        Customer cust1 = new Customer("user", "123", "a@b.com", 0);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14);
+
+        LocalDateTime tommorrow = LocalDateTime.now().plusDays(1);
+        Reservation res1 = new Reservation(rest, cust1, 13, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);
+        Reservation res2 = new Reservation(rest, cust1, 12, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);
+        Reservation res3 = new Reservation(rest, cust1, 11, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);
+        Reservation res4 = new Reservation(rest, cust1, 10, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);
+
         List<Reservation> mockList = new ArrayList<>();
-//        for(int i = 1; i < 6; i++) {
-//            mockList.add(new Reservation(i, 1, i, 13 + i, 1,
-//                    30, "Carlos", "CarlosResto", Timestamp.from(Instant.now())));
-//        }
-        //Mockito.when(resDao.getAllReservations(1)).thenReturn(mockList);
-        Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(new Restaurant(1, "El Pepito",
-                "456789456", "elpepito@gmail.com",
-                35, 14, 18)));
-        List<Integer> expectedHours = new ArrayList<>();
-        expectedHours.add(12);
-        expectedHours.add(13);
-        expectedHours.add(19);
-        expectedHours.removeIf(hour -> hour <= LocalDateTime.now().getHour());
+        mockList.add(res1);
+        mockList.add(res2);
+        mockList.add(res3);
+        mockList.add(res4);
+
+        Mockito.when(restDao.getRestaurantById(1)).thenReturn(Optional.of(rest));
+        Mockito.when(resDao.getReservationsToCalculateAvailableTables(1, tommorrow)).thenReturn(mockList);
 
 
         // 2. ejercicio
-        //List<Integer> hours = resService.getAvailableHours(1, 10);
+        List<Integer> hours = resService.getAvailableHours(1, 1, tommorrow);
 
         // 3. asserts
-        //Assert.assertTrue(hours.isEmpty());
-    }
-
-    @Test
-    public void givenUsingJava8_whenGeneratingRandomAlphanumericString_thenCorrect() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 6;
-        byte[] seed = "Hola".getBytes(StandardCharsets.UTF_8);
-        SecureRandom random = new SecureRandom(seed);
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        System.out.println(generatedString);
+        Assert.assertTrue(hours.isEmpty());
     }
 }

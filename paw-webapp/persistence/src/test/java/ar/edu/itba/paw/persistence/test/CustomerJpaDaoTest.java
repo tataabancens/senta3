@@ -1,29 +1,18 @@
 package ar.edu.itba.paw.persistence.test;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.model.enums.Roles;
-import ar.edu.itba.paw.persistance.CustomerDao;
-import ar.edu.itba.paw.persistance.UserDao;
 import ar.edu.itba.paw.persistence.jpa.CustomerJpaDao;
-import ar.edu.itba.paw.persistence.jpa.UserJpaDao;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,39 +24,12 @@ public class CustomerJpaDaoTest {
     private static final long USERID_EXISTS = 1;
     private static final long USERID_NOT_EXISTS = 9999;
 
-    private static final long CUSTOMERID_EXISTS = 1;
-
     private static final String USERNAME_EXIST = "Juancho";
     private static final String USERNAME_NOT_EXIST = "Juancho el inexistente";
 
     @Autowired
     private CustomerJpaDao customerDao;
 
-    @Autowired
-    private UserJpaDao userDao;
-
-    @PersistenceContext
-    private EntityManager em;
-
-
-    private Number insertCustomer(String customerName, String phone, String mail, long userId) {
-        Customer newCustomer = new Customer(customerName, phone, mail, userId, 0);
-        em.persist(newCustomer);
-        return newCustomer.getId();
-    }
-
-    private Number insertCustomerNoUser(String customerName, String phone, String mail) {
-        Customer newCustomer = new Customer(customerName, phone, mail, 0);
-        em.persist(newCustomer);
-        return newCustomer.getId();
-    }
-
-    @Transactional
-    Number insertUser(String userName, String pass, Roles role) {
-        User user = new User(userName, pass, role.getDescription());
-        em.persist(user);
-        return user.getId();
-    }
 
     @Rollback
     @Test

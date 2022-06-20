@@ -13,9 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,19 +21,11 @@ import java.util.Optional;
 @Transactional
 public class UserJpaDaoTest {
 
-    private static final long USERID_EXISTS = 1;
-    private static final long USERID_NOT_EXISTS = 9999;
-
-    private static final long CUSTOMERID_EXISTS = 1;
-
     private static final String USERNAME_EXIST = "Juancho";
     private static final String USERNAME_NOT_EXIST = "Juancho el inexistente";
 
     @Autowired
     private UserJpaDao userDao;
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Test
     @Rollback
