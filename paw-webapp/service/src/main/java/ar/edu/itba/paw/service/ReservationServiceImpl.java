@@ -244,8 +244,13 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public List<Long> getUnavailableItems(long reservationId) {
-        Reservation reservation = reservationDao.getReservationById(reservationId).get();
-        List<OrderItem> query = reservationDao.getOrderItems(reservation);
+        Optional<Reservation> maybeRes =  reservationDao.getReservationById(reservationId);
+        if(! maybeRes.isPresent()){
+            return new ArrayList<>();
+        }
+
+        Reservation reservation = maybeRes.get();
+        List<OrderItem> query = reservationDao.getOrderItems(reservation.getId());
 
         List<Long> dishIds = new ArrayList<>();
 
@@ -324,7 +329,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public void updateOrderItemsStatus(Reservation reservation, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
-        reservationDao.getOrderItems(reservation).forEach(o -> {
+        reservationDao.getOrderItems(reservation.getId()).forEach(o -> {
             if (o.getStatus().ordinal() == oldStatus.ordinal())
                 o.setStatus(newStatus);
         });
@@ -339,7 +344,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status) {
-        reservationDao.getOrderItems(reservation).forEach(o -> {
+        reservationDao.getOrderItems(reservation.getId()).forEach(o -> {
             if(o.getStatus().ordinal() == status.ordinal())
                 o.setStatus(OrderItemStatus.DELETED);
         });

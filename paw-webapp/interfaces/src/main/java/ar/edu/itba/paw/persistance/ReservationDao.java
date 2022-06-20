@@ -32,7 +32,7 @@ public interface ReservationDao {
 
     List<OrderItem> getOrderItemsByStatusListAndReservation(Long reservationId, List<OrderItemStatus> statusList);
 
-    List<OrderItem> getOrderItems(Reservation reservation);
+    List<OrderItem> getOrderItems(Long reservationId);
 
     List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, LocalDateTime reservationDate);
 

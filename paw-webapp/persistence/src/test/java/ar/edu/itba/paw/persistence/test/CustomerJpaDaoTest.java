@@ -46,28 +46,24 @@ public class CustomerJpaDaoTest {
     @Autowired
     private UserJpaDao userDao;
 
-    private JdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsert jdbcInsertCustomer;
-    private SimpleJdbcInsert jdbcInsertUser;
-
     @PersistenceContext
     private EntityManager em;
 
 
-    private Number insertCustomer(String customerName, String phone, String mail, long userId){
+    private Number insertCustomer(String customerName, String phone, String mail, long userId) {
         Customer newCustomer = new Customer(customerName, phone, mail, userId, 0);
         em.persist(newCustomer);
         return newCustomer.getId();
     }
 
-    private Number insertCustomerNoUser(String customerName, String phone, String mail){
+    private Number insertCustomerNoUser(String customerName, String phone, String mail) {
         Customer newCustomer = new Customer(customerName, phone, mail, 0);
         em.persist(newCustomer);
         return newCustomer.getId();
     }
 
     @Transactional
-    Number insertUser(String userName, String pass, Roles role){
+    Number insertUser(String userName, String pass, Roles role) {
         User user = new User(userName, pass, role.getDescription());
         em.persist(user);
         return user.getId();
@@ -75,7 +71,7 @@ public class CustomerJpaDaoTest {
 
     @Rollback
     @Test
-    public void testGetCustomerById_Exists(){
+    public void testGetCustomerById_Exists() {
         // 1. Precondiciones
 
         // 2. Ejercitacion
@@ -88,7 +84,7 @@ public class CustomerJpaDaoTest {
 
     @Rollback
     @Test
-    public void testGetCustomerById_NotExists(){
+    public void testGetCustomerById_NotExists() {
         // 1. Precondiciones
 
         // 2. Ejercitacion
@@ -100,7 +96,7 @@ public class CustomerJpaDaoTest {
 
     @Rollback
     @Test
-    public void testGetCustomerByUsername(){
+    public void testGetCustomerByUsername() {
         // 1. Precondiciones
 
         // 2. Ejercitacion
@@ -109,10 +105,11 @@ public class CustomerJpaDaoTest {
         // 3. PostCondiciones
         Assert.assertNotNull(maybeCustomer);
     }
-//
+
+    //
     @Rollback
     @Test
-    public void testGetCustomerByUsername_NotExists(){
+    public void testGetCustomerByUsername_NotExists() {
         // 1. Precondiciones
 
         // 2. Ejercitacion
@@ -120,21 +117,5 @@ public class CustomerJpaDaoTest {
 
         // 3. PostCondiciones
         Assert.assertFalse(maybeCustomer.isPresent());
-    }
-
-    @Transactional
-    @Rollback
-    @Test
-    public void testCreateCustomer(){
-        // 1. Precondiciones
-
-        // 2. Ejercitacion
-        //customerDao.create("new name", CUSTOMERID_EXISTS, 15);
-
-        // 3. PostCondiciones
-        Optional<Customer> maybeCustomer = Optional.ofNullable(em.find(Customer.class, CUSTOMERID_EXISTS));
-        Assert.assertTrue(maybeCustomer.isPresent());
-        Assert.assertEquals(CUSTOMERID_EXISTS, maybeCustomer.get().getId());
-        Assert.assertEquals(15, maybeCustomer.get().getPoints());
     }
 }

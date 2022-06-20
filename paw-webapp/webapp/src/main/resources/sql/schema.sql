@@ -91,6 +91,8 @@ ALTER TABLE reservation ADD COLUMN IF NOT EXISTS hand boolean default false NOT 
 
 ALTER TABLE reservation ADD COLUMN IF NOT EXISTS isToday boolean default false NOT NULL;
 
+ALTER TABLE reservation ADD COLUMN IF NOT EXISTS securityCode varchar(6);
+
 
 
 

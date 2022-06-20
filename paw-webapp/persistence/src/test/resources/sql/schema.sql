@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS dish (
     dishDescription varchar(200) NOT NULL,
     imageId int default 1 not null,
     category_id int default 1 not null,
-    category varchar(100) default 'MAIN_DISH' not null,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
     FOREIGN KEY (category_id) REFERENCES dishcategory (id)
     );
@@ -77,6 +76,7 @@ CREATE TABLE IF NOT EXISTS reservation (
     startedAtTime timestamp default now(),
     reservationDate timestamp,
     tableNumber integer default 0,
+    securityCode varchar(6),
     hand boolean default false NOT NULL,
     isToday boolean default false NOT NULL,
     FOREIGN KEY (restaurantId) REFERENCES restaurant (restaurantId),
@@ -104,15 +104,48 @@ INSERT INTO users (userId, username, password)
 VALUES (1, 'Pepito', '123');
 INSERT INTO users (userId, username, password)
 VALUES (2, 'Juancho', '123');
+INSERT INTO users (userId, username, password)
+VALUES (3, 'Camila', '123');
 
 INSERT INTO customer (customerId, customerName, Phone, Mail, userId)
 VALUES (1, 'Juancho', 541124557633, 'juan@gmail.com', 2);
+INSERT INTO customer (customerId, customerName, Phone, Mail, userId)
+VALUES (2, 'Camila', 541124557634, 'juan@gmail.com', 3);
 
 INSERT INTO restaurant (restaurantName, phone, Mail, totalChairs, openHour, closeHour, userId)
 VALUES ('Pepito masterchef', 541124557623, 'pepito@masterchef.com', 10, 10, 20, 1);
 
-INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category)
-VALUES (1, 1, "Empanada", 100, "De carne", 1, "TEST_DISH");
+INSERT INTO dishcategory (id, name, restaurant_id)
+VALUES (1, 'testCategory', 1);
+
+INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
+VALUES (1, 1, 'testFood', 100, 'testDescription', 1, 1);
+INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
+VALUES (2, 1, 'testFood2', 100, 'testDescription', 1, 1);
+INSERT INTO dish (dishId, restaurantId, dishName, price, dishDescription, imageId, category_id)
+VALUES (3, 1, 'testFood3', 100, 'testDescription', 1, 1);
+
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (1, 1, 1, 12, 1, 1, false, now(), now(), 1, 'AAAAAA', false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (2, 1, 2, 12, 1, 1, false, now(), now(), 2, 'BBBBBB', false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (3, 1, 1, 12, 0, 1, false, now(), now(), 3, 'AAAAA2', false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (4, 1, 2, 12, 0, 1, false, now(), now(), 4, 'BBBBB2', false, true);
+INSERT INTO reservation(reservationId, restaurantId, customerId, reservationHour, reservationStatus, qPeople, reservationDiscount, startedAtTime, reservationDate, tableNumber, securityCode, hand, isToday)
+VALUES (5, 1, 2, 12, 0, 1, false, now(), NOW() + INTERVAL 1 DAY, 4, 'BBBBB2', false, true);
+
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (1, 1, 1, 100, 1, 1);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (2, 2, 1, 100, 1, 1);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (3, 1, 2, 100, 1, 0);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (4, 1, 2, 100, 1, 2);
+INSERT INTO orderItem(id, dishId, reservationId, unitPrice, quantity, status)
+VALUES (5, 1, 2, 100, 1, 1);
 
 
 

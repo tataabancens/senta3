@@ -35,20 +35,10 @@ public class RestaurantJpaDao implements RestaurantDao {
     }
 
     @Override
-    public List<Dish> getRestaurantDishes(long restaurantId) {
-        return null;
-    }
-
-    @Override
     public Optional<Restaurant> getRestaurantByUsername(String username) {
         final TypedQuery<Restaurant> query = em.createQuery("from Restaurant as r where r.user.username = :username", Restaurant.class); //es hql, no sql
         query.setParameter("username", username);
         final List<Restaurant> list = query.getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
-    }
-
-    @Override
-    public List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category) {
-        return null;
     }
 }

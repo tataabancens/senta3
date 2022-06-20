@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.persistance.UserDao;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

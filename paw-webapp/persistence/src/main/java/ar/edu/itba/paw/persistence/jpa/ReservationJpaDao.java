@@ -47,6 +47,9 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, List<ReservationStatus> status) {
+        if(status.isEmpty()){
+            return Optional.empty();
+        }
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationStatus in :status and r.securityCode = :reservation_security_code",
                 Reservation.class); //es hql, no sql
         query.setParameter("status", status);
@@ -118,10 +121,9 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItems(Reservation reservation) {
-        //falta 1+1 TODO
+    public List<OrderItem> getOrderItems(Long reservationId) {
         final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
-        idQuery.setParameter("reservationid", reservation.getId());
+        idQuery.setParameter("reservationid", reservationId);
         @SuppressWarnings("unchecked")
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
@@ -173,6 +175,9 @@ public class ReservationJpaDao implements ReservationDao {
 
     @Override
     public List<OrderItem> getOrderItemsByStatusListAndReservation(Long reservationId, List<OrderItemStatus> statusList) {
+        if(statusList.isEmpty()){
+            return new ArrayList<>();
+        }
         final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem WHERE reservationid = :reservationid ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
         idQuery.setParameter("reservationid", reservationId);
         @SuppressWarnings("unchecked")
