@@ -11,6 +11,8 @@ public interface UserService {
 
     User create(String username, String password, Roles role);
 
+    User createAndLinkToCustomer(String username, String password, Roles role, long customerId);
+
     Optional<User> findByName(String username);
 
     void updatePassword(String username, String newPassword);
@@ -19,4 +21,5 @@ public interface UserService {
 
     Optional<User> getUserByUsername(String username);
 
+    void createUserAndCustomer(String username, String password, Roles customer, String customerName, String phone, String mail);
 }

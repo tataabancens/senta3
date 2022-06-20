@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
@@ -15,11 +16,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerService cs;
 
     @Autowired
-    public UserServiceImpl(final UserDao userDao, final PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(final UserDao userDao, final PasswordEncoder passwordEncoder, final CustomerService cs) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
+        this.cs = cs;
     }
 
     @Transactional
@@ -32,6 +35,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(String username, String password, Roles role) {
         return userDao.create(username, passwordEncoder.encode(password), role);
+    }
+
+    @Transactional
+    @Override
+    public User createAndLinkToCustomer(String username, String password, Roles role, long customerId) {
+        User user = userDao.create(username, password, role);
+        cs.getCustomerById(customerId).ifPresent(c -> {
+            c.setUser(user);
+        });
+        return user;
+    }
+
+    @Transactional
+    @Override
+    public void createUserAndCustomer(String username, String password, Roles role, String customerName, String phone, String mail) {
+        User user = userDao.create(username, password, role);
+        Customer customer = cs.create(customerName, phone, mail);
+        customer.setUser(user);
     }
 
     @Transactional

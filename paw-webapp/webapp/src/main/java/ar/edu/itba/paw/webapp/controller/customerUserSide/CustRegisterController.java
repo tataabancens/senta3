@@ -72,9 +72,7 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return userRegister(customerIdP, reservationSecurityCode, form);
         }
-        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        Customer customer = cs.getCustomerById(customerId).orElseThrow(CustomerNotFoundException::new);
-        cs.linkCustomerToUserId(customer, user);
+        us.createAndLinkToCustomer(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER, customerId);
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
@@ -97,10 +95,7 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return CustomerRegister(form);
         }
-        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        Customer customer = cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
-
-        cs.linkCustomerToUserId(customer, user);
+        us.createUserAndCustomer(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER, form.getCustomerName(), form.getPhone(), form.getMail());
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
