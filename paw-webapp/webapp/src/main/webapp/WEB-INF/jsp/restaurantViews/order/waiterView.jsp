@@ -61,24 +61,20 @@
                     <span class="presentation-text title"><h11><spring:message code="Kitchen.order.no"/></h11></span>
                 </div>
             </c:if>
-            <c:forEach var="reservation" items="${reservations}">
-                <c:forEach var="item" items="${finishedItems}">
-                    <c:if test="${item.reservation.id == reservation.id}">
-                        <div class="card order-card">
-                            <div class="card-content white-text">
-                                <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
-                                <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
-                                <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
-                            </div>
-                            <c:url value="/restaurant=${restaurantId}/waiter/finishedToDelivered-${item.id}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post">
-                                <spring:message code="Button.deliver" var="label"/>
-                                <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
-                            </form:form>
-                        </div>
-                    </c:if>
-                </c:forEach>
+            <c:forEach var="item" items="${finishedItems}">
+                <div class="card order-card">
+                    <div class="card-content white-text">
+                        <span class="presentation-text" style="color: #171616;"><c:out value="${item.dish.dishName}"/></span>
+                        <p class="text description"><spring:message code="Kitchen.order.qty"/><c:out value="${item.quantity}"/></p>
+                        <p class="text description"><spring:message code="Kitchen.order.table"/> <c:out value="${item.reservation.tableNumber}"/></p>
+                        <p class="text description"><spring:message code="Kitchen.order.res"/> <c:out value="${item.reservation.securityCode}"/></p>
+                    </div>
+                    <c:url value="/restaurant=${restaurantId}/orders/finishedToDelivered-${item.id}" var="postUrl"/>
+                    <form:form action="${postUrl}" method="post">
+                        <spring:message code="Button.deliver" var="label"/>
+                        <input type="submit" value="${label}" class="waves-effect waves-light btn blue center confirm-btn">
+                    </form:form>
+                </div>
             </c:forEach>
         </div>
     </div>
