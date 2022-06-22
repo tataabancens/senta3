@@ -10,7 +10,9 @@ import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
 import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.CategoryForm;
+import ar.edu.itba.paw.webapp.form.DeleteCategoryForm;
 import ar.edu.itba.paw.webapp.form.EditDishForm;
+import ar.edu.itba.paw.webapp.form.customValidator.DeleteCategoryConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -51,7 +53,7 @@ public class DishController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.GET)
     public ModelAndView createDishForm(@PathVariable ("restaurantId") final String restaurantIdP,
-                                       @RequestParam (name="currentCategory", defaultValue = "2") final String categoryIdP,
+                                       @RequestParam (name="currentCategory", defaultValue = "1") final String categoryIdP,
                                        @ModelAttribute("createDishForm") final EditDishForm form) throws Exception {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
@@ -140,7 +142,7 @@ public class DishController {
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/dish/deleteCategoryConfirmation");
-
+//        deleteCategoryForm.setCategoryId((int) categoryId);
         mav.addObject("restaurant", restaurant);
         mav.addObject("categoryName", restaurant.getDishCategoryOfId(categoryId));
         mav.addObject("categoryId", categoryId);
@@ -151,11 +153,16 @@ public class DishController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/category/delete", method = RequestMethod.POST)
     public ModelAndView deleteCategory_post(@PathVariable ("restaurantId") final String restaurantIdP,
-                                       @RequestParam (name="categoryId") final String categoryIdP) throws Exception {
+                                            @RequestParam (name="categoryId") final String categoryIdP,
+                                            @Valid @ModelAttribute("deleteCategoryForm") final DeleteCategoryForm deleteCategoryForm, final BindingResult errors) throws Exception {
 
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         long restaurantId = Long.parseLong(restaurantIdP);
         long categoryId = Long.parseLong(categoryIdP);
+        deleteCategoryForm.setCategoryId(categoryId);
+        if (errors.hasErrors()){
+            return deleteCategory(restaurantIdP, categoryIdP);
+        }
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         rs.deleteCategory(restaurant, categoryId);
@@ -164,7 +171,7 @@ public class DishController {
 
     @RequestMapping(value = "/restaurant={restaurantId}/menu/create", method = RequestMethod.POST)
     public ModelAndView createDish(@PathVariable ("restaurantId") final String restaurantIdP,
-                                   @RequestParam ( name = "currentCategory", defaultValue = "2") final String categoryIdP,
+                                   @RequestParam ( name = "currentCategory", defaultValue = "1") final String categoryIdP,
                                    @Valid @ModelAttribute("createDishForm") final EditDishForm createDishForm, final BindingResult errors) throws Exception {
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ControllerUtils.longParser(categoryIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
