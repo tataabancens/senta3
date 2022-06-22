@@ -50,6 +50,13 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <li>
+                                <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
+                                    <spring:message code="Navbar.option.menu"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <li>
                                 <a class="options" href="<c:url value="/restaurant=1/orders"/>">
                                     <spring:message code="Navbar.option.orders"/>
                                 </a>

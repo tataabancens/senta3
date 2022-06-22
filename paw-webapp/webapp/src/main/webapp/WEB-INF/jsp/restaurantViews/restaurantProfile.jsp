@@ -1,13 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: gonza
-  Date: 01/05/2022
-  Time: 11:20
-  To change this template use File | Settings | File Templates.
---%>
+
 <html>
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +17,91 @@
 
 </head>
 <body>
-<%@ include file="../components/navbar.jsp" %>
+<div class="row">
+    <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
+    <nav style="background: white;">
+        <ul id="primary-navigation" data-visible="false" class="primary-navigation">
+            <div class="left-side">
+                <li>
+                    <a href="<c:url value="/"/>">
+                        <span class="logo" style="font-style: italic;">Senta3</span>
+                    </a>
+                </li>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
+                            <spring:message code="Navbar.option.menu"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options" href="<c:url value="/active-reservations"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/orders"/>">
+                            <spring:message code="Navbar.option.orders"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/reservations/open"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/waiter"/>">
+                            <spring:message code="Navbar.option.waiter"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </div>
+            <div class="right-side">
+                <sec:authorize access="!isAuthenticated()">
+                    <li>
+                        <a class="options" href="<c:url value="/register"/>">
+                            <spring:message code="Navbar.option.register"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="options" href="<c:url value="/login"/>">
+                            <spring:message code="Navbar.option.login"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <li>
+                            <a class="options selected" style="color: white;" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('CUSTOMER')">
+                        <li>
+                            <a class="options" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/>
+                                    ${customer.user.getUsername()}
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <li>
+                        <a class="options" href="${pageContext.request.contextPath}/logout">
+                            <spring:message code="Navbar.option.logout"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </div>
+        </ul>
+    </nav>
+</div>
 <div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
     <div class="restaurant-info" style="margin-left: 2%;">
         <h1 class="presentation-text header-title"><spring:message code="Restaurant.profile"/></h1>
