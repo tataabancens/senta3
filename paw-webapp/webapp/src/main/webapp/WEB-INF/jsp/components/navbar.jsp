@@ -21,7 +21,7 @@
 <body>
 <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
 <nav>
-    <ul id="primary-navigation" data-visible="false" class="primary-navigation flex">
+    <ul id="primary-navigation" data-visible="false" class="primary-navigation">
         <div class="left-side">
             <li>
                 <a href="<c:url value="/"/>">
@@ -229,12 +229,10 @@
     nav{
         background-color: white;
     }
-    .flex{
-        display: flex;
-        gap: var(--gap,1rem);
-    }
     .primary-navigation{
         list-style: none;
+        display: flex;
+        gap: var(--gap,1rem);
         padding: 0;
         margin: 0;
         justify-content: space-between;
