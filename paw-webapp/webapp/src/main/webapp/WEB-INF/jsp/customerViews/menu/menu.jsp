@@ -336,7 +336,7 @@
     .dish-categories{
         margin-left: 2em;
         min-width: 500px;
-        width: 80%;
+        width: 73%;
     }
     .dishList{
         display: flex;

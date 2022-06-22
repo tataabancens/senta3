@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div style="margin: 0.5%; display: flex;flex-wrap: wrap-reverse; align-items: center; min-width: 650px;">
+    <div style="margin: 0.5%; display: flex;flex-wrap: wrap-reverse; align-items: center; min-width: 800px;">
             <c:if test="${reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHECK_ORDERED'}">
                 <c:if test="${!reservation.hand}">
                     <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
@@ -425,7 +425,7 @@
         display: flex;
         flex-direction: column;
         min-width: 40rem;
-        width: 80%;
+        width: 75%;
     }
     .card.information{
         width: 100%;
