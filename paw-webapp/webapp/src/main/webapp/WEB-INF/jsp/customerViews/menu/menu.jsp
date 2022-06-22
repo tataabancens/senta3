@@ -144,7 +144,7 @@
                 <div class="card left-section">
                     <div class="client-actions center">
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
-                        <sec:authorize access="!hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('CUSTOMER')">
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
@@ -153,18 +153,18 @@
                                 </form:form>
                             </div>
                         </sec:authorize>
-                        <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="hasAnyRole('RESTAURANT', 'WAITER', 'KITCHEN')">
                             <div class="reservation-action-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.new"/></a>
                             </div>
                         </sec:authorize>
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
-                        <sec:authorize access="!hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('CUSTOMER')">
                             <div class="enter-confirm-btn">
                                 <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
                             </div>
                         </sec:authorize>
-                        <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="hasAnyRole('RESTAURANT', 'WAITER', 'KITCHEN')">
                             <div class="enter-confirm-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.exists"/></a>
                             </div>
@@ -196,7 +196,7 @@
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
-                            <sec:authorize access="!hasRole('RESTAURANT')">
+                            <sec:authorize access="hasRole('CUSTOMER')">
                                 <c:url value="/createReservation-1" var="postUrl"/>
                             </sec:authorize>
                             <sec:authorize access="hasRole('RESTAURANT')">

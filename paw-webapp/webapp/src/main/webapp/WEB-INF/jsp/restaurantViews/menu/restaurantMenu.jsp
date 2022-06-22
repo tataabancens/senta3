@@ -234,7 +234,7 @@
         font-size: 1rem;
     }
     .card.filter-box{
-        min-width: 10rem;
+        min-width: 13rem;
         width: 15%;
         height: fit-content;
     }

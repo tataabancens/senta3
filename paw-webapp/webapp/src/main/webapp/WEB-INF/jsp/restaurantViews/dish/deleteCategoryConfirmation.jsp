@@ -27,8 +27,11 @@
         <spring:message code="Button.confirm" var="label"/>
         <c:if test="${canBeDeleted}">
             <c:url value="/restaurant=${restaurantId}/category/delete?categoryId=${categoryId}" var="postUrl"/>
-            <form:form action="${postUrl}" method="post">
-                <input type="submit" value="${label}" class="btn confirm-btn"/>
+            <form:form action="${postUrl}" method="post" modelAttribute="deleteCategoryForm">
+                <form:errors path="categoryId" element="p" cssStyle="color:red"/>
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit" value="${label}" class="btn confirm-btn"/>
+                </div>
             </form:form>
         </c:if>
         <c:if test="${!canBeDeleted}">

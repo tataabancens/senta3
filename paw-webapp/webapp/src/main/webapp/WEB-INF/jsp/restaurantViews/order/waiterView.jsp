@@ -114,7 +114,7 @@
 </div>
 <div class="content-container">
     <div class="card finished-orders">
-        <div style="position: absolute;top: 0;">
+        <div >
             <span class="presentation-text title"><h5><spring:message code="Waiter.hands"/></h5></span>
         </div>
         <div class="cardContainer">
@@ -138,7 +138,7 @@
     </div>
 
     <div class="card finished-orders">
-        <div style="position: absolute;top: 0;">
+        <div>
             <span class="presentation-text title"><h5><spring:message code="Kitchen.old.orders.title"/></h5></span>
         </div>
         <div class="cardContainer">

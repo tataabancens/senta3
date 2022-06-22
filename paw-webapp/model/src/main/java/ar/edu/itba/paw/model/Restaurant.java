@@ -203,9 +203,9 @@ public class Restaurant {
     }
 
     public Object canCategoryBeDeleted(long categoryId) {
-        if(categoryId == 1){
-            return false;
-        }
+//        if(categoryId == 1){
+//            return false;
+//        }
         for(DishCategory category : this.dishCategories){
             if(category.getId()==categoryId){
                 return category.getDishes().isEmpty();
