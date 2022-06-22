@@ -396,8 +396,4 @@ public class RestReservationController {
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/seated?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
-
-
-
-
 }
