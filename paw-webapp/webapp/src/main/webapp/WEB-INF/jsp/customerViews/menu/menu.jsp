@@ -153,6 +153,15 @@
                                 </form:form>
                             </div>
                         </sec:authorize>
+                        <sec:authorize access="!isAuthenticated()">
+                            <div class="reservation-action-btn">
+                                <c:url value="/createReservation-0" var="postUrl"/>
+                                <form:form action="${postUrl}" method="post">
+                                    <spring:message code="Button.reserve" var="label"/>
+                                    <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn">
+                                </form:form>
+                            </div>
+                        </sec:authorize>
                         <sec:authorize access="hasAnyRole('RESTAURANT', 'WAITER', 'KITCHEN')">
                             <div class="reservation-action-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.new"/></a>
@@ -160,6 +169,11 @@
                         </sec:authorize>
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
                         <sec:authorize access="hasRole('CUSTOMER')">
+                            <div class="enter-confirm-btn">
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
+                            </div>
+                        </sec:authorize>
+                        <sec:authorize access="!isAuthenticated()">
                             <div class="enter-confirm-btn">
                                 <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
                             </div>
@@ -283,6 +297,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        width: 22%;
         align-items: center;
         padding: 10px;
         height: clamp(34em,100%,40em);
