@@ -48,6 +48,13 @@
                                 </a>
                             </li>
                         </sec:authorize>
+                        <sec:authorize access="hasRole('CUSTOMER')">
+                            <li>
+                                <a class="options selected" style="color: white;" href="<c:url value="/"/>" >
+                                    <spring:message code="Navbar.option.customer.menu"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
                         <sec:authorize access="hasRole('RESTAURANT')">
                             <li>
                                 <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
