@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.controller.utilities;
 
-import ar.edu.itba.paw.model.RawImage;
+import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.webapp.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.LongParseException;
@@ -24,7 +24,7 @@ public class ImageController {
         ControllerUtils.longParser(imageIdP).orElseThrow(() -> new LongParseException(imageIdP));
         long imageId = Long.parseLong(imageIdP);
 
-        RawImage image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
+        Image image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         return image.getBytes();
     }
 }

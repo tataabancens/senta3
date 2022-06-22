@@ -1,15 +1,16 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.PasswordPair;
-import ar.edu.itba.paw.webapp.form.CustomValidator.PasswordConstraint;
-import ar.edu.itba.paw.webapp.form.CustomValidator.PasswordLengthConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.PasswordConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.PasswordLengthConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.UsernameConstraint;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.beans.Transient;
 
 public class CustomerRegisterShortForm {
 
+    @UsernameConstraint
     @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     @Size(min = 1, max = 50)
     private String username;

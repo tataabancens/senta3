@@ -25,46 +25,40 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="page-container">
-    <div class="card restaurant-card">
-        <div class="card-content white-text">
-            <span class="text center main-title"><c:out value="${restaurant.restaurantName}"/></span>
-            <span class="text center title2"><c:out value="${restaurant.phone}"/></span>
-        </div>
-    </div>
 
     <div class="card confirm-card">
         <div class="card-content wider-content center">
-            <sec:authorize access="!hasRole('RESTAURANT')">
-                <span class="text main-title"><spring:message code="Receipt.subtitle"/></span>
-            </sec:authorize>
-            <sec:authorize access="hasRole('RESTAURANT')">
-                <span class="text main-title">La reserva <c:out value="${reservationId}"/> <spring:message code="Receipt.title"/></span>
-            </sec:authorize>
-            <div class="with-margin">
-                <span class="main-title text center"><c:out value="${restaurant.restaurantName}"/></span>
+            <div style="margin-bottom: 5%;">
+                <span class="presentation-text" style="font-size: 3rem;"><c:out value="${restaurant.restaurantName}"/></span>
             </div>
-            <div class="center">
-                <span class="title2 text center"><spring:message code="Order.title"/></span>
+            <sec:authorize access="!hasRole('RESTAURANT')">
+                <span class="presentation-text"><spring:message code="Receipt.subtitle"/></span>
+            </sec:authorize>
+            <div style="display: flex;margin-bottom: 4%;">
+                <span class="presentation-text" style="font-size: 2rem;">Mesa: <c:out value="${reservation.tableNumber}"/></span>
+            </div>
+            <div class="center" style="margin-bottom: 4%;">
+                <span class="presentation-text" style="font-size: 2rem;"><spring:message code="Order.title"/></span>
             </div>
             <div class="summary">
-                <div class="titles">
+                <div class="titles" style="margin-bottom: 4%;">
                     <div class="dishname">
-                        <span class="title2 text"><spring:message code="Order.dish"/></span>
+                        <span class="presentation-text" style="font-size: 2rem;"><spring:message code="Order.dish"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.qty"/></span>
+                        <span class="presentation-text" style="font-size: 2rem;"><spring:message code="Order.qty"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.price"/></span>
+                        <span class="presentation-text" style="font-size: 2rem;"><spring:message code="Order.price"/></span>
                     </div>
                     <div>
-                        <span class="title2 text"><spring:message code="Order.total"/></span>
+                        <span class="presentation-text" style="font-size: 2rem;"><spring:message code="Order.total"/></span>
                     </div>
                 </div>
                 <c:forEach var="orderItem" items="${orderItems}">
                     <div class="titles">
                         <div class="dishname-div">
-                            <span class="items-title text dishname"><c:out value="${orderItem.dishName}"/></span>
+                            <span class="items-title text dishname"><c:out value="${orderItem.dish.dishName}"/></span>
                         </div>
                         <div>
                             <span class="items-title text"><c:out value="${orderItem.quantity}"/></span>
@@ -82,19 +76,19 @@
 
                 <hr/>
 
-                <div class="titles">
+                <div class="titles" style="margin-top: 4%;">
                     <div >
-                        <p class="price"><spring:message code="Order.total"/></p>
+                        <p class="presentation-text" style="font-size: 2.5rem;"><spring:message code="Order.total"/></p>
                     </div>
                     <div>
                         <fmt:formatNumber var="totalPrice" type="number" value="${(total * discountCoefficient)}" maxFractionDigits="2"/>
-                        <p class="price right "><c:out value="${totalPrice}"/></p>
+                        <p class="presentation-text" style="font-size: 2.5rem;">$<c:out value="${totalPrice}"/></p>
                     </div>
                 </div>
                     <sec:authorize access="!hasRole('RESTAURANT')">
                         <div>
                             <c:if test="${canOrderReceipt}">
-                                <c:url value="/order/send-receipt?reservationId=${reservationId}&restaurantId=${restaurant.id}" var="postUrl"/>
+                                <c:url value="/order/send-receipt?reservationSecurityCode=${reservation.securityCode}&restaurantId=${restaurant.id}" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
                                     <spring:message code="Button.confirm" var="label"/>
                                     <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">
@@ -106,8 +100,8 @@
                         </div>
                     </sec:authorize>
                 <sec:authorize access="hasRole('RESTAURANT')">
-                    <div>
-                        <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                    <div style="margin-top: 4%;">
+                        <c:url value="/restaurant=${restaurantId}/finishCustomer=${reservationSecurityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
                             <spring:message code="Button.finishres" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn green right">
@@ -135,7 +129,13 @@
         border-radius: 16px;
     }
 
-
+    body{
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
     .center{
         justify-content: center;
@@ -148,8 +148,9 @@
 
     .page-container {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
     }
 
     .titles{

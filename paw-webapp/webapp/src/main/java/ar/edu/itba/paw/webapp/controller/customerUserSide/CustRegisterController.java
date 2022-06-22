@@ -43,26 +43,26 @@ public class CustRegisterController {
         this.us = us;
     }
 
-    @RequestMapping(value = "/registerShort/{customerId}/{reservationId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/registerShort/{customerId}/{reservationSecurityCode}", method = RequestMethod.GET)
     public ModelAndView userRegister(@PathVariable("customerId") final String customerIdP,
-                                     @PathVariable("reservationId") final String reservationIdP,
+                                     @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                      @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
         ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
-        Customer customer = cs.getUserByID(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
+        Customer customer = cs.getCustomerById(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
 
         form.setMail(customer.getMail());
 
-        ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
+        ModelAndView mav = new ModelAndView("customerViews/customerRegisterShort");
         mav.addObject("customerId", customerIdP);
-        mav.addObject("reservationId", reservationIdP);
+        mav.addObject("reservationSecurityCode", reservationSecurityCode);
 
         return mav;
     }
 
-    @RequestMapping(value = "/registerShort/{customerId}/{reservationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/registerShort/{customerId}/{reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView userRegister_POST(@PathVariable("customerId") final String customerIdP,
-                                          @PathVariable("reservationId") final String reservationIdP,
+                                          @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                           @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
                                           final BindingResult errors,
                                           final HttpServletRequest request) throws Exception{
@@ -70,14 +70,13 @@ public class CustRegisterController {
         long customerId = Long.parseLong(customerIdP);
 
         if (errors.hasErrors()){
-            return userRegister(customerIdP, reservationIdP, form);
+            return userRegister(customerIdP, reservationSecurityCode, form);
         }
-        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        cs.linkCustomerToUserId(customerId, user.getId());
+        us.createAndLinkToCustomer(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER, customerId);
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 
-        return new ModelAndView("redirect:/menu?reservationId=" +  reservationIdP);
+        return new ModelAndView("redirect:/menu?reservationSecurityCode=" +  reservationSecurityCode);
     }
 
 
@@ -85,7 +84,7 @@ public class CustRegisterController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
 
-        return new ModelAndView("customerViews/CustomerRegister");
+        return new ModelAndView("customerViews/customerRegister");
     }
 
 
@@ -96,10 +95,7 @@ public class CustRegisterController {
         if (errors.hasErrors()){
             return CustomerRegister(form);
         }
-        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        Customer customer = cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
-
-        cs.linkCustomerToUserId(customer.getCustomerId(), user.getId());
+        us.createUserAndCustomer(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER, form.getCustomerName(), form.getPhone(), form.getMail());
 
         authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
 

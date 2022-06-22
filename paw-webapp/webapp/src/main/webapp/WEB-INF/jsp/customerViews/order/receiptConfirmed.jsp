@@ -23,18 +23,11 @@
 <%@ include file="../../components/navbar.jsp" %>
 
 <div class="page-container">
-    <div class="restaurant-card card">
-        <div class="card-content white-text">
-            <span class="main-title text"><c:out value="${restaurant.restaurantName}"/></span>
-            <span class="title2"><c:out value="${restaurant.phone}"/></span>
-        </div>
-
-    </div>
     <div class="card confirm-card">
         <div class="card-content white-text center">
-            <span class="main-title text"><spring:message code="Receipt.finish"/></span>
-            <div>
-                <span class="main-title text"><spring:message code="Receipt.points" arguments="${points}"/></span>
+            <span class="presentation-text" style="color: #171616; font-size: 2rem;"><spring:message code="Receipt.finish"/></span>
+            <div style="margin:5%;">
+                <span class="presentation-text" style="color: #171616;"><spring:message code="Receipt.points" arguments="${points}"/></span>
             </div>
             <div class="center">
                 <a class="waves-effect waves-light btn confirm-btn green " href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
@@ -50,7 +43,11 @@
 <style>
 
     body{
-        background-color: #F0F0F0;
+        background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
 
 
@@ -65,16 +62,13 @@
         justify-content: center;
     }
 
-    .with-margin{
-        margin-top: 10%;
-        margin-bottom: 10%;
-    }
 
 
     .page-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        align-items: center;
+        justify-content: center;
     }
 
 
@@ -82,6 +76,8 @@
         display:flex;
         justify-content: center;
         width: 40%;
+        height: 50%;
+        margin-top: 5%;
         max-width: 60%;
         margin-left: 5%;
         margin-right: 5%;

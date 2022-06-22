@@ -21,79 +21,195 @@
 <body>
 <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
 <nav>
-    <ul id="primary-navigation" data-visible="false" class="primary-navigation flex">
+    <ul id="primary-navigation" data-visible="false" class="primary-navigation">
         <div class="left-side">
             <li>
                 <a href="<c:url value="/"/>">
                     <span class="logo" style="font-style: italic;">Senta3</span>
                 </a>
             </li>
-            <sec:authorize access="hasRole('CUSTOMER')">
-                <li>
-
-                    <a class="options" href="<c:url value="/history"/>">
-                        <spring:message code="Navbar.option.history"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="hasRole('CUSTOMER')">
-                <li>
-
-                    <a class="options" href="<c:url value="/active-reservations"/>">
-                        <spring:message code="Navbar.option.reservations"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="hasRole('RESTAURANT')">
-                <li>
-                    <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
-                        <spring:message code="Navbar.option.menu"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="hasRole('RESTAURANT')">
-                <li>
-                    <a class="options" href="<c:url value="/restaurant=1/orders"/>">
-                        <spring:message code="Navbar.option.orders"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="hasRole('RESTAURANT')">
-                <li>
-
-                    <a class="options" href="<c:url value="/restaurant=1/reservations"/>">
-                        <spring:message code="Navbar.option.reservations"/>
-                    </a>
-                </li>
-            </sec:authorize>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/'}">
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/"/>" >
+                            <spring:message code="Navbar.option.customer.menu"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/'}">
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options" href="<c:url value="/"/>" >
+                            <spring:message code="Navbar.option.customer.menu"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/history'}">
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/history"/>">
+                            <spring:message code="Navbar.option.history"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/history'}">
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options" href="<c:url value="/history"/>">
+                            <spring:message code="Navbar.option.history"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/active-reservations'}">
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/active-reservations"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/active-reservations'}">
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options" href="<c:url value="/active-reservations"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/restaurant=1/menu'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
+                            <spring:message code="Navbar.option.menu"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/menu'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/restaurant=1/menu"/>" >
+                            <spring:message code="Navbar.option.menu"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/orders'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/restaurant=1/orders"/>">
+                            <spring:message code="Navbar.option.orders"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/restaurant=1/orders'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/orders"/>">
+                            <spring:message code="Navbar.option.orders"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/restaurant=1/reservations/open'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/reservations/open"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/reservations/open'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/restaurant=1/reservations/open"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/waiter'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/restaurant=1/waiter"/>">
+                            <spring:message code="Navbar.option.waiter"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
+            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/restaurant=1/waiter'}">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/waiter"/>">
+                            <spring:message code="Navbar.option.waiter"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </c:if>
         </div>
         <div class="right-side">
-            <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/menu'}">
-                <sec:authorize access="!isAuthenticated()">
+                <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/register'}">
+                    <sec:authorize access="!isAuthenticated()">
                         <li>
                             <a class="options" href="<c:url value="/register"/>">
                                 <spring:message code="Navbar.option.register"/>
                             </a>
                         </li>
-                </sec:authorize>
-                <sec:authorize access="!isAuthenticated()">
-                    <li>
-                        <a class="options" href="<c:url value="/login"/>">
-                            <spring:message code="Navbar.option.login"/>
-                        </a>
-                    </li>
-                </sec:authorize>
-            </c:if>
+                    </sec:authorize>
+                </c:if>
+                <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/login'}">
+                    <sec:authorize access="!isAuthenticated()">
+                        <li>
+                            <a class="options" href="<c:url value="/login"/>">
+                                <spring:message code="Navbar.option.login"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                </c:if>
             <sec:authorize access="isAuthenticated()">
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/restaurant=1/profile'}">
+                        <li>
+                            <a class="options selected" style="color: white;" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/restaurant=1/profile'}">
+                        <li>
+                            <a class="options" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
+                            </a>
+                        </li>
+                    </c:if>
+                </sec:authorize>
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <c:if test="${requestScope['javax.servlet.forward.request_uri'] == '/customerProfile'}">
+                        <li>
+                            <a class="options selected" style="color: white;" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/><c:out value="${customer.user.getUsername()}"/>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${requestScope['javax.servlet.forward.request_uri'] != '/customerProfile'}">
+                        <li>
+                            <a class="options" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/>
+                                    ${customer.user.getUsername()}
+                            </a>
+                        </li>
+                    </c:if>
+                </sec:authorize>
                 <li>
-                    <a class="options" href="<c:url value="/profile"/>" >
-                        <spring:message code="Navbar.option.profile"/>
-                    </a>
-                </li>
-            </sec:authorize>
-            <sec:authorize access="isAuthenticated()">
-                <li>
-                    <a class="options" href="${pageContext.request.contextPath}/logout" >
+                    <a class="options" href="${pageContext.request.contextPath}/logout">
                         <spring:message code="Navbar.option.logout"/>
                     </a>
                 </li>
@@ -111,14 +227,12 @@
         overflow-x: hidden;
     }
     nav{
-        background-color: whitesmoke;
-    }
-    .flex{
-        display: flex;
-        gap: var(--gap,1rem);
+        background-color: white;
     }
     .primary-navigation{
         list-style: none;
+        display: flex;
+        gap: var(--gap,1rem);
         padding: 0;
         margin: 0;
         justify-content: space-between;
@@ -134,9 +248,9 @@
     }
     .primary-navigation a{
         color: rgb(255, 68, 31);
-        font-family: "Goldplay", sans-serif;
-        font-size: 1.3rem;
-        font-weight: bold;
+        font-family:'Nunito',sans-serif;
+        font-weight: 700;
+        font-size: 1.5rem;
         text-decoration: none;
     }
     .primary-navigation a > [aria-hidden="true"]{
@@ -144,10 +258,14 @@
         margin-inline-end: 0.5em;
     }
     .primary-navigation a.options:hover{
-        background-color: whitesmoke;
-        color: #171616;
+        background-color: rgb(245, 135, 21);
+        color: white;
     }
-    @media (max-width: 36em){
+    .selected {
+        background-color: rgb(245, 135, 21);
+        color: white;
+    }
+    @media (max-width: 1100px){
         .primary-navigation{
             position: fixed;
             --gap: 2em;

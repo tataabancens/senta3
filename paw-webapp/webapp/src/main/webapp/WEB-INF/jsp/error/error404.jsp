@@ -62,6 +62,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        min-width: 9em;
     }
     .btn.confirm-btn{
         margin-bottom: 2em;

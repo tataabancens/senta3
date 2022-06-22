@@ -47,15 +47,15 @@
                         <form:label path="dishName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.name"/></form:label>
                         <form:input path="dishName" type="text"/>
                     </div>
-                    <div class="dishDesc">
-                        <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
-                        <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.description"/></form:label>
-                        <form:input path="dishDesc" type="text"/>
-                    </div>
                     <div class="dishPrice">
                         <form:errors path="dishPrice" element="p" cssStyle="color: red"/>
                         <form:label path="dishPrice" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.price"/></form:label>
                         <form:input path="dishPrice" type="text"/>
+                    </div>
+                    <div class="dishDesc">
+                        <form:errors path="dishDesc" element="p" cssStyle="color:red"/>
+                        <form:label path="dishDesc" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Createdish.form.description"/></form:label>
+                        <form:textarea path="dishDesc" type="text" style="height:8em;"/>
                     </div>
                 </div>
                 <div class="input-field">

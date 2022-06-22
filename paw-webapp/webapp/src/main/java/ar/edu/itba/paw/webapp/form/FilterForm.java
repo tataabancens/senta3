@@ -8,6 +8,7 @@ public class FilterForm {
     private String filterStatus;
     private String direction;
     private String orderBy;
+    private String reservationTable;
 
     public String getFilterStatus() {
         return filterStatus;
@@ -31,5 +32,13 @@ public class FilterForm {
 
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public String getReservationTable() {
+        return reservationTable;
+    }
+
+    public void setReservationTable(String reservationTable) {
+        this.reservationTable = reservationTable;
     }
 }

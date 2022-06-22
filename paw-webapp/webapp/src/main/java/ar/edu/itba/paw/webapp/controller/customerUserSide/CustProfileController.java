@@ -69,11 +69,11 @@ public class CustProfileController {
         }
         String username = principal.getName();
 
-        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer.getCustomerId(), form.getName(), customer.getPhone(), customer.getMail());
+        cs.updateCustomerNameByUsername(username, form.getName());
 
         return new ModelAndView("redirect:/profile");
     }
+
     @RequestMapping(value = "/profile/editPhone", method = RequestMethod.GET)
     public ModelAndView profileEditPhone(final Principal principal,
                                         @ModelAttribute("editPhoneForm") final EditPhoneForm form){
@@ -97,8 +97,7 @@ public class CustProfileController {
         }
         String username = principal.getName();
 
-        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer.getCustomerId(), customer.getCustomerName(), form.getPhone(), customer.getMail());
+        cs.updateCustomerPhoneByUsername(username, form.getPhone());
 
         return new ModelAndView("redirect:/profile");
     }
@@ -125,34 +124,7 @@ public class CustProfileController {
             return profileEditMail(principal, form);
         }
         String username = principal.getName();
-
-        Customer customer = cs.getCustomerByUsername(username).orElseThrow(CustomerNotFoundException::new);
-        cs.updateCustomerData(customer.getCustomerId(), customer.getCustomerName(), customer.getPhone(), form.getMail());
-
-        return new ModelAndView("redirect:/profile");
-    }
-
-    @RequestMapping(value = "/profile/editUsername", method = RequestMethod.GET)
-    public ModelAndView profileEditUsername(final Principal principal,
-                                        @ModelAttribute("editUsernameForm") final EditNameForm form){
-
-        String username = principal.getName();
-
-        ModelAndView mav = new ModelAndView("customerViews/custProfile/editUsername");
-        form.setName(username);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/profile/editUsername", method = RequestMethod.POST)
-    public ModelAndView profileEditUsernamePost(final Principal principal,
-                                                @Valid @ModelAttribute("editNameForm") final EditNameForm form,
-                                                final BindingResult errors){
-        if (errors.hasErrors()) {
-            return profileEditUsername(principal, form);
-        }
-
-        us.updateUsername(principal.getName(), form.getName());
+        cs.updateCustomerMailByUsername(username, form.getMail());
 
         return new ModelAndView("redirect:/profile");
     }

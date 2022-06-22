@@ -1,4 +1,3 @@
-<%@ page import="java.util.LinkedList" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,26 +19,24 @@
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
-<div class="content">
-    <c:url value="/createReservation-1" var="postPath"/>
-    <form:form modelAttribute="numberForm" action="${postPath}" method="post">
-        <div class="content-container">
-            <div class="card register-card">
-                <span class="presentation-text"><spring:message code="Createreservation.day.title"/></span>
-
-                <div class="input-field">
-                    <form:select path="number">
-                        <form:options items="${dates}" />
-                    </form:select>
-                </div>
-                <div class="submit center">
-                    <spring:message code="Button.confirm" var="label"/>
-                    <input type="submit" value="${label}" class="btn confirm-btn"/>
-                </div>
+    <c:url value="/createReservation-2/${reservationSecurityCode}" var="postPath"/>
+<div style="display: flex;justify-content: center;margin-top: 5%;">
+    <form:form modelAttribute="dateForm" action="${postPath}" method="post">
+        <div class="card register-card">
+            <span class="presentation-text"><spring:message code="Createreservation.day.title"/></span>
+            <div>
+                <form:errors path="date" element="p" cssStyle="color:red"/>
+                <form:label path="date" class="helper-text" data-error="wrong" data-success="right"/>
+                <form:input type="date" required="required" path="date"/>
+            </div>
+            <div class="submit center">
+                <spring:message code="Button.confirm" var="label"/>
+                <input type="submit" value="${label}" class="btn confirm-btn"/>
             </div>
         </div>
     </form:form>
 </div>
+
 
 </body>
 </html>
@@ -53,17 +50,14 @@
         background-size: cover;
     }
     .card{
-        border-radius: 16px;
+        border-radius: .8rem;
         display: flex;
         flex-wrap: wrap;
-        margin: 10px;
-        justify-content: center;
+        justify-content: space-evenly;
         align-content: center;
         flex-direction: column;
-        min-height: 300px;
-        height: 100%;
-        min-width: 250px;
-        width: 100%;
+        min-height: 250px;
+        min-width: 450px;
         padding: 20px;
     }
     form{

@@ -4,10 +4,19 @@
 
 Para loggearse como Restaurant, se deber n usar las siguientes credenciales (case sensitive):
 
--user: Pepito
+- user: Pepito
 
--pass: 12345678
+- pass: 12345678
 
+Credenciales para iniciar sesion con el usuario de rol Mozo:
+- user: Mozo:
+- 
+- password: 12345678
+
+Credenciales para iniciar sesion con el usuario de rol Cocina:
+- user: Cocina
+
+- password: 12345678 
 ## A tener en cuenta
 
 El usuario solo puede hacer reservas en horarios disponibles;

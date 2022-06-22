@@ -1,16 +1,20 @@
 package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.model.*;
+import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils;
 import ar.edu.itba.paw.webapp.exceptions.*;
 import ar.edu.itba.paw.webapp.form.FilterForm;
+import ar.edu.itba.paw.webapp.form.TableNumberForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -29,19 +33,18 @@ public class RestReservationController {
         this.ms = ms;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.GET)
-    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/securityCode={reservationSecurityCode}", method = RequestMethod.GET)
+    public ModelAndView cancelReservationConfirmation(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                                       @PathVariable("restaurantId") final String restaurantIdP,
                                                       @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                                       @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                                       @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                                       @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
-        ControllerUtils.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
 
         final ModelAndView mav = new ModelAndView("restaurantViews/reservation/cancelReservationConfirmation");
-        mav.addObject("reservationId", reservationId);
+        mav.addObject("reservationSecurityCode", reservationSecurityCode);
         mav.addObject("restaurantId", restaurantId);
         mav.addObject("orderBy", orderBy);
         mav.addObject("direction", direction);
@@ -51,117 +54,312 @@ public class RestReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/id={reservationId}", method = RequestMethod.POST)
-    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationId") final String reservationIdP,
+    @RequestMapping(value = "/restaurant={restaurantId}/cancelReservationConfirmation/securityCode={reservationSecurityCode}", method = RequestMethod.POST)
+    public ModelAndView cancelReservationConfirmationPost(@PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                                           @PathVariable("restaurantId") final String restaurantIdP,
                                                           @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                                           @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                                           @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
                                                           @RequestParam(value = "page", defaultValue = "1") final String page) throws Exception {
-        ControllerUtils.longParser(reservationIdP, restaurantIdP).orElseThrow(() -> new LongParseException(""));
-        long reservationId = Long.parseLong(reservationIdP);
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
 
-        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurantId()).orElseThrow(RestaurantNotFoundException::new);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
+        Restaurant restaurant = rs.getRestaurantById(reservation.getRestaurant().getId()).orElseThrow(RestaurantNotFoundException::new);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
+        res.cancelReservation(restaurant, customer, reservation);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.CANCELED);
-
-        ms.sendCancellationEmail(restaurant,customer,reservation);
-
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/reservations") //?orderBy=String
-    public ModelAndView reservationsOrderBy(@PathVariable("restaurantId") final String restaurantIdP,
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/open")
+    public ModelAndView reservationsOpen(@PathVariable("restaurantId") final String restaurantIdP,
                                             @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                             @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                            @RequestParam(value = "filterStatus", defaultValue = "0") final String filterStatus,
                                             @RequestParam(value = "page", defaultValue = "1") final String page,
-                                            @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+                                            @ModelAttribute("filterForm") final FilterForm filterForm,
+                                            @ModelAttribute("seatForm") final TableNumberForm seatForm) throws Exception {
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "0", Integer.parseInt(page));
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/openReservations");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        filterForm.setFilterStatus("0");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+        seatForm.setNumber("0");
+
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("page", Integer.parseInt(page));
+
+        return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/open", method = RequestMethod.POST)
+    public ModelAndView reservationsOpenOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                @ModelAttribute("filterForm") final FilterForm form){
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/seated")
+    public ModelAndView reservationsSeated(@PathVariable("restaurantId") final String restaurantIdP,
+                                         @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                         @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                         @RequestParam(value = "page", defaultValue = "1") final String page,
+                                         @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
 
 
         ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
         ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
         ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
-        ControllerUtils.filterStatusParser(filterStatus).orElseThrow(() -> new LongParseException(filterStatus));
         long restaurantId = Long.parseLong(restaurantIdP);
 
-        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/reservations");
-        Restaurant restaurant=rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/seatedReservations");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         mav.addObject("restaurant", restaurant);
 
-        List<FullReservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, filterStatus, Integer.parseInt(page));
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "1", Integer.parseInt(page));
 
-
-        filterForm.setFilterStatus(filterStatus);
+        filterForm.setFilterStatus("1");
         filterForm.setDirection(direction);
         filterForm.setOrderBy(orderBy);
-
-        mav.addObject("ReservationStatus", ReservationStatus.values());
 
         mav.addObject("reservations", reservations);
         mav.addObject("orderBy", orderBy);
         mav.addObject("direction", direction);
-        mav.addObject("filterStatus", filterStatus);
+        mav.addObject("page", Integer.parseInt(page));
+        return mav;
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/seated", method = RequestMethod.POST)
+    public ModelAndView reservationsSeatedOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                @ModelAttribute("filterForm") final FilterForm form){
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/seated?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/checkordered")
+    public ModelAndView reservationsCheckOrdered(@PathVariable("restaurantId") final String restaurantIdP,
+                                         @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                         @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                         @RequestParam(value = "page", defaultValue = "1") final String page,
+                                         @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/checkOrderedReservations");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "2", Integer.parseInt(page));
+
+        filterForm.setFilterStatus("2");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("page", Integer.parseInt(page));
+        return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/checkordered", method = RequestMethod.POST)
+    public ModelAndView reservationsCheckOrderedOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                    @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                    @ModelAttribute("filterForm") final FilterForm form){
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/checkordered?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/finished")
+    public ModelAndView reservationsFinished(@PathVariable("restaurantId") final String restaurantIdP,
+                                                 @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                                 @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                                 @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                 @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/finishedReservations");
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        mav.addObject("restaurant", restaurant);
+
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "3", Integer.parseInt(page));
+
+        filterForm.setFilterStatus("3");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
         mav.addObject("page", Integer.parseInt(page));
 
         res.checkReservationTime();
 
         return mav;
     }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/finished", method = RequestMethod.POST)
+    public ModelAndView reservationsFinishedOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                            @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                            @ModelAttribute("filterForm") final FilterForm form){
 
-    @RequestMapping(value = "/restaurant={restaurantId}/reservations", method = RequestMethod.POST)
-    public ModelAndView reservationsOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
-                                            @RequestParam(value = "page", defaultValue = "1") final String page,
-                                            @ModelAttribute("filterForm") final FilterForm form){
 
-
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + form.getOrderBy() +
-                "&direction=" + form.getDirection() + "&filterStatus=" + form.getFilterStatus() + "&page=" + page);
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/finished?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/canceled")
+    public ModelAndView reservationsCanceled(@PathVariable("restaurantId") final String restaurantIdP,
+                                                 @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                                 @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                                 @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                 @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "4", Integer.parseInt(page));
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/cancelledReservations");
+        filterForm.setFilterStatus("4");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("page", Integer.parseInt(page));
+        return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/canceled", method = RequestMethod.POST)
+    public ModelAndView reservationsCanceledOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                            @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                            @ModelAttribute("filterForm") final FilterForm form){
+
+
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/canceled?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/all")
+    public ModelAndView reservationsAll(@PathVariable("restaurantId") final String restaurantIdP,
+                                              @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
+                                              @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
+                                              @RequestParam(value = "page", defaultValue = "1") final String page,
+                                              @ModelAttribute("filterForm") final FilterForm filterForm,
+                                              @ModelAttribute("seatForm") final TableNumberForm seatForm) throws Exception {
+
+
+        ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
+        ControllerUtils.directionParser(direction).orElseThrow(() -> new OrderByException(orderBy));
+        ControllerUtils.longParser(page).orElseThrow(() -> new LongParseException(page));
+        long restaurantId = Long.parseLong(restaurantIdP);
+
+        Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        List<Reservation> reservations = res.getAllReservationsOrderedBy(restaurantId, orderBy, direction, "9", Integer.parseInt(page));
+
+        final ModelAndView mav = new ModelAndView("restaurantViews/reservation/allReservations");
+        filterForm.setFilterStatus("9");
+        filterForm.setDirection(direction);
+        filterForm.setOrderBy(orderBy);
+        seatForm.setNumber("0");
+
+
+        mav.addObject("restaurant", restaurant);
+        mav.addObject("reservations", reservations);
+        mav.addObject("orderBy", orderBy);
+        mav.addObject("direction", direction);
+        mav.addObject("page", Integer.parseInt(page));
+        return mav;
+    }
+    @RequestMapping(value = "/restaurant={restaurantId}/reservations/all", method = RequestMethod.POST)
+    public ModelAndView reservationsAllOrderByPost(@PathVariable("restaurantId") final String restaurantIdP,
+                                                         @RequestParam(value = "page", defaultValue = "1") final String page,
+                                                         @ModelAttribute("filterForm") final FilterForm form){
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/all?orderBy=" + form.getOrderBy() +
+                "&direction=" + form.getDirection() + "&page=" + page);
+    }
+
+    @RequestMapping(value = "/restaurant={restaurantId}/seatCustomer={reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView seatCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                     @PathVariable("reservationId") final String reservationIdP,
+                                     @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                      @RequestParam(value = "page", defaultValue = "1") final String page,
                                      @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                      @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
-                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
-        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long reservationId = Long.parseLong(reservationIdP);
+                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus,
+                                     @ModelAttribute("filterForm") final FilterForm filterForm,
+                                     @Valid @ModelAttribute("seatForm") final TableNumberForm seatForm,
+                                     final BindingResult errors) throws Exception {
+        if (errors.hasErrors()){
+            return reservationsOpen(restaurantIdP, orderBy, direction, page, filterForm, seatForm);
+        }
+        ControllerUtils.intParser(seatForm.getNumber()).orElseThrow(() -> new LongParseException(""));
+        int seatNumber = Integer.parseInt(seatForm.getNumber());
 
-        res.updateReservationStatus(reservationId, ReservationStatus.SEATED);
+        Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
+        res.seatCustomer(reservation, seatNumber);
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/open?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/showReceipt={reservationId}")
+    @RequestMapping(value = "/restaurant={restaurantId}/showReceipt={reservationSecurityCode}")
     public ModelAndView showReceipt(@PathVariable("restaurantId") final String restaurantIdP,
-                                       @PathVariable("reservationId") final String reservationIdP,
+                                       @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                     @RequestParam(value = "page", defaultValue = "1") final String page,
                                     @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                     @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                     @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
-        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
         long restaurantId = Long.parseLong(restaurantIdP);
-        long reservationId = Long.parseLong(reservationIdP);
 
         Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
-        Reservation reservation = res.getReservationById(reservationId).orElseThrow(ReservationNotFoundException::new);
-        List<FullOrderItem> orderItems = res.getAllOrderItemsByReservationId(reservationId);
-        Customer customer = cs.getUserByID(reservation.getCustomerId()).orElseThrow(CustomerNotFoundException::new);
+        Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
+        List<OrderItem> orderItems = res.getAllOrderItemsByReservation(reservation);
+        Customer customer = cs.getCustomerById(reservation.getCustomer().getId()).orElseThrow(CustomerNotFoundException::new);
 
         ModelAndView mav = new ModelAndView("restaurantViews/order/receipt");
 
-        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservationId));
+        mav.addObject("discountCoefficient", res.getDiscountCoefficient(reservation.getId()));
         mav.addObject("orderItems", orderItems);
         mav.addObject("restaurant", restaurant);
         mav.addObject("total", res.getTotal(orderItems));
-        mav.addObject("reservationId", reservationId);
+        mav.addObject("reservationSecurityCode", reservationSecurityCode);
         mav.addObject("customer", customer);
         mav.addObject("orderBy", orderBy);
         mav.addObject("direction", direction);
@@ -171,36 +369,35 @@ public class RestReservationController {
         return mav;
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/finishCustomer={reservationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/restaurant={restaurantId}/finishCustomer={reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView finishCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                     @PathVariable("reservationId") final String reservationIdP,
+                                     @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                        @RequestParam(value = "page", defaultValue = "1") final String page,
                                        @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                        @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                        @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus) throws Exception {
-        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long reservationId = Long.parseLong(reservationIdP);
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
+        res.finishCustomerReservation(reservation);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.FINISHED);
-
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/checkordered?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 
-    @RequestMapping(value = "/restaurant={restaurantId}/orderCheckCustomer={reservationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/restaurant={restaurantId}/orderCheckCustomer={reservationSecurityCode}", method = RequestMethod.POST)
     public ModelAndView orderCheckCustomer(@PathVariable("restaurantId") final String restaurantIdP,
-                                       @PathVariable("reservationId") final String reservationIdP,
+                                       @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
                                            @RequestParam(value = "page", defaultValue = "1") final String page,
                                            @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                            @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                            @RequestParam(value = "filterStatus", defaultValue = "") final String filterStatus
                                            ) throws Exception {
-        ControllerUtils.longParser(restaurantIdP, reservationIdP).orElseThrow(() -> new LongParseException(""));
-        long reservationId = Long.parseLong(reservationIdP);
+        ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(""));
+        Reservation reservation = res.getReservationBySecurityCode(reservationSecurityCode).orElseThrow(ReservationNotFoundException::new);
 
-        res.updateReservationStatus(reservationId, ReservationStatus.CHECK_ORDERED);
+        res.updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
 
-        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations?orderBy=" + orderBy +
+        return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/seated?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
 

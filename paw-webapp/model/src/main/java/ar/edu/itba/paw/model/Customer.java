@@ -1,36 +1,88 @@
 package ar.edu.itba.paw.model;
 
+import ar.edu.itba.paw.model.enums.ReservationStatus;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Customer {
-    private long customerId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_customerid_seq")
+    @SequenceGenerator(sequenceName = "customer_customerid_seq", name = "customer_customerid_seq", allocationSize = 1)
+    @Column(name = "customerid")
+    private long id;
+
+    @Column(length = 50, nullable = false)
     private String customerName;
+
+    @Column(length = 50, nullable = false)
     private String phone;
+
+    @Column(length = 50, nullable = false)
     private String mail;
+
+    @Column(nullable = false)
     private int points;
-    private long userId;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false, orphanRemoval = true)
+    @JoinColumn(name = "userid")
+    private User user;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
+
+    /* default */ Customer() {
+        // Just for hibernate
+    }
+
+
+    public Customer(String customerName, String phone, String mail, int points) {
+        super();
+        this.customerName = customerName;
+        this.phone = phone;
+        this.mail = mail;
+        this.points = points;
+    }
+
+    public Customer(String customerName, String phone, String mail, long userId, int points) {
+        super();
+        this.customerName = customerName;
+        this.phone = phone;
+        this.mail = mail;
+        this.points = points;
+//        this.userId = userId;
+    }
 
     public Customer(long customerId, String customerName, String phone, String mail, int points) {
-        this.customerId = customerId;
+        this.id = customerId;
         this.customerName = customerName;
         this.phone = phone;
         this.mail = mail;
         this.points = points;
     }
 
-    public Customer(long customerId, String customerName, String phone, String mail, long userId, int points) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.phone = phone;
-        this.mail = mail;
-        this.points = points;
-        this.userId = userId;
+    public Reservation createReservation(Restaurant restaurant, int reservationHour, int qPeople, LocalDateTime startedAtTime, LocalDateTime reservationDate) {
+        final Reservation reservation = new Reservation(restaurant, this, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime, reservationDate);
+        reservations.add(reservation);
+        return reservation;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public List<Reservation> getReservationsByStatusList(List<ReservationStatus> statusList) {
+        List<Reservation> toRet = new ArrayList<>(reservations);
+        toRet.removeIf(r -> !statusList.contains(r.getReservationStatus()));
+        return toRet;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCustomerName() {
@@ -66,10 +118,28 @@ public class Customer {
     }
 
     public long getUserId() {
-        return userId;
+        return getUser().getId();
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+//    public void setUserId(long userId) {
+//        this.userId = userId;
+//    }
+
+    public User getUser() {
+        return user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Reservation> getReservations() {
+        return new ArrayList<>(reservations);
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+
 }

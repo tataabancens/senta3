@@ -21,29 +21,33 @@
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
-<div class="content">
-    <div class="content-container">
+<div style="display: flex;margin-top: 5%;justify-content: center">
+    <c:if test="${hours.size() > 0}">
         <div class="card register-card">
-            <c:if test="${hours.size() > 0}">
-                <span class="presentation-text"><spring:message code="Createreservation.today"/></span>
-                <span class="presentation-text"><spring:message code="Createreservation.hour.title"/></span>
-                <c:url value="/createReservation-2/${reservationId}" var="postPath"/>
-                <form:form modelAttribute="hourForm" action="${postPath}" method="post">
-                    <div class="input-field">
-                        <form:select  path="number">
-                            <form:options items="${hours}"></form:options>
-                        </form:select>
-                    </div>
-                    <spring:message code="Button.continue" var="label"/>
-                    <input type="submit" value="${label}" class="btn confirm-btn center"/>
-                </form:form>
-            </c:if>
-            <c:if test="${hours.size() == 0}">
-                <span class="presentation-text"><spring:message code="Createreservation.hour.error"/></span>
-                <a class="waves-effect waves-light btn confirm-btn text description center" href="<c:url value="/"/>"><spring:message code="Button.back"/></a>
-            </c:if>
+            <span class="presentation-text"><spring:message code="Createreservation.hour.title"/></span>
+            <span class="presentation-text"><spring:message code="Createreservation.disclaimer"/></span>
+            <c:url value="/createReservation-3/${reservationSecurityCode}" var="postPath"/>
+            <form:form modelAttribute="hourForm" action="${postPath}" method="post">
+                <div class="input-field">
+                    <form:select  path="number">
+                        <c:forEach var="item" items="${hours}">
+                            <form:option value="${item}" label="${item}:00"></form:option>
+                        </c:forEach>
+                    </form:select>
+                </div>
+                <spring:message code="Button.continue" var="label"/>
+                <input type="submit" value="${label}" class="btn confirm-btn center"/>
+            </form:form>
         </div>
-    </div>
+    </c:if>
+    <c:if test="${hours.size() == 0}">
+        <div class="card register-card" style="justify-content: flex-start;align-items: center;min-height: 200px;">
+            <span class="presentation-text" style="margin-bottom: 13%;"><spring:message code="Createreservation.hour.error"/></span>
+            <a class="waves-effect waves-light btn confirm-btn text description center" style="color: white;" href="<c:url value="/createReservation-2/${reservationSecurityCode}"/>">
+                <spring:message code="Button.back"/>
+            </a>
+        </div>
+    </c:if>
 </div>
 
 </body>
@@ -58,7 +62,7 @@
         background-size: cover;
     }
     .card{
-        border-radius: 16px;
+        border-radius: .8rem;
         display: flex;
         flex-wrap: wrap;
         margin: 10px;
@@ -66,18 +70,10 @@
         align-content: center;
         flex-direction: column;
         min-height: 300px;
-        height: 100%;
-        min-width: 250px;
-        width: 100%;
+        min-width: 500px;
         padding: 20px;
     }
 
-    .content{
-        display: flex;
-        justify-content: center;
-        padding: 20px;
-        align-content: center;
-    }
     span{
         font-family: "Segoe UI", Lato, sans-serif;
         font-size: 23px;
@@ -88,24 +84,6 @@
     }
     select{
         display: flex;
-    }
-
-    .back-btn{
-        border-radius: 16px;
-        margin-top: 5%;
-        background-color: #E63737 ;
-        opacity: 87%;
-    }
-
-    .back-btn:hover{
-        border-radius: 16px;
-        margin-top: 5%;
-        background-color: #E63737 ;
-        opacity: 100%;
-    }
-
-    .input{
-        margin-bottom: 1px;
     }
 
     .center{

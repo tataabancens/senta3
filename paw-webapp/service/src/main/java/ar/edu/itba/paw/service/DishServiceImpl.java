@@ -1,16 +1,19 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.enums.DishCategory;
+import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.persistance.DishDao;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
-public class DishServiceImpl implements DishService{
+public class DishServiceImpl implements DishService {
 
     private final DishDao dishDao;
     private final ImageDao imageDao;
@@ -26,37 +29,37 @@ public class DishServiceImpl implements DishService{
         return dishDao.getDishById(id);
     }
 
+    @Transactional
     @Override
-    public Dish create(long restaurantId, String dishName, String dishDescription, double price, long imageId, DishCategory category){
-        return dishDao.create(restaurantId, dishName, dishDescription, price, imageId, category);
+    public void updateDish(Dish dish, String dishName, String dishDescription, double price, DishCategory category) {
+        dish.setDishName(dishName);
+        dish.setDishDescription(dishDescription);
+        dish.setPrice((int) price);
+        dish.setCategory(category);
     }
 
+    @Transactional
     @Override
-    public void updateDish(long dishId, String dishName, String dishDescription, double price, DishCategory category, long restaurantId) {
-        dishDao.updateDish(dishId, dishName, dishDescription, price, category, restaurantId);
-    }
-
-    @Override
-    public void updateDishPhoto(long dishId, long imageId) {
+    public void updateDishPhoto(long dishId, CommonsMultipartFile photo) throws IOException {
+        long imageId = imageDao.create(photo);
         Optional<Dish> maybeDish = dishDao.getDishById(dishId);
         if(maybeDish.isPresent()) {
             Dish dish = maybeDish.get();
             if(dish.getImageId() > 1) {
                 imageDao.deleteImageById(dish.getImageId());
             }
-            dishDao.updateDishPhoto(dishId, imageId);
+            dish.setImageId(imageId);
         }
-
     }
+
     @Override
     public void deleteDish(long dishId) {
         dishDao.deleteDish(dishId);
     }
 
     @Override
-    public Dish getRecommendedDish(long reservationId) {
-        Optional<Dish> maybeDish = dishDao.getRecommendedDish(reservationId);
-        return maybeDish.orElse(null);
+    public Optional<Dish> getRecommendedDish(long reservationId) {
+        return dishDao.getRecommendedDish(reservationId);
     }
 
     @Override

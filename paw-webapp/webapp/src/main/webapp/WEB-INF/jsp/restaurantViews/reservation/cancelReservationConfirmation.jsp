@@ -23,11 +23,11 @@
     <div class="form-container">
         <div class="card">
             <div class="card-content">
-                <span class="presentation-text"><spring:message code="Cancelreservation.confirm" arguments="${reservationId}"/> </span>
+                <span class="presentation-text"><spring:message code="Cancelreservation.confirm" arguments="${reservationSecurityCode}"/> </span>
                     <div class="center" style="margin-top: 15%">
-                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/id=${reservationId}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                        <c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/securityCode=${reservationSecurityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post">
-                            <spring:message code="Button.cancel" var="label"/>
+                            <spring:message code="Button.confirm" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn red" onclick="this.form.submit(); this.disabled=true;this.value='procesando'; ">
                         </form:form>
                     </div>

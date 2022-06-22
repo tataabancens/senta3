@@ -21,24 +21,23 @@
 <body>
 <%@ include file="../../components/navbar.jsp" %>
 
-<div class="content">
     <c:url value="/createReservation-1" var="postPath"/>
-        <div class="content-container">
-            <div class="card register-card">
-                <span class="presentation-text"><spring:message code="Createreservation.people.title"/></span>
-                <c:url value="/createReservation-1" var="postPath"/>
-                <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
-                    <div class="input-field">
-                        <form:errors path="number" element="p" cssStyle="color:red"/>
-                        <form:label path="number" class="helper-text" data-error="wrong" data-success="right"/>
-                        <form:input path="number" type="text"/>
-                    </div>
-                    <spring:message code="Button.confirm" var="label"/>
-                    <input type="submit" value="${label}" class="btn confirm-btn center"/>
-                </form:form>
+<div style="display: flex;justify-content: center;margin-top: 5%;">
+    <div class="card register-card">
+        <span class="presentation-text"><spring:message code="Createreservation.people.title"/></span>
+        <c:url value="/createReservation-1" var="postPath"/>
+        <form:form modelAttribute="qPeopleForm" action="${postPath}" method="post">
+            <div class="input-field">
+                <form:errors path="number" element="p" cssStyle="color:red"/>
+                <form:label path="number" class="helper-text" data-error="wrong" data-success="right"/>
+                <form:input path="number" required="required" type="text"/>
             </div>
-        </div>
+            <spring:message code="Button.confirm" var="label"/>
+            <input type="submit" value="${label}" class="btn confirm-btn center"/>
+        </form:form>
+    </div>
 </div>
+
 
 </body>
 </html>
@@ -52,25 +51,18 @@
         background-size: cover;
     }
     .card{
-        border-radius: 16px;
+        border-radius: .8rem;
         display: flex;
         flex-wrap: wrap;
         margin: 10px;
         justify-content: space-evenly;
         align-content: center;
         flex-direction: column;
-        min-height: 300px;
-        height: 100%;
-        min-width: 250px;
-        width: 100%;
+        min-height: 250px;
+        min-width: 450px;
         padding: 20px;
     }
-    .content{
-        display: flex;
-        justify-content: center;
-        padding: 20px;
-        align-content: center;
-    }
+
     .btn.confirm-btn{
         margin-left: 20%;
     }
