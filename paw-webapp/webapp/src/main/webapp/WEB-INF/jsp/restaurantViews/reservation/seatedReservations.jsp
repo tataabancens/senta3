@@ -139,7 +139,7 @@
 
 <div style="display: flex;align-items: center;justify-content: flex-end;margin-right: 1.5%;">
     <div>
-        <c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
+        <c:url value="/restaurant=${restaurantId}/reservations/seated" var="postUrl"/>
         <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
             <div class="filters-orderBy">
                 <div class="orderBy">

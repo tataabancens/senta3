@@ -139,7 +139,7 @@
 
 <div style="display: flex;align-items: center;justify-content: flex-end;margin-right: 1.5%;">
     <div>
-        <c:url value="/restaurant=${restaurantId}/reservations/open" var="postUrl"/>
+        <c:url value="/restaurant=${restaurantId}/reservations/all" var="postUrl"/>
         <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
             <div class="filters-orderBy">
                 <div class="orderBy">
@@ -202,19 +202,17 @@
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
 
                 <c:if test="${reservation.reservationStatus.name == 'OPEN' }">
-                    <td data-label="Confirmar" class="table-cell status">
-                        <div style="margin-top: 15px">
-                            <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}" var="postUrl"/>
-                            <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
-                                <spring:message code="Button.sit" var="label"/>
-                                <input type="submit" class="btn green" style="margin-right: 4%;" value="${label}"/>
-                            </form:form>
-                        </div>
-                        <a href="<c:url value="/restaurant=${restaurantId}/cancelReservationConfirmation/securityCode=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterForm.filterStatus}&page=${page}"/>" style="margin-top: 15px">
-                            <spring:message code="Button.reservation.cancel" var="label"/>
-                            <input type="submit" class="btn red" style="margin-right: 4%;" value="${label}"/>
-                        </a>
-                    </td>
+                    <c:if test="${reservation.isToday}">
+                        <c:url value="/restaurant=${restaurantId}/seatCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
+                        <form:form action="${postUrl}" method="post" modelAttribute="seatForm">
+                            <form:errors path="number" element="p" cssStyle="color:red"/>
+                            <form:label path="number" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Input.seatNumber"/></form:label>
+                            <form:input path="number" type="number"/>
+                            <button type="submit" class="btn waves-effect waves-light green" style="margin-right: 4%;">
+                                <span class="text description" style="font-size: 0.8rem; color: white;"><spring:message code="Button.seat"/></span>
+                            </button>
+                        </form:form>
+                    </c:if>
                 </c:if>
 
                 <c:if test="${reservation.reservationStatus.name == 'CHECK_ORDERED' }">

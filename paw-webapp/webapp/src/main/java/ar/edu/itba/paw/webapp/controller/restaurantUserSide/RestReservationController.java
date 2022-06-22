@@ -280,7 +280,9 @@ public class RestReservationController {
                                               @RequestParam(value = "orderBy", defaultValue = "reservationid") final String orderBy,
                                               @RequestParam(value = "direction", defaultValue = "ASC") final String direction,
                                               @RequestParam(value = "page", defaultValue = "1") final String page,
-                                              @ModelAttribute("filterForm") final FilterForm filterForm) throws Exception {
+                                              @ModelAttribute("filterForm") final FilterForm filterForm,
+                                              @ModelAttribute("seatForm") final TableNumberForm seatForm) throws Exception {
+
 
         ControllerUtils.orderByParser(orderBy).orElseThrow(() -> new OrderByException(orderBy));
         ControllerUtils.longParser(restaurantIdP).orElseThrow(() -> new LongParseException(restaurantIdP));
@@ -295,6 +297,8 @@ public class RestReservationController {
         filterForm.setFilterStatus("9");
         filterForm.setDirection(direction);
         filterForm.setOrderBy(orderBy);
+        seatForm.setNumber("0");
+
 
         mav.addObject("restaurant", restaurant);
         mav.addObject("reservations", reservations);
@@ -396,4 +400,8 @@ public class RestReservationController {
         return new ModelAndView("redirect:/restaurant=" + restaurantIdP + "/reservations/seated?orderBy=" + orderBy +
                 "&direction=" + direction + "&filterStatus=" + filterStatus + "&page=" + page);
     }
+
+
+
+
 }
