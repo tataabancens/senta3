@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="es">
@@ -24,7 +25,103 @@
     </head>
     <body>
         <div class="row">
-            <%@ include file="../../components/navbar.jsp" %>
+            <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
+            <nav>
+                <ul id="primary-navigation" data-visible="false" class="primary-navigation">
+                    <div class="left-side">
+                        <li>
+                            <a href="<c:url value="/"/>">
+                                <span class="logo" style="font-style: italic;">Senta3</span>
+                            </a>
+                        </li>
+                        <sec:authorize access="hasRole('CUSTOMER')">
+                            <li>
+                                <a class="options" href="<c:url value="/history"/>">
+                                    <spring:message code="Navbar.option.history"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('CUSTOMER')">
+                            <li>
+                                <a class="options" href="<c:url value="/active-reservations"/>">
+                                    <spring:message code="Navbar.option.reservations"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('CUSTOMER')">
+                            <li>
+                                <a class="options selected" style="color: white;" href="<c:url value="/"/>" >
+                                    <spring:message code="Navbar.option.customer.menu"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <li>
+                                <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
+                                    <spring:message code="Navbar.option.menu"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <li>
+                                <a class="options" href="<c:url value="/restaurant=1/orders"/>">
+                                    <spring:message code="Navbar.option.orders"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <li>
+                                <a class="options" href="<c:url value="/restaurant=1/reservations/open"/>">
+                                    <spring:message code="Navbar.option.reservations"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <li>
+                                <a class="options" href="<c:url value="/restaurant=1/waiter"/>">
+                                    <spring:message code="Navbar.option.waiter"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                    </div>
+                    <div class="right-side">
+                        <sec:authorize access="!isAuthenticated()">
+                            <li>
+                                <a class="options" href="<c:url value="/register"/>">
+                                    <spring:message code="Navbar.option.register"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="options" href="<c:url value="/login"/>">
+                                    <spring:message code="Navbar.option.login"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="isAuthenticated()">
+                            <sec:authorize access="hasRole('RESTAURANT')">
+                                    <li>
+                                        <a class="options" href="<c:url value="/profile"/>" >
+                                            <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
+                                        </a>
+                                    </li>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('CUSTOMER')">
+                                    <li>
+                                        <a class="options" href="<c:url value="/profile"/>" >
+                                            <spring:message code="Navbar.option.profile"/>
+                                                ${customer.user.getUsername()}
+                                        </a>
+                                    </li>
+                            </sec:authorize>
+                            <li>
+                                <a class="options" href="${pageContext.request.contextPath}/logout">
+                                    <spring:message code="Navbar.option.logout"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                    </div>
+                </ul>
+            </nav>
         </div>
         <div class="restaurant-header">
             <div class="restaurant-info" style="background-color: rgb(255, 242, 229);">
@@ -47,7 +144,7 @@
                 <div class="card left-section">
                     <div class="client-actions center">
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.new.title"/></span>
-                        <sec:authorize access="!hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('CUSTOMER')">
                             <div class="reservation-action-btn">
                                 <c:url value="/createReservation-0" var="postUrl"/>
                                 <form:form action="${postUrl}" method="post">
@@ -56,18 +153,32 @@
                                 </form:form>
                             </div>
                         </sec:authorize>
-                        <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="!isAuthenticated()">
+                            <div class="reservation-action-btn">
+                                <c:url value="/createReservation-0" var="postUrl"/>
+                                <form:form action="${postUrl}" method="post">
+                                    <spring:message code="Button.reserve" var="label"/>
+                                    <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn">
+                                </form:form>
+                            </div>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyRole('RESTAURANT', 'WAITER', 'KITCHEN')">
                             <div class="reservation-action-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.new"/></a>
                             </div>
                         </sec:authorize>
                         <span class="presentation-text box-comments"><spring:message code="Menu.reservation.exists.title"/></span>
-                        <sec:authorize access="!hasRole('RESTAURANT')">
+                        <sec:authorize access="hasRole('CUSTOMER')">
                             <div class="enter-confirm-btn">
                                 <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
                             </div>
                         </sec:authorize>
-                        <sec:authorize access="hasRole('RESTAURANT')">
+                        <sec:authorize access="!isAuthenticated()">
+                            <div class="enter-confirm-btn">
+                                <a class="waves-effect waves-light btn confirm-btn" href="findReservation?restaurantId=${restaurant.id}"><spring:message code="Menu.reservation.exists"/></a>
+                            </div>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyRole('RESTAURANT', 'WAITER', 'KITCHEN')">
                             <div class="enter-confirm-btn">
                                 <a disabled class="waves-effect waves-light btn confirm-btn" href=""><spring:message code="Menu.reservation.exists"/></a>
                             </div>
@@ -94,12 +205,17 @@
                     </div>
                 </div>
                 <div class="dish-categories">
-                    <div>
-                        <h3 class="presentation-text header-title"><c:out value="${currentCategory.name}"/></h3>
+                    <div class="category-field">
+                        <span class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></span>
                     </div>
                     <div class="dishList">
                         <c:forEach var="dish" items="${dishes}">
-                            <c:url value="/createReservation-1" var="postUrl"/>
+                            <sec:authorize access="hasRole('CUSTOMER')">
+                                <c:url value="/createReservation-1" var="postUrl"/>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('RESTAURANT')">
+                                <c:url value="/restaurant=1/menu/edit/dishId=${dish.id}" var="postUrl"/>
+                            </sec:authorize>
                             <a class="card horizontal" href="${postUrl}">
                                 <div class="card-image">
                                     <c:if test="${dish.imageId > 0}">
@@ -112,7 +228,7 @@
                                 <div class="card-stacked">
                                     <div class="card-content">
                                         <div>
-                                            <span class="presentation-text info"><c:out value="${dish.dishName}"/></span>
+                                            <span class="presentation-text info" style="color: #171616;font-size: 1.1rem;"><c:out value="${dish.dishName}"/></span>
                                             <p class="text description info"><c:out value="${dish.dishDescription}"/></p>
                                             <c:if test="${reservation.reservationDiscount}">
                                                 <span id="original-price" class="text price">$<c:out value="${dish.price}"/></span>
@@ -121,7 +237,7 @@
                                             </c:if>
                                         </div>
                                         <c:if test="${!reservation.reservationDiscount}">
-                                            <span class="text price info">$<c:out value="${dish.price}"/></span>
+                                            <span class="text price info" style="font-weight: 700;font-size: 0.8rem;">$<c:out value="${dish.price}"/></span>
                                         </c:if>
                                     </div>
                                 </div>
@@ -136,8 +252,8 @@
 
 <style>
     .card.horizontal{
-        width: 27em;
-        height: 9rem;
+        width: 30em;
+        height: 8rem;
         margin: 1%;
         box-shadow: 0 1.4rem 8rem rgba(0,0,0,.35);
         transition: 0.8s;
@@ -149,8 +265,8 @@
         margin-bottom: 0.5em;
     }
     .card.horizontal .card-image{
-        object-fit: fill;
-        max-width: 25%;
+        object-fit: cover;
+        max-width: 20%;
         margin-left: 2%;
     }
     .card.horizontal .card-image img{
@@ -181,8 +297,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        width: 22%;
         align-items: center;
-        width: clamp(10em,15%,15em);
+        padding: 10px;
         height: clamp(34em,100%,40em);
     }
     .categories{
@@ -230,16 +347,24 @@
         flex-direction: row;
         justify-content: center;
     }
-
+    .category-field{
+        background-color: rgb(255, 68, 31);
+        align-items: center;
+        justify-content: space-between;
+        height: 3em;
+        border-radius: .8rem;
+        display: flex;
+    }
     .dish-categories{
         margin-left: 2em;
-        width: clamp(30em,79%,105em);
+        min-width: 500px;
+        width: 73%;
     }
     .dishList{
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
-        width: clamp(30em,100%,105em);
+        width: 100%;
     }
     @media (max-width: 600px){
         .restaurant-content{
@@ -268,4 +393,19 @@
 
 
 </style>
+<script>
+    const primaryNav = document.querySelector(".primary-navigation");
+    const navToggle = document.querySelector(".mobile-nav-toggle");
+    const buttons = document.querySelector("a");
+    navToggle.addEventListener('click',() => {
+        const visibility = primaryNav.getAttribute('data-visible');
+        if (visibility=== "false"){
+            primaryNav.setAttribute('data-visible',true);
+            navToggle.setAttribute('aria-expanded',true);
+        }else if(visibility==="true"){
+            primaryNav.setAttribute('data-visible',false);
+            navToggle.setAttribute('aria-expanded',false);
+        }
+    })
+</script>
 

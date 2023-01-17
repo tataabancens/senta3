@@ -34,7 +34,7 @@
             <div>
                 <form:errors path="categoryName" element="p" cssStyle="color:red"/>
                 <form:label path="categoryName" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Create.category.name"/></form:label>
-                <form:input path="categoryName" required="required" type="text"/>
+                <form:input path="categoryName" required="required" maxlength="20" type="text"/>
             </div>
             <div class="col s12 center" style="margin-top: 10%;">
                 <spring:message code="Button.continue" var="label"/>

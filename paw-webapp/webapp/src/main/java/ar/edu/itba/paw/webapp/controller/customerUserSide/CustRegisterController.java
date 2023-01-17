@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -43,69 +42,7 @@ public class CustRegisterController {
         this.us = us;
     }
 
-    @RequestMapping(value = "/registerShort/{customerId}/{reservationSecurityCode}", method = RequestMethod.GET)
-    public ModelAndView userRegister(@PathVariable("customerId") final String customerIdP,
-                                     @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
-                                     @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form) throws Exception {
 
-        ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
-        Customer customer = cs.getCustomerById(Integer.parseInt(customerIdP)).orElseThrow(CustomerNotFoundException::new);
-
-        form.setMail(customer.getMail());
-
-        ModelAndView mav = new ModelAndView("customerViews/CustomerRegisterShort");
-        mav.addObject("customerId", customerIdP);
-        mav.addObject("reservationSecurityCode", reservationSecurityCode);
-
-        return mav;
-    }
-
-    @RequestMapping(value = "/registerShort/{customerId}/{reservationSecurityCode}", method = RequestMethod.POST)
-    public ModelAndView userRegister_POST(@PathVariable("customerId") final String customerIdP,
-                                          @PathVariable("reservationSecurityCode") final String reservationSecurityCode,
-                                          @Valid @ModelAttribute("customerRegisterShortForm") final CustomerRegisterShortForm form,
-                                          final BindingResult errors,
-                                          final HttpServletRequest request) throws Exception{
-        ControllerUtils.longParser(customerIdP).orElseThrow(() -> new LongParseException(customerIdP));
-        long customerId = Long.parseLong(customerIdP);
-
-        if (errors.hasErrors()){
-            return userRegister(customerIdP, reservationSecurityCode, form);
-        }
-        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        Customer customer = cs.getCustomerById(customerId).orElseThrow(CustomerNotFoundException::new);
-        cs.linkCustomerToUserId(customer, user);
-
-        authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
-
-        return new ModelAndView("redirect:/menu?reservationSecurityCode=" +  reservationSecurityCode);
-    }
-
-
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView CustomerRegister(@ModelAttribute("customerRegisterForm") final CustomerRegisterForm form){
-
-        return new ModelAndView("customerViews/CustomerRegister");
-    }
-
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView CustomerRegister_POST(@Valid @ModelAttribute("customerRegisterForm") final CustomerRegisterForm form,
-                                              final BindingResult errors,
-                                              final HttpServletRequest request){
-        if (errors.hasErrors()){
-            return CustomerRegister(form);
-        }
-        User user = us.create(form.getUsername(), form.getPsPair().getPassword(), Roles.CUSTOMER);
-        Customer customer = cs.create(form.getCustomerName(), form.getPhone(), form.getMail(), user.getId());
-
-        cs.linkCustomerToUserId(customer, user);
-
-        authenticateUserAndSetSession(form.getUsername(), form.getPsPair().getPassword(), request, authenticationManager);
-
-        return new ModelAndView("redirect:/" );
-    }
 
     public void authenticateUserAndSetSession(final String username, final String password, final HttpServletRequest request,
                                               final AuthenticationManager authenticationManager) {

@@ -33,4 +33,6 @@ public interface RestaurantService {
     void editDishCategory(DishCategory dishCategory, String categoryName);
 
      Optional<DishCategory> getDishCategoryById(long categoryId);
+
+    void deleteCategory(Restaurant restaurant, long categoryId);
 }

@@ -23,8 +23,22 @@
 <div class="page-container">
     <div class="card">
         <span class="presentation-text"><spring:message code="Category.delete.confirm"/></span>
+        <span>${categoryName}</span>
         <spring:message code="Button.confirm" var="label"/>
-        <input type="submit" value="${label}" class="btn confirm-btn"/>
+        <c:if test="${canBeDeleted}">
+            <c:url value="/restaurant=${restaurantId}/category/delete?categoryId=${categoryId}" var="postUrl"/>
+            <form:form action="${postUrl}" method="post" modelAttribute="deleteCategoryForm">
+                <form:errors path="categoryId" element="p" cssStyle="color:red"/>
+                <div style="display: flex; justify-content: center;">
+                    <input type="submit" value="${label}" class="btn confirm-btn"/>
+                </div>
+            </form:form>
+        </c:if>
+        <c:if test="${!canBeDeleted}">
+            <input type="submit" value="${label}" class="btn confirm-btn disabled"/>
+            <span align="center"><spring:message code="Category.delete.cant"/></span>
+        </c:if>
+
     </div>
 </div>
 </body>

@@ -1,104 +1,91 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Locale;
 import java.util.Properties;
 
 @Service
 public class MailingServiceImpl implements MailingService{
-    private final String FROMADDRESS="noreply@sentate.com";
-    private final String USERNAME="sentate.paw";
-    private final String PASSWORD="xblgoodfhlnunfmq";
 
+    @Value("${mail.from}")
+    private String FROMADDRESS;
+    @Value("${mail.username}")
+    private String USERNAME;
+    @Value("${mail.password}")
+    private String PASSWORD;
+
+    @Autowired
+    private MessageSource messageSource;
+//    @Value("${Mail.message}")
+//    private String message;
+
+    @Async
     @Override
-    public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation){
+    public void sendConfirmationEmail(Restaurant restaurant , Customer customer , Reservation reservation, Locale locale) {
         Properties properties=setProperties();
-        sendCustomerConfirmation(restaurant,customer,reservation,properties);
-        sendRestaurantConfirmation(restaurant,customer,reservation,properties);
+        sendCustomerConfirmation(restaurant,customer,reservation,properties, locale);
+        sendRestaurantConfirmation(restaurant,customer,reservation,properties, locale);
     }
-    private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props){
-        String subject="Confirmacion de reserva";
-        String stringBuilder = customerConfirmationTemplate(restaurant, reservation);
+    private void sendCustomerConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties props, Locale locale) {
+        String subject = messageSource.getMessage("Mail.subject.customer", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+        String stringBuilder = customerConfirmationTemplate(restaurant, reservation, locale);
         sendEmail(props,customer.getMail(),subject, stringBuilder);
     }
 
-    private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation){
-        return "<div style=\"padding:5px; background-color: #fff4e4; \">" +
-                "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
-                "</div>" +
-                "<div style=\"text-align: center\">" +
-                "<p style=\"font-size: 1.9rem; font-weight:bold\">Tu reserva fue confirmada!</p>" +
-                "<p style=\"font-size: 1.4rem\">Tu codigo de reserva es: " + reservation.getId() + "</p>" +
-                "<p style=\"font-size: 1.1rem\">Si necesitas contactar al restaurant, este es su email:" + restaurant.getMail() + "</p>" +
-                "</div>";
+    private String customerConfirmationTemplate(Restaurant restaurant, Reservation reservation, Locale locale) {
+        return messageSource.getMessage("Mail.message.customer", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
     }
 
-    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties){
-        String subject="Un cliente realizo una reserva";
-        String message= restaurantConfirmationTemplate(customer, reservation);
+    private void sendRestaurantConfirmation(Restaurant restaurant , Customer customer , Reservation reservation, Properties properties, Locale locale) {
+        String subject = messageSource.getMessage("Mail.subject.restaurant", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+        String message= restaurantConfirmationTemplate(customer, reservation, locale);
         sendEmail(properties,restaurant.getMail(),subject,message);
     }
 
-    private String restaurantConfirmationTemplate(Customer customer , Reservation reservation){
-        return "<div style=\"padding:5px; background-color: #fff4e4; \">" +
-                "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
-                "</div>" +
-                "<div style=\"text-align: center\">" +
-                "<p style=\"font-size: 1.9rem; font-weight:bold\">El cliente: " + customer.getCustomerName() + "</p>" +
-                "<p style=\"font-size: 1.4rem\">realizo una reserva para las: " + reservation.getReservationHour() +  "</p>" +
-                "</div>";
+    private String restaurantConfirmationTemplate(Customer customer , Reservation reservation, Locale locale) {
+        return messageSource.getMessage("Mail.message.restaurant", new Object[]{customer.getCustomerName(), reservation.getReservationOnlyDate(), reservation.getReservationHour()}, locale);
     }
 
+    @Async
     @Override
-    public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation){
+    public void sendCancellationEmail(Restaurant restaurant,Customer customer,Reservation reservation, Locale locale) {
         Properties properties=setProperties();
-        sendCustomerCancellation(restaurant,customer,reservation,properties);
-        sendRestaurantCancellation(restaurant,customer,reservation,properties);
+        sendCustomerCancellation(restaurant,customer,reservation,properties, locale);
+        sendRestaurantCancellation(restaurant,customer,reservation,properties, locale);
     }
 
-    private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties){
-        String subject="Se cancelo tu reserva";
-        String message=customerCancellationTemplate(restaurant, reservation);
+    private void sendCustomerCancellation(Restaurant restaurant,Customer customer,Reservation reservation, Properties properties, Locale locale) {
+        String subject = messageSource.getMessage("Mail.subject.customer.cancel", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+        String message=customerCancellationTemplate(restaurant, reservation, locale);
         sendEmail(properties,customer.getMail(),subject,message);
     }
 
-    private String customerCancellationTemplate(Restaurant restaurant, Reservation reservation){
-        return "<div style=\"padding:5px; background-color: #fff4e4; \">" +
-                "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
-                "</div>" +
-                "<div style=\"text-align: center\">" +
-                "<p style=\"font-size: 1.9rem; font-weight:bold\">La siguiente reserva fue cancelada</p>" +
-                "<p style=\"font-size: 1.4rem\">Fecha: " + reservation.getReservationHour() +  "</p>" +
-                "<p style=\"font-size: 1.4rem\">Restaurante: " + restaurant.getRestaurantName() + "</p>" +
-                "</div>";
+    private String customerCancellationTemplate(Restaurant restaurant, Reservation reservation, Locale locale) {
+        return messageSource.getMessage("Mail.message.customer.cancel", new Object[]{reservation.getReservationOnlyDate(), reservation.getReservationHour(), restaurant.getRestaurantName()}, locale);
     }
 
-    private void sendRestaurantCancellation(Restaurant restaurant,Customer customer,Reservation reservation,Properties properties){
-        String subject="Una reserva fue cancelada";
-        String message=restaurantCancellationTemplate(customer, reservation);
+    private void sendRestaurantCancellation(Restaurant restaurant,Customer customer,Reservation reservation,Properties properties, Locale locale) {
+        String subject = messageSource.getMessage("Mail.subject.restaurant.cancel", new Object[]{reservation.getSecurityCode(), restaurant.getMail()}, locale);
+        String message=restaurantCancellationTemplate(customer, reservation, locale);
         sendEmail(properties, restaurant.getMail(),subject,message);
     }
 
-    private String restaurantCancellationTemplate(Customer customer, Reservation reservation){
-        return "<div style=\"padding:5px; background-color: #fff4e4; \">" +
-                "<p style=\"font-size: 1.9rem; color: #ff441f; font-weight:bold; font-style:italic\">Senta3</p>" +
-                "</div>" +
-                "<div style=\"text-align: center\">" +
-                "<p style=\"font-size: 1.9rem; font-weight:bold\">La siguiente reserva fue cancelada</p>" +
-                "<p style=\"font-size: 1.4rem\">Cliente: " + customer.getCustomerName() + "</p>" +
-                "<p style=\"font-size: 1.4rem\">Fecha: " + reservation.getReservationHour() +  "</p>" +
-                "</div>";
+    private String restaurantCancellationTemplate(Customer customer, Reservation reservation, Locale locale) {
+        return messageSource.getMessage("Mail.message.restaurant.cancel", new Object[]{reservation.getReservationOnlyDate(), reservation.getReservationHour(), customer.getCustomerName()}, locale);
     }
 
     public void sendEmail(Properties properties, String toEmailAddress,
                           String subject, String messageContent) {
-        new Thread(() -> {
-
-            Session session = Session.getInstance(properties,
+        Session session = Session.getInstance(properties,
                 new Authenticator() {
                     @Override
                     protected PasswordAuthentication
@@ -118,12 +105,12 @@ public class MailingServiceImpl implements MailingService{
             // msg.setText(messageText);
             Transport.send(msg);
         } catch (Exception ex) {
-            ex.printStackTrace();
-        }}).start();
+//            LOGGER.error("Email failed ", ex);
+        };
     }
 
 
-    private Properties setProperties(){
+    private Properties setProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.socketFactory.port", "465");

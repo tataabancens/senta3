@@ -8,7 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class DishJpaDao implements DishDao {
@@ -18,12 +20,7 @@ public class DishJpaDao implements DishDao {
 
     @Override
     public Optional<Dish> getDishById(long id) {
-        return Optional.of(em.find(Dish.class, id));
-    }
-
-    @Override
-    public void updateDishPhoto(long dishId, long imageId) {
-
+        return Optional.ofNullable(em.find(Dish.class, id));
     }
 
     @Override
@@ -40,11 +37,11 @@ public class DishJpaDao implements DishDao {
                 "              where orderitem.reservationid = :reservationid and reservation.reservationid = orderitem.reservationid\n" +
                 "              group by dishid, reservation.reservationid)\n" +
                 "\n" +
-                "        (select customersOrdered.dishId as defDishId, sum(customersOrdered.sum) as defsum\n" +
+                "        (select customersOrdered.dishId as defDishId, sum(customersOrdered.suma) as defsum\n" +
                 "         from (select dishid, sum(quantity), reservation.reservationId\n" +
                 "               from orderitem, reservation\n" +
                 "               where orderitem.reservationid = reservation.reservationid\n" +
-                "               group by dishid, reservation.reservationid) as customersOrdered (dishId, sum, reservationId),\n" +
+                "               group by dishid, reservation.reservationid) as customersOrdered (dishId, suma, reservationId),\n" +
                 "              currentOrderedCTE as currentOrdered (currentDish, currentReservationId)\n" +
                 "         where currentReservationId <> customersOrdered.reservationId\n" +
                 "           and dishId not in (select dishId from currentOrderedCTE)\n" +
@@ -67,11 +64,15 @@ public class DishJpaDao implements DishDao {
                 "                                               from CTE)");
         idQuery.setParameter("reservationid", reservationId);
 
-        final Long id = Integer.toUnsignedLong((Integer)idQuery.getResultList().stream().findFirst().get());
+        if (idQuery.getSingleResult() == null) {
+            return Optional.empty();
+        }
 
+        final Long id = Integer.toUnsignedLong((Integer)idQuery.getResultList().stream().findFirst().get());
 
         final TypedQuery<Dish> query = em.createQuery("from Dish where id = :id", Dish.class);
         query.setParameter("id", id);
         return query.getResultList().stream().findFirst();
+
     }
 }

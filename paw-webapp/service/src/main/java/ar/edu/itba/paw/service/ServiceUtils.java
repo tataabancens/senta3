@@ -4,6 +4,9 @@ import ar.edu.itba.paw.model.Reservation;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceUtils {
 
@@ -20,5 +23,32 @@ public class ServiceUtils {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public static LocalDateTime CustomDateParser(String maybeDate) {
+        if (maybeDate.length() != 10) { // format: 1999-03-17
+            return null;
+        }
+        int year;
+        int month;
+        int day;
+
+        try {
+            year = Integer.parseInt(maybeDate.substring(0, 4));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        try {
+            month = Integer.parseInt(maybeDate.substring(5, 7));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        try {
+            day = Integer.parseInt(maybeDate.substring(8, 10));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+        return LocalDateTime.of(year, month, day, 23, 59, 59, 990000000);
     }
 }

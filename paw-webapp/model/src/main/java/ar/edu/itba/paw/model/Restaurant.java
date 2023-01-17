@@ -4,10 +4,7 @@ import ar.edu.itba.paw.model.enums.ReservationStatus;
 //import jdk.jfr.Category;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 public class Restaurant {
@@ -89,7 +86,7 @@ public class Restaurant {
     }
 
     public DishCategory createDishCategory(String categoryName) {
-        DishCategory category = new DishCategory(this, categoryName);
+        DishCategory category = new DishCategory(this, categoryName.toUpperCase());
         dishCategories.add(category);
         return category;
     }
@@ -194,5 +191,30 @@ public class Restaurant {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public String getDishCategoryOfId(long categoryId) {
+        for(DishCategory category : this.dishCategories){
+            if(category.getId()==categoryId){
+                return category.getName();
+            }
+        }
+        return this.dishCategories.get(0).getName();
+    }
+
+    public Object canCategoryBeDeleted(long categoryId) {
+//        if(categoryId == 1){
+//            return false;
+//        }
+        for(DishCategory category : this.dishCategories){
+            if(category.getId()==categoryId){
+                return category.getDishes().isEmpty();
+            }
+        }
+        return false;
+    }
+
+    public void deleteCategory(long categoryId) {
+        this.dishCategories.removeIf(category -> category.getId() == categoryId);
     }
 }

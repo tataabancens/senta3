@@ -99,4 +99,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Optional<DishCategory> getDishCategoryById(long categoryId) {
         return dishCategoryDao.getDishCategoryById(categoryId);
     }
+
+    @Transactional
+    @Override
+    public void deleteCategory(Restaurant restaurant, long categoryId) {
+        restaurant.deleteCategory(categoryId);
+    }
 }

@@ -44,7 +44,27 @@
             </div>
         </div>
     </div>
-    <div style="margin-right: 2%; display: flex;align-items: center;">
+    <div style="margin: 0.5%; display: flex;flex-wrap: wrap-reverse; align-items: center; min-width: 800px;">
+            <c:if test="${reservation.reservationStatus.name == 'SEATED' || reservation.reservationStatus.name == 'CHECK_ORDERED'}">
+                <c:if test="${!reservation.hand}">
+                    <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
+                    <div style="margin-right: 1%;">
+                        <form:form action="${postUrl_hand}" method="post">
+                            <spring:message code="Fullmenu.waiter.call" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
+                        </form:form>
+                    </div>
+                </c:if>
+                <c:if test="${reservation.hand}">
+                    <c:url value="/menu/raiseHand/${reservation.securityCode}" var="postUrl_hand"/>
+                    <div style="margin-right: 1%;">
+                        <form:form action="${postUrl_hand}" method="post">
+                            <spring:message code="Fullmenu.waiter.call.no" var="label"/>
+                            <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description">
+                        </form:form>
+                    </div>
+                </c:if>
+            </c:if>
             <div class="waves-effect waves-light btn confirm-btn text description " style="width: 12.5em; margin-right: 1%;" id="reservation-toggle" onclick="toggleReservationMenu()" >
                 <span><spring:message code="Fullmenu.yourReservation"/></span>
             </div>
@@ -73,7 +93,7 @@
                     </a>
                 </div>
             </c:if>
-        <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 10%" id="shopping-cart" onclick="toggleMenu();">
+        <div class="waves-effect waves-light btn confirm-btn click-to-toggle medium" style="background-color: forestgreen; margin-right: 1%;" id="shopping-cart" onclick="toggleMenu();">
             <i class="material-icons" style="color: white; align-content: center; margin-right: 0">shopping_cart</i>
         </div>
     </div>
@@ -107,7 +127,7 @@
                 <c:if test="${customer.points >= 100}">
                     <div class="card client-actions discounts">
                         <span class="presentation-text discounts"><spring:message code="Fullmenu.discount"/></span>
-                        <c:url value="/menu/applyDiscount/${reservation.id}" var="postUrl_actDisc"/>
+                        <c:url value="/menu/applyDiscount/${reservation.securityCode}" var="postUrl_actDisc"/>
                         <form:form action="${postUrl_actDisc}" method="post">
                             <spring:message code="Button.activate" var="label"/>
                             <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
@@ -118,7 +138,7 @@
             <c:if test="${reservation.reservationDiscount}">
                 <div class="card client-actions discounts">
                     <span class="presentation-text"><spring:message code="Fullmenu.discount.apply"/></span>
-                    <c:url value="/menu/cancelDiscount/${reservation.id}" var="postUrl_undoDisc"/>
+                    <c:url value="/menu/cancelDiscount/${reservation.securityCode}" var="postUrl_undoDisc"/>
                     <form:form action="${postUrl_undoDisc}" method="post">
                         <spring:message code="Button.cancel" var="label"/>
                         <input type="submit" value="${label}" class="waves-effect waves-light btn confirm-btn text description ">
@@ -284,6 +304,11 @@
                     </c:forEach>
                 </div>
             </c:if>
+            <c:if test="${incomingItemsSize == 0}">
+                <div class="order-headers">
+                    <span class="presentation-text"><spring:message code="Order.noIncomingDishes"/></span>
+                </div>
+            </c:if>
         </div>
     </div>
     <hr class="solid-divider"/>
@@ -339,6 +364,9 @@
         background-color: rgb(255, 242, 229);
         border-radius: 0px;
     }
+    .restaurant-info{
+        min-width: 17em;
+    }
     .presentation-text.header-title.info{
         color: #E63737;
         font-size: clamp(1rem,1.2vw,2rem);
@@ -388,17 +416,16 @@
     .orders-and-info{
         display: flex;
         flex-direction: column;
-        width: clamp(11em,15%,15em);
+        min-width: 18rem;
+        width: 15%;
         margin-right: 2%;
         height: 100%;
-    }
-    .presentation-text.text-center{
-        text-align: center;
     }
     .dish-categories{
         display: flex;
         flex-direction: column;
-        width: clamp(15rem,81%,112rem);
+        min-width: 40rem;
+        width: 75%;
     }
     .card.information{
         width: 100%;
@@ -451,8 +478,6 @@
     .dishList{
         display: flex;
         flex-wrap: wrap;
-        min-width: 15rem;
-        width: 100%;
         height: fit-content;
     }
     .categories{
@@ -537,9 +562,15 @@
     }
     #discounted-price{
         color: blue;
-        margin-left: 12%;
+        margin-left: 16%;
     }
-
+    @media (max-width: 1100px){
+        .restaurant-header{
+            flex-direction: column;
+            overflow-x: scroll;
+            max-height: 230px;
+        }
+    }
 </style>
 
 <script>

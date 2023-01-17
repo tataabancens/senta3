@@ -4,7 +4,7 @@ import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +29,10 @@ public class Reservation {
     private int reservationHour;
 
     @Column(nullable = false)
-    private Timestamp startedAtTime;
+    private LocalDateTime startedAtTime;
 
     @Column(nullable = false)
-    private Timestamp reservationDate;
+    private LocalDateTime reservationDate;
 
     @Enumerated
     @Column(nullable = false)
@@ -53,11 +53,17 @@ public class Reservation {
     @Column(nullable = false, length = 6, columnDefinition = "varchar(6) default 'A'")
     private String securityCode = String.valueOf('A');
 
+    @Column(nullable = false)
+    private boolean hand;
+
+    @Column(nullable = false)
+    private boolean isToday;
+
     /* default */ Reservation() {
         // Just for hibernate
     }
 
-    public Reservation(Restaurant restaurant, Customer customer, int reservationHour, int reservationStatus, int qPeople, Timestamp startedAtTime, Timestamp reservationDate) {
+    public Reservation(Restaurant restaurant, Customer customer, int reservationHour, int reservationStatus, int qPeople, LocalDateTime startedAtTime, LocalDateTime reservationDate) {
         this.restaurant = restaurant;
         this.customer = customer;
         this.reservationHour = reservationHour;
@@ -88,11 +94,11 @@ public class Reservation {
         return orderItem;
     }
 
-    public Timestamp getStartedAtTime() {
+    public LocalDateTime getStartedAtTime() {
         return startedAtTime;
     }
 
-    public void setStartedAtTime(Timestamp startedAtTime) {
+    public void setStartedAtTime(LocalDateTime startedAtTime) {
         this.startedAtTime = startedAtTime;
     }
 
@@ -152,20 +158,20 @@ public class Reservation {
         this.reservationDiscount = reservationDiscount;
     }
 
-    public Timestamp getReservationDate() {
+    public LocalDateTime getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(Timestamp reservationDate) {
+    public void setReservationDate(LocalDateTime reservationDate) {
         this.reservationDate = reservationDate;
     }
 
     public String getReservationOnlyDate(){ //aparece que nadie lo usa pero si lo usan unos jsp
-        String date = this.reservationDate.toLocalDateTime().getDayOfMonth() +
+        String date = this.reservationDate.getDayOfMonth() +
                 "/" +
-                this.reservationDate.toLocalDateTime().getMonthValue() +
+                this.reservationDate.getMonthValue() +
                 "/" +
-                this.reservationDate.toLocalDateTime().getYear();
+                this.reservationDate.getYear();
         return date;
     }
 
@@ -186,5 +192,21 @@ public class Reservation {
     }
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
+
+    public boolean isHand() {
+        return hand;
+    }
+
+    public void setHand(boolean hand) {
+        this.hand = hand;
+    }
+
+    public void setIsToday(boolean b) {
+        this.isToday=b;
+    }
+
+    public boolean getIsToday() {
+        return this.isToday;
+    }
 //    }
 }

@@ -4,7 +4,7 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public interface ReservationDao {
 //
 //    void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId);
 
-    List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page);
+    List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page, long customerId);
 
     Optional<Reservation> getReservationById(long id);
 
@@ -32,10 +32,14 @@ public interface ReservationDao {
 
     List<OrderItem> getOrderItemsByStatusListAndReservation(Long reservationId, List<OrderItemStatus> statusList);
 
-    List<OrderItem> getOrderItems(Reservation reservation);
+    List<OrderItem> getOrderItems(Long reservationId);
 
-    List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, Timestamp now, Timestamp reservationDate);
+    List<Reservation> getReservationsToCalculateAvailableTables(long restaurantId, LocalDateTime reservationDate);
 
     List<Reservation> getReservationsOfToday(long restaurantId);
+
+    void deleteCustomer(String securityCode);
+
+    void deleteAllOrderItems(String securityCode);
 }
 

@@ -20,94 +20,59 @@
 <body>
 <%@ include file="../components/navbar.jsp" %>
 
-<div class="row">
-  <div class="col s3"></div>     <!-- acá va el restaurant card -->
-
-
+<div style="display: flex;justify-content: center;margin-top: 2.5%;">
   <c:url value="/restaurant=${restaurantId}/editTables" var="postPath"/>
-  <form:form modelAttribute="editTablesForm" action="${postPath}" method="post">
-    <div class="col s6 center">
-      <div class="card register-card">
-        <div class="card-content white-text">
-          <span class="card-title text"><spring:message code="Restaurant.tables"/></span>
-          <div class="row">
-            <div class="input-field col s12 input">
-              <form:errors path="" element="p" cssStyle="color:red"/>
-              <form:errors path="openHour" element="p" cssStyle="color:red"/>
-              <form:label path="openHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.open"/></form:label>
-              <form:input path="openHour" type="text"/>
-            </div>
-            <div class="input-field col s12 input">
-              <form:errors path="" element="p" cssStyle="color:red"/>
-              <form:errors path="closeHour" element="p" cssStyle="color:red"/>
-              <form:label path="closeHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.close"/></form:label>
-              <form:input path="closeHour" type="text"/>
-            </div>
-            <div class="input-field col s12 input">
-              <form:errors path="tableQty" element="p" cssStyle="color:red"/>
-              <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.chairs"/></form:label>
-              <form:input path="tableQty" type="text"/>
-            </div>
-          </div>
-          <div class="col s12 center">
-            <!-- acá va un href -->
-            <spring:message code="Button.continue" var="label"/>
-            <input type="submit" value="${label}" class="continue-btn"/>
-          </div>
+  <div class="card">
+    <form:form modelAttribute="editTablesForm" action="${postPath}" method="post">
+      <div style="display: flex; justify-content: center;">
+        <span class="presentation-text" style="color: #171616;"><spring:message code="Restaurant.tables"/></span>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 input">
+          <form:errors path="" element="p" cssStyle="color:red"/>
+          <form:errors path="openHour" element="p" cssStyle="color:red"/>
+          <form:label path="openHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.open"/></form:label>
+          <form:input path="openHour" type="text"/>
+        </div>
+        <div class="input-field col s12 input">
+          <form:errors path="" element="p" cssStyle="color:red"/>
+          <form:errors path="closeHour" element="p" cssStyle="color:red"/>
+          <form:label path="closeHour" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.hour.close"/></form:label>
+          <form:input path="closeHour" type="text"/>
+        </div>
+        <div class="input-field col s12 input">
+          <form:errors path="tableQty" element="p" cssStyle="color:red"/>
+          <form:label path="tableQty" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Restaurant.chairs"/></form:label>
+          <form:input path="tableQty" type="text"/>
         </div>
       </div>
-    </div>
-  </form:form>
+      <div class="col s12 center" style="margin-top: 2%;">
+        <!-- acá va un href -->
+        <spring:message code="Button.continue" var="label"/>
+        <input type="submit" value="${label}" class="btn confirm-btn"/>
+      </div>
+    </form:form>
+  </div>
 </div>
 </body>
 </html>
 
 <style>
-  .text{
-    color:  #707070;
-  }
 
   .card{
-    border-radius: 16px;
-    display: grid;
+    border-radius: .8rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5%;
+    align-items: center;
   }
 
-  .restaurant-card{
-    width:100%;
-  }
-
-  .register-card{
-
-  }
-
-
-  .continue-btn{
-    padding-inline: 7%;
-    padding-block: 1%;
-    border-radius: 16px;
-    background-color: #37A6E6;
-    margin-top: 5%;
-    opacity: 57%;
-  }
-
-  .continue-btn:hover{
-    background-color: #37A6E6;
-    color: white;
-    opacity: 100%;
-  }
-
-  .back-btn{
-    border-radius: 16px;
-    margin-top: 5%;
-    background-color: #E63737 ;
-    opacity: 87%;
-  }
-
-  .back-btn:hover{
-    border-radius: 16px;
-    margin-top: 5%;
-    background-color: #E63737 ;
-    opacity: 100%;
+  body{
+    background: url("${pageContext.request.contextPath}/resources/images/form-background.svg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
   }
 
   .input{

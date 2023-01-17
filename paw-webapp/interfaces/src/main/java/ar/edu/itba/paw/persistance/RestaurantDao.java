@@ -13,10 +13,5 @@ public interface RestaurantDao {
 
     Restaurant create(String restaurantName, String phone, String mail);
 
-    List<Dish> getRestaurantDishes(long restaurantId);
-
     Optional<Restaurant> getRestaurantByUsername(String username);
-
-    List<Dish> getRestaurantDishesByCategory(long restaurantId, DishCategory category);
-
 }

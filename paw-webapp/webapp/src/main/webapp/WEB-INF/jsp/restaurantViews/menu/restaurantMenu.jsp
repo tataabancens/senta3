@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -21,12 +23,91 @@
         <title>Senta3</title>
     </head>
     <body>
-        <%@ include file="../../components/navbar.jsp" %>
-        <div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
-            <div class="restaurant-info" style="margin-left: 2%;">
-                <h1 class="presentation-text header-title"><spring:message code="Restaurant.menu.title"/></h1>
-            </div>
-        </div>
+    <div class="row">
+        <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
+        <nav>
+            <ul id="primary-navigation" data-visible="false" class="primary-navigation">
+                <div class="left-side">
+                    <li>
+                        <a href="<c:url value="/"/>">
+                            <span class="logo" style="font-style: italic;">Senta3</span>
+                        </a>
+                    </li>
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <li>
+                            <a class="options selected" style="color: white;" href="<c:url value="/restaurant=1/menu"/>" >
+                                <spring:message code="Navbar.option.menu"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('CUSTOMER')">
+                        <li>
+                            <a class="options" href="<c:url value="/active-reservations"/>">
+                                <spring:message code="Navbar.option.reservations"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <li>
+                            <a class="options" href="<c:url value="/restaurant=1/orders"/>">
+                                <spring:message code="Navbar.option.orders"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <li>
+                            <a class="options" href="<c:url value="/restaurant=1/reservations/open"/>">
+                                <spring:message code="Navbar.option.reservations"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <li>
+                            <a class="options" href="<c:url value="/restaurant=1/waiter"/>">
+                                <spring:message code="Navbar.option.waiter"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                </div>
+                <div class="right-side">
+                    <sec:authorize access="!isAuthenticated()">
+                        <li>
+                            <a class="options" href="<c:url value="/register"/>">
+                                <spring:message code="Navbar.option.register"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="options" href="<c:url value="/login"/>">
+                                <spring:message code="Navbar.option.login"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <sec:authorize access="hasRole('RESTAURANT')">
+                            <li>
+                                <a class="options" href="<c:url value="/profile"/>" >
+                                    <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('CUSTOMER')">
+                            <li>
+                                <a class="options" href="<c:url value="/profile"/>" >
+                                    <spring:message code="Navbar.option.profile"/>
+                                        ${customer.user.getUsername()}
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <li>
+                            <a class="options" href="${pageContext.request.contextPath}/logout">
+                                <spring:message code="Navbar.option.logout"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                </div>
+            </ul>
+        </nav>
+    </div>
         <div class="contentContainer">
             <div class="card filter-box">
                 <a href="<c:url value="/restaurant=${restaurantId}/category/create"/>" class="dish-card category-creation">
@@ -54,18 +135,18 @@
             </div>
             <div class="dish-categories">
                 <div class="category-field">
-                    <h3 class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></h3>
+                    <span class="presentation-text header-title" style="color: white;margin-left: 1%;"><c:out value="${currentCategory.name}"/></span>
                     <div style="display: flex;">
                         <a href="<c:url value="/restaurant=${restaurantId}/category=${currentCategory}/edit"/>">
                             <i class="small material-icons category-field">edit</i>
                         </a>
-                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete"/>" style="justify-self: end;">
+                        <a href="<c:url value="/restaurant=${restaurantId}/category/delete?categoryId=${currentCategory.id}"/>" style="justify-self: end;">
                             <i class="small material-icons category-field">delete</i>
                         </a>
                     </div>
                 </div>
                 <div class="dishList">
-                    <a href="menu/create" class="dish-card dish-creation">
+                    <a href="menu/create?currentCategory=${currentCategory.id}" class="dish-card dish-creation">
                         <i class="large material-icons" style="color: rgba(183, 179, 179, 0.87); ">add</i>
                         <span class="main-title" style="color: rgba(183, 179, 179, 0.87); "><spring:message code="Restaurant.createdish"/></span>
                     </a>
@@ -83,8 +164,8 @@
                                 </div>
                                 <div class="card-info">
                                     <div class="btn-row-card">
-                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="menu/edit/dishId=${dish.id}"><i class="material-icons">edit</i></a>
-                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="menu/edit/deleteDish=${dish.id}"><i class="material-icons">delete</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn blue" href="<c:url value="/restaurant=1/menu/edit/dishId=${dish.id}"/>"><i class="material-icons">edit</i></a>
+                                        <a class="waves-effect waves-light btn-floating btn-small plus-btn red" href="<c:url value="/restaurant=1/menu/edit/deleteDish=${dish.id}"/>"><i class="material-icons">delete</i></a>
                                     </div>
                                     <span class="presentation-text dish-title"><c:out value="${dish.dishName}"/></span>
                                     <p class="text description"><c:out value="${dish.dishDescription}"/></p>
@@ -113,7 +194,7 @@
     }
     .dish-card{
         flex-direction: column;
-        width: 100%;
+        width: 45%;
         height: 9.7rem;
         transition: 0.7s;
     }
@@ -153,7 +234,7 @@
         font-size: 1rem;
     }
     .card.filter-box{
-        min-width: 10rem;
+        min-width: 13rem;
         width: 15%;
         height: fit-content;
     }
@@ -167,6 +248,10 @@
         padding: 8px;
         justify-content: center;
         align-items: center;
+        transition: 0.3s;
+    }
+    .dish-card.dish-creation:hover{
+        transform: scale(1.05);
     }
     .dishList{
         display: flex;

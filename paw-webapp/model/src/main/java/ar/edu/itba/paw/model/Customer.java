@@ -3,7 +3,7 @@ package ar.edu.itba.paw.model;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +65,8 @@ public class Customer {
         this.points = points;
     }
 
-    public Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople, Timestamp startedAtTime, Timestamp reservationDate) {
-        final Reservation reservation = new Reservation(restaurant, customer, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime, reservationDate);
+    public Reservation createReservation(Restaurant restaurant, int reservationHour, int qPeople, LocalDateTime startedAtTime, LocalDateTime reservationDate) {
+        final Reservation reservation = new Reservation(restaurant, this, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime, reservationDate);
         reservations.add(reservation);
         return reservation;
     }
@@ -117,8 +117,12 @@ public class Customer {
         this.points = points;
     }
 
-    public long getUserId() {
-        return getUser().getId();
+    public Long getUserId() {
+        User user = getUser();
+        if(user!=null){
+            return user.getId();
+        }
+        return null;
     }
 
 //    public void setUserId(long userId) {

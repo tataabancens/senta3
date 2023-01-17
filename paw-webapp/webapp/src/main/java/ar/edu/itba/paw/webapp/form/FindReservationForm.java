@@ -1,9 +1,14 @@
 package ar.edu.itba.paw.webapp.form;
 
-import javax.validation.constraints.Min;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Size;
+
 
 public class FindReservationForm {
 
+    @NotBlank
     private String securityCode;
 
     public String getSecurityCode() {

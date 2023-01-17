@@ -51,7 +51,7 @@
                 </div>
                 <div>
                     <form:errors path="psPair" element="p" cssStyle="color:red"/>
-                    <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.password"/></form:label>
+                    <form:label path="psPair.checkPassword" class="helper-text" data-error="wrong" data-success="right"><spring:message code="Register.RepeatPassword"/></form:label>
                     <form:input path="psPair.checkPassword" type="password"/>
                 </div>
                 <spring:message code="Button.continue" var="label"/>
@@ -81,7 +81,8 @@
         flex-direction: column;
         align-items: center;
         padding: 1%;
-        min-width: 25%;
+        min-width: 20em;
+        width: 30em;
         border-radius: .8rem;
     }
     .presentation-text.title{

@@ -11,11 +11,7 @@ public interface CustomerDao {
 
     Optional<Customer> getCustomerByUsername(String username);
 
-    void addPointsToCustomer(long customerId, int points);
-
     Customer create(String customerName, String phone, String mail, long id);
 
-    void linkCustomerToUserId(long customerId, long userId);
-
-    void updateCustomerData(long customerId, String name, String phone, String mail);
+    void deleteCustomer(long id);
 }

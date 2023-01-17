@@ -1,6 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -28,14 +30,93 @@
 
 </head>
 <body>
-<%@ include file="../../components/navbar.jsp" %>
-<div class="restaurant-header" style="background-color: rgb(255, 242, 229);border-radius: 0px;">
-    <div class="restaurant-info" style="margin-left: 2%;">
-        <h1 class="presentation-text header-title"><spring:message code="Reservations.title"/></h1>
-    </div>
+<div class="row">
+    <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false"></button>
+    <nav style="background: white;">
+        <ul id="primary-navigation" data-visible="false" class="primary-navigation">
+            <div class="left-side">
+                <li>
+                    <a href="<c:url value="/"/>">
+                        <span class="logo" style="font-style: italic;">Senta3</span>
+                    </a>
+                </li>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/menu"/>" >
+                            <spring:message code="Navbar.option.menu"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('CUSTOMER')">
+                    <li>
+                        <a class="options" href="<c:url value="/active-reservations"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/orders"/>">
+                            <spring:message code="Navbar.option.orders"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options selected" style="color: white;" href="<c:url value="/restaurant=1/reservations/open"/>">
+                            <spring:message code="Navbar.option.reservations"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('RESTAURANT')">
+                    <li>
+                        <a class="options" href="<c:url value="/restaurant=1/waiter"/>">
+                            <spring:message code="Navbar.option.waiter"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </div>
+            <div class="right-side">
+                <sec:authorize access="!isAuthenticated()">
+                    <li>
+                        <a class="options" href="<c:url value="/register"/>">
+                            <spring:message code="Navbar.option.register"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="options" href="<c:url value="/login"/>">
+                            <spring:message code="Navbar.option.login"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <sec:authorize access="hasRole('RESTAURANT')">
+                        <li>
+                            <a class="options" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/><c:out value="${restaurant.getRestaurantName()}"/>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('CUSTOMER')">
+                        <li>
+                            <a class="options" href="<c:url value="/profile"/>" >
+                                <spring:message code="Navbar.option.profile"/>
+                                    ${customer.user.getUsername()}
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <li>
+                        <a class="options" href="${pageContext.request.contextPath}/logout">
+                            <spring:message code="Navbar.option.logout"/>
+                        </a>
+                    </li>
+                </sec:authorize>
+            </div>
+        </ul>
+    </nav>
 </div>
 
-<div class="tabs">
+<div class="tabs" >
     <a class="category-tab" href="<c:url value="/restaurant=${restaurantId}/reservations/open"/>">
         <span class="secondary-text tab">OPEN</span>
     </a>
@@ -56,40 +137,44 @@
     </a>
 </div>
 
-<c:url value="/restaurant=${restaurantId}/reservations/seated" var="postUrl"/>
-<form:form method="post" action="${postUrl}" modelAttribute="filterForm">
-    <div class="filters-orderBy">
-        <div class="orderBy">
-            <div class="input-field">
-                <form:select id="orderBy" path="orderBy">
-                    <form:option value="reservationid"><spring:message code="Reservations.reservation"/></form:option>
-                    <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
-                    <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
-                    <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
-                </form:select>
+<div style="display: flex;align-items: center;justify-content: flex-end;margin-right: 1.5%;">
+    <div>
+        <c:url value="/restaurant=${restaurantId}/reservations/seated" var="postUrl"/>
+        <form:form method="post" action="${postUrl}" modelAttribute="filterForm">
+            <div class="filters-orderBy">
+                <div class="orderBy">
+                    <div class="input-field">
+                        <form:select id="orderBy" path="orderBy">
+                            <form:option value="reservationid"><spring:message code="Reservations.reservation"/></form:option>
+                            <form:option value="customerid"><spring:message code="Reservations.name"/></form:option>
+                            <form:option value="qpeople"><spring:message code="Reservations.people"/></form:option>
+                            <form:option value="reservationhour"><spring:message code="Reservations.hour"/></form:option>
+                            <form:option value="reservationdate"><spring:message code="Reservations.date"/></form:option>
+                        </form:select>
+                    </div>
+                </div>
+                <div class="order-orientation">
+                    <div class="input-field">
+                        <form:select id="orderDirection" path="direction">
+                            <form:option value="ASC"><spring:message code="Reservations.order.asc"/></form:option>
+                            <form:option value="DESC"><spring:message code="Reservations.order.dec"/></form:option>
+                        </form:select>
+                    </div>
+                </div>
+                <div style="display: flex;align-items: center;">
+                    <button type="submit" class="btn waves-effect waves-light confirm-btn">
+                        <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Button.confirm"/></span>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="order-orientation">
-            <div class="input-field">
-                <form:select id="orderDirection" path="direction">
-                    <form:option value="ASC"><spring:message code="Reservations.order.asc"/></form:option>
-                    <form:option value="DESC"><spring:message code="Reservations.order.dec"/></form:option>
-                </form:select>
-            </div>
-        </div>
-        <div style="display: flex;align-items: center;margin-left: 2%;margin-right: 2%;">
-            <button type="submit" class="btn waves-effect waves-light confirm-btn">
-                <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Button.confirm"/></span>
-            </button>
-        </div>
+        </form:form>
     </div>
-</form:form>
-
-<div>
-    <form action="/createReservation-1">
-        <spring:message code="Createreservation.title" var="label"/>
-        <input class = "btn " style="margin-left: 5%; border-radius: 16px" type="submit" value='${label}'/>
-    </form>
+    <div>
+        <form action="/createReservation-1">
+            <span class="text description " style="font-size: 0.8rem;color: white"><spring:message code="Createreservation.title" var="label"/></span>
+            <input class = "btn confirm-btn" style="margin-left: 5%; border-radius: .8rem;background-color: forestgreen;" type="submit" value='${label}'/>
+        </form>
+    </div>
 </div>
 
 <div class="content-container">
@@ -109,7 +194,7 @@
         <tbody>
         <c:forEach var="reservation" items="${reservations}">
             <tr>
-                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.id}"/></span></td>
+                <td data-label="Reserva" class="table-cell"><span class="text"><c:out value="${reservation.securityCode}"/></span></td>
                 <td data-label="Mesa" class="table-cell"><span class="text"><c:out value="${reservation.tableNumber}"/></span></td>
                 <td data-label="Nombre" class="table-cell"><span class="text"><c:out value="${reservation.customer.customerName}"/></span></td>
                 <td data-label="Personas" class="table-cell"><span class="text"><c:out value="${reservation.qPeople}"/></span></td>
@@ -118,6 +203,9 @@
                 <td data-label="Estado" class="table-cell"><span class="text"><c:out value="${reservation.reservationStatus}"/></span></td>
 
                 <td data-label="Confirmar" class="table-cell">
+                    <a href="<c:url value="/menu/?reservationSecurityCode=${reservation.securityCode}"/>" class="btn waves-effect waves-light green">
+                        <span class="text description" style="font-size: 0.8rem;color: white;"> <spring:message code="Button.addOrder"/></span>
+                    </a>
                     <div style="margin-top: 15px">
                         <c:url value="/restaurant=${restaurantId}/orderCheckCustomer=${reservation.securityCode}?orderBy=${orderBy}&direction=${direction}&filterStatus=${filterStatus}&page=${page}" var="postUrl"/>
                         <form:form action="${postUrl}" method="post" modelAttribute="filterForm">
@@ -167,11 +255,6 @@
         margin-left: 2%;
         margin-right: 2%;
     }
-    .filters{
-        display: flex;
-        margin-left: 2%;
-        margin-right: 2%;
-    }
     .orderBy{
         display: flex;
         align-items: center;
@@ -179,7 +262,7 @@
         margin-right: 2%;
     }
     .content-container{
-        padding: 0 2%;
+        padding: 0 1%;
         display: flex;
     }
     .text.description.page-number{
@@ -221,20 +304,12 @@
     .blue {
         background-color: blue;
     }
-    .red{
-        background-color: red;
-    }
     .pagination-indicator{
         display: flex;
         justify-content: center;
         align-items: center;
         align-self: end;
         margin-top: 2rem;
-    }
-    .table-cell.status{
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
     }
 
     .tabs{
