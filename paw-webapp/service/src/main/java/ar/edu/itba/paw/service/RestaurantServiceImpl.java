@@ -85,8 +85,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public void createDishCategory(Restaurant restaurant, String categoryName) {
-        restaurant.createDishCategory(categoryName);
+    public DishCategory createDishCategory(Restaurant restaurant, String categoryName) {
+        return restaurant.createDishCategory(categoryName);
     }
 
     @Transactional

@@ -28,7 +28,7 @@ public interface RestaurantService {
 
     Optional<DishCategory> getDishCategoryByName(String category);
 
-    void createDishCategory(Restaurant restaurant, String categoryName);
+    DishCategory createDishCategory(Restaurant restaurant, String categoryName);
 
     void editDishCategory(DishCategory dishCategory, String categoryName);
 

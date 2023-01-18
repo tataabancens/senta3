@@ -34,6 +34,7 @@
         ar.edu.itba.paw.webapp.mappers,
       </param-value>
     </init-param>
+    <!-- pass to next filter if Jersey/App returns 404 -->
     <init-param>
       <param-name>jersey.config.beanValidation.enableOutputValidationErrorEntity.server</param-name>
       <param-value>true</param-value>

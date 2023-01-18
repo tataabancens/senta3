@@ -31,6 +31,9 @@ public class CustomerRegisterShortForm {
         this.username = username;
     }
 
+    public CustomerRegisterShortForm() {
+        // POJO
+    }
 
     public String getMail() {
         return mail;
