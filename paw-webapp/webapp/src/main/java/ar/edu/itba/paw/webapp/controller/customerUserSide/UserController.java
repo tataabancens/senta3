@@ -10,6 +10,7 @@ import ar.edu.itba.paw.webapp.form.CreateUserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -35,7 +36,7 @@ public class UserController {
 
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     @POST
-    public Response createUser(final CreateUserForm createUserForm) {
+    public Response createUser(@Valid final CreateUserForm createUserForm) {
         final User user = us.create(createUserForm.getUsername(), "123", Roles.valueOf(createUserForm.getRole()));
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();

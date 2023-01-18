@@ -6,12 +6,13 @@ import javax.validation.ValidationException;
 public class ValidationErrorDto {
 
     private String message;
-    private String path;
+    private String field;
 
     public static ValidationErrorDto fromValidationException(final ConstraintViolation<?> violation) {
         final ValidationErrorDto dto = new ValidationErrorDto();
         dto.message = violation.getMessage();
-        dto.path = violation.getPropertyPath().toString();
+        String[] splitPath =  violation.getPropertyPath().toString().split("[.]");
+        dto.field = splitPath[splitPath.length - 1];
         return dto;
     }
 
@@ -23,5 +24,11 @@ public class ValidationErrorDto {
         this.message = message;
     }
 
+    public String getField() {
+        return field;
+    }
 
+    public void setField(String field) {
+        this.field = field;
+    }
 }
