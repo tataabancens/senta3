@@ -53,10 +53,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().headers().cacheControl().disable()
                 .and().authorizeRequests()
                     .antMatchers("/**").hasAnyRole("CUSTOMER", "RESTAURANT")
-//                .antMatchers("/**").anonymous()
+                .antMatchers("/**").anonymous()
                 .and().exceptionHandling()
                     .accessDeniedPage("/403")
-                .and().addFilterBefore(new JwtFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
+                .and()//.addFilterBefore(new JwtFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
 

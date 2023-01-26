@@ -11,7 +11,7 @@ public class DishDto {
     private String name;
     private URI self;
     private URI restaurant;
-    private URI image;
+    private long image;
     private URI category;
     private String description;
     private int price;
@@ -27,7 +27,7 @@ public class DishDto {
         dishDto.id = dish.getId();
         dishDto.name = dish.getDishName();
         dishDto.description = dish.getDishDescription();
-        dishDto.price = dishDto.getPrice();
+        dishDto.price = dish.getPrice();
 
         final UriBuilder dishesUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("restaurants")
                 .path(String.valueOf(dish.getRestaurant().getId())).path("dishes").path(String.valueOf(dish.getId()));
@@ -37,7 +37,8 @@ public class DishDto {
         dishDto.category = dishCategoryBuilder.build();
 
         UriBuilder dishImageBuilder = dishesUriBuilder.clone().replacePath("resources/images").path(String.valueOf(dish.getImageId()));
-        dishDto.image = dishImageBuilder.build();
+
+        dishDto.image = dish.getImageId();
 
         UriBuilder restaurantBuilder = dishesUriBuilder.clone().replacePath("restaurants").path(String.valueOf(dish.getRestaurant().getId()));
         dishDto.restaurant = restaurantBuilder.build();
@@ -68,11 +69,11 @@ public class DishDto {
         this.restaurant = restaurant;
     }
 
-    public URI getImage() {
+    public long getImage() {
         return image;
     }
 
-    public void setImage(URI image) {
+    public void setImage(long image) {
         this.image = image;
     }
 

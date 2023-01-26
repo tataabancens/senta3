@@ -44,30 +44,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public void updateRestaurantName(Restaurant restaurant, String name) {
-        restaurant.setRestaurantName(name);
-    }
-
-    @Transactional
-    @Override
-    public void updateRestaurantEmail(Restaurant restaurant, String mail) {
-        restaurant.setMail(mail);
-    }
-
-    @Transactional
-    @Override
-    public void updatePhone(Restaurant restaurant, String phone) {
-        restaurant.setPhone(phone);
-    }
-
-    @Transactional
-    @Override
-    public Optional<Restaurant> getRestaurantByUsername(String username) {
-        return restaurantDao.getRestaurantByUsername(username);
-    }
-
-    @Transactional
-    @Override
     public Dish createDish(Restaurant restaurant, String dishName, String dishDescription, double price, long imageId, DishCategory category){
         return restaurant.createDish(dishName, dishDescription, price, imageId, category);
     }
@@ -89,12 +65,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurant.createDishCategory(categoryName);
     }
 
-    @Transactional
-    @Override
-    public void editDishCategory(DishCategory dishCategory, String categoryName) {
-        dishCategory.setName(categoryName);
-    }
-
     @Override
     public Optional<DishCategory> getDishCategoryById(long categoryId) {
         return dishCategoryDao.getDishCategoryById(categoryId);
@@ -104,5 +74,48 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public void deleteCategory(Restaurant restaurant, long categoryId) {
         restaurant.deleteCategory(categoryId);
+    }
+
+    @Transactional
+    @Override
+    public boolean patchRestaurant(long id, String restaurantName, String phone, String mail, Integer totalChairs, Integer openHour, Integer closeHour) {
+        Optional<Restaurant> maybeRestaurant = restaurantDao.getRestaurantById(id);
+        if(!maybeRestaurant.isPresent()){
+            return false;
+        }
+        Restaurant restaurant = maybeRestaurant.get();
+
+        if(restaurantName != null){
+            restaurant.setRestaurantName(restaurantName);
+        }
+        if(phone != null){
+            restaurant.setPhone(phone);
+        }
+        if(mail != null){
+            restaurant.setMail(mail);
+        }
+        if(totalChairs != null){
+            restaurant.setTotalChairs(totalChairs);
+        }
+        if(openHour != null){
+            restaurant.setOpenHour(openHour);
+        }
+        if(closeHour != null){
+            restaurant.setCloseHour(closeHour);
+        }
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean patchDishCategory(long restaurantId, long categoryId, String newName){
+        Optional<Restaurant> maybeRestaurant = getRestaurantById(restaurantId);
+        Optional<DishCategory> maybeCategory = getDishCategoryById(categoryId);
+        if (!maybeRestaurant.isPresent() || !maybeCategory.isPresent() || maybeCategory.get().getRestaurant().getId() != restaurantId) {
+            return false;
+        }
+
+        maybeCategory.get().setName(newName);
+        return true;
     }
 }

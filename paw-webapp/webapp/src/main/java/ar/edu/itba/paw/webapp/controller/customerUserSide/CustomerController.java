@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.service.CustomerService;
-import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.CustomerDto;
 import ar.edu.itba.paw.webapp.dto.ReservationDto;
@@ -44,16 +43,20 @@ public class CustomerController {
         }
     }
 
-    //todo queries a los get all customers
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON, })
-    public Response getCustomerById(@DefaultValue("") @QueryParam("username") final String username){
-        final Optional<CustomerDto> maybeCustomer = cs.getCustomerByUsername(username).map(c -> CustomerDto.fromCustomer(uriInfo, c));
-        if(!maybeCustomer.isPresent()){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
-            return Response.ok(maybeCustomer.get()).build();
-        }
+    public Response getCustomers(@DefaultValue("1")@QueryParam("page") final int page){
+                        //        @DefaultValue("")@QueryParam("username") final String username,
+        final List<CustomerDto> customers = cs.getCustomers(page)
+                .stream()
+                .map(c -> CustomerDto.fromCustomer(uriInfo, c))
+                .collect(Collectors.toList());
+        return Response.ok(new GenericEntity<List<CustomerDto>>(customers) {})
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next")
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
+//                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 999).build(), "last") //TODO
+                .build();
     }
 
 
@@ -81,7 +84,6 @@ public class CustomerController {
         if(success)
             return Response.ok().build();
         return Response.status(400).build();
-
     }
 
     //todo doing

@@ -5,9 +5,7 @@ import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
-import jdk.nashorn.internal.parser.DateParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static ar.edu.itba.paw.service.ServiceUtils.CustomDateParser;
@@ -53,15 +50,6 @@ public class ReservationServiceImpl implements ReservationService {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.OPEN);
         statusList.add(ReservationStatus.SEATED);
-
-        return reservationDao.getReservationBySecurityCodeAndStatus(securityCode, statusList);
-    }
-
-    @Transactional
-    @Override
-    public Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, ReservationStatus status) {
-        List<ReservationStatus> statusList = new ArrayList<>();
-        statusList.add(status);
 
         return reservationDao.getReservationBySecurityCodeAndStatus(securityCode, statusList);
     }
@@ -118,22 +106,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void updateReservationDateById(Reservation reservation, LocalDateTime reservationDate) {
-        reservation.setReservationDate(reservationDate);
-    }
-
-    @Transactional
-    @Override
-    public void updateReservationHourBySecurityCode(Reservation reservation, int hour, int getqPeople) {
-        reservation.setReservationHour(hour);
-    }
-
-    @Transactional
-    @Override
-    public void orderReceipt(Reservation reservation, Customer customer, List<OrderItem> orderItems) {
+    public void orderReceipt(Reservation reservation) {
         updateReservationStatus(reservation, ReservationStatus.CHECK_ORDERED);
         updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.CHECK_ORDERED);
-        customerService.addPointsToCustomer(customer, getTotal(orderItems));
+        customerService.addPointsToCustomer(reservation.getCustomer(), getTotal(reservationDao.getOrderItems(reservation.getId())));
     }
 
     @Transactional
@@ -143,15 +119,15 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
-    @Transactional
-    @Override
-    public Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople) {
-        Reservation reservation = customer.createReservation(restaurant, 0, qPeople, LocalDateTime.now(), LocalDateTime.now());
-        setReservationSecurityCode(reservation);
-        updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
-
-        return reservation;
-    }
+//    @Transactional
+//    @Override
+//    public Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople) {
+//        Reservation reservation = customer.createReservation(restaurant, 0, qPeople, LocalDateTime.now(), LocalDateTime.now());
+//        setReservationSecurityCode(reservation);
+//        updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
+//
+//        return reservation;
+//    }
 
     @Transactional
     @Override
@@ -199,34 +175,46 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.setHand(hand);
         }
         if(discount != null){
-            reservation.setReservationDiscount(discount);
+            if(discount){
+                applyDiscount(reservation);
+            } else {
+                cancelDiscount(reservation);
+            }
+        }
+        if(reservationStatus != null){
+            switch (reservationStatus) {
+                case OPEN:
+                    reservation.setReservationStatus(ReservationStatus.OPEN);
+                case SEATED:
+                    if(table != null){
+                        seatCustomer(reservation, table);
+                    } else {
+                        seatCustomer(reservation, 0);
+                    }
+                    break;
+                case CHECK_ORDERED:
+                    if(canOrderReceipt(reservation)){
+                        orderReceipt(reservation);
+                    } else {
+                        return false;
+                    }
+                    break;
+                case FINISHED:
+                    finishCustomerReservation(reservation);
+                    break;
+                case CANCELED: //this shouldnt happen bust just in case
+                    cancelReservation(securityCode);
+                    break;
+
+            }
+
         }
         return true;
     }
 
-    @Transactional
     @Override
-    public boolean deleteReservation(String securityCode) {
-        Optional<Reservation> maybeReservation = getReservationBySecurityCode(securityCode);
-        if(!maybeReservation.isPresent()){
-            return false;
-        }
-        //TODO
-        //alternativa A
-//        reservationDao.deleteAllOrderItems(securityCode);
-//        reservationDao.deleteCustomer(securityCode);
-
-        //alternativa B
-//        maybeReservation.get().setReservationStatus(ReservationStatus.DELETED);
-
-        return true;
-    }
-
-    @Transactional
-    @Override
-    public void raiseHand(String reservationIdP) {
-        Optional<Reservation> reservation = reservationDao.getReservationBySecurityCode(reservationIdP);
-        reservation.ifPresent(value -> value.setHand(!value.isHand()));
+    public List<OrderItem> getOrderItemsOfReservation(long id) {
+        return reservationDao.getOrderItems(id);
     }
 
     @Override
@@ -257,15 +245,30 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
-        updateReservationStatus(reservation, ReservationStatus.CANCELED);
-        mailingService.sendCancellationEmail(restaurant,customer,reservation, LocaleContextHolder.getLocale());
+    public boolean cancelReservation(String securityCode) {
+        Optional<Reservation> maybeRes = getReservationBySecurityCode(securityCode);
+        if(!maybeRes.isPresent()){
+            return false;
+        }
+        updateReservationStatus(maybeRes.get(), ReservationStatus.CANCELED);
+        mailingService.sendCancellationEmail(maybeRes.get().getRestaurant(), maybeRes.get().getCustomer(), maybeRes.get(), LocaleContextHolder.getLocale());
+        return true;
     }
 
     @Transactional
     @Override
-    public OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity) {
-        return reservation.createOrderItem(dish, quantity);
+    public OrderItem createOrderItemPost(String securityCode, long dishId, int qty){
+        Optional<Reservation> maybeRes = reservationDao.getReservationBySecurityCode(securityCode);
+        if(!maybeRes.isPresent()){
+            return null;
+        }
+        Dish dish = maybeRes.get().getRestaurant().getDishOfId(dishId);
+        if(dish == null){
+            return null;
+        }
+        OrderItem newOrderItem = maybeRes.get().createOrderItem(dish, qty);
+        newOrderItem.setStatus(OrderItemStatus.ORDERED);
+        return newOrderItem;
     }
 
 
@@ -379,26 +382,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status) {
-        List<ReservationStatus> statusList = new ArrayList<>();
-        statusList.add(status);
-        return customer.getReservationsByStatusList(statusList);
-    }
-
-    @Transactional
-    @Override
-    public void setTableNumber(Reservation reservation, int number) {
-        reservation.setTableNumber(number);
-    }
-
-    @Transactional
-    @Override
-    public List<Reservation> getReservationsByCustomer(Customer customer) {
-        return customer.getReservations();
-    }
-
-    @Transactional
-    @Override
     public List<OrderItem> getOrderItemsByReservationAndOrder(Reservation reservation) {
         List<OrderItemStatus> statusList = new ArrayList<>();
         statusList.add(OrderItemStatus.ORDERED);
@@ -460,10 +443,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void seatCustomer(Reservation reservation, int seatNumber) {
+    public void seatCustomer(Reservation reservation, int tableNumber) {
         updateReservationStatus(reservation, ReservationStatus.SEATED);
         updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
-        setTableNumber(reservation, seatNumber);
+        reservation.setTableNumber(tableNumber);
     }
 
     @Transactional
@@ -529,10 +512,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public void applyDiscount(String reservationSecurityCode) {
-        Optional<Reservation> maybeReservation = reservationDao.getReservationBySecurityCode(reservationSecurityCode);
-        if (maybeReservation.isPresent()) {
-            Reservation reservation = maybeReservation.get();
+    public void applyDiscount(Reservation reservation) {
+        if ( ! reservation.isReservationDiscount()) {
             Customer customer = customerService.getCustomerById(reservation.getCustomer().getId()).get();
 
             if (customer.getPoints() >= POINTS_TO_DISCOUNT) {
@@ -540,15 +521,12 @@ public class ReservationServiceImpl implements ReservationService {
                 reservation.setReservationDiscount(true);
             }
         }
-
     }
 
     @Transactional
     @Override
-    public void cancelDiscount(String reservationSecurityCode) {
-        Optional<Reservation> maybeReservation = reservationDao.getReservationBySecurityCode(reservationSecurityCode);
-        if (maybeReservation.isPresent()) {
-            Reservation reservation = maybeReservation.get();
+    public void cancelDiscount(Reservation reservation) {
+        if (reservation.isReservationDiscount()) {
             Customer customer = customerService.getCustomerById(reservation.getCustomer().getId()).get();
 
             customer.setPoints(customer.getPoints() + POINTS_TO_DISCOUNT);
@@ -566,12 +544,34 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public boolean canOrderReceipt(Reservation reservation, boolean hasOrdered) {
-        return Objects.equals(reservation.getReservationStatus().getName(), "SEATED") && hasOrdered;
+    public boolean canOrderReceipt(Reservation reservation) {
+        return Objects.equals(reservation.getReservationStatus().getName(), "SEATED");
     }
 
     @Override
     public boolean isFromOrder(String isFromOrderP) {
         return isFromOrderP.compareTo("true") == 0;
+    }
+
+    @Transactional
+    @Override
+    public boolean patchOrderItem(String securityCode, long id, String newStatus){
+        Optional<Reservation> maybeRes = getReservationBySecurityCode(securityCode);
+        Optional<OrderItem> maybeOrderItem = reservationDao.getOrderItemById(id);
+
+        if(!(maybeOrderItem.isPresent() && maybeRes.isPresent())){
+            return false;
+        }
+        if(!Objects.equals(securityCode, maybeOrderItem.get().getReservation().getSecurityCode())){
+            return false;
+        }
+
+        try {
+            updateOrderItemStatus(maybeOrderItem.get(), OrderItemStatus.valueOf(newStatus));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        return true;
     }
 }

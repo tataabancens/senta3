@@ -5,8 +5,12 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.annotations.PATCH;
+import ar.edu.itba.paw.webapp.dto.ReservationDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.form.CreateUserForm;
+import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
+import ar.edu.itba.paw.webapp.form.UserPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +21,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Path("users")
 @Component
@@ -27,11 +33,15 @@ public class UserController {
     private UserService us;
     @Context
     private UriInfo uriInfo;
-//    @GET
+
+//    @GET //no need to implement this?
 //    @Produces(value = { MediaType.APPLICATION_JSON, })
 //    public Response listUsers() {
-//        final List<User> allUsers = us.getAll();
-//        return Response.ok(new UserList(allUsers)).build();
+//        final List<UserDto> allUsers = us.getAll()
+//                .stream()
+//                .map(u -> UserDto.fromUser(uriInfo, u))
+//                .collect(Collectors.toList());;
+//        return Response.ok(allUsers).build();
 //    }
 
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
@@ -49,7 +59,7 @@ public class UserController {
     public Response getById(@PathParam("id") final long id) {
         final Optional<User> maybeUser = us.getUserByID(id);
         if (maybeUser.isPresent()) {
-            return Response.ok(UserDto.fromUser(maybeUser.get())).build();
+            return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get())).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -61,5 +71,21 @@ public class UserController {
     public Response deleteById(@PathParam("id") final long id) {
         us.deleteById(id);
         return Response.noContent().build();
+    }
+
+    @PATCH
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Path("/{id}")
+    public Response editUser(@PathParam("id") final long id,
+                                    final UserPatchForm userPatchForm){
+        if(userPatchForm == null){
+            return Response.status(400).build();
+        }
+        boolean success = us.patchUser(id, userPatchForm.getUsername(), userPatchForm.getPsPair());
+        if(success) {
+            return Response.ok().build();
+        } else {
+            return Response.status(400).build();
+        }
     }
 }

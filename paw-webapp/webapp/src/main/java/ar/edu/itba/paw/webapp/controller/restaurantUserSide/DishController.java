@@ -7,8 +7,10 @@ import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.DishService;
 import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.service.RestaurantService;
+import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.DishDto;
-import ar.edu.itba.paw.webapp.form.EditDishForm;
+import ar.edu.itba.paw.webapp.form.DishPatchForm;
+import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import ar.edu.itba.paw.webapp.form.customValidator.DeleteCategoryConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,7 +41,6 @@ public class DishController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON, })
     public Response getDishById(@PathParam("restaurantId") final long restaurantId, @PathParam("id") final long dishId) {
-
         final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
         final Optional<DishDto> maybeDish = ds.getDishById(dishId).map(u -> DishDto.fromDish(uriInfo, u));
         if (!maybeRestaurant.isPresent() || !maybeDish.isPresent()) {
@@ -48,44 +50,32 @@ public class DishController {
     }
 
     @GET
-    @Path("")
     @Produces(value = {MediaType.APPLICATION_JSON, })
-    public Response getDishes(@PathParam("restaurantId") final long restaurantId, @QueryParam("dishCategory") final String dishCategory) {
-
-        final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
-        final Optional<DishCategory> maybeCategory = rs.getDishCategoryByName(dishCategory);
-        if (!maybeRestaurant.isPresent()) {
+    public Response getDishes(@PathParam("restaurantId") final long restaurantId,
+                              @DefaultValue("")@QueryParam("dishCategory") final String dishCategory) {
+        Optional<List<Dish>> maybeDishList = ds.getDishes(restaurantId, dishCategory);
+        if(!maybeDishList.isPresent()){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        if(!maybeCategory.isPresent()){
-            final List<DishDto> dishList = maybeRestaurant.get().getDishes()
-                    .stream().map(dish -> DishDto.fromDish(uriInfo, dish)).collect(Collectors.toList());
-            if(dishList.isEmpty()){
-                return Response.noContent().build();
-            }
-            return Response.ok(new GenericEntity<List<DishDto>>(dishList){}).build();
-        }
-        final List<DishDto> dishList = maybeRestaurant.get().getDishesByCategory(maybeCategory.get())
-                .stream().map(dish -> DishDto.fromDish(uriInfo, dish)).collect(Collectors.toList());;
-        if(dishList.isEmpty()){
-            return Response.noContent().build();
-        }
-        return Response.ok(new GenericEntity<List<DishDto>>(dishList){}).build();
+        List<DishDto> dishDtoList = maybeDishList.get()
+                .stream().map(dish -> DishDto.fromDish(uriInfo, dish)).collect(Collectors.toList());
+
+        return Response.ok(new GenericEntity<List<DishDto>>(dishDtoList){}).build();
     }
 
     @POST
-    @Path("")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
-    public Response createDish(@PathParam("restaurantId") final long restaurantId, @Valid EditDishForm form) {
-
+//    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    public Response createDish(@PathParam("restaurantId") final long restaurantId, DishPatchForm form) {
         final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
-        final Optional<DishCategory> maybeCategory = rs.getDishCategoryByName(form.getCategory());
+        final Optional<DishCategory> maybeCategory = rs.getDishCategoryById(form.getCategoryId());//getDishCategoryByName(form.getCategory());
         if (!maybeRestaurant.isPresent() || !maybeCategory.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         final Dish dish = rs.createDish(maybeRestaurant.get()
-                , form.getDishName(), form.getDishDesc()
-                , Double.parseDouble(form.getDishPrice()),0, maybeCategory.get());
+                , form.getName(), form.getDescription()
+                , form.getPrice() //, Double.parseDouble(form.getPrice())
+                ,0, maybeCategory.get());
 
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(dish.getId())).build();
@@ -98,5 +88,16 @@ public class DishController {
     public Response deleteDish(@PathParam("restaurantId") final long restaurantId, @PathParam("id") final long dishId){
         ds.deleteDish(dishId);
         return Response.noContent().build();
+    }
+
+    @PATCH
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Path("/{id}")
+    public Response editDish(@PathParam("restaurantId") final String restaurantId,
+                             @PathParam("id") final long dishId,
+                             final DishPatchForm dishPatchForm){
+
+        boolean success = ds.patchDish(dishId, dishPatchForm.getName(), dishPatchForm.getDescription(), dishPatchForm.getPrice(), dishPatchForm.getCategoryId(), dishPatchForm.getImageId());
+        return (success) ? Response.ok().build() : Response.status(Response.Status.NOT_FOUND).build();
     }
 }

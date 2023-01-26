@@ -9,6 +9,7 @@ import java.net.URI;
 ;
 
 public class DishCategoryDto {
+    private long id;
     private String name;
     private URI dishes;
 
@@ -19,6 +20,7 @@ public class DishCategoryDto {
     public static DishCategoryDto fromDishCategory(UriInfo uriInfo, DishCategory dishCategory){
         DishCategoryDto dishCategoryDto = new DishCategoryDto();
 
+        dishCategoryDto.id = dishCategory.getId();
         dishCategoryDto.name = dishCategory.getName();
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder()
                 .replacePath("restaurants").path(String.valueOf(dishCategory.getRestaurant().getId()))
@@ -26,6 +28,14 @@ public class DishCategoryDto {
         dishCategoryDto.dishes = uriBuilder.build();
 
         return dishCategoryDto;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,4 +53,5 @@ public class DishCategoryDto {
     public void setDishes(URI dishes) {
         this.dishes = dishes;
     }
+
 }

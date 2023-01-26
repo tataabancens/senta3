@@ -1,15 +1,18 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.persistance.CustomerDao;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -49,5 +52,26 @@ public class CustomerJpaDao implements CustomerDao {
     public void deleteCustomer(long id) {
         Optional<Customer> maybeCustomer = getCustomerById(id);
         maybeCustomer.ifPresent(customer -> em.remove(customer));
+    }
+
+    @Override
+    public List<Customer> getCustomers(int page){
+        final Query idQuery = em.createNativeQuery("SELECT customerid FROM customer OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
+        idQuery.setParameter("offset", Math.abs((page-1)*10));
+
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if(! ids.isEmpty()) {
+            final TypedQuery<Customer> query = (TypedQuery<Customer>) em.createQuery("from Customer as c where c.id IN :ids"); //es hql, no sql
+            query.setParameter("ids", ids);
+            final List<Customer> list = query.getResultList();
+            return list.isEmpty() ? new ArrayList<>() : list;
+        } else {
+            return new ArrayList<>();
+        }
+//
+//        final List<Customer> customerList = query.getResultList();
+//        return customerList.isEmpty() ? new ArrayList<>() : customerList;
     }
 }

@@ -6,8 +6,7 @@ public enum ReservationStatus {
     CHECK_ORDERED("CHECK_ORDERED"),
     FINISHED("FINISHED"),
     CANCELED("CANCELED"),
-    MAYBE_RESERVATION("MAYBE_RESERVATION"),
-    DELETED("DELETED");
+    MAYBE_RESERVATION("MAYBE_RESERVATION");
 
     private String name;
 

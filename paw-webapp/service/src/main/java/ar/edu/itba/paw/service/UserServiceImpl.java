@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.PasswordPair;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.UserDao;
@@ -9,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -71,11 +74,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUsername(String oldUsername, String newUsername) {
-//        userDao.updateUsername(oldUsername, newUsername);
-    }
-
-    @Override
     public Optional<User> getUserByUsername(String username) {
         return userDao.findByName(username);
     }
@@ -83,5 +81,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(long id) {
         // Nothing to do
+    }
+
+    @Override
+    public List<User> getAll() {
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public boolean patchUser(long id, String username, PasswordPair psPair){
+        Optional<User> maybeUser = userDao.getUserById(id);
+        if(! maybeUser.isPresent())
+            return false;
+
+        if(username != null){
+            maybeUser.get().setUsername(username);
+        }
+        if(psPair != null){
+            if(Objects.equals(psPair.getPassword(), psPair.getCheckPassword())){
+                maybeUser.get().setPassword(passwordEncoder.encode(psPair.getPassword()));
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 }

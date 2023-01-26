@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistance;
 
 import ar.edu.itba.paw.model.Customer;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CustomerDao {
@@ -14,4 +15,6 @@ public interface CustomerDao {
     Customer create(String customerName, String phone, String mail, long id);
 
     void deleteCustomer(long id);
+
+    List<Customer> getCustomers(int page);
 }

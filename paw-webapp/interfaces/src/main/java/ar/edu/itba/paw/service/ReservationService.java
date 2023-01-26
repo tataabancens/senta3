@@ -12,13 +12,15 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationBySecurityCode(String securityCode);
 
-    OrderItem createOrderItemByReservation(Reservation reservation, Dish dish, int quantity);
-
+    //todo integrate queries in ordercontroller?
     List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
     List<OrderItem> getOrderItemsByStatus(OrderItemStatus status);
+    //todo^^
 
     Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople);
+
+    OrderItem createOrderItemPost(String securityCode, long dishId, int qty);
 
     float getTotal(List<OrderItem> orderItems);
 
@@ -28,9 +30,11 @@ public interface ReservationService {
 
     void updateReservationStatus(Reservation reservation, ReservationStatus newStatus);
 
+    //todo : put in order controller
     void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
     void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status);
+    //^^
 
     List<Integer> getAvailableHours(long restaurantId, long qPeople, LocalDateTime reservationDate);
 
@@ -44,57 +48,49 @@ public interface ReservationService {
 
     List<OrderItem> getAllOrderItemsByReservation(Reservation reservation);
 
-    List<Reservation> getReservationsByCustomer(Customer customer);
-
+    //todo check if query
     List<Reservation> getReservationsByCustomerAndActive(Customer customer);
 
     void updateReservationById(Reservation reservation, Customer customer, long hour, int getqPeople);
 
+    //chron
     void checkReservationTime();
 
+    //chron
     void cleanMaybeReservations();
 
-    void applyDiscount(String reservationSecurityCode);
+    void applyDiscount(Reservation reservation);
 
-    void cancelDiscount(String reservationSecurityCode);
+    void cancelDiscount(Reservation reservation);
 
     float getDiscountCoefficient(long reservationId);
 
-    boolean canOrderReceipt(Reservation reservation, boolean hasOrdered);
+    boolean canOrderReceipt(Reservation reservation);
 
     List<Reservation> getReservationsSeated(Restaurant restaurant);
 
-    Optional<Reservation> getReservationBySecurityCodeAndStatus(String securityCode, ReservationStatus maybeReservation);
-
     List<Reservation> getAllReservationsOrderedBy(long restaurantId, String orderBy, String direction, String filterStatus, int page, long customerId);
 
+    //todo check who used this
     boolean isFromOrder(String isFromOrderP);
 
     Optional<OrderItem> getOrderItemById(long orderItemId);
 
-    void updateReservationDateById(Reservation reservation, LocalDateTime reservationDate);
-
-    List<Reservation> getReservationsByCustomerAndStatus(Customer customer, ReservationStatus status);
-
-    void setTableNumber(Reservation reservation, int number);
-
     void setReservationSecurityCode(Reservation reservation);
 
-    void raiseHand(String reservationIdP);
-
+    //todo : check who used this
     boolean isRepeating(Customer customer, Reservation reservation);
 
+    //todo : put in create res
     void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation);
 
-    void cancelReservation(Restaurant restaurant, Customer customer, Reservation reservation);
+    boolean cancelReservation(String securityCode);
 
-    Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople);
+//    Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople);
 
-    void updateReservationHourBySecurityCode(Reservation reservation, int hour, int getqPeople);
+    void orderReceipt(Reservation reservation);
 
-    void orderReceipt(Reservation reservation, Customer customer, List<OrderItem> orderItems);
-
-    void seatCustomer(Reservation reservation, int seatNumber);
+    void seatCustomer(Reservation reservation, int tableNumber);
 
     void finishCustomerReservation(Reservation reservation);
 
@@ -102,5 +98,7 @@ public interface ReservationService {
 
     boolean patchReservation(String securityCode, String reservationDate, Integer hour, Integer qPeople, Integer table, Boolean hand, Boolean discount, ReservationStatus reservationStatus);
 
-    boolean deleteReservation(String securityCode);
+    List<OrderItem> getOrderItemsOfReservation(long id);
+
+    boolean patchOrderItem(String securityCode, long id, String newStatus);
 }

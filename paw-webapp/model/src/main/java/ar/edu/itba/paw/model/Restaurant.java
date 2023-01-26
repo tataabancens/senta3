@@ -202,6 +202,15 @@ public class Restaurant {
         return this.dishCategories.get(0).getName();
     }
 
+    public Dish getDishOfId(long id){
+        for(Dish dish : this.dishes){
+            if(dish.getId() == id){
+                return dish;
+            }
+        }
+        return null;
+    }
+
     public Object canCategoryBeDeleted(long categoryId) {
 //        if(categoryId == 1){
 //            return false;

@@ -1,15 +1,12 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.service.CustomerService;
-import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.edu.itba.paw.model.Reservation;
 
-import javax.validation.Valid;
-import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CustomerDto {
@@ -24,10 +21,13 @@ public class CustomerDto {
     private URI reservations;
     private URI self;
 
+    private long customerId;
+
 
     public static CustomerDto fromCustomer(final UriInfo uriInfo, Customer customer) {
         final CustomerDto dto = new CustomerDto();
 
+        dto.customerId = customer.getId();
         dto.customerName = customer.getCustomerName();
         dto.mail = customer.getMail();
         dto.phone = customer.getPhone();
@@ -39,11 +39,11 @@ public class CustomerDto {
                     .replacePath("users").path(String.valueOf(customer.getUser().getId())).build();
         } else {
             dto.user = uriInfo.getAbsolutePathBuilder()
-                    .replacePath("users").path(String.valueOf(customer.getUser())).build(); //TODO : bug getUser returning null
+                    .replacePath("users").path(String.valueOf(customer.getUser())).build();
         }
 
-//        dto.reservations = uriInfo.getAbsolutePathBuilder()
-//                .replacePath("customers").path(String.valueOf(customer.getReservations()))).build(); //TODO
+        dto.reservations = uriInfo.getAbsolutePathBuilder()
+                .replacePath("reservations").queryParam("customerId", customer.getId()).build();
         return dto;
     }
 
@@ -106,5 +106,13 @@ public class CustomerDto {
 
     public void setSelf(URI self) {
         this.self = self;
+    }
+
+    public long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 }

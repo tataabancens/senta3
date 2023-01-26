@@ -97,7 +97,7 @@ public class ReservationController {
     @DELETE
     @Path("/{securityCode}")
     public Response deleteReservation(@PathParam("securityCode") final String securityCode){
-        boolean success = rs.deleteReservation(securityCode);
+        boolean success = rs.cancelReservation(securityCode);
         if(success){
             return Response.ok().build();
         }

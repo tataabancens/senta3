@@ -1,36 +1,25 @@
-import React from 'react';
-import './App.css';
-import NavBar from './components/NavBar';
-import DishCard from './components/DishCard';
-import {Box} from '@mui/material';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import MenuPage from "./pages/MenuPage";
+import NoPage from "./pages/NoPage";
+import SignUpPage from "./pages/SignUpPage";
+import MainLayout from "./components/layouts/MainLayout";
+import CustomerReservations from "./pages/CustomerReservations";
 
-
-const dishList = [
-  {dishName: "plato",
-   dishPrice: 200,
-   dishDescription: "lorem ipsum"},
-  {dishName: "plato2",
-   dishPrice: 300,
-   dishDescription: "lorem ipsum"},
-  {dishName: "plato3",
-  dishPrice: 215,
-  dishDescription: "lorem ipsum"}];
-
-
-function App() {
+function App(){
   return (
-    <div className="App">
-        <NavBar />
-        <Box sx={{ 
-          display: 'flex',
-          flexDirection: {xs: "column", md: "row"},
-          justifyContent: "space-between",
-          gap: 4}}
-        >
-          {dishList.map((dish) => DishCard(dish))}
-        </Box>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<MenuPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signUp" element={<SignUpPage />} />
+          <Route path="reservations" element={<CustomerReservations />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

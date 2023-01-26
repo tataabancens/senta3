@@ -3,6 +3,7 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
@@ -18,19 +19,13 @@ public interface CustomerService {
 
     void linkCustomerToUserId(Customer customer, User user);
 
-    public float getDiscountCoefficient();
+    float getDiscountCoefficient();
 
     int getPoints(float total);
-
-    void updateCustomerDataByUsername(String username, String name, String phone, String mail);
-
-    void updateCustomerMailByUsername(String username, String mail);
-
-    void updateCustomerPhoneByUsername(String username, String phone);
-
-    void updateCustomerNameByUsername(String username, String name);
 
     boolean patchCustomer(long id, String name, String phone, String mail, Long userId, Integer points);
 
     boolean deleteCustomer(long id);
+
+    List<Customer> getCustomers(int page);
 }

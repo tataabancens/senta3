@@ -5,13 +5,14 @@ import ar.edu.itba.paw.model.DishCategory;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public interface DishService {
 
     Optional<Dish> getDishById(long id);
 
-    void updateDish(Dish dish, String dishName, String dishDescription, double price, DishCategory category);
+    boolean patchDish(long dishId, String dishName, String dishDescription, Integer price, Long categoryId, Long imageId);
 
     void updateDishPhoto(long dishId, CommonsMultipartFile imageId) throws IOException;
 
@@ -20,4 +21,6 @@ public interface DishService {
     Optional<Dish> getRecommendedDish(long reservationId);
 
     boolean isPresent(Dish recommendedDish);
+
+    Optional<List<Dish>> getDishes(long restaurantId, String dishCategory);
 }

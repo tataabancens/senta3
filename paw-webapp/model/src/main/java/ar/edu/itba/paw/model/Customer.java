@@ -66,7 +66,7 @@ public class Customer {
     }
 
     public Reservation createReservation(Restaurant restaurant, int reservationHour, int qPeople, LocalDateTime startedAtTime, LocalDateTime reservationDate) {
-        final Reservation reservation = new Reservation(restaurant, this, reservationHour, ReservationStatus.MAYBE_RESERVATION.ordinal(), qPeople, startedAtTime, reservationDate);
+        final Reservation reservation = new Reservation(restaurant, this, reservationHour, ReservationStatus.OPEN.ordinal(), qPeople, startedAtTime, reservationDate);
         reservations.add(reservation);
         return reservation;
     }

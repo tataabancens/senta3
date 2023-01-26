@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.service;
 
+import ar.edu.itba.paw.model.PasswordPair;
 import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -17,11 +19,13 @@ public interface UserService {
 
     void updatePassword(String username, String newPassword);
 
-    void updateUsername(String oldUsername, String newUsername);
-
     Optional<User> getUserByUsername(String username);
 
     void createUserAndCustomer(String username, String password, Roles customer, String customerName, String phone, String mail);
 
     void deleteById(long id);
+
+    List<User> getAll();
+
+    boolean patchUser(long id, String username, PasswordPair psPair);
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,23 +66,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public void updateCustomerDataByUsername(String username, String name, String phone, String mail) {
-        customerDao.getCustomerByUsername(username).ifPresent(c -> {
-            c.setCustomerName(name);
-            c.setPhone(phone);
-            c.setMail(mail);
-        });
-    }
-
-    @Override
-    public void updateCustomerNameByUsername(String username, String name) {
-        customerDao.getCustomerByUsername(username).ifPresent(c -> {
-            c.setMail(name);
-        });
-    }
-
-    @Transactional
-    @Override
     public boolean patchCustomer(long id, String name, String phone, String mail, Long userId, Integer points) {
         Optional<Customer> maybeCustomer = getCustomerById(id);
         if(!maybeCustomer.isPresent()){
@@ -121,20 +105,6 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
-    @Override
-    public void updateCustomerMailByUsername(String username, String mail) {
-        customerDao.getCustomerByUsername(username).ifPresent(c -> {
-            c.setMail(mail);
-        });
-    }
-
-    @Override
-    public void updateCustomerPhoneByUsername(String username, String phone) {
-        customerDao.getCustomerByUsername(username).ifPresent(c -> {
-            c.setPhone(phone);
-        });
-    }
-
     public float getDiscountCoefficient() {
         return DISCOUNT_COEFFICIENT;
     }
@@ -144,5 +114,8 @@ public class CustomerServiceImpl implements CustomerService {
         return (int) total / COEFFICIENT;
     }
 
-
+    @Override
+    public List<Customer> getCustomers(int page){
+        return customerDao.getCustomers(page);
+    }
 }
