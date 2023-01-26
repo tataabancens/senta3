@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.webapp.auth.basic;
 
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.service.UserService;
+import ar.edu.itba.paw.webapp.auth.models.AuthenticationTokenDetails;
+import ar.edu.itba.paw.webapp.auth.service.AuthenticationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,6 +35,9 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private UserDetailsService pawUserDetailsService;
 
+    @Autowired
+    private AuthenticationTokenService tokenService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         BasicAuthenticationToken auth = (BasicAuthenticationToken) authentication;
@@ -50,13 +56,23 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad username/password combination");
         }
         UserDetails userDetails = pawUserDetailsService.loadUserByUsername(credentials[0]);
+        String authenticationToken = tokenService.issueToken(credentials[0], mapToAuthority(userDetails.getAuthorities()));
+        AuthenticationTokenDetails tokenDetails = tokenService.parseToken(authenticationToken);
+
         BasicAuthenticationToken trustedAuth = new BasicAuthenticationToken(credentials[0], credentials[1],
-                userDetails.getAuthorities());
+                userDetails.getAuthorities(), tokenDetails);
+        trustedAuth.setToken(authenticationToken);
         return trustedAuth;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return (BasicAuthenticationToken.class.isAssignableFrom(authentication));
+    }
+
+    private Set<Roles> mapToAuthority(Collection<? extends GrantedAuthority> authorities) {
+        return  authorities.stream()
+                .map(grantedAuthority -> Roles.valueOf(grantedAuthority.toString().split("[_]")[1]))
+                .collect(Collectors.toSet());
     }
 }

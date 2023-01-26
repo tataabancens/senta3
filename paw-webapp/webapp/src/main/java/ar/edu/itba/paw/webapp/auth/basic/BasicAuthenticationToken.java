@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth.basic;
 
+import ar.edu.itba.paw.webapp.auth.models.AuthenticationTokenDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -7,13 +8,11 @@ import java.util.Collection;
 
 public class BasicAuthenticationToken extends UsernamePasswordAuthenticationToken {
     private String token;
-//    private AuthenticationTokenDetails tokenDetails;
 
     public BasicAuthenticationToken(Object principal, Object credentials,
-                                    Collection<? extends GrantedAuthority> authorities/*,
-                                    AuthenticationTokenDetails tokenDetails*/) {
+                                    Collection<? extends GrantedAuthority> authorities,
+                                    AuthenticationTokenDetails tokenDetails) {
         super(principal, credentials, authorities);
-//        this.tokenDetails = tokenDetails;
     }
 
 
@@ -24,5 +23,24 @@ public class BasicAuthenticationToken extends UsernamePasswordAuthenticationToke
 
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public String getPrincipal() {
+        return (String)super.getPrincipal();
+    }
+
+    @Override
+    public String getCredentials() {
+        return (String)super.getCredentials();
+    }
+
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return super.getAuthorities();
     }
 }

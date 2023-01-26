@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.config;
 import ar.edu.itba.paw.webapp.auth.basic.BasicAuthenticationProvider;
 import ar.edu.itba.paw.webapp.auth.JwtFilter;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
+import ar.edu.itba.paw.webapp.auth.jwt.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -35,6 +39,18 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BasicAuthenticationProvider basicAuthenticationProvider;
 
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
+
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,20 +60,26 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
         auth.authenticationProvider(basicAuthenticationProvider);
+        auth.authenticationProvider(jwtAuthenticationProvider);
     }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().headers().cacheControl().disable()
-                .and().authorizeRequests()
-                    .antMatchers("/**").hasAnyRole("CUSTOMER", "RESTAURANT")
-                .antMatchers("/**").anonymous()
-                .and().exceptionHandling()
-                    .accessDeniedPage("/403")
+                .and()
+                    .exceptionHandling()
+                        .accessDeniedHandler(accessDeniedHandler)
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                    .headers()
+                        .cacheControl().disable()
+                .and()
+                    .authorizeRequests()
+                        .antMatchers("/**").hasAnyRole("CUSTOMER", "RESTAURANT")
                 .and()//.addFilterBefore(new JwtFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
+        super.configure(http);
     }
 
     @Override
