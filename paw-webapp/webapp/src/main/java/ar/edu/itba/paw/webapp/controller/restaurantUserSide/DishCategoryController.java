@@ -5,6 +5,8 @@ import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.DishCategoryDto;
+import ar.edu.itba.paw.webapp.exceptions.DishCategoryNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.CategoryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,13 +33,9 @@ public class DishCategoryController {
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getDishCategories(@PathParam("restaurantId") final long restaurantId){
-        final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
+        final Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
-        if (!maybeRestaurant.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        List<DishCategoryDto> categoryList = maybeRestaurant.get().getDishCategories()
+        List<DishCategoryDto> categoryList = restaurant.getDishCategories()
                 .stream().map(dishCategory -> DishCategoryDto.fromDishCategory(uriInfo, dishCategory))
                 .collect(Collectors.toList());
 
@@ -49,13 +47,10 @@ public class DishCategoryController {
     @Produces(value = {MediaType.APPLICATION_JSON})
     public Response getDishCategoryById(@PathParam("restaurantId") final long restaurantId
             , @PathParam("categoryId") final long categoryId){
-        final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
-        final Optional<DishCategory> maybeDishCategory = rs.getDishCategoryById(categoryId);
-        if (!maybeRestaurant.isPresent() || !maybeDishCategory.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        final Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
+        final DishCategory dishCategory = rs.getDishCategoryById(categoryId).orElseThrow(DishCategoryNotFoundException::new);
 
-        DishCategoryDto dishCategoryDto = DishCategoryDto.fromDishCategory(uriInfo, maybeDishCategory.get());
+        DishCategoryDto dishCategoryDto = DishCategoryDto.fromDishCategory(uriInfo, dishCategory);
         return Response.ok(dishCategoryDto).build();
     }
 

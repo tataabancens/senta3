@@ -9,6 +9,8 @@ import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.DishDto;
+import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.DishPatchForm;
 import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import ar.edu.itba.paw.webapp.form.customValidator.DeleteCategoryConstraint;
@@ -41,10 +43,10 @@ public class DishController {
     @Path("/{id}")
     @Produces(value = {MediaType.APPLICATION_JSON, })
     public Response getDishById(@PathParam("restaurantId") final long restaurantId, @PathParam("id") final long dishId) {
-        final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
+        final Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         final Optional<DishDto> maybeDish = ds.getDishById(dishId).map(u -> DishDto.fromDish(uriInfo, u));
-        if (!maybeRestaurant.isPresent() || !maybeDish.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if (!maybeDish.isPresent()) {
+            throw new DishNotFoundException();
         }
         return Response.ok(maybeDish.get()).build();
     }

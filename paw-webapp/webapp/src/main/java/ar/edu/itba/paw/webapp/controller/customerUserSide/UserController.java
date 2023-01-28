@@ -8,6 +8,7 @@ import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.ReservationDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateUserForm;
 import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import ar.edu.itba.paw.webapp.form.UserPatchForm;
@@ -61,7 +62,7 @@ public class UserController {
         if (maybeUser.isPresent()) {
             return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get())).build();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new UserNotFoundException();
         }
     }
 

@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.ReservationDto;
+import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateReservationForm;
 import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ReservationController {
     public Response getReservationBySecurityCode(@PathParam("securityCode") final String securityCode){
         final Optional<ReservationDto> maybeReservation = rs.getReservationBySecurityCode(securityCode).map(r -> ReservationDto.fromReservation(uriInfo, r));
         if(!maybeReservation.isPresent()){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ReservationNotFoundException();
         } else {
             return Response.ok(maybeReservation.get()).build();
         }

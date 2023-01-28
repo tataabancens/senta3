@@ -76,7 +76,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                         .cacheControl().disable()
                 .and()
                     .authorizeRequests()
-                        .antMatchers("/**").hasAnyRole("CUSTOMER", "RESTAURANT")
+                        .antMatchers("/**").hasAnyRole("CUSTOMER")
                 .and()//.addFilterBefore(new JwtFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
         super.configure(http);

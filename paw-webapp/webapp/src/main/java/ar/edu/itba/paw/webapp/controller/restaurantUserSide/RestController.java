@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.RestaurantDto;
+import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.RestaurantPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class RestController {
     public Response getRestById(@PathParam("id") final long id) {
         final Optional<RestaurantDto> maybeRestaurant = rs.getRestaurantById(id).map(u -> RestaurantDto.fromRestaurant(uriInfo, u));
         if (!maybeRestaurant.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new RestaurantNotFoundException();
         }
         return Response.ok(maybeRestaurant.get()).build();
     }

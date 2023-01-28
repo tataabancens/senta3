@@ -5,8 +5,10 @@ import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.CustomerDto;
 import ar.edu.itba.paw.webapp.dto.ReservationDto;
+import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.webapp.form.CustomerPatchForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
+import ar.edu.itba.paw.webapp.mappers.CustomerNotFoundExceptionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +39,7 @@ public class CustomerController {
     public Response getCustomerById(@PathParam("id") final long id){
         final Optional<CustomerDto> maybeCustomer = cs.getCustomerById(id).map(c -> CustomerDto.fromCustomer(uriInfo, c));
         if(!maybeCustomer.isPresent()){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new CustomerNotFoundException();
         } else {
             return Response.ok(maybeCustomer.get()).build();
         }

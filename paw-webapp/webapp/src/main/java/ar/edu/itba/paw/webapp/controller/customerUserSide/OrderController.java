@@ -4,6 +4,8 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.OrderItemDto;
+import ar.edu.itba.paw.webapp.exceptions.OrderItemNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateOrderItemForm;
 import ar.edu.itba.paw.webapp.form.OrderItemPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class OrderController {
     public Response getOrderItems(@PathParam("securityCode") final String securityCode) {
         Optional<Reservation> maybeReservation = rs.getReservationBySecurityCode(securityCode);
         if (!maybeReservation.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ReservationNotFoundException();
         }
         List<OrderItemDto> orderItemDtoList = rs.getOrderItemsOfReservation(maybeReservation.get().getId())
                 .stream()
@@ -58,11 +60,11 @@ public class OrderController {
     @Produces(value = {MediaType.APPLICATION_JSON,})
     public Response getOrderItems(@PathParam("securityCode") final String securityCode,
                                   @PathParam("orderItemId") final long orderItemId) {
-        Optional<Reservation> maybeReservation = rs.getReservationBySecurityCode(securityCode);
+        Reservation reservation = rs.getReservationBySecurityCode(securityCode).orElseThrow(ReservationNotFoundException::new);
         Optional<OrderItemDto> maybeOrderItem = rs.getOrderItemById(orderItemId).map(o -> OrderItemDto.fromOrderItem(uriInfo, o));
 
-        if (!(maybeReservation.isPresent() && maybeOrderItem.isPresent())) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if (!maybeOrderItem.isPresent()) {
+            throw new OrderItemNotFoundException();
         }
 
         return Response.ok(maybeOrderItem.get()).build();
