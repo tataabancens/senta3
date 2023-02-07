@@ -1,4 +1,5 @@
 export default interface RestaurantModel{
+    id: number,
     name: string,
     phone: number,
     mail: string,

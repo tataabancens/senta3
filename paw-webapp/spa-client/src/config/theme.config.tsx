@@ -12,6 +12,7 @@ export enum themePalette {
     DARK = "#0F1108",
     CARD_WHITE = "#feffff",
     SUCCESS = "#388e3c",
+    BLUE = "#0081C9",
     ERROR = "#d32f2f",
     FONT_GLOBAL = "Nunito"
 }
@@ -24,6 +25,9 @@ const theme = createTheme({
         primary: {
             main: themePalette.RED,
         },
+        secondary:{
+            main: themePalette.BLUE,
+        }
 
     },
     typography: {

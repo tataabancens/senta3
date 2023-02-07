@@ -3,8 +3,12 @@ package ar.edu.itba.paw.webapp.form;
 import ar.edu.itba.paw.model.PasswordPair;
 import ar.edu.itba.paw.webapp.form.customValidator.PasswordConstraint;
 import ar.edu.itba.paw.webapp.form.customValidator.PasswordLengthConstraint;
+import ar.edu.itba.paw.webapp.form.customValidator.PasswordPairFieldsNotNullConstraint;
 import ar.edu.itba.paw.webapp.form.customValidator.UsernameConstraint;
+import ar.edu.itba.paw.webapp.form.groupInterface.PasswordGroup;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -17,13 +21,24 @@ public class CreateUserForm {
     @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String username;
 
-    @NotNull
+    @PasswordPairFieldsNotNullConstraint
     @PasswordLengthConstraint
     @PasswordConstraint
+    @NotNull
     private PasswordPair psPair;
 
     @NotNull
     private String role;
+
+    private Long customerId;
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 
     public String getUsername() {
         return username;

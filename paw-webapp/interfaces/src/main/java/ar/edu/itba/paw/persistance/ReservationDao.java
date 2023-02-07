@@ -41,5 +41,7 @@ public interface ReservationDao {
     void deleteCustomer(String securityCode);
 
     void deleteAllOrderItems(String securityCode);
+
+    List<OrderItem> getOrderItemsByStatusListAndReservationStatusList(List<Integer> reservationStauses, List<Integer> orderItemStatuses);
 }
 

@@ -8,7 +8,7 @@ import java.net.URI;
 public class UserDto {
     private String username;
     private String role;
-
+    private long id;
 
     private URI content;
 
@@ -17,6 +17,8 @@ public class UserDto {
 
         userDto.username = user.getUsername();
         userDto.role = user.getRole();
+        userDto.id = user.getId();
+
         switch (userDto.role) {
             case "ROLE_RESTAURANT":
                 userDto.content = uriInfo.getAbsolutePathBuilder()
@@ -70,4 +72,11 @@ public class UserDto {
         this.content = content;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

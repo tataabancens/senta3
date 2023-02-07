@@ -17,6 +17,7 @@ public class RestaurantDto {
     private URI user;
     private int totalChairs;
     private int openHour, closeHour;
+    private long id;
 
     public RestaurantDto() {
         // for jersey
@@ -30,6 +31,7 @@ public class RestaurantDto {
         dto.totalChairs = res.getTotalChairs();
         dto.openHour = res.getOpenHour();
         dto.closeHour = res.getCloseHour();
+        dto.id = res.getId();
 
         final UriBuilder restaurantUriBuilder = uriInfo.getAbsolutePathBuilder()
                 .replacePath("restaurants").path(String.valueOf(res.getId()));
@@ -48,6 +50,14 @@ public class RestaurantDto {
                 .replacePath("reservations");
         dto.reservations = reservationUriBuilder.build();
         return dto;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

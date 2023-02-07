@@ -38,7 +38,7 @@ public class ImageController {
 
         Image image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         ImageDto imageDto = ImageDto.fromImage(image);
-        return Response.ok(imageDto).build();
+        return Response.ok(imageDto.getBitmap()).build();
     }
 
 

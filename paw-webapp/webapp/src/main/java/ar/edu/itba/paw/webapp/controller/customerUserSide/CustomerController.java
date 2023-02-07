@@ -88,7 +88,7 @@ public class CustomerController {
         return Response.status(400).build();
     }
 
-    //todo doing
+    //todo doing on delete cascade?
     @DELETE
     @Path("/{id}")
     public Response DeleteCustomer(@PathParam("id") final long id){

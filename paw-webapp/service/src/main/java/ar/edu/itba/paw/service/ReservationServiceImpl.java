@@ -146,6 +146,11 @@ public class ReservationServiceImpl implements ReservationService {
         }
         Reservation newRes = customer.get().createReservation(restaurant.get(), reservationHour, qPeople, startedAtTime, reservationDate);
         setReservationSecurityCode(newRes);
+        mailingService.sendConfirmationEmail(restaurant.get(), customer.get(), newRes , LocaleContextHolder.getLocale());
+        if (newRes.getReservationDate().isBefore(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT))) {
+            newRes.setIsToday(true);
+        }
+
 
         return newRes;
     }
@@ -230,17 +235,6 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
         return false;
-    }
-
-    @Transactional
-    @Override
-    public void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation) {
-        updateReservationById(reservation, customer, reservation.getReservationHour(), reservation.getqPeople());
-        updateReservationStatus(reservation, ReservationStatus.OPEN);
-        if (reservation.getReservationDate().isBefore(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT))) {
-            reservation.setIsToday(true);
-        }
-        mailingService.sendConfirmationEmail(restaurant, customer, reservation , LocaleContextHolder.getLocale());
     }
 
     @Transactional
@@ -337,6 +331,21 @@ public class ReservationServiceImpl implements ReservationService {
             totalHours.removeAll(notAvailable);
         }
         return totalHours;
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemsQuery(String reservationStatus, String orderItemStatus) {
+        String[] reservationStauses = (reservationStatus == null) ? new String[0] : reservationStatus.split(",");
+        String[] orderItemStatuses = (orderItemStatus == null) ? new String[0] : orderItemStatus.split(",");
+        List<Integer> intResS = new ArrayList<>();
+        List<Integer> intOrdS = new ArrayList<>();
+        for(String resS : reservationStauses){
+            intResS.add(Integer.valueOf(resS));
+        }
+        for(String ordS : orderItemStatuses){
+            intOrdS.add(Integer.valueOf(ordS));
+        }
+        return reservationDao.getOrderItemsByStatusListAndReservationStatusList(intResS, intOrdS);
     }
 
     @Transactional

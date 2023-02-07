@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class CustomerDto {
-    private String customerName;
+    private String name;
 
 
     private String phone;
@@ -21,14 +21,14 @@ public class CustomerDto {
     private URI reservations;
     private URI self;
 
-    private long customerId;
+    private long id;
 
 
     public static CustomerDto fromCustomer(final UriInfo uriInfo, Customer customer) {
         final CustomerDto dto = new CustomerDto();
 
-        dto.customerId = customer.getId();
-        dto.customerName = customer.getCustomerName();
+        dto.id = customer.getId();
+        dto.name = customer.getCustomerName();
         dto.mail = customer.getMail();
         dto.phone = customer.getPhone();
         dto.points = 0;
@@ -52,12 +52,12 @@ public class CustomerDto {
         // para Jersey
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {
@@ -108,11 +108,11 @@ public class CustomerDto {
         this.self = self;
     }
 
-    public long getCustomerId() {
-        return customerId;
+    public long getId() {
+        return id;
     }
 
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
+    public void setId(long customerId) {
+        this.id = customerId;
     }
 }

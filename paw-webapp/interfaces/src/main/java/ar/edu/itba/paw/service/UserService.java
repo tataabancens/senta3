@@ -11,9 +11,9 @@ public interface UserService {
 
     Optional<User> getUserByID(long id);
 
-    User create(String username, String password, Roles role);
+    User create(String username, PasswordPair psPair, Roles role, Long customerId);
 
-    User createAndLinkToCustomer(String username, String password, Roles role, long customerId);
+//    User createAndLinkToCustomer(String username, PasswordPair psPair, Roles role, Long customerId);
 
     Optional<User> findByName(String username);
 

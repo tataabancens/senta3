@@ -13,7 +13,7 @@ public class OrderItem {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "reservationid", nullable = false)
     private Reservation reservation;
 

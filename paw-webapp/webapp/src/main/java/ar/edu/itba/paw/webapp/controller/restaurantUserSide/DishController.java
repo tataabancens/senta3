@@ -66,7 +66,6 @@ public class DishController {
     }
 
     @POST
-//    @Produces(value = {MediaType.APPLICATION_JSON, })
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     public Response createDish(@PathParam("restaurantId") final long restaurantId, DishPatchForm form) {
         final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);

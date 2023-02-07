@@ -1,29 +1,60 @@
 import { useEffect, useState } from "react";
-import DishCard from "../components/DishCard";
-import { handleResponse, handleDishImageing } from "../handleResponse";
-import { DishModel } from "../models";
-import { dishService } from "../services";
-import {Dish} from "../models/Dishes/Dish";
+import { handleResponse } from "../handleResponse";
+import { DishCategoryModel, DishModel, RestaurantModel } from "../models";
+import { Grid } from "@mui/material";
+import CategoryTabs from "../components/CategoryTabs";
+import RestaurantHeader from "../components/RestaurantHeader";
+import DishDisplay from "../components/DishDisplay";
+import useDishService from "../hooks/serviceHooks/useDishService";
+import useRestaurantService from "../hooks/serviceHooks/useRestaurantService";
 
-function MenuPage(){
+function MenuPage() {
+  const [value, setValue] = useState(0);
+  const [restaurant, setRestaurant] = useState<RestaurantModel>();
+  const [dishList, setDishes] = useState<DishModel[]>([]);
+  const [categoryList, setCategories] = useState<DishCategoryModel[]>([]);
 
-    handleDishImageing(dishService.getDishById(5));
+  const dishService = useDishService();
+  const restaurantService = useRestaurantService();
 
-    let [ dishList, setDishes] = useState(new Array(0));
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
-    useEffect(() => {
-        handleResponse(
-            dishService.getDishes(),
-            (dishes: DishModel[]) => {
-                setDishes(dishes)
-            }
-        );
-    },[]);
-    return (
-        <div>
-            {dishList.map((dish: DishModel) => DishCard(dish))}
-        </div>
+  useEffect(() => {
+    handleResponse(
+      restaurantService.getRestaurant(1),
+      (restaurantData: RestaurantModel) => {
+        setRestaurant(restaurantData);
+      }
     );
+
+    handleResponse(
+        dishService.getDishCategories(),
+        (categories: DishCategoryModel[]) => {
+          setCategories(categories);
+          setValue(categories[0].id);
+        }
+    );
+  }, []);
+
+  useEffect(() => {
+
+    handleResponse(
+      dishService.getDishes(categoryList[value]? categoryList[value].name : "DRINKS"),
+      (dishes: DishModel[]) => {
+        dishes.length > 0 ? setDishes(dishes) : setDishes([]);
+      }
+    );
+  }, [value]);
+
+  return (
+    <Grid container spacing={2} justifyContent="center">
+      <RestaurantHeader restaurant={restaurant} role={"ROLE_ANONYMOUS"}/>
+      <CategoryTabs value={value} handleChange={handleChange} categoryList={categoryList}  />
+      <DishDisplay dishList={dishList} role={"ROLE_ANONYMOUS"}/>
+    </Grid>
+  );
 }
 
 export default MenuPage;

@@ -3,4 +3,5 @@ export interface createReservationPayloadModel {
     qPeople: number,
     restaurantId: number,
     customerId: number,
+    reservationDate: string
 }

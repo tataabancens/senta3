@@ -12,6 +12,7 @@ public class ReservationDto {
     private String securityCode;
     private int hour;
     private String date;
+    private String customerName;
 
     private int peopleAmount;
     private int tableNumber;
@@ -31,15 +32,16 @@ public class ReservationDto {
         dto.peopleAmount = reservation.getqPeople();
         dto.tableNumber = reservation.getTableNumber();
         dto.hand = reservation.isHand();
+        dto.customerName = reservation.getCustomer().getCustomerName();
 
         dto.orderItems = uriInfo.getAbsolutePathBuilder()
-                .path("orderItems").build();
+                .replacePath("reservations").path(String.valueOf(reservation.getSecurityCode())).path("orderItems").build();
 
         dto.restaurant = uriInfo.getAbsolutePathBuilder()
-                .replacePath("restaurant").path(String.valueOf(reservation.getRestaurant().getId())).build();
+                .replacePath("restaurants").path(String.valueOf(reservation.getRestaurant().getId())).build();
 
         dto.customer = uriInfo.getAbsolutePathBuilder()
-                .replacePath("customer").path(String.valueOf(reservation.getCustomer().getId())).build();
+                .replacePath("customers").path(String.valueOf(reservation.getCustomer().getId())).build();
         return dto;
     }
 
@@ -118,5 +120,13 @@ public class ReservationDto {
 
     public void setOrderItems(URI orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

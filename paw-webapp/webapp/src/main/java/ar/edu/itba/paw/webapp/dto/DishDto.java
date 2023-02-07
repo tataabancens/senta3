@@ -11,7 +11,7 @@ public class DishDto {
     private String name;
     private URI self;
     private URI restaurant;
-    private long image;
+    private URI image;
     private URI category;
     private String description;
     private int price;
@@ -29,18 +29,26 @@ public class DishDto {
         dishDto.description = dish.getDishDescription();
         dishDto.price = dish.getPrice();
 
-        final UriBuilder dishesUriBuilder = uriInfo.getAbsolutePathBuilder().replacePath("restaurants")
-                .path(String.valueOf(dish.getRestaurant().getId())).path("dishes").path(String.valueOf(dish.getId()));
+        final UriBuilder dishesUriBuilder = uriInfo.getAbsolutePathBuilder()
+                .replacePath("restaurants")
+                .path(String.valueOf(dish.getRestaurant().getId()))
+                .path("dishes").path(String.valueOf(dish.getId()));
         dishDto.self = dishesUriBuilder.build();
 
-        UriBuilder dishCategoryBuilder = dishesUriBuilder.clone().replacePath("dishcategories").path(String.valueOf(dish.getCategory().getId()));
+        UriBuilder dishCategoryBuilder = uriInfo.getAbsolutePathBuilder()
+                .replacePath("restaurants").path(String.valueOf(dish.getRestaurantId()))
+                .path("dishCategories")
+                .path(String.valueOf(dish.getCategory().getId()));
         dishDto.category = dishCategoryBuilder.build();
 
-        UriBuilder dishImageBuilder = dishesUriBuilder.clone().replacePath("resources/images").path(String.valueOf(dish.getImageId()));
+        UriBuilder dishImageBuilder = dishesUriBuilder.clone()
+                .replacePath("resources/images")
+                .path(String.valueOf(dish.getImageId()));
+        dishDto.image = dishImageBuilder.build();
 
-        dishDto.image = dish.getImageId();
-
-        UriBuilder restaurantBuilder = dishesUriBuilder.clone().replacePath("restaurants").path(String.valueOf(dish.getRestaurant().getId()));
+        UriBuilder restaurantBuilder = dishesUriBuilder.clone()
+                .replacePath("restaurants")
+                .path(String.valueOf(dish.getRestaurant().getId()));
         dishDto.restaurant = restaurantBuilder.build();
         return dishDto;
     }
@@ -69,11 +77,11 @@ public class DishDto {
         this.restaurant = restaurant;
     }
 
-    public long getImage() {
+    public URI getImage() {
         return image;
     }
 
-    public void setImage(long image) {
+    public void setImage(URI image) {
         this.image = image;
     }
 

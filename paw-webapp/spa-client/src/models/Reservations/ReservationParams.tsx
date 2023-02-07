@@ -24,49 +24,50 @@ export class ReservationParams {
     
     get patchReservationPayload(): patchReservationPayloadModel | null{
         return {
-            hour: this._hour,
-            qPeople: this._qPeople,
-            reservationStatus: this._status,
-            discount: this._discount,
-            reservationDate: this._date,
-            table: this._table,
-            hand: this._hand,
+            "hour": this._hour,
+            "qPeople": this._qPeople,
+            "reservationStatus": this._status,
+            "discount": this._discount,
+            "reservationDate": this._date,
+            "table": this._table,
+            "hand": this._hand,
         };
     }
 
     get createReservationPayload(): createReservationPayloadModel | null{
-        if(this._hour == undefined || this._qPeople == undefined || this._restaurantId == undefined || this._customerId == undefined){
+        if(this._hour === undefined || this._qPeople === undefined || this._restaurantId === undefined || this._customerId === undefined || this._date === undefined){
             return null;
         }
         return {
-            hour: this._hour,
-            qPeople: this._qPeople,
-            restaurantId: this._restaurantId,
-            customerId: this._customerId,
+            "hour": this._hour,
+            "qPeople": this._qPeople,
+            "restaurantId": this._restaurantId,
+            "customerId": this._customerId,
+            "reservationDate": this._date
         };
     }
 
     get getReservationsQuery(): string{
         let query = "?"
-        if(this._restaurantId != undefined){
+        if(this._restaurantId !== undefined){
             query += `restaurantId=${this._restaurantId}`
         }
-        if(this._customerId != undefined){
+        if(this._customerId !== undefined){
             query += `&customerId=${this._customerId}`
         }
-        if(this._restaurantId != undefined){
+        if(this._orderBy !== undefined){
             query += `&orderBy=${this._orderBy}`
         }
-        if(this._restaurantId != undefined){
+        if(this._direction !== undefined){
             query += `&direction=${this._direction}`
         }
-        if(this._restaurantId != undefined){
-            query += `&restaurantId=${this._restaurantId}`
-        }
-        if(this._restaurantId != undefined){
+        if(this._filterStatus !== undefined){
             query += `&filterStatus=${this._filterStatus}`
         }
-        if(this._restaurantId != undefined){
+        if(this._status !== undefined){
+            query += `&status=${this._status}`
+        }
+        if(this._page !== undefined){
             query += `&page=${this._page}`
         }
         return query;

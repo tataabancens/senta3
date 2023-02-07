@@ -1,7 +1,11 @@
 package ar.edu.itba.paw.model;
 
+import com.sun.istack.internal.NotNull;
+
 public class PasswordPair {
+    @NotNull
     private String password;
+    @NotNull
     private String checkPassword;
 
     public PasswordPair(String password, String checkPassword) {

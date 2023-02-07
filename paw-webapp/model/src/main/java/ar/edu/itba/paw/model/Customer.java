@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.ReservationStatus;
+import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class Customer {
     @Column(nullable = false)
     private int points;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, optional = true, orphanRemoval = true)
     @JoinColumn(name = "userid")
     private User user;
 

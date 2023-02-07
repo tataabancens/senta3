@@ -8,16 +8,80 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState} from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import Image from "../commons/restaurantPicture.jpg";
+import axios, { AxiosResponse } from "axios";
+import { paths } from "../constants/constants";
+import { fromByteArray, toByteArray } from 'base64-js';
+import useAuth from "../hooks/useAuth";
 
-function LoginPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+
+const LoginPage = () => {
+
+  const { auth, setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/"
+
+  const userRef = useRef<HTMLInputElement>();
+  const errRef = useRef();
+
+  const [user, setUser] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+    userRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [user, pwd]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const path = `${paths.LOCAL_BASE_URL}/users/auth`;
+
+    const encoder = new TextEncoder();
+    const base64Credentials = fromByteArray(encoder.encode(`${user}:${pwd}`));
+
+    try {
+      const response = await axios.get(path,
+        {
+          headers: {
+            'Authorization': `Basic ${base64Credentials}`
+          }
+        }
+      );
+
+      const authorization: string | undefined = response?.headers.authorization;
+      const role = response?.data?.role;
+      const roles: string[]= [role];
+      const id = response?.data?.id;
+      
+      setAuth({user, roles, authorization, id});
+      console.log(auth);
+      setUser('');
+      setPwd('');
+      navigate(from, { replace : true });
+
+    } catch (err: any) {
+        if(!err?.response) {
+          setErrMsg("No server response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing username or password");
+        } else if (err.response?.status === 401) {
+          setErrMsg("Unauthorized");
+        } else {
+          setErrMsg("Login failed");
+        }
+    }
+
+
   };
 
   return (
@@ -25,16 +89,16 @@ function LoginPage() {
       <Grid
         item
         xs={false}
-        sm={4}
-        md={7}
+        sm={6}
+        md={9}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random)",
+          backgroundImage: `url(${Image})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={6} md={3} component={Paper} elevation={6} square>
         <Box
           sx={{
             my: 8,
@@ -45,7 +109,7 @@ function LoginPage() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            Login
           </Typography>
           <Box
             component="form"
@@ -54,14 +118,16 @@ function LoginPage() {
             sx={{ mt: 1 }}
           >
             <TextField
+              inputRef={userRef}
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              onChange={(e) => setUser(e.target.value)}
+              value={user}
             />
             <TextField
               margin="normal"
@@ -72,6 +138,8 @@ function LoginPage() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setPwd(e.target.value)}
+              value={pwd}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

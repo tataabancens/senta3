@@ -38,6 +38,14 @@ export const NavBar: React.FC<{}> = () => {
                       <Typography>Reservations</Typography>
                     </Link>
                   </Button>
+                  <Button variant="contained">
+                    <Link
+                      to="reservationsRestaurant"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      <Typography>RestaurantReservations</Typography>
+                    </Link>
+                  </Button>
                 </Stack>
               </Grid>
               <Grid item>

@@ -16,9 +16,15 @@ public class CreateReservationForm {
     private int qPeople;
 
 //    private LocalDateTime startedAtTime;
-//    private LocalDateTime reservationDate;
+    private String reservationDate;
 
+    public String getReservationDate() {
+        return reservationDate;
+    }
 
+    public void setReservationDate(String reservationDate) {
+        this.reservationDate = reservationDate;
+    }
 
     public long getCustomerId() {
         return customerId;

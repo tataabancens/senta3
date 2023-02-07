@@ -17,21 +17,21 @@ export class DishParams{
             return null;
         }
         return{
-            name: this._name,
-            description: this._description,
-            price: this._price,
-            categoryId: this._categoryId,
-            imageId: this._imageId,
+            "name": this._name,
+            "description": this._description,
+            "price": this._price,
+            "categoryId": this._categoryId,
+            "imageId": this._imageId,
         }
     }
 
     get patchDishPayload(): DishPayloadModel{
         return{
-            name: this._name,
-            description: this._description,
-            price: this._price,
-            categoryId: this._categoryId,
-            imageId: this._imageId,
+            "name": this._name,
+            "description": this._description,
+            "price": this._price,
+            "categoryId": this._categoryId,
+            "imageId": this._imageId,
         }
     }
 
@@ -40,13 +40,13 @@ export class DishParams{
             return null;
         }
         return{
-            categoryName: this._categoryName,
+            "categoryName": this._categoryName,
         }
     }
 
     get patchDishCategoryPayload(): DishCategoryPayloadModel {
         return {
-            categoryName: this._categoryName,
+            "categoryName": this._categoryName,
         }
     }
 

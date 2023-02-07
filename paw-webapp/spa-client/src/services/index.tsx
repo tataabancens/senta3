@@ -6,20 +6,20 @@ import { ReservationService } from "./ReservationService";
 import { OrderItemService } from "./OrderItemService";
 import { ImageService } from "./ImageService";
 
-const dishService = new DishService();
-const userService =  new UserService();
-const customerService = new CustomerService();
-const restaurantService = new RestaurantService();
-const reservationService = new ReservationService();
-const orderItemService = new OrderItemService();
-const imageService = new ImageService();
+// const dishService = new DishService();
+// const userService =  new UserService();
+// const customerService = new CustomerService();
+// const restaurantService = new RestaurantService();
+// const reservationService = new ReservationService();
+// const orderItemService = new OrderItemService();
+// const imageService = new ImageService();
 
 export {
-    dishService,
-    userService,
-    restaurantService,
-    customerService,
-    reservationService,
-    orderItemService,
-    imageService
+    // dishService,
+    // userService,
+    // restaurantService,
+    // customerService,
+    // reservationService,
+    // orderItemService,
+    // imageService
 };

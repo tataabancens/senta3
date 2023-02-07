@@ -1,14 +1,13 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.model.OrderItem;
-import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 
 import javax.ws.rs.core.UriInfo;
 
 
 public class OrderItemDto {
-    private long id;
+    private long orderItemId;
     private long dishId;
     private long reservationId;
     private float unitPrice;
@@ -18,7 +17,7 @@ public class OrderItemDto {
     public static OrderItemDto fromOrderItem(final UriInfo uriInfo, OrderItem orderItem) {
         final OrderItemDto dto = new OrderItemDto();
 
-        dto.id = orderItem.getId();
+        dto.orderItemId = orderItem.getId();
         dto.dishId = orderItem.getDish().getId();
         dto.reservationId = orderItem.getReservation().getId();
         dto.unitPrice = orderItem.getUnitPrice();
@@ -32,12 +31,12 @@ public class OrderItemDto {
         // para Jersey
     }
 
-    public long getId() {
-        return id;
+    public long getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setOrderItemId(long orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public long getDishId() {

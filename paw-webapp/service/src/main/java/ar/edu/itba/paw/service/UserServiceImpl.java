@@ -36,19 +36,31 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User create(String username, String password, Roles role) {
-        return userDao.create(username, passwordEncoder.encode(password), role);
-    }
-
-    @Transactional
-    @Override
-    public User createAndLinkToCustomer(String username, String password, Roles role, long customerId) {
-        User user = userDao.create(username, password, role);
+    public User create(String username, PasswordPair psPair, Roles role, Long customerId) {
+        if(!Objects.equals(psPair.getPassword(), psPair.getCheckPassword())){
+            return null;
+        }
+        if(customerId == null){ // only create
+            int a=0;
+            return userDao.create(username, passwordEncoder.encode(psPair.getPassword()), role);
+        }
+        // create and link
+        User user = userDao.create(username, passwordEncoder.encode(psPair.getPassword()), role);
         cs.getCustomerById(customerId).ifPresent(c -> {
             c.setUser(user);
         });
         return user;
     }
+
+//    @Transactional
+//    @Override
+//    public User createAndLinkToCustomer(String username, PasswordPair psPair, Roles role, Long customerId) {
+//        User user = userDao.create(username, passwordEncoder.encode(psPair.getPassword()), role);
+//        cs.getCustomerById(customerId).ifPresent(c -> {
+//            c.setUser(user);
+//        });
+//        return user;
+//    }
 
     @Transactional
     @Override

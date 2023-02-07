@@ -1,16 +1,20 @@
 import { AxiosResponse } from "axios";
+import { NavigateFunction } from "react-router-dom";
 import {Dish} from "./models/Dishes/Dish";
 
 export function handleResponse<T>(
     response: Promise<AxiosResponse<T>>,
-    setterFunction: (data: T) => void
+    setterFunction: (data: T) => void,
+    navigate?: NavigateFunction,
+    location?: any
 ): void{
         response.then((response: AxiosResponse<T>) => {
             setterFunction(response.data);
         }).catch((error) =>{
             console.log(`ERROR: ${error}`);
+            if (navigate && location)
+                navigate('/login', { state: { from: location }, replace: true});
         });
-
 }
 
 export function handleDishImageing(dish: Promise<Dish>): void{

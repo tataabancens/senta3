@@ -1,12 +1,17 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse, AxiosInstance } from "axios";
 import { paths } from "../constants/constants";
 import { ImageModel } from "../models";
 
 export class ImageService{
-    
-    private readonly basePath = paths.LOCAL_BASE_URL + paths.IMAGES;
+    private axios:AxiosInstance;
+
+    constructor(axios: AxiosInstance) {
+        this.axios = axios;
+    }
+
+    private readonly basePath = paths.IMAGES;
 
     public getImage(id: number): Promise<AxiosResponse<ImageModel>>{
-        return axios.get<ImageModel>(this.basePath + '/' + id);
+        return this.axios.get<ImageModel>(this.basePath + '/' + id);
     }
 }

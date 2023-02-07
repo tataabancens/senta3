@@ -4,12 +4,10 @@ import { NavBar } from "../NavBar";
 
 function MainLayout() {
   return (
-    <Container>
+    <>
       <NavBar />
-      <Container sx={{ display: "flex"}}>
-        <Outlet />
-      </Container>
-    </Container>
+      <Outlet />
+    </>
   );
 }
 

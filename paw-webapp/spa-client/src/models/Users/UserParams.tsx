@@ -8,23 +8,43 @@ export class UserParams {
     private _psPair: passwordPair | undefined;
     private _role: string | undefined;
     private _userId: number | undefined;
+    private _customerId: number | undefined;
 
     get createUserPayload(): CreateUserPayloadModel | null{
         if(this._username == undefined || this._psPair == undefined || this._role == undefined){
             return null;
         }
-        return {
-            username: this._username,
-            psPair: this._psPair,
-            role: this._role,
+        if(this._customerId == undefined){
+            return {
+                "username": this._username,
+                "psPair": this._psPair,
+                "role": this._role,
+                "customerId": null,
+            }
+        } else {
+            return {
+                "username": this._username,
+                "psPair": this._psPair,
+                "role": this._role,
+                "customerId": this._customerId,
+            }
         }
     }
 
     get editUserPayload(): PatchUserPayloadModel | null{
         return {
-            username: this._username,
-            psPair: this._psPair,
+            "username": this._username,
+            "psPair": this._psPair,
         }
+    }
+
+
+    get customerId(): number | undefined {
+        return this._customerId;
+    }
+
+    set customerId(value: number | undefined) {
+        this._customerId = value;
     }
 
     get userId(): number | undefined {

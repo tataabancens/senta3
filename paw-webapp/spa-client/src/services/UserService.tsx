@@ -1,30 +1,33 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
 import { UserModel } from "../models";
 import { UserParams } from "../models/Users/UserParams";
 
 
-export class UserService{
-    private readonly basePath = paths.LOCAL_BASE_URL + paths.USERS
+export class UserService {
+    private axios:AxiosInstance;
+
+    constructor(axios: AxiosInstance) {
+        this.axios = axios;
+    }
 
     public getUsers(): Promise<AxiosResponse<UserModel[]>>{
-        return axios.get<UserModel[]>(this.basePath);
+        return this.axios.get<UserModel[]>(paths.USERS);
     }
 
     public getUserById(userId: number): Promise<AxiosResponse<UserModel>>{
-        return axios.get<UserModel>(this.basePath + '/' + userId);
+        return this.axios.get<UserModel>(paths.USERS + '/' + userId);
     }
 
     public deleteUser(userId: number){
-        return axios.delete(this.basePath + '/' + userId);
+        return this.axios.delete(paths.USERS + '/' + userId);
     }
 
     public createUser(params: UserParams): Promise<AxiosResponse<UserModel>>{
-        console.log(params.createUserPayload);
-        return axios.post(this.basePath, params.createUserPayload);
+        return this.axios.post(paths.USERS, params.createUserPayload);
     }
 
     public editUser(params: UserParams): Promise<AxiosResponse>{
-        return axios.patch(this.basePath + `/${params.userId}`, params.editUserPayload);
+        return this.axios.patch(paths.USERS + `/${params.userId}`, params.editUserPayload);
     }
 }

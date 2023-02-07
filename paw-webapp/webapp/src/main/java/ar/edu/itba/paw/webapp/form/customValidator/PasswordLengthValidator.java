@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.PasswordPair;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.constraints.NotNull;
 
 public class PasswordLengthValidator implements ConstraintValidator<PasswordLengthConstraint, PasswordPair> {
 
@@ -14,8 +15,8 @@ public class PasswordLengthValidator implements ConstraintValidator<PasswordLeng
 
     @Override
     public boolean isValid(PasswordPair pair, ConstraintValidatorContext constraintValidatorContext) {
-        if(pair.getPassword() == null)
-            return false;
+        if(pair == null || pair.getPassword() == null)
+            return true;
         return pair.getPassword().length() >= 8;
     }
 }

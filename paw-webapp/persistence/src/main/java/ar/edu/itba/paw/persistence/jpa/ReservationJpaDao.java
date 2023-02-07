@@ -84,7 +84,7 @@ public class ReservationJpaDao implements ReservationDao {
         //técnica 1+1
         final Query idQuery = em.createNativeQuery("SELECT reservationid FROM reservation NATURAL JOIN customer CROSS JOIN restaurant WHERE restaurant.restaurantid = :restaurantId"
                 + filterCustomerIdString + filterStatusString +
-                " ORDER BY " + orderByString + " " + direction + " OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
+                " ORDER BY " + orderByString + " " + direction + " OFFSET :offset ROWS FETCH NEXT 30 ROWS ONLY");
         idQuery.setParameter("restaurantId", restaurantId);
         idQuery.setParameter("offset", Math.abs((page-1)*10));
 
@@ -196,6 +196,26 @@ public class ReservationJpaDao implements ReservationDao {
 
 
 
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemsByStatusListAndReservationStatusList(List<Integer> reservationStauses, List<Integer> orderItemStatuses) {
+        //técnica 1+1
+        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem NATURAL JOIN dish NATURAL JOIN reservation WHERE status IN :orderItemStatus AND reservation.reservationStatus IN :reservationStatus ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
+        idQuery.setParameter("orderItemStatus", orderItemStatuses);
+        idQuery.setParameter("reservationStatus", reservationStauses);
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        if(! ids.isEmpty()){
+            final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.id IN :ids order by id", OrderItem.class); //es hql, no sql
+            query.setParameter("ids", ids);
+            final List<OrderItem> list = query.getResultList();
+            return list.isEmpty() ? new ArrayList<>() : list;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override

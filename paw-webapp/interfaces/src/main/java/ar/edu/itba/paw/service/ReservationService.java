@@ -16,7 +16,16 @@ public interface ReservationService {
     List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
     List<OrderItem> getOrderItemsByStatus(OrderItemStatus status);
+
+    void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
+
+    void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status);
     //todo^^
+
+    List<Integer> getAvailableHours(long restaurantId, long qPeople, LocalDateTime reservationDate);
+
+
+    List<OrderItem> getOrderItemsQuery(String reservationStatus, String orderItemStatus);
 
     Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople);
 
@@ -30,13 +39,6 @@ public interface ReservationService {
 
     void updateReservationStatus(Reservation reservation, ReservationStatus newStatus);
 
-    //todo : put in order controller
-    void deleteOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
-
-    void deleteOrderItemByStatus(OrderItem orderItem, OrderItemStatus status);
-    //^^
-
-    List<Integer> getAvailableHours(long restaurantId, long qPeople, LocalDateTime reservationDate);
 
     List<Long> getUnavailableItems(long reservationId);
 
@@ -80,9 +82,6 @@ public interface ReservationService {
 
     //todo : check who used this
     boolean isRepeating(Customer customer, Reservation reservation);
-
-    //todo : put in create res
-    void finishReservation(Restaurant restaurant, Customer customer, Reservation reservation);
 
     boolean cancelReservation(String securityCode);
 

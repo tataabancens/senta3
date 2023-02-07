@@ -13,14 +13,14 @@ export class OrderitemParams{
             return null;
         }
         return {
-            dishId: this._dishId,
-            quantity: this._quantity,
+            "dishId": this._dishId,
+            "quantity": this._quantity,
         }
     }
 
     get patchOrderitemPayload(): PatchOrderitemPayloadModel{
         return {
-            status: this._status,
+            "status": this._status,
         }
     }
 

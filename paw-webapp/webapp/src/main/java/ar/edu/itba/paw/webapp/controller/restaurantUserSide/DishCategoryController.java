@@ -55,7 +55,6 @@ public class DishCategoryController {
     }
 
     @POST
-//    @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     public Response createCategory(@PathParam("restaurantId")final long restaurantId,
                                   @Valid CategoryForm categoryForm){

@@ -11,12 +11,12 @@ export class RestParams{
 
     get patchRestaurantPayload(): RestPayloadModel{
         return {
-            restaurantName: this._restaurantName,
-            phone: this._phone,
-            mail: this._mail,
-            totalChairs: this._totalChairs,
-            openHour: this._openHour,
-            closeHour: this._closeHour,
+            "restaurantName": this._restaurantName,
+            "phone": this._phone,
+            "mail": this._mail,
+            "totalChairs": this._totalChairs,
+            "openHour": this._openHour,
+            "closeHour": this._closeHour,
         }
     }
 

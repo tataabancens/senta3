@@ -14,30 +14,31 @@ public class CustomerRegisterForm {
     @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String mail;
 
-    @UsernameConstraint
-    @Size(min = 1, max = 50)
-    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
-    private String username;
+    //this doesnt go
+//    @UsernameConstraint
+//    @Size(min = 1, max = 50)
+//    @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
+//    private String username;
 
     @Size(min = 1, max = 50)
     @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String customerName;
 
     @Size(min = 9, max = 13)
-
     private String phone;
 
-    @PasswordLengthConstraint
-    @PasswordConstraint
-    private PasswordPair psPair;
+    //this doesnt go
+//    @PasswordLengthConstraint
+//    @PasswordConstraint
+//    private PasswordPair psPair;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 
     public String getCustomerName() {
         return customerName;
@@ -63,11 +64,11 @@ public class CustomerRegisterForm {
         this.phone = phone;
     }
 
-    public PasswordPair getPsPair() {
-        return psPair;
-    }
-
-    public void setPsPair(PasswordPair psPair) {
-        this.psPair = psPair;
-    }
+//    public PasswordPair getPsPair() {
+//        return psPair;
+//    }
+//
+//    public void setPsPair(PasswordPair psPair) {
+//        this.psPair = psPair;
+//    }
 }
