@@ -34,14 +34,14 @@ public class ReservationDto {
         dto.hand = reservation.isHand();
         dto.customerName = reservation.getCustomer().getCustomerName();
 
-        dto.orderItems = uriInfo.getAbsolutePathBuilder()
-                .replacePath("reservations").path(String.valueOf(reservation.getSecurityCode())).path("orderItems").build();
+        dto.orderItems = uriInfo.getBaseUriBuilder()
+                .path("reservations").path(String.valueOf(reservation.getSecurityCode())).path("orderItems").build();
 
-        dto.restaurant = uriInfo.getAbsolutePathBuilder()
-                .replacePath("restaurants").path(String.valueOf(reservation.getRestaurant().getId())).build();
+        dto.restaurant = uriInfo.getBaseUriBuilder()
+                .path("restaurants").path(String.valueOf(reservation.getRestaurant().getId())).build();
 
-        dto.customer = uriInfo.getAbsolutePathBuilder()
-                .replacePath("customers").path(String.valueOf(reservation.getCustomer().getId())).build();
+        dto.customer = uriInfo.getBaseUriBuilder()
+                .path("customers").path(String.valueOf(reservation.getCustomer().getId())).build();
         return dto;
     }
 

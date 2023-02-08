@@ -33,8 +33,8 @@ public class RestaurantDto {
         dto.closeHour = res.getCloseHour();
         dto.id = res.getId();
 
-        final UriBuilder restaurantUriBuilder = uriInfo.getAbsolutePathBuilder()
-                .replacePath("restaurants").path(String.valueOf(res.getId()));
+        final UriBuilder restaurantUriBuilder = uriInfo.getBaseUriBuilder()
+                .path("restaurants").path(String.valueOf(res.getId()));
         dto.self = restaurantUriBuilder.build();
 
         UriBuilder dishesUriBuilder = restaurantUriBuilder.clone().path("dishes");
@@ -42,12 +42,12 @@ public class RestaurantDto {
         UriBuilder dishCategoriesBuilder = restaurantUriBuilder.clone().path("dishCategories");
         dto.dishCategories = dishCategoriesBuilder.build();
 
-        final UriBuilder userUriBuilder = uriInfo.getAbsolutePathBuilder()
-                .replacePath("users").path(String.valueOf(res.getUser().getId()));
+        final UriBuilder userUriBuilder = uriInfo.getBaseUriBuilder()
+                .path("users").path(String.valueOf(res.getUser().getId()));
         dto.user = userUriBuilder.build();
 
-        final UriBuilder reservationUriBuilder = uriInfo.getAbsolutePathBuilder()
-                .replacePath("reservations");
+        final UriBuilder reservationUriBuilder = uriInfo.getBaseUriBuilder()
+                .path("reservations");
         dto.reservations = reservationUriBuilder.build();
         return dto;
     }

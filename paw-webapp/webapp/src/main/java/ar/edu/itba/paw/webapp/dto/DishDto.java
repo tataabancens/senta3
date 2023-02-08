@@ -29,25 +29,25 @@ public class DishDto {
         dishDto.description = dish.getDishDescription();
         dishDto.price = dish.getPrice();
 
-        final UriBuilder dishesUriBuilder = uriInfo.getAbsolutePathBuilder()
-                .replacePath("restaurants")
+        final UriBuilder dishesUriBuilder = uriInfo.getBaseUriBuilder()
+                .path("restaurants")
                 .path(String.valueOf(dish.getRestaurant().getId()))
                 .path("dishes").path(String.valueOf(dish.getId()));
         dishDto.self = dishesUriBuilder.build();
 
-        UriBuilder dishCategoryBuilder = uriInfo.getAbsolutePathBuilder()
-                .replacePath("restaurants").path(String.valueOf(dish.getRestaurantId()))
+        UriBuilder dishCategoryBuilder = uriInfo.getBaseUriBuilder()
+                .path("restaurants").path(String.valueOf(dish.getRestaurantId()))
                 .path("dishCategories")
                 .path(String.valueOf(dish.getCategory().getId()));
         dishDto.category = dishCategoryBuilder.build();
 
-        UriBuilder dishImageBuilder = dishesUriBuilder.clone()
-                .replacePath("resources/images")
+        UriBuilder dishImageBuilder = uriInfo.getBaseUriBuilder()
+                .path("resources").path("images")
                 .path(String.valueOf(dish.getImageId()));
         dishDto.image = dishImageBuilder.build();
 
-        UriBuilder restaurantBuilder = dishesUriBuilder.clone()
-                .replacePath("restaurants")
+        UriBuilder restaurantBuilder = uriInfo.getBaseUriBuilder()
+                .path("restaurants")
                 .path(String.valueOf(dish.getRestaurant().getId()));
         dishDto.restaurant = restaurantBuilder.build();
         return dishDto;

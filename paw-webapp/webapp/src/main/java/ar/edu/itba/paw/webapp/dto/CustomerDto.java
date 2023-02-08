@@ -33,17 +33,16 @@ public class CustomerDto {
         dto.phone = customer.getPhone();
         dto.points = 0;
         dto.self = uriInfo.getAbsolutePathBuilder()
-                .replacePath("customers").path(String.valueOf(customer.getId())).build();
+                .path(String.valueOf(customer.getId())).build();
         if(customer.getUser() != null){
-            dto.user = uriInfo.getAbsolutePathBuilder()
-                    .replacePath("users").path(String.valueOf(customer.getUser().getId())).build();
+            dto.user = uriInfo.getBaseUriBuilder()
+                    .path("users").path(String.valueOf(customer.getUser().getId())).build();
         } else {
-            dto.user = uriInfo.getAbsolutePathBuilder()
-                    .replacePath("users").path(String.valueOf(customer.getUser())).build();
+            dto.user = URI.create("null");
         }
 
-        dto.reservations = uriInfo.getAbsolutePathBuilder()
-                .replacePath("reservations").queryParam("customerId", customer.getId()).build();
+        dto.reservations = uriInfo.getBaseUriBuilder()
+                .path("reservations").queryParam("customerId", customer.getId()).build();
         return dto;
     }
 

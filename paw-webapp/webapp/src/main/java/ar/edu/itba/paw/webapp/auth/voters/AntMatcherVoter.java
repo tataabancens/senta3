@@ -43,6 +43,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessReservation(Authentication authentication, String securityCode) {
+        if(isRestaurant(authentication)) return true;
         Optional<Reservation> res = reservationService.getReservationBySecurityCode(securityCode);
         if(!res.isPresent()) return false;
         if(res.get().getCustomer().getUser() == null) return true; //reservation has no user
@@ -69,6 +70,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessOrderItem(Authentication authentication, String securityCode, long orderItemId) {
+        if(isRestaurant(authentication)) return true;
         Optional<Reservation> requestedRes = reservationService.getReservationBySecurityCode(securityCode);
         Optional<OrderItem> requestedOI = reservationService.getOrderItemById(orderItemId);
         if(!requestedRes.isPresent() || !requestedOI.isPresent()) return false;
@@ -80,6 +82,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessOrderItems(Authentication authentication, String securityCode) {
+        if(isRestaurant(authentication)) return true;
         Optional<Reservation> requestedReservation = reservationService.getReservationBySecurityCode(securityCode);
         if(!requestedReservation.isPresent()) return false;
         if(authentication instanceof AnonymousAuthenticationToken){
@@ -88,8 +91,13 @@ public class AntMatcherVoter {
         return Objects.equals(requestedReservation.get().getCustomer().getUser().getUsername(), authentication.getName());
     }
 
+    private boolean isRestaurant(Authentication authentication){
+        return Objects.equals(getUser(authentication).getRole(), "ROLE_RESTAURANT");
+    }
+
     public boolean canAccessReservationList(Authentication authentication, String query){
         if(authentication instanceof AnonymousAuthenticationToken) return false;
+        if(isRestaurant(authentication)) return true;
         int startIndex = query.indexOf("customerId=");
         if (startIndex != -1) {
             startIndex += 11; //length of "customerId="
@@ -103,6 +111,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessCustomer(Authentication authentication, long customerId) {
+        if(isRestaurant(authentication)) return true;
         Optional<Customer> requestedCustomer = customerService.getCustomerById(customerId);
         if(!requestedCustomer.isPresent()) return false;
         if(requestedCustomer.get().getUser() == null) return true; //there is no user for this customer
