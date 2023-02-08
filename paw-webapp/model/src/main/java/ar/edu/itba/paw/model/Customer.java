@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.model;
 
 import ar.edu.itba.paw.model.enums.ReservationStatus;
-import com.sun.istack.internal.Nullable;
+//import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
