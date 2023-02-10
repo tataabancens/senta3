@@ -3,19 +3,57 @@ import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import AccountInfoForm from "../components/forms/AccountInfoFrom";
 import RestaurantInfoForm from "../components/forms/RestaurantInfoForm";
-import { handleResponse } from "../handleResponse";
+import { handleResponse } from "../Utils";
 import { CustomerModel, RestaurantModel, UserModel } from "../models";
 import useUserService from "../hooks/serviceHooks/useUserService";
 import useAuth from "../hooks/useAuth";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function ProfilePage() {
+  const { auth } = useAuth();
+
+  const initUser: UserModel = {
+    username: auth.user,
+    role: auth.roles[0],
+    content: '',
+    id: auth.id,
+  }
+
+  const initRestaurant: RestaurantModel = {
+    id: 1,
+    name: '',
+    phone: '',
+    mail: '',
+    dishes: '',
+    reservations: '',
+    dishCategories: '',
+    user: '',
+    totalChairs: 0,
+    openHour: 0,
+    closeHour: 0,
+    self: ''
+  }
+
+  const initCustomer: CustomerModel = {
+    id: 0,
+    name: '',
+    phone: '',
+    mail: '',
+    points: 0,
+    user: '',
+    reservations: '',
+    self: '',
+  }
+
+
   const [isOpenAccountForm, setOpenAccountForm] = useState(false);
   const [isOpenRestForm, setOpenRestForm] = useState(false);
-  const [user, setUser] = useState<UserModel>();
-  const [restaurant, setRestaurant] = useState<RestaurantModel>();
-  const [customer, setCustomer] = useState<CustomerModel>();
+  const [user, setUser] = useState<UserModel>(initUser);
+  const [restaurant, setRestaurant] = useState<RestaurantModel>(initRestaurant);
+  const [customer, setCustomer] = useState<CustomerModel>(initCustomer);
   const userService = useUserService();
-  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  
 
   const handleOpenAccountForm = () => {
     setOpenAccountForm(!isOpenAccountForm);
@@ -33,14 +71,14 @@ function ProfilePage() {
 
   useEffect(() => {
     if (user?.role === "ROLE_RESTAURANT") {
-      axios
+      axiosPrivate
         .get(user.content)
         .then((response: AxiosResponse<RestaurantModel>) => {
           setRestaurant(response.data);
         })
         .catch((err) => console.log(err));
     } else if (user?.role === "ROLE_CUSTOMER") {
-      axios
+      axiosPrivate
         .get(user.content)
         .then((response: AxiosResponse<CustomerModel>) => {
           setCustomer(response.data);
@@ -50,8 +88,8 @@ function ProfilePage() {
   }, [user, isOpenAccountForm, isOpenRestForm]);
 
   function displayRestaurantInfo(
-    user: UserModel | undefined,
-    restaurant: RestaurantModel | undefined
+    user: UserModel,
+    restaurant: RestaurantModel
   ) {
     return (
       <Grid
@@ -108,8 +146,8 @@ function ProfilePage() {
   }
 
   function displayCustomerInfo(
-    user: UserModel | undefined,
-    customer: CustomerModel | undefined
+    user: UserModel,
+    customer: CustomerModel
   ) {
     return (
       <Grid

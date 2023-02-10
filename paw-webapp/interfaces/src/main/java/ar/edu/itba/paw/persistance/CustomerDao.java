@@ -14,7 +14,5 @@ public interface CustomerDao {
 
     Customer create(String customerName, String phone, String mail, long id);
 
-    void deleteCustomer(long id);
-
     List<Customer> getCustomers(int page);
 }

@@ -2,8 +2,8 @@
 //
 //import ar.edu.itba.paw.model.Restaurant;
 //import ar.edu.itba.paw.service.*;
-//import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-//import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+//import ar.edu.itba.paw.model.exceptions.CustomerNotFoundException;
+//import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.GrantedAuthority;

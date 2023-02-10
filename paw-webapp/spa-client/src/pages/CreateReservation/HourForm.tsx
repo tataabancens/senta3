@@ -4,37 +4,45 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {MenuItem, Select} from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
+import { createReservationFormValues } from './CreateReservationPage';
+import { ErrorMessage, Field, FormikProps } from 'formik';
+import { isConstructorDeclaration } from 'typescript';
 
 interface hourFormProps {
-    hour: number,
-    setHour: (date:number) => void,
+    props: FormikProps<createReservationFormValues>
     availableHours: number[]
 }
 
-export default function HourForm({hour, setHour, availableHours}: hourFormProps) {
+export default function HourForm({ props, availableHours }: hourFormProps) {
+    const { handleBlur, handleChange, values, errors } = props;
+    console.log(errors);
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
                 At what time do you wish to attend? sittings last 1 hour.
             </Typography>
             <Grid item xs={12} sm={6}>
-                <Select
+                <Field as={Select}
                     required
                     id="Hour"
-                    name="Hour"
+                    name="hour"
                     label="Select one"
                     fullWidth
                     autoComplete="given-name"
                     variant="standard"
-                    value={hour}
-                    onChange={(event) => setHour(event.target.value as unknown as number)}
+                    value={values.hour}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={<ErrorMessage name="date" />}
                 >
                     <MenuItem value="0"> <em>Select one</em> </MenuItem>
                     {availableHours.map((value) => (
                         <MenuItem key={value} value={value}>{value}</MenuItem>
+
                     ))}
-                </Select>
+                </Field>
+                {errors.hour ? <p>{errors.hour}</p> : null}
             </Grid>
         </React.Fragment>
     );

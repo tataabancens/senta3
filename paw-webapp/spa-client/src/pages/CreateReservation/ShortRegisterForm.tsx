@@ -2,25 +2,20 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { createReservationFormValues } from './CreateReservationPage';
+import { Field, ErrorMessage, FormikProps } from 'formik';
 
 interface ShortRegisterFormProps {
-    readonly firstName: string,
-    readonly lastName: string,
-    readonly mail: string,
-    readonly phone: string,
-    username: string,
-    password: string,
-    repeatPassword: string,
-    setUsername: (date:string) => void,
-    setPassword: (date:string) => void,
-    setRepeatPassword: (date:string) => void
-
+    props: FormikProps<createReservationFormValues>;
 }
 
 
-export default function ShortRegisterForm({firstName, lastName, mail, phone, username, password, repeatPassword, setUsername, setPassword, setRepeatPassword}:ShortRegisterFormProps) {
+export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
+    const { values:
+        { firstName, lastName, mail, phone, username, password, repeatPassword, userStep },
+        handleChange,
+        handleBlur,
+        errors } = props;
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -37,7 +32,6 @@ export default function ShortRegisterForm({firstName, lastName, mail, phone, use
                         autoComplete="firstName"
                         variant="standard"
                         value={firstName}
-                        // onChange={(event)=>setFirstName(event.target.value)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -50,7 +44,6 @@ export default function ShortRegisterForm({firstName, lastName, mail, phone, use
                         autoComplete="lastName"
                         variant="standard"
                         value={lastName}
-                        // onChange={(event)=>setLastName(event.target.value)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -63,7 +56,6 @@ export default function ShortRegisterForm({firstName, lastName, mail, phone, use
                         autoComplete="mail"
                         variant="standard"
                         value={mail}
-                        // onChange={(event)=>setMail(event.target.value)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -76,11 +68,10 @@ export default function ShortRegisterForm({firstName, lastName, mail, phone, use
                         autoComplete="phone"
                         variant="standard"
                         value={phone}
-                        // onChange={(event)=>setPhone(event.target.value)}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
+                    <Field as={TextField}
                         required
                         id="username"
                         name="username"
@@ -89,32 +80,41 @@ export default function ShortRegisterForm({firstName, lastName, mail, phone, use
                         autoComplete="username"
                         variant="standard"
                         value={username}
-                        onChange={(event)=>setUsername(event.target.value)}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={<ErrorMessage name="username" />}
+                        error={errors.username}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
+                    <Field as={TextField}
                         required
                         id="password"
                         name="password"
                         label="Password"
+                        type="password"
                         fullWidth
                         variant="standard"
                         value={password}
-                        onChange={(event)=>setPassword(event.target.value)}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={<ErrorMessage name="password" />}
+                        error={errors.password}
                     />
-                    <TextField
+                    <Field as={TextField}
                         required
                         id="repeatPassword"
                         name="repeatPassword"
                         label="Repeat password"
+                        type="password"
                         fullWidth
                         variant="standard"
                         value={repeatPassword}
-                        onChange={(event)=>setRepeatPassword(event.target.value)}
-                    />
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={<ErrorMessage name="repeatPassword" />}
+                        error={errors.repeatPassword} />
                 </Grid>
-
             </Grid>
         </React.Fragment>
     );

@@ -1,27 +1,51 @@
-import { CardMedia, CardContent, Typography, Card, Grid, CardActionArea, Link } from "@mui/material";
+import { CardContent, Typography, Card, Grid, CardActionArea } from "@mui/material";
 import { FC, useState } from "react";
+
+import { DishCategoryModel, ImageModel, ReservationModel } from "../models";
 import DishModel from "../models/Dishes/DishModel";
 import ConfirmDishForm from "./forms/ConfirmDishForm";
+import { useNavigate } from "react-router-dom";
+import {paths} from "../constants/constants";
+import EditDishForm from "./forms/EditDishForm";
+
 
 type Props = {
-  dish: DishModel
-  role: string
+  dish: DishModel;
+  role: string;
+  categoryList?: DishCategoryModel[];
+  reservation?: ReservationModel;
+  categoryId?: number;
+  toggleReload?: () => void;
 };
 
 const DishCard: FC<Props> = ({
   dish,
-  role
+  role,
+  categoryList,
+  reservation,
+  categoryId,
+  toggleReload
 }): JSX.Element => {
 
   const [isCardOpen, setCardOpen] = useState(false);
+  let navigate = useNavigate();
   
+  const [editIsOpen, setEditIsOpen] = useState(false);
+
+
   const handleDishForm = () => {
-    if(role !== "ROLE_CUSTOMER"){
-      window.location.href = "/createReservation"
-    }else{
+    if(role === "ROLE_ANONYMOUS"){
+      navigate(paths.ROOT + "createReservation");
+    }else if(role === "ROLE_CUSTOMER"){
       setCardOpen(!isCardOpen);
+    }else{
+      toggleEditForm();
     }
   };
+
+  const toggleEditForm = () => {
+    setEditIsOpen(!editIsOpen)
+  }
 
   return (
     <Grid
@@ -34,20 +58,21 @@ const DishCard: FC<Props> = ({
     margin={2}
     maxHeight={180}
   >
-    <ConfirmDishForm isOpen={isCardOpen} handleOpen={handleDishForm} dish={dish}/>
     <Card sx={{display: "flex"}}>
+    {role === "ROLE_CUSTOMER" && <ConfirmDishForm isOpen={isCardOpen} handleOpen={handleDishForm} dish={dish!} reservation={reservation} toggleReload={toggleReload} />}
+    {role === "ROLE_RESTAURANT" && <EditDishForm isOpen={editIsOpen} handleOpen={toggleEditForm} categoryList={categoryList!} dish={dish} categoryId={categoryId}/>}
       <CardActionArea>
         <CardContent onClick={handleDishForm}>
-          <Typography gutterBottom variant="h5" component="div">
-              {dish.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-              {dish.description}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-              ${dish.price}
-          </Typography>
-        </CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+            {dish.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+            {dish.description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+            ${dish.price}
+        </Typography>
+      </CardContent>
       </CardActionArea>
     </Card>
   </Grid>
@@ -56,3 +81,4 @@ const DishCard: FC<Props> = ({
 
 
 export default DishCard;
+

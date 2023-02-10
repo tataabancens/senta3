@@ -7,5 +7,7 @@ export default interface ReservationModel{
     hand: boolean,
     orderItems: string,
     restaurant: string,
+    customerName: string,
     customer: string,
+    status: string
 }

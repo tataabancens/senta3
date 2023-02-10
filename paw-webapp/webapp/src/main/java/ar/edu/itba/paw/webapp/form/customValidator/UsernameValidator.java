@@ -20,6 +20,7 @@ public class UsernameValidator implements ConstraintValidator<UsernameConstraint
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        if (s == null) return true;
         Optional<User> maybeUser = us.getUserByUsername(s);
         if (maybeUser.isPresent())
             return false;

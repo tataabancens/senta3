@@ -3,6 +3,8 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
+import ar.edu.itba.paw.model.exceptions.CustomerNotFoundException;
+import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,16 +121,6 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
-//    @Transactional
-//    @Override
-//    public Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople) {
-//        Reservation reservation = customer.createReservation(restaurant, 0, qPeople, LocalDateTime.now(), LocalDateTime.now());
-//        setReservationSecurityCode(reservation);
-//        updateReservationStatus(reservation, ReservationStatus.MAYBE_RESERVATION);
-//
-//        return reservation;
-//    }
-
     @Transactional
     @Override
     public void setReservationSecurityCode(Reservation reservation) {
@@ -141,8 +133,11 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation createReservationPost(long restaurantId, long customerId, int reservationHour, int qPeople, LocalDateTime startedAtTime, LocalDateTime reservationDate) {
         Optional<Customer> customer = customerService.getCustomerById(customerId);
         Optional<Restaurant> restaurant = restaurantDao.getRestaurantById(restaurantId);
-        if(!(customer.isPresent() && restaurant.isPresent()) ){
-            return null;
+        if (!customer.isPresent()) {
+            throw new CustomerNotFoundException();
+        }
+        if (!restaurant.isPresent()) {
+            throw new RestaurantNotFoundException();
         }
         Reservation newRes = customer.get().createReservation(restaurant.get(), reservationHour, qPeople, startedAtTime, reservationDate);
         setReservationSecurityCode(newRes);
@@ -261,7 +256,7 @@ public class ReservationServiceImpl implements ReservationService {
             return null;
         }
         OrderItem newOrderItem = maybeRes.get().createOrderItem(dish, qty);
-        newOrderItem.setStatus(OrderItemStatus.ORDERED);
+        newOrderItem.setStatus(OrderItemStatus.SELECTED);
         return newOrderItem;
     }
 
@@ -502,23 +497,6 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    @Scheduled(cron = "0 0/5 * * * ?")
-    @Transactional
-    @Override
-    public void cleanMaybeReservations() {
-        LocalDateTime now = LocalDateTime.now();
-        Restaurant restaurant = restaurantService.getRestaurantById(1).get();
-
-        List<Reservation> allMaybeReservations = restaurant.getReservationsByStatusList(Collections.singletonList(ReservationStatus.MAYBE_RESERVATION));
-        for (Reservation reservation : allMaybeReservations) {
-            LocalDateTime tenMinutesLater = reservation.getStartedAtTime().plusMinutes(10);
-            if (now.compareTo(tenMinutesLater) > 0) {
-                reservation.setReservationStatus(ReservationStatus.CANCELED);
-            }
-        }
-    }
-
-
     @Transactional
     @Override
     public void applyDiscount(Reservation reservation) {
@@ -582,5 +560,10 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         return true;
+    }
+
+    @Override
+    public int getTotalPages(long restaurantId, String filterStatus, long customerId) {
+        return reservationDao.getTotalPages(restaurantId, filterStatus, customerId);
     }
 }

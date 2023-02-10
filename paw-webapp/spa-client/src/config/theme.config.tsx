@@ -13,6 +13,7 @@ export enum themePalette {
     CARD_WHITE = "#feffff",
     SUCCESS = "#388e3c",
     BLUE = "#0081C9",
+    PURPLE = "#800080",
     ERROR = "#d32f2f",
     FONT_GLOBAL = "Nunito"
 }
@@ -23,7 +24,7 @@ const theme = createTheme({
             default: themePalette.BG
         },
         primary: {
-            main: themePalette.RED,
+            main: themePalette.PURPLE,
         },
         secondary:{
             main: themePalette.BLUE,

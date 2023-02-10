@@ -15,6 +15,7 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerDao customerDao;
     private final UserDao userDao;
+//    private final UserService us;
 
     private static final int COEFFICIENT = 71;
     private static final float DISCOUNT_COEFFICIENT = 0.85f;
@@ -23,9 +24,10 @@ public class CustomerServiceImpl implements CustomerService {
 //    private UserService us;
 
     @Autowired
-    public CustomerServiceImpl(final CustomerDao customerDao, UserDao userDao) {
+    public CustomerServiceImpl(final CustomerDao customerDao, UserDao userDao){//}, final UserService us) {//
         this.customerDao = customerDao;
         this.userDao = userDao;
+//        this.us = us;
     }
 
     @Transactional
@@ -36,8 +38,18 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public Customer create(String customerName, String phone, String mail) {
-        return customerDao.create(customerName, phone, mail);
+    public Customer create(String customerName, String phone, String mail, Optional<User> user) {
+        if(user.isPresent()){
+            if(getCustomerByUsername(user.get().getUsername()).isPresent()){ //userId already has a customer
+                return null;
+            }
+        }
+        Customer customer = customerDao.create(customerName, phone, mail);
+        if(!user.isPresent()){ // only create
+            return customer;
+        }
+        user.ifPresent(customer::setUser); //and link
+        return customer;
     }
 
     @Transactional
@@ -66,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public boolean patchCustomer(long id, String name, String phone, String mail, Long userId, Integer points) {
+    public boolean patchCustomer(long id, String name, String phone, String mail, Long userId) {
         Optional<Customer> maybeCustomer = getCustomerById(id);
         if(!maybeCustomer.isPresent()){
             return false;
@@ -88,20 +100,6 @@ public class CustomerServiceImpl implements CustomerService {
             }
             customer.setUser(maybeUser.get());
         }
-        if(points != null){
-            customer.setPoints(points);
-        }
-        return true;
-    }
-
-    @Transactional
-    @Override
-    public boolean deleteCustomer(long id) {
-        Optional<Customer> maybeCustomer = getCustomerById(id);
-        if(!maybeCustomer.isPresent()){
-            return false;
-        }
-        customerDao.deleteCustomer(id);
         return true;
     }
 

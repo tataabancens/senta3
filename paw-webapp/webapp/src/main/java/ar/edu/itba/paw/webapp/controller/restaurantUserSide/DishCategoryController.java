@@ -5,8 +5,8 @@ import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.DishCategoryDto;
-import ar.edu.itba.paw.webapp.exceptions.DishCategoryNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.model.exceptions.DishCategoryNotFoundException;
+import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.CategoryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("restaurants/{restaurantId}/dishCategories")
+@Path("/api/restaurants/{restaurantId}/dishCategories")
 @Component
 public class DishCategoryController {
 

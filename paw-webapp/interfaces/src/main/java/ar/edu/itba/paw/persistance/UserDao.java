@@ -13,4 +13,6 @@ public interface UserDao {
     User create(String username, String password, Roles role);
 
     Optional<User> findByName(String username);
+
+    boolean deleteUser(long id);
 }

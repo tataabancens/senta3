@@ -61,6 +61,7 @@ public class WebConfig {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 
         ds.setDriverClass(org.postgresql.Driver.class);
+        //todo deploy
         //for dev:
         ds.setUrl("jdbc:postgresql://localhost:5432/paw");
         ds.setUsername("postgres");
@@ -179,9 +180,11 @@ public class WebConfig {
         properties.setProperty("hibernate.hbm2ddl.auto", "update"); //"BEST EFFORT" para actualizar el equema
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
+        //todo deploy
         // Solo para desarrollar, el que pone esto en prod, hay tabla!!!. Es para imprimir la tabla en stdout
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("format_sql", "true");
+        //^^
         factoryBean.setJpaProperties(properties);
         return factoryBean;
     }

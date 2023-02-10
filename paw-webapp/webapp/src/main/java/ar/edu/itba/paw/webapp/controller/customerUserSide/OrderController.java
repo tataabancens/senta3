@@ -4,8 +4,8 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.OrderItemDto;
-import ar.edu.itba.paw.webapp.exceptions.OrderItemNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
+import ar.edu.itba.paw.model.exceptions.OrderItemNotFoundException;
+import ar.edu.itba.paw.model.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateOrderItemForm;
 import ar.edu.itba.paw.webapp.form.OrderItemPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("reservations/{securityCode}/orderItems")
+@Path("/api/reservations/{securityCode}/orderItems")
 @Controller
 public class OrderController {
     private final RestaurantService res;
@@ -71,8 +71,8 @@ public class OrderController {
         return Response.ok(maybeOrderItem.get()).build();
     }
 
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     @POST
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     public Response createOrderItem(@PathParam("securityCode") final String securityCode,
                                     @Valid final CreateOrderItemForm orderItemForm) {
         final OrderItem newOrderItem = rs.createOrderItemPost(securityCode, orderItemForm.getDishId(), orderItemForm.getQuantity());

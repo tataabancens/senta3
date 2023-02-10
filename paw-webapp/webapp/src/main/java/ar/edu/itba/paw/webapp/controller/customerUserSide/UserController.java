@@ -7,37 +7,23 @@ import ar.edu.itba.paw.model.enums.Roles;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.auth.service.AuthFacade;
-import ar.edu.itba.paw.webapp.dto.ReservationDto;
 import ar.edu.itba.paw.webapp.dto.UserDto;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.model.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateUserForm;
-import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import ar.edu.itba.paw.webapp.form.UserPatchForm;
-import ar.edu.itba.paw.webapp.form.groupInterface.PasswordGroup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
-import javax.validation.executable.ExecutableType;
-import javax.validation.executable.ValidateOnExecution;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Path("users")
+@Path("/api/users")
 @Component
 public class UserController {
 
@@ -100,15 +86,19 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response deleteById(@PathParam("id") final long id) {
-        us.deleteById(id);
-        return Response.noContent().build();
+        boolean succes = us.deleteById(id);
+        if(succes){
+            return Response.ok().build();
+        }
+        //        return Response.status(400).build();
+        throw new UserNotFoundException();
     }
 
     @PATCH
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     @Path("/{id}")
     public Response editUser(@PathParam("id") final long id,
-                                    final UserPatchForm userPatchForm){
+                                    @Valid final UserPatchForm userPatchForm){
         if(userPatchForm == null){
             return Response.status(400).build();
         }

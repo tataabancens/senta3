@@ -64,6 +64,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
 
+    public static final String API_PREFIX = "/api";
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -94,62 +96,64 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
 ////////////////////////////////////////////////////  auth filters:
 //USERS:
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/users/auth").authenticated()
-                .antMatchers(HttpMethod.GET, "/users/{id}").access("@antMatcherVoter.canAccessUser(authentication, #id)")
-                .antMatchers(HttpMethod.PATCH, "/users/{id}").access("@antMatcherVoter.canAccessUser(authentication, #id)")
-                .antMatchers(HttpMethod.DELETE, "/users/{id}").access("@antMatcherVoter.canAccessUser(authentication, #id)")
+                .antMatchers(HttpMethod.POST, API_PREFIX + "/users").permitAll()
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/users/auth").authenticated()
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/users/{id}").access("@antMatcherVoter.canAccessUser(authentication, #id)")
+                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/users/{id}").access("@antMatcherVoter.canAccessUser(authentication, #id)")
+                .antMatchers(HttpMethod.DELETE, API_PREFIX + "/users/{id}").access("@antMatcherVoter.canAccessUser(authentication, #id)")
 
 //RESTAURANT:
-                .antMatchers(HttpMethod.GET, "/restaurants/{id}").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/restaurants/{id}").hasRole("RESTAURANT")//access("@antMatcherVoter.canPatchRestaurant(authentication, #id) or hasRole('RESTAURANT')")
-                .antMatchers(HttpMethod.GET, "/restaurants/{id}/").permitAll()
+                .antMatchers(HttpMethod.GET, API_PREFIX +  "/restaurants/{id}/availableHours/{date}").permitAll()
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{id}").permitAll()
+                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/restaurants/{id}").hasRole("RESTAURANT")//access("@antMatcherVoter.canPatchRestaurant(authentication, #id) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{id}/").permitAll()
 //CUSTOMERS:
-                .antMatchers(HttpMethod.GET, "/customers/{id}").access("@antMatcherVoter.canAccessCustomer(authentication, #id)")
-                .antMatchers(HttpMethod.PATCH, "/customers/{id}").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.DELETE, "/customers/{id}").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.GET, "/customers").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.POST, "/customers").permitAll()
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/customers/{id}").access("@antMatcherVoter.canAccessCustomer(authentication, #id)")
+                .antMatchers(HttpMethod.PATCH, API_PREFIX +  "/customers/{id}").access("@antMatcherVoter.canAccessCustomer(authentication, #id) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.DELETE, API_PREFIX + "/customers/{id}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/customers").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.POST, API_PREFIX + "/customers").permitAll()
 
 //RESERVATIONS:
-                .regexMatchers(HttpMethod.GET, "\\/reservations\\?.*customerId=[1-9][0-9]*.*").access("@antMatcherVoter.canAccessReservationList(authentication, request.getQueryString()) or hasRole('RESTAURANT')")
-                .antMatchers(HttpMethod.POST, "/reservations").access("@antMatcherVoter.canPostReservation(authentication) or hasRole('RESTAURANT')")
-                .antMatchers("/reservations/{securityCode}").access("@antMatcherVoter.canAccessReservation(authentication, #securityCode) or hasRole('RESTAURANT')")
-                .antMatchers("/reservations").hasRole("RESTAURANT")
+                .regexMatchers(HttpMethod.GET, API_PREFIX + "\\/reservations\\?.*customerId=[1-9][0-9]*.*").access("@antMatcherVoter.canAccessReservationList(authentication, request.getQueryString()) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.POST, API_PREFIX + "/reservations").access("@antMatcherVoter.canPostReservation(authentication, request) or hasRole('RESTAURANT')")
+                .antMatchers(API_PREFIX + "/reservations/{securityCode}").access("@antMatcherVoter.canAccessReservation(authentication, #securityCode) or hasRole('RESTAURANT')")
+                .antMatchers(API_PREFIX + "/reservations").hasRole("RESTAURANT")
 
 //ORDER ITEMS:
-                .antMatchers(HttpMethod.GET, "/reservations/{securityCode}/orderItems/{orderItemId}").access("@antMatcherVoter.canAccessOrderItem(authentication, #securityCode, #orderItemId) or hasRole('RESTAURANT')")
-                .antMatchers(HttpMethod.PATCH, "/reservations/{securityCode}/orderItems/{orderItemId}").access("@antMatcherVoter.canAccessOrderItem(authentication, #securityCode, #orderItemId) or hasRole('RESTAURANT')")
-                .antMatchers(HttpMethod.GET, "/reservations/{securityCode}/orderItems").access("@antMatcherVoter.canAccessOrderItems(authentication, #securityCode) or hasRole('RESTAURANT')")
-                .antMatchers(HttpMethod.POST, "/reservations/{securityCode}/orderItems").access("@antMatcherVoter.canAccessOrderItems(authentication, #securityCode) or hasRole('RESTAURANT')")
-                .antMatchers(HttpMethod.GET, "/reservations/orderItems").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/reservations/{securityCode}/orderItems/{orderItemId}").access("@antMatcherVoter.canAccessOrderItem(authentication, #securityCode, #orderItemId) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/reservations/{securityCode}/orderItems/{orderItemId}").access("@antMatcherVoter.canAccessOrderItem(authentication, #securityCode, #orderItemId) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/reservations/{securityCode}/orderItems").access("@antMatcherVoter.canAccessOrderItems(authentication, #securityCode) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.POST, API_PREFIX + "/reservations/{securityCode}/orderItems").access("@antMatcherVoter.canAccessOrderItems(authentication, #securityCode) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/reservations/orderItems").hasRole("RESTAURANT")
 
 //DISHES:
-                .antMatchers(HttpMethod.GET, "/restaurants/{restaurantId/dishes/{dishId}").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/restaurants/{restaurantId/dishes/{dishId}").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.DELETE, "/restaurants/{restaurantId/dishes/{dishId}").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.GET, "/restaurants/{restaurantId}/dishes").permitAll()
-                .antMatchers(HttpMethod.POST, "/restaurants/{restaurantId}/dishes").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId/dishes/{dishId}").permitAll()
+                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/restaurants/{restaurantId/dishes/{dishId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.DELETE, API_PREFIX + "/restaurants/{restaurantId/dishes/{dishId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId}/dishes").permitAll()
+                .antMatchers(HttpMethod.POST, API_PREFIX + "/restaurants/{restaurantId}/dishes").hasRole("RESTAURANT")
 
 //DISH CATEGORIES:
-                .antMatchers(HttpMethod.GET, "/restaurants/{restaurantId}/dishCategories").permitAll()
-                .antMatchers(HttpMethod.POST, "/restaurants/{restaurantId}/dishCategories").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.GET, "/restaurants/{restaurantId}/dishCategories/{categoryId}").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/restaurants/{restaurantId}/dishCategories/{categoryId}").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.DELETE, "/restaurants/{restaurantId}/dishCategories/{categoryId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId}/dishCategories").permitAll()
+                .antMatchers(HttpMethod.POST, API_PREFIX + "/restaurants/{restaurantId}/dishCategories").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId}/dishCategories/{categoryId}").permitAll()
+                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/restaurants/{restaurantId}/dishCategories/{categoryId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.DELETE, API_PREFIX + "/restaurants/{restaurantId}/dishCategories/{categoryId}").hasRole("RESTAURANT")
 
 //IMAGES:
-                .antMatchers(HttpMethod.GET,"/resources/images/{imageId}").permitAll()
-                .antMatchers(HttpMethod.PUT,"/resources/images/{dishId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/resources/images/{imageId}").permitAll()
+                .antMatchers(HttpMethod.PUT, API_PREFIX + "/resources/images/{dishId}").hasRole("RESTAURANT")
 
 //END
-                .antMatchers("**").permitAll()//.denyAll() //todo: define behaviour
+                .antMatchers("/**").permitAll()//.denyAll() //todo: define behaviour
 //////////////////////////////////////////////////// auth filters^^
                 .and().addFilterBefore(new JwtFilter(authenticationManagerBean(), authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
+                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class) //todo deploy
                 .csrf().disable();
         super.configure(http);
     }
+
 
     @Override
     public void configure(final WebSecurity web) throws Exception {

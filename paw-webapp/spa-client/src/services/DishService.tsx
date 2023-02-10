@@ -1,9 +1,7 @@
 import { AxiosResponse, AxiosInstance } from "axios";
 import { paths } from "../constants/constants";
-import {DishModel, DishCategoryModel, ImageModel} from "../models";
+import {DishModel, DishCategoryModel } from "../models";
 import { DishParams } from "../models/Dishes/DishParams";
-import {Dish} from "../models/Dishes/Dish";
-
 export class DishService{
     private axios:AxiosInstance;
 
@@ -13,20 +11,16 @@ export class DishService{
 
     private readonly basePath = paths.RESTAURANTS + '/1' + paths.DISHES;
     private readonly categoryPath = paths.RESTAURANTS + '/1' + paths.DISH_CATEGORIES;
-    private readonly imagePath = paths.IMAGES
 
     public getDishes(dishCategory?: string): Promise<AxiosResponse<DishModel[]>> {
-        return this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`);
+        if(dishCategory){
+            return this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`);
+        }
+        return this.axios.get<DishModel[]>(`${this.basePath}`);
     }
 
-    public async getDishById( dishId: number) : Promise<Dish>{
-        const req: Promise<AxiosResponse<DishModel>> = this.axios.get<DishModel>(this.basePath + '/' + dishId); //.then((response: DishModel) => dish=response.data)
-        const dish = await req;
-
-        const reqImage: Promise<AxiosResponse<ImageModel>> = this.axios.get<ImageModel>(this.imagePath + '/' + dish.data.image);
-        const resImage = await reqImage;
-
-        return new Dish(dish.data, resImage.data);
+    public async getDishById( dishId: number) : Promise<AxiosResponse<DishModel>>{
+        return  this.axios.get<DishModel>(this.basePath + '/' + dishId);
     }
 
     public createDish(params: DishParams): Promise<AxiosResponse>{

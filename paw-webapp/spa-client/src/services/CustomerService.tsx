@@ -21,7 +21,7 @@ export class CustomerService{
         return this.axios.get<Array<CustomerModel>>(this.basePath + '?page='+ page);
     }
 
-    public createCustomer(params: CustomerParams): Promise<AxiosResponse<CustomerModel>>{
+    public createCustomer(params: CustomerParams): Promise<AxiosResponse>{
         return this.axios.post(this.basePath, params.createCustomerPayload);
     }
 

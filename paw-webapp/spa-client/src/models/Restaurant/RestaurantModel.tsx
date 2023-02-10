@@ -1,7 +1,7 @@
 export default interface RestaurantModel{
     id: number,
     name: string,
-    phone: number,
+    phone: string,
     mail: string,
     dishes: string,
     reservations: string,

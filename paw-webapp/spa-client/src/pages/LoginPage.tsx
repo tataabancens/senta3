@@ -8,80 +8,63 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture.jpg";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
 import { fromByteArray, toByteArray } from 'base64-js';
 import useAuth from "../hooks/useAuth";
+import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { awaitWrapper, loginErrorHandler, tryLogin } from "../Utils";
+import axios from "../api/axios"
 
-
+export interface loginFormValues {
+  username: string;
+  password: string;
+  remember: boolean;
+}
 
 const LoginPage = () => {
 
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/"
 
   const userRef = useRef<HTMLInputElement>();
-  const errRef = useRef();
 
-  const [user, setUser] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [errMsg, setErrMsg] = useState('');
+  const initialValues: loginFormValues = {
+    username:'',
+    password:'',
+    remember: false,
+  }
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("Required"),
+    password: Yup.string().required("Required")
+  })
 
   useEffect(() => {
     userRef.current?.focus();
   }, []);
 
-  useEffect(() => {
-    setErrMsg('');
-  }, [user, pwd]);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const path = `${paths.LOCAL_BASE_URL}/users/auth`;
-
-    const encoder = new TextEncoder();
-    const base64Credentials = fromByteArray(encoder.encode(`${user}:${pwd}`));
-
-    try {
-      const response = await axios.get(path,
-        {
-          headers: {
-            'Authorization': `Basic ${base64Credentials}`
-          }
-        }
-      );
-
-      const authorization: string | undefined = response?.headers.authorization;
-      const role = response?.data?.role;
-      const roles: string[]= [role];
-      const id = response?.data?.id;
-      
-      setAuth({user, roles, authorization, id});
-      console.log(auth);
-      setUser('');
-      setPwd('');
-      navigate(from, { replace : true });
-
-    } catch (err: any) {
-        if(!err?.response) {
-          setErrMsg("No server response");
-        } else if (err.response?.status === 400) {
-          setErrMsg("Missing username or password");
-        } else if (err.response?.status === 401) {
-          setErrMsg("Unauthorized");
-        } else {
-          setErrMsg("Login failed");
-        }
+  const handleSubmit = async (values: loginFormValues, props: FormikHelpers<loginFormValues>) => {
+    const {username, password} = values;
+    const path = `users/auth`;
+    
+    const ok = await tryLogin(axios, username, password,
+      props, path, setAuth, loginErrorHandler<loginFormValues>);
+    if (!ok) {
+      props.setSubmitting(false);
+      return;
     }
-
-
+    
+    props.setSubmitting(false);
+    
+    navigate(from, { replace: true });
   };
 
   return (
@@ -112,47 +95,53 @@ const LoginPage = () => {
             Login
           </Typography>
           <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
             sx={{ mt: 1 }}
           >
-            <TextField
-              inputRef={userRef}
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              onChange={(e) => setUser(e.target.value)}
-              value={user}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => setPwd(e.target.value)}
-              value={pwd}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+              {(props) => (
+                <Form>
+                  <Field as={TextField}
+                    inputRef={userRef}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="username"
+                    helperText={<ErrorMessage name="username"/>}
+                    error={!!props.errors.username}
+                  />
+                  <Field as={TextField}
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    helperText={<ErrorMessage name="password"/>}
+                    error={!!props.errors.password}
+                  />
+                  <Field as={FormControlLabel}
+                    name="remember"
+                    control={<Checkbox color="primary" />}
+                    label="Remember me"
+          
+                  />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    disabled={props.isSubmitting}
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    {!props.isSubmitting?"Sign In": "Loading"}
+                  </Button>
+                </Form>
+              )}
+            </Formik>
             <Grid
               container
               sx={{

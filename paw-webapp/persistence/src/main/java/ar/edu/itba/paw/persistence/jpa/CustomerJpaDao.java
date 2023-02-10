@@ -49,12 +49,6 @@ public class CustomerJpaDao implements CustomerDao {
     }
 
     @Override
-    public void deleteCustomer(long id) {
-        Optional<Customer> maybeCustomer = getCustomerById(id);
-        maybeCustomer.ifPresent(customer -> em.remove(customer));
-    }
-
-    @Override
     public List<Customer> getCustomers(int page){
         final Query idQuery = em.createNativeQuery("SELECT customerid FROM customer OFFSET :offset ROWS FETCH NEXT 10 ROWS ONLY");
         idQuery.setParameter("offset", Math.abs((page-1)*10));

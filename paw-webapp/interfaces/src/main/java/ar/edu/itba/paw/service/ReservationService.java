@@ -58,9 +58,6 @@ public interface ReservationService {
     //chron
     void checkReservationTime();
 
-    //chron
-    void cleanMaybeReservations();
-
     void applyDiscount(Reservation reservation);
 
     void cancelDiscount(Reservation reservation);
@@ -85,8 +82,6 @@ public interface ReservationService {
 
     boolean cancelReservation(String securityCode);
 
-//    Reservation createMaybeReservation(Restaurant restaurant, Customer customer, int qPeople);
-
     void orderReceipt(Reservation reservation);
 
     void seatCustomer(Reservation reservation, int tableNumber);
@@ -100,4 +95,6 @@ public interface ReservationService {
     List<OrderItem> getOrderItemsOfReservation(long id);
 
     boolean patchOrderItem(String securityCode, long id, String newStatus);
+
+    int getTotalPages(long restaurantId, String filterStatus, long customerId);
 }

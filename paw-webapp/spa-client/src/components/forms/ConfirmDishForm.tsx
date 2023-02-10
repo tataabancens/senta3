@@ -1,7 +1,6 @@
 import {
     Button,
     ButtonGroup,
-    ClickAwayListener,
     Dialog,
     DialogActions,
     DialogContent,
@@ -12,8 +11,8 @@ import {
     Typography,
   } from "@mui/material";
 import { FC, useState } from "react";
-import { handleResponse } from "../../handleResponse";
-import { DishModel } from "../../models";
+import { handleResponse } from "../../Utils";
+import { DishModel, ReservationModel } from "../../models";
 import { CustomerParams } from "../../models/Customers/CustomerParams";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
@@ -23,12 +22,16 @@ import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
     dish: DishModel;
     isOpen: boolean;
     handleOpen: () => void;
+    reservation: ReservationModel | undefined;
+    toggleReload?: () => void;
   };
   
   const AccountInfoForm: FC<Props> = ({
     dish,
     handleOpen,
     isOpen,
+    reservation,
+    toggleReload
   }): JSX.Element => {
     const [qty, setQty] = useState(0);
     
@@ -56,9 +59,10 @@ import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
         let orderItem = new OrderitemParams();
         orderItem.dishId = dish.id;
         orderItem.quantity = qty;
+        orderItem.securityCode = reservation?.securityCode;
         handleResponse(
           orderItemService.createOrderItem(orderItem),
-          (response) => {}
+          (response) => (toggleReload? toggleReload(): null)
         );
         setQty(0);
       }
@@ -82,7 +86,7 @@ import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
                         <TextField disabled sx={{width: 130}} value={qty}/>
                         <Button variant="contained" onClick={handleIncrease}><Typography>+</Typography></Button>
                     </Grid>
-                    <Grid item sx={{display:"flex", alignItems:"center", justifyContent:"center"}} xs={8} ><Typography>Subtotal: {dish.price * qty}</Typography></Grid>
+                    <Grid item sx={{display:"flex", alignItems:"center", justifyContent:"center"}} xs={8} ><Typography>Subtotal: ${dish.price * qty}</Typography></Grid>
                 </Grid>
             </Grid>
           </DialogContent>

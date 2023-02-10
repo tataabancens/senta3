@@ -3,7 +3,7 @@ export default interface DishModel{
     name: string,
     self: string,
     restaurant: string,
-    image: number,
+    image: string,
     category: string,
     description: string,
     price: number

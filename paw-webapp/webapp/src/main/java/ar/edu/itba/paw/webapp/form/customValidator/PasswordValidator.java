@@ -10,6 +10,7 @@ public class PasswordValidator implements ConstraintValidator<PasswordConstraint
 
     @Override
     public void initialize(PasswordConstraint orderConstraint) {
+
     }
 
     @Override

@@ -14,7 +14,7 @@ import {
     TextField,
   } from "@mui/material";
   import { FC, useState } from "react";
-  import { handleResponse } from "../../handleResponse";
+  import { handleResponse } from "../../Utils";
   import {  RestaurantModel } from "../../models";
   import { RestParams } from "../../models/Restaurant/RestParams";
   import useRestaurantService from "../../hooks/serviceHooks/useRestaurantService";

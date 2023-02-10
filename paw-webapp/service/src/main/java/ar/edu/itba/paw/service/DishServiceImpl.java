@@ -2,6 +2,7 @@ package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.DishCategory;
+import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.persistance.DishCategoryDao;
 import ar.edu.itba.paw.persistance.DishDao;
@@ -12,11 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -25,14 +24,16 @@ public class DishServiceImpl implements DishService {
     private final ImageDao imageDao;
     private final DishCategoryDao dishCategoryDao;
     private final RestaurantService restaurantService;
+    private final ReservationService reservationService;
 
 
     @Autowired
-    public  DishServiceImpl(final DishDao dishDao, final ImageDao imageDao, DishCategoryDao dishCategoryDao, RestaurantService restaurantService){
+    public  DishServiceImpl(final DishDao dishDao, final ImageDao imageDao, DishCategoryDao dishCategoryDao, RestaurantService restaurantService, ReservationService reservationService){
         this.dishDao = dishDao;
         this.imageDao = imageDao;
         this.dishCategoryDao = dishCategoryDao;
         this.restaurantService = restaurantService;
+        this.reservationService = reservationService;
     }
 
     @Override
@@ -91,8 +92,12 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public Optional<Dish> getRecommendedDish(long reservationId) {
-        return dishDao.getRecommendedDish(reservationId);
+    public Optional<Dish> getRecommendedDish(String securityCode) {
+        Optional<Reservation> res = reservationService.getReservationBySecurityCode(securityCode);
+        if(!res.isPresent()){
+            return Optional.empty();
+        }
+        return dishDao.getRecommendedDish(res.get().getId());
     }
 
     @Override

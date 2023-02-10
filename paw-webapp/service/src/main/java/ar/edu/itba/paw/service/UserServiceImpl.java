@@ -30,7 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Optional<User> getUserByID(long id) {
+    public Optional<User> getUserByID(Long id) {
+        if(id == null){
+            return Optional.empty();
+        }
         return userDao.getUserById(id);
     }
 
@@ -41,7 +44,6 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         if(customerId == null){ // only create
-            int a=0;
             return userDao.create(username, passwordEncoder.encode(psPair.getPassword()), role);
         }
         // create and link
@@ -62,13 +64,13 @@ public class UserServiceImpl implements UserService {
 //        return user;
 //    }
 
-    @Transactional
-    @Override
-    public void createUserAndCustomer(String username, String password, Roles role, String customerName, String phone, String mail) {
-        User user = userDao.create(username, password, role);
-        Customer customer = cs.create(customerName, phone, mail);
-        customer.setUser(user);
-    }
+//    @Transactional
+//    @Override
+//    public void createUserAndCustomer(String username, String password, Roles role, String customerName, String phone, String mail) {
+//        User user = userDao.create(username, password, role);
+//        Customer customer = cs.create(customerName, phone, mail);
+//        customer.setUser(user);
+//    }
 
     @Transactional
     @Override
@@ -90,9 +92,20 @@ public class UserServiceImpl implements UserService {
         return userDao.findByName(username);
     }
 
+    @Transactional
     @Override
-    public void deleteById(long id) {
-        // Nothing to do
+    public boolean deleteById(long id) {
+        Optional<User> user = getUserByID(id);
+        if(user.isPresent()){
+            Optional<Customer> customer = cs.getCustomerByUsername(user.get().getUsername());
+            boolean success = userDao.deleteUser(id);
+            if(success && customer.isPresent()){
+                customer.get().setUser(null);
+            }
+            return success;
+        } else {
+            return false;
+        }
     }
 
     @Override

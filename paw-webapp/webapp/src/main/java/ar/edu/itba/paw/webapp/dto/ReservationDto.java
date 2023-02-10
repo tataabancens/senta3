@@ -17,6 +17,7 @@ public class ReservationDto {
     private int peopleAmount;
     private int tableNumber;
     private boolean hand;
+    private String status;
 
     private URI orderItems;
     private URI restaurant;
@@ -33,6 +34,7 @@ public class ReservationDto {
         dto.tableNumber = reservation.getTableNumber();
         dto.hand = reservation.isHand();
         dto.customerName = reservation.getCustomer().getCustomerName();
+        dto.status = reservation.getReservationStatus().getName();
 
         dto.orderItems = uriInfo.getBaseUriBuilder()
                 .path("reservations").path(String.valueOf(reservation.getSecurityCode())).path("orderItems").build();
@@ -48,6 +50,14 @@ public class ReservationDto {
 
     public ReservationDto() {
         // para Jersey
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDate() {

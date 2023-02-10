@@ -23,11 +23,11 @@ export class UserService {
         return this.axios.delete(paths.USERS + '/' + userId);
     }
 
-    public createUser(params: UserParams): Promise<AxiosResponse<UserModel>>{
+    public createUser(params: UserParams): Promise<AxiosResponse>{
         return this.axios.post(paths.USERS, params.createUserPayload);
     }
 
-    public editUser(params: UserParams): Promise<AxiosResponse>{
+    public editUser(params: UserParams): Promise<AxiosResponse<UserModel>>{
         return this.axios.patch(paths.USERS + `/${params.userId}`, params.editUserPayload);
     }
 }

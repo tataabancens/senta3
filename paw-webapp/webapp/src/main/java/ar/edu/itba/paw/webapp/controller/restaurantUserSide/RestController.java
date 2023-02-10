@@ -2,11 +2,11 @@ package ar.edu.itba.paw.webapp.controller.restaurantUserSide;
 
 import ar.edu.itba.paw.service.*;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
-import ar.edu.itba.paw.webapp.dto.OrderItemDto;
-import ar.edu.itba.paw.webapp.dto.ReservationDto;
+import ar.edu.itba.paw.webapp.dto.AvailableHoursDto;
 import ar.edu.itba.paw.webapp.dto.RestaurantDto;
-import ar.edu.itba.paw.webapp.exceptions.LongParseException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.model.exceptions.LongParseException;
+import ar.edu.itba.paw.model.exceptions.NoAvailableHoursFoundException;
+import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.RestaurantPatchForm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import static ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils.timestampParser;
 
 
-@Path("restaurants")
+@Path("/api/restaurants")
 @Component
 public class RestController {
 
@@ -63,8 +63,11 @@ public class RestController {
         }
 
         List<Integer> availableHours = res.getAvailableHours(id, qPeople, parsedDate.get());
+        if (availableHours.isEmpty()) {
+            throw new NoAvailableHoursFoundException();
+        }
         String json = objectMapper.writeValueAsString(availableHours);
-        return Response.ok(json).build();
+        return Response.ok(AvailableHoursDto.fromHourList(availableHours)).build();
     }
 
 

@@ -4,18 +4,14 @@ import ar.edu.itba.paw.model.*;
 import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.service.UserService;
-import ar.edu.itba.paw.webapp.auth.basic.BasicAuthenticationToken;
-import ar.edu.itba.paw.webapp.exceptions.CustomerNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
-import org.omg.CORBA.PUBLIC_MEMBER;
+import ar.edu.itba.paw.model.exceptions.CustomerNotFoundException;
+import ar.edu.itba.paw.model.exceptions.UserNotFoundException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import ar.edu.itba.paw.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,14 +41,24 @@ public class AntMatcherVoter {
     public boolean canAccessReservation(Authentication authentication, String securityCode) {
         if(isRestaurant(authentication)) return true;
         Optional<Reservation> res = reservationService.getReservationBySecurityCode(securityCode);
-        if(!res.isPresent()) return false;
+        if(!res.isPresent()) return true;
         if(res.get().getCustomer().getUser() == null) return true; //reservation has no user
         if(authentication instanceof AnonymousAuthenticationToken) return false;
         return res.get().getCustomer().getUserId() == getUserId(authentication);
     }
 
-    public boolean canPostReservation(Authentication authentication){
-        return true; //todo
+    public boolean canPostReservation(Authentication authentication, HttpServletRequest request){
+        if (isRestaurant(authentication)) return true;
+        long customerId;
+        try{
+            customerId = Long.parseLong(request.getHeader("customerId"));
+        } catch (NumberFormatException e){
+            return false;
+        }
+        Customer customer = customerService.getCustomerById(customerId).orElseThrow(CustomerNotFoundException::new);
+        if(customer.getUser() == null) return true;
+        if(authentication instanceof AnonymousAuthenticationToken) return false;
+        return (customer.getUserId() == getUserId(authentication));
     }
 
     private long getCustomerId(Authentication authentication){
@@ -74,6 +80,7 @@ public class AntMatcherVoter {
         Optional<Reservation> requestedRes = reservationService.getReservationBySecurityCode(securityCode);
         Optional<OrderItem> requestedOI = reservationService.getOrderItemById(orderItemId);
         if(!requestedRes.isPresent() || !requestedOI.isPresent()) return false;
+        if(requestedRes.get().getCustomer().getUser() == null) return true;
         if(!Objects.equals(requestedOI.get().getReservation().getSecurityCode(), requestedRes.get().getSecurityCode())) return false;
         if(authentication instanceof AnonymousAuthenticationToken){
             return requestedRes.get().getCustomer().getUser() == null;
@@ -85,6 +92,7 @@ public class AntMatcherVoter {
         if(isRestaurant(authentication)) return true;
         Optional<Reservation> requestedReservation = reservationService.getReservationBySecurityCode(securityCode);
         if(!requestedReservation.isPresent()) return false;
+        if(requestedReservation.get().getCustomer().getUser() == null) return true;
         if(authentication instanceof AnonymousAuthenticationToken){
             return requestedReservation.get().getCustomer().getUser() == null;
         }
@@ -92,6 +100,7 @@ public class AntMatcherVoter {
     }
 
     private boolean isRestaurant(Authentication authentication){
+        if(authentication instanceof AnonymousAuthenticationToken) return false;
         return Objects.equals(getUser(authentication).getRole(), "ROLE_RESTAURANT");
     }
 

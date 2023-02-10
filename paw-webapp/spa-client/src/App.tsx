@@ -12,11 +12,15 @@ import RequireAuth from "./components/RequireAuth";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import FullMenuPage from "./pages/FullMenuPage";
 import CheckOutPage from "./pages/CheckOutPage";
+import RestaurantMenu from "./pages/RestaurantMenu";
+import Kitchen from "./pages/Kitchen";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/*todo deploy*/}
+        {/*<Route path="/paw-2022a-05/ or /" element={<MainLayout />}>*/}
         <Route path="/" element={<MainLayout />}>
           {/* These are public routes */}
           <Route index element={<MenuPage />} />
@@ -25,7 +29,7 @@ function App() {
           <Route path="createReservation" element={< CreateReservation />} />
           <Route path="unauthorized" element={<UnauthorizedPage />} />
           <Route path="reservation/:securityCode" element={<FullMenuPage />} />
-          <Route path="checkOut" element={<CheckOutPage />} />
+          <Route path="reservation/:securityCode/checkOut" element={<CheckOutPage />} />
 
           {/* Customer only routes*/}
           <Route element={<RequireAuth allowedRoles={["ROLE_CUSTOMER"]} />}>
@@ -35,6 +39,8 @@ function App() {
           {/* Restaurant only Routes*/}
           <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT"]} />}>
             <Route path="reservationsRestaurant" element={<Reservations />} />
+            <Route path="restaurantMenu" element={<RestaurantMenu />}/>
+            <Route path="kitchen" element={<Kitchen />}/>
           </Route>
 
           {/* Restaurant and customer */}

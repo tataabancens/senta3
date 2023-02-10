@@ -27,6 +27,8 @@ public class CustomerRegisterForm {
     @Size(min = 9, max = 13)
     private String phone;
 
+    private Long userId;
+
     //this doesnt go
 //    @PasswordLengthConstraint
 //    @PasswordConstraint
@@ -39,6 +41,15 @@ public class CustomerRegisterForm {
 //    public void setUsername(String username) {
 //        this.username = username;
 //    }
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getCustomerName() {
         return customerName;

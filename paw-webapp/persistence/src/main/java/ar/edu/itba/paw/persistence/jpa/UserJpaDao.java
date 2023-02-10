@@ -37,4 +37,15 @@ public class UserJpaDao implements UserDao {
         final List<User> list = query.getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
     }
+
+    @Override
+    public boolean deleteUser(long id) {
+        Optional<User> user = getUserById(id);
+        if(user.isPresent()) {
+            em.remove(user.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

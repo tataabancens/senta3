@@ -1,13 +1,17 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.service.DishService;
+import ar.edu.itba.paw.model.exceptions.DateFormatException;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
+import ar.edu.itba.paw.webapp.dto.DishDto;
 import ar.edu.itba.paw.webapp.dto.OrderItemDto;
 import ar.edu.itba.paw.webapp.dto.ReservationDto;
-import ar.edu.itba.paw.webapp.exceptions.ReservationNotFoundException;
+import ar.edu.itba.paw.model.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateReservationForm;
 import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +28,14 @@ import java.util.stream.Collectors;
 
 import static ar.edu.itba.paw.webapp.controller.utilities.ControllerUtils.timestampParser;
 
-@Path("reservations")
+@Path("/api/reservations")
 @Component
 public class ReservationController {
 
     @Autowired
     private ReservationService rs;
+    @Autowired
+    private DishService ds;
 
     @Context
     private UriInfo uriInfo;
@@ -61,25 +67,25 @@ public class ReservationController {
         if(reservationsList.isEmpty()){
             return Response.noContent().build();
         }
-        //        int lastPage = rs.getTotalPages();
+        int lastPage = rs.getTotalPages(restaurantId, filterStatus, customerId);
+
         return Response.ok(new GenericEntity<List<ReservationDto>>(reservationsList) {})
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page-1).build(), "prev")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page", page+1).build(), "next")
                 .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 1).build(), "first")
-//                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", 999).build(), "last") //TODO
+                .link(uriInfo.getAbsolutePathBuilder().queryParam("page", lastPage).build(), "last")
                 .build();
     }
 
-
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     @POST
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     public Response createReservation(@Valid final CreateReservationForm reservationForm) {
         Optional<LocalDateTime> maybeDate = timestampParser(reservationForm.getReservationDate());
-        if(!maybeDate.isPresent()){
-            return Response.status(400).build();
+        if(!maybeDate.isPresent()) {
+            throw new DateFormatException();
         }
         final Reservation newReservation = rs.createReservationPost(reservationForm.getRestaurantId(), reservationForm.getCustomerId(), reservationForm.getHour(), reservationForm.getqPeople(), LocalDateTime.now(), maybeDate.get());
-        if(null == newReservation){
+        if(null == newReservation) {
             return Response.status(400).build(); //Bad request, //informar cual error
         }
         final URI location = uriInfo.getAbsolutePathBuilder()
@@ -133,6 +139,17 @@ public class ReservationController {
 
         return Response.ok(new GenericEntity<List<OrderItemDto>>(orderItemDtoList) {
         }).build();
+    }
+
+    @Path("/{securityCode}/recommendedDish")
+    @GET
+    @Produces(value = {MediaType.APPLICATION_JSON,})
+    public Response getRecommendedDish(@PathParam("securityCode") final String securityCode){
+        Optional<DishDto> recommendedDish = ds.getRecommendedDish(securityCode).map(d -> DishDto.fromDish(uriInfo, d));
+        if(!recommendedDish.isPresent()){
+            return Response.noContent().build();
+        }
+        return Response.ok(recommendedDish.get()).build();
     }
 
 

@@ -23,6 +23,7 @@ public class OrderItemDto {
         dto.unitPrice = orderItem.getUnitPrice();
         dto.unitPrice = orderItem.getUnitPrice();
         dto.status = orderItem.getStatus();
+        dto.quantity = orderItem.getQuantity();
 
         return dto;
     }

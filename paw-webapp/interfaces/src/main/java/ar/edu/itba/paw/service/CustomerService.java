@@ -11,7 +11,7 @@ public interface CustomerService {
 
     Optional<Customer> getCustomerByUsername(String username);
 
-    Customer create(String customerName, String phone, String mail);
+    Customer create(String customerName, String phone, String mail, Optional<User> user);
 
     void addPointsToCustomer(Customer customer, float total);
 
@@ -23,9 +23,7 @@ public interface CustomerService {
 
     int getPoints(float total);
 
-    boolean patchCustomer(long id, String name, String phone, String mail, Long userId, Integer points);
-
-    boolean deleteCustomer(long id);
+    boolean patchCustomer(long id, String name, String phone, String mail, Long userId);
 
     List<Customer> getCustomers(int page);
 }

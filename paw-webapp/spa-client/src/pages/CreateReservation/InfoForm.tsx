@@ -4,29 +4,26 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { ErrorMessage, Field, FormikProps } from 'formik';
+import { createReservationFormValues } from './CreateReservationPage';
 
 interface infoFormProps {
-    firstName: string,
-    lastName: string,
-    mail: string,
-    phone: string,
-    setFirstName: (date:string) => void
-    setLastName: (date:string) => void
-    setMail: (date:string) => void
-    setPhone: (date:string) => void
+  props: FormikProps<createReservationFormValues>
 }
 
 
-export default function InfoForm({firstName, lastName, mail, phone, setFirstName, setLastName, setMail, setPhone}:infoFormProps) {
+export default function InfoForm({ props }: infoFormProps) {
+  const { handleBlur, handleChange, values, errors } = props;
+  const {firstName, lastName, mail, phone} = values;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-      We need some info to confirm your reservation
+        We need some info to confirm your reservation
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
+          <Field as={TextField}
+            autoFocus
             id="firstName"
             name="firstName"
             label="First name"
@@ -34,12 +31,14 @@ export default function InfoForm({firstName, lastName, mail, phone, setFirstName
             autoComplete="given-name"
             variant="standard"
             value={firstName}
-            onChange={(event)=>setFirstName(event.target.value)}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={<ErrorMessage name="firstName" />}
+            error={errors.firstName}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            required
             id="lastName"
             name="lastName"
             label="Last name"
@@ -47,7 +46,10 @@ export default function InfoForm({firstName, lastName, mail, phone, setFirstName
             autoComplete="family-name"
             variant="standard"
             value={lastName}
-            onChange={(event)=>setLastName(event.target.value)}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={<ErrorMessage name="lastName" />}
+            error={!!errors.lastName}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -58,9 +60,12 @@ export default function InfoForm({firstName, lastName, mail, phone, setFirstName
             label="Mail"
             fullWidth
             autoComplete="mail"
+            type="mail"
             variant="standard"
-            value={mail}
-            onChange={(event)=>setMail(event.target.value)}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={<ErrorMessage name="mail" />}
+            error={!!errors.mail}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -73,7 +78,10 @@ export default function InfoForm({firstName, lastName, mail, phone, setFirstName
             autoComplete="phone"
             variant="standard"
             value={phone}
-            onChange={(event)=>setPhone(event.target.value)}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={<ErrorMessage name="phone" />}
+            error={!!errors.phone}
           />
         </Grid>
       </Grid>

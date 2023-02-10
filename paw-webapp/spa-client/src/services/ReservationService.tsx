@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
-import { ReservationModel } from "../models";
+import { OrderItemModel, ReservationModel } from "../models";
 import {ReservationParams} from "../models/Reservations/ReservationParams";
 
 export class ReservationService {
@@ -19,7 +19,11 @@ export class ReservationService {
     }
 
     public createReservation(params: ReservationParams): Promise<AxiosResponse>{
-        return this.axios.post<ReservationModel>(paths.RESERVATIONS, params.createReservationPayload);
+        return this.axios.post(paths.RESERVATIONS, params.createReservationPayload);
+    }
+
+    public getOrderItems(params: ReservationParams): Promise<AxiosResponse>{
+        return this.axios.get<OrderItemModel[]>(paths.RESERVATIONS + '/orderItems' + params.getOrderItemsQuery);
     }
 
     public patchReservation(params: ReservationParams): Promise<AxiosResponse>{
@@ -31,7 +35,7 @@ export class ReservationService {
     }
 
     public async getAvailableHours(params: ReservationParams): Promise<number[]> {
-        const response = await this.axios.get(paths.LOCAL_BASE_URL + `/restaurants/${params.restaurantId}/availableHours/${params.date}?qPeople=${params.qPeople}`)
+        const response = await this.axios.get(paths.BASE_URL + `/restaurants/${params.restaurantId}/availableHours/${params.date}?qPeople=${params.qPeople}`)
         return response.data;
     }
 }

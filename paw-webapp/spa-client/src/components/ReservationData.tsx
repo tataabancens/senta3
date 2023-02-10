@@ -22,7 +22,7 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
                 </IconButton>
             </Grid>
             <Grid item xs={12} sx={ {display:"flex", justifyContent:"center", marginBottom: 2}}><Typography variant="h5">Your reservation</Typography></Grid>
-            <Grid item xs={12} component={Typography} variant="h6">Customer: TENGO QUE GETEAR EL CUSTOMER PARA EL NOMBRE!</Grid>
+            <Grid item xs={12} component={Typography} variant="h6">Customer: {reservation?.customerName}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">Code: {reservation?.securityCode}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">Date: {reservation?.date}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">Hour: {reservation?.hour}:00</Grid>

@@ -1,6 +1,6 @@
 
 export default interface OrderItemModel{
-    id: number,
+    orderItemId: number,
     reservationId: number,
     dishId: number,
     unitPrice: number,

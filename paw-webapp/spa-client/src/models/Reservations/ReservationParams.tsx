@@ -21,6 +21,8 @@ export class ReservationParams {
     private _filterStatus: string | undefined;
     private _page: number | undefined;
 
+    private _orderItemStatus: string | undefined;
+
     
     get patchReservationPayload(): patchReservationPayloadModel | null{
         return {
@@ -73,6 +75,24 @@ export class ReservationParams {
         return query;
     }
 
+    get getOrderItemsQuery(): string{
+        let query = "?"
+        if(this._filterStatus !== undefined){
+            query += `&filterStatus=${this._filterStatus}`
+        }
+        if(this._orderItemStatus !== undefined){
+            query += `&orderItemStatus=${this._orderItemStatus}`
+        }
+        return query;
+    }
+
+    get orderItems(): string | undefined {
+        return this._orderItemStatus;
+    }
+
+    set orderItemStatus(status: string | undefined){
+        this._orderItemStatus = status;
+    }
 
     get customerId(): number | undefined {
         return this._customerId;

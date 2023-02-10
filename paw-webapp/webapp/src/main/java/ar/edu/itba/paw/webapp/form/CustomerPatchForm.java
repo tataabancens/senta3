@@ -5,7 +5,7 @@ public class CustomerPatchForm {
     private String phone;
     private String mail;
     private Long userId;
-    private Integer points;
+//    private Integer points; //can't patch points
 
 
     public String getName() {
@@ -40,11 +40,11 @@ public class CustomerPatchForm {
         this.userId = userId;
     }
 
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
+//    public Integer getPoints() {
+//        return points;
+//    }
+//
+//    public void setPoints(Integer points) {
+//        this.points = points;
+//    }
 }

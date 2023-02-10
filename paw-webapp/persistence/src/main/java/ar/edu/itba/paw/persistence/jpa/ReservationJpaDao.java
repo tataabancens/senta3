@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 @Repository
 public class ReservationJpaDao implements ReservationDao {
 
+    private int PAGE_SIZE = 30;
+
     @PersistenceContext
     private EntityManager em;
 
@@ -84,9 +86,10 @@ public class ReservationJpaDao implements ReservationDao {
         //técnica 1+1
         final Query idQuery = em.createNativeQuery("SELECT reservationid FROM reservation NATURAL JOIN customer CROSS JOIN restaurant WHERE restaurant.restaurantid = :restaurantId"
                 + filterCustomerIdString + filterStatusString +
-                " ORDER BY " + orderByString + " " + direction + " OFFSET :offset ROWS FETCH NEXT 30 ROWS ONLY");
+                " ORDER BY " + orderByString + " " + direction + " OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY");
         idQuery.setParameter("restaurantId", restaurantId);
         idQuery.setParameter("offset", Math.abs((page-1)*10));
+        idQuery.setParameter("pageSize", PAGE_SIZE);
 
         @SuppressWarnings("unchecked")
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
@@ -216,6 +219,33 @@ public class ReservationJpaDao implements ReservationDao {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public int getTotalPages(long restaurantId, String filterStatus, long customerId) {
+        //preparo el sql string
+        String filterStatusString = "";
+        String filterCustomerIdString = "";
+        if(!filterStatus.matches("[0-9]*")) {
+            return 0;
+        }
+        if(customerId != 0){
+            filterCustomerIdString = " AND customerId = " + customerId;
+        }
+        if(!Objects.equals(filterStatus, "9")){
+            filterStatusString = " AND reservationStatus = " + filterStatus;
+        }
+        //técnica 1+1
+        final Query idQuery = em.createNativeQuery("SELECT reservationid FROM reservation NATURAL JOIN customer CROSS JOIN restaurant WHERE restaurant.restaurantid = :restaurantId"
+                + filterCustomerIdString + filterStatusString);
+
+        idQuery.setParameter("restaurantId", restaurantId);
+
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
+                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
+
+        return (int) Math.ceil(ids.size() / PAGE_SIZE);
     }
 
     @Override

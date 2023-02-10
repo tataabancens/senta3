@@ -22,11 +22,22 @@ export class CustomerParams {
         if(this._mail == undefined || this._customerName == undefined || this._phone == undefined){
             return null
         }
-        return {
-            "mail": this._mail,
-            "customerName": this._customerName,
-            "phone": this._phone,
+        if(this._userId == undefined){
+            return {
+                "mail": this._mail,
+                "customerName": this._customerName,
+                "phone": this._phone,
+                "userId": null,
+            }
+        } else {
+            return {
+                "mail": this._mail,
+                "customerName": this._customerName,
+                "phone": this._phone,
+                "userId": this._userId,
+            }
         }
+
     }
 
     get patchCustomerPayload(): patchCustomerPayloadModel {
@@ -45,6 +56,14 @@ export class CustomerParams {
 
     set customerId(value: number | undefined) {
         this._customerId = value;
+    }
+
+    get userId(): number | undefined {
+        return this._userId;
+    }
+
+    set userId(value: number | undefined) {
+        this._userId = value;
     }
 
     get mail(): string | undefined {

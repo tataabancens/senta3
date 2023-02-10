@@ -9,24 +9,20 @@ import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.service.RestaurantService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.DishDto;
-import ar.edu.itba.paw.webapp.exceptions.DishNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.model.exceptions.DishNotFoundException;
+import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.webapp.form.DishPatchForm;
-import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
-import ar.edu.itba.paw.webapp.form.customValidator.DeleteCategoryConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("restaurants/{restaurantId}/dishes")
+@Path("/api/restaurants/{restaurantId}/dishes")
 @Component
 public class DishController {
     @Autowired

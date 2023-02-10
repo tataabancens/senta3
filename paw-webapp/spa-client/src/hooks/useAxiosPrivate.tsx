@@ -4,7 +4,7 @@ import useAuth from "./useAuth";
 import { AxiosError, AxiosResponse } from "axios";
 
 const useAxiosPrivate = () => {
-    const { auth } = useAuth();
+    const { auth, setAuth } = useAuth();
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -26,6 +26,8 @@ const useAxiosPrivate = () => {
                     if (error?.response?.status === 403 && !prevRequest?.sent) {
                         prevRequest.sent = true;
                         // TODO: Aca se refresca el token de ser posible
+                        // Por el momento vamos a borrar las credenciales del localStorage aca
+                        setAuth({});
                         return axiosPrivate(prevRequest);
                     }
                 }
