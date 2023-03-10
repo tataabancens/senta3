@@ -149,7 +149,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()//.denyAll() //todo: define behaviour
 //////////////////////////////////////////////////// auth filters^^
                 .and().addFilterBefore(new JwtFilter(authenticationManagerBean(), authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class) //todo deploy
+                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class) //todo deploy remove on deploy
                 .csrf().disable();
         super.configure(http);
     }
