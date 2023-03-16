@@ -23,7 +23,7 @@ const useAxiosPrivate = () => {
             async (error: any) => {
                 if (auth?.authorization) {
                         const prevRequest = error?.config;
-                    if (error?.response?.status === 403 && !prevRequest?.sent) {
+                    if ((error?.response?.status === 403 || error?.response?.status === 401) && !prevRequest?.sent) {
                         prevRequest.sent = true;
                         // TODO: Aca se refresca el token de ser posible
                         // Por el momento vamos a borrar las credenciales del localStorage aca

@@ -42,7 +42,7 @@ public class DishDto {
         dishDto.category = dishCategoryBuilder.build();
 
         UriBuilder dishImageBuilder = uriInfo.getBaseUriBuilder()
-                .path("resources").path("images")
+                .path("api").path("resources").path("images")
                 .path(String.valueOf(dish.getImageId()));
         dishDto.image = dishImageBuilder.build();
 

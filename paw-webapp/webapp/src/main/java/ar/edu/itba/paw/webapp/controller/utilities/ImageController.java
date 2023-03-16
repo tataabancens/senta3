@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Optional;
 
-@Path("/resources/images")
+@Path("/api/resources/images")
 @Component
 public class ImageController {
 
@@ -28,7 +28,7 @@ public class ImageController {
 
     @GET
     @Path("/{imageId}")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces({"image/jpeg", "image/png"})
     public Response getImageAsByteArray(@PathParam("imageId") final String imageIdP){
 
         ControllerUtils.longParser(imageIdP).orElseThrow(() -> new LongParseException(imageIdP));
@@ -38,8 +38,6 @@ public class ImageController {
         ImageDto imageDto = ImageDto.fromImage(image);
         return Response.ok(imageDto.getBitmap()).build();
     }
-
-
 
     @PUT
     @Path("/{dishId}")

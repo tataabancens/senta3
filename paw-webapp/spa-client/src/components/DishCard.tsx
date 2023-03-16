@@ -1,5 +1,5 @@
 import { CardContent, Typography, Card, Grid, CardActionArea } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useState} from "react";
 
 import { DishCategoryModel, ImageModel, ReservationModel } from "../models";
 import DishModel from "../models/Dishes/DishModel";
@@ -7,6 +7,7 @@ import ConfirmDishForm from "./forms/ConfirmDishForm";
 import { useNavigate } from "react-router-dom";
 import {paths} from "../constants/constants";
 import EditDishForm from "./forms/EditDishForm";
+import useImageService from "../hooks/serviceHooks/useImageService";
 
 
 type Props = {
@@ -29,9 +30,8 @@ const DishCard: FC<Props> = ({
 
   const [isCardOpen, setCardOpen] = useState(false);
   let navigate = useNavigate();
-  
+  const imageService = useImageService();
   const [editIsOpen, setEditIsOpen] = useState(false);
-
 
   const handleDishForm = () => {
     if(role === "ROLE_ANONYMOUS"){
@@ -62,6 +62,7 @@ const DishCard: FC<Props> = ({
     {role === "ROLE_CUSTOMER" && <ConfirmDishForm isOpen={isCardOpen} handleOpen={handleDishForm} dish={dish!} reservation={reservation} toggleReload={toggleReload} />}
     {role === "ROLE_RESTAURANT" && <EditDishForm isOpen={editIsOpen} handleOpen={toggleEditForm} categoryList={categoryList!} dish={dish} categoryId={categoryId}/>}
       <CardActionArea>
+        <img src={dish.image} alt="La panti rosa gato"></img>
         <CardContent onClick={handleDishForm}>
         <Typography gutterBottom variant="h5" component="div">
             {dish.name}
