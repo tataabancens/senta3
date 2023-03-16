@@ -36,12 +36,14 @@ public class CustomerDto {
                 .path(String.valueOf(customer.getId())).build();
         if(customer.getUser() != null){
             dto.user = uriInfo.getBaseUriBuilder()
+                    .path("api")
                     .path("users").path(String.valueOf(customer.getUser().getId())).build();
         } else {
             dto.user = URI.create("null");
         }
 
         dto.reservations = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("reservations").queryParam("customerId", customer.getId()).build();
         return dto;
     }

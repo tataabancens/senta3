@@ -23,6 +23,7 @@ public class DishCategoryDto {
         dishCategoryDto.id = dishCategory.getId();
         dishCategoryDto.name = dishCategory.getName();
         UriBuilder uriBuilder = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("restaurants").path(String.valueOf(dishCategory.getRestaurant().getId()))
                 .path("dishes").queryParam("category", dishCategory.getName());
         dishCategoryDto.dishes = uriBuilder.build();

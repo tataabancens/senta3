@@ -30,12 +30,14 @@ public class DishDto {
         dishDto.price = dish.getPrice();
 
         final UriBuilder dishesUriBuilder = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("restaurants")
                 .path(String.valueOf(dish.getRestaurant().getId()))
                 .path("dishes").path(String.valueOf(dish.getId()));
         dishDto.self = dishesUriBuilder.build();
 
         UriBuilder dishCategoryBuilder = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("restaurants").path(String.valueOf(dish.getRestaurantId()))
                 .path("dishCategories")
                 .path(String.valueOf(dish.getCategory().getId()));
@@ -47,6 +49,7 @@ public class DishDto {
         dishDto.image = dishImageBuilder.build();
 
         UriBuilder restaurantBuilder = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("restaurants")
                 .path(String.valueOf(dish.getRestaurant().getId()));
         dishDto.restaurant = restaurantBuilder.build();

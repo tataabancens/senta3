@@ -128,9 +128,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/reservations/orderItems").hasRole("RESTAURANT")
 
 //DISHES:
-                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId/dishes/{dishId}").permitAll()
-                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/restaurants/{restaurantId/dishes/{dishId}").hasRole("RESTAURANT")
-                .antMatchers(HttpMethod.DELETE, API_PREFIX + "/restaurants/{restaurantId/dishes/{dishId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId}/dishes/{dishId}").permitAll()
+                .antMatchers(HttpMethod.PATCH, API_PREFIX + "/restaurants/{restaurantId}/dishes/{dishId}").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.DELETE, API_PREFIX + "/restaurants/{restaurantId}/dishes/{dishId}").hasRole("RESTAURANT")
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{restaurantId}/dishes").permitAll()
                 .antMatchers(HttpMethod.POST, API_PREFIX + "/restaurants/{restaurantId}/dishes").hasRole("RESTAURANT")
 

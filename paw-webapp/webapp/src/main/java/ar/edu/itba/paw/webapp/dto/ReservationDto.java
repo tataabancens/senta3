@@ -37,12 +37,15 @@ public class ReservationDto {
         dto.status = reservation.getReservationStatus().getName();
 
         dto.orderItems = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("reservations").path(String.valueOf(reservation.getSecurityCode())).path("orderItems").build();
 
         dto.restaurant = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("restaurants").path(String.valueOf(reservation.getRestaurant().getId())).build();
 
         dto.customer = uriInfo.getBaseUriBuilder()
+                .path("api")
                 .path("customers").path(String.valueOf(reservation.getCustomer().getId())).build();
         return dto;
     }

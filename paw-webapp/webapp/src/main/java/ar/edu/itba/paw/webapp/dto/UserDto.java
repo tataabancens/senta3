@@ -22,11 +22,13 @@ public class UserDto {
         switch (userDto.role) {
             case "ROLE_RESTAURANT":
                 userDto.content = uriInfo.getBaseUriBuilder()
+                        .path("api")
                         .path("restaurants").path(String.valueOf(user.getId())).build();
                 break;
 
             case "ROLE_CUSTOMER":
                 userDto.content = uriInfo.getBaseUriBuilder()
+                        .path("api")
                         .path("customers").path(String.valueOf(user.getId())).build();
                 break;
             case "ROLE_ANONYMOUS":
