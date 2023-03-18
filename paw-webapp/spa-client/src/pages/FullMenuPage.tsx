@@ -6,7 +6,7 @@ import RestaurantHeader from "../components/RestaurantHeader";
 import DishDisplay from "../components/DishDisplay";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
-import useDishService from "../hooks/serviceHooks/useDishService";
+import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
 import useReservationService from "../hooks/serviceHooks/useReservationService";
 import useRestaurantService from "../hooks/serviceHooks/useRestaurantService";

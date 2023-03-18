@@ -1,7 +1,8 @@
 import { AxiosResponse, AxiosInstance } from "axios";
-import { paths } from "../constants/constants";
-import {DishModel, DishCategoryModel } from "../models";
-import { DishParams } from "../models/Dishes/DishParams";
+import { paths } from "../../constants/constants";
+import {DishModel, DishCategoryModel } from "../../models";
+import { DishParams } from "../../models/Dishes/DishParams";
+import { GetDishDetailsResponse } from "./typings";
 export class DishService{
     private axios:AxiosInstance;
 
@@ -17,6 +18,30 @@ export class DishService{
             return this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`);
         }
         return this.axios.get<DishModel[]>(`${this.basePath}`);
+    }
+
+    public async getDishesNewVersion(dishCategory?: string): Promise<GetDishDetailsResponse> {
+        let resp;
+        try {
+            console.log(dishCategory);
+            if (dishCategory) {
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`);
+            } else {
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}`);
+            }
+            const data: DishModel[] = resp.data;
+            return {
+                isOk: true,
+                data: data,
+                error: null,
+            };
+        } catch (e) {
+            return {
+                isOk: false,
+                data: null,
+                error: (e as Error).message
+            }
+        }
     }
 
     public async getDishById( dishId: number) : Promise<AxiosResponse<DishModel>>{

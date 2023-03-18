@@ -2,7 +2,7 @@ import { CardContent, Typography, Card, Grid } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import axios from "../api/axios";
 import { handleResponse } from "../Utils";
-import useDishService from "../hooks/serviceHooks/useDishService";
+import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import { DishModel, ImageModel, OrderItemModel } from "../models";
 
 type Props = {

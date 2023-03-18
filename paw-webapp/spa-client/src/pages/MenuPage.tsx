@@ -4,7 +4,7 @@ import { DishCategoryModel, DishModel, RestaurantModel } from "../models";
 import { Grid, Tab, Tabs } from "@mui/material";
 import RestaurantHeader from "../components/RestaurantHeader";
 import DishDisplay from "../components/DishDisplay";
-import useDishService from "../hooks/serviceHooks/useDishService";
+import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import useRestaurantService from "../hooks/serviceHooks/useRestaurantService";
 
 function MenuPage() {

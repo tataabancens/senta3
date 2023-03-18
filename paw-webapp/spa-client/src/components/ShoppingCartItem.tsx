@@ -2,7 +2,7 @@ import { IconButton, TableCell, TableRow } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { DishModel, OrderItemModel } from "../models";
 import CloseIcon from '@mui/icons-material/Close';
-import useDishService from "../hooks/serviceHooks/useDishService";
+import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import { handleResponse } from "../Utils";
 import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";

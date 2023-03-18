@@ -15,7 +15,7 @@ import {
 import { FC, useState } from "react";
 import { handleResponse } from "../../Utils";
 import { DishCategoryModel, DishModel } from "../../models";
-import useDishService from "../../hooks/serviceHooks/useDishService";
+import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { DishParams } from "../../models/Dishes/DishParams";
 
   

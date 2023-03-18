@@ -1,6 +1,6 @@
-import { DishService } from "./DishService";
+import { DishService } from "./dish/DishService";
 import { UserService } from "./UserService";
-import { CustomerService } from "./CustomerService";
+import { CustomerService } from "./customer/CustomerService";
 import { RestaurantService } from "./RestaurantService";
 import { ReservationService } from "./ReservationService";
 import { OrderItemService } from "./OrderItemService";
