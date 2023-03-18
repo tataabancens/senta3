@@ -21,7 +21,7 @@ function App() {
       <Routes>
         {/*todo deploy*/}
         {/*<Route path="/paw-2022a-05/ or /" element={<MainLayout />}>*/}
-        <Route path="/" element={<MainLayout />}>
+        <Route path="paw-2022a-05" element={<MainLayout />}>
           {/* These are public routes */}
           <Route index element={<MenuPage />} />
           <Route path="login" element={<LoginPage />} />
@@ -38,9 +38,9 @@ function App() {
 
           {/* Restaurant only Routes*/}
           <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT"]} />}>
-            <Route path="reservationsRestaurant" element={<Reservations />} />
-            <Route path="restaurantMenu" element={<RestaurantMenu />}/>
-            <Route path="kitchen" element={<Kitchen />}/>
+            <Route path="restaurantReservations" element={<Reservations />} />
+            <Route path="restaurantMenu" element={<RestaurantMenu />} />
+            <Route path="kitchen" element={<Kitchen />} />
           </Route>
 
           {/* Restaurant and customer */}

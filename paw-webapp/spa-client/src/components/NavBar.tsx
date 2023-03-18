@@ -32,7 +32,7 @@ export const NavBar: React.FC<{}> = () => {
                       </Typography>
                     {/*</Link>*/}
                   </Button>
-                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "reservations")}}>
+                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/reservations")}}>
                     {/*<Link*/}
                     {/*  to="reservations"*/}
                     {/*  style={{ textDecoration: "none", color: "white" }}*/}
@@ -40,7 +40,7 @@ export const NavBar: React.FC<{}> = () => {
                       <Typography>Reservations</Typography>
                     {/*</Link>*/}
                   </Button>
-                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "restaurantReservations")}}>
+                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/restaurantReservations")}}>
                     {/*<Link*/}
                     {/*  to="reservationsRestaurant"*/}
                     {/*  style={{ textDecoration: "none", color: "white" }}*/}
@@ -52,7 +52,7 @@ export const NavBar: React.FC<{}> = () => {
               </Grid>
               <Grid item>
                 <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "login")}}>
+                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/login")}}>
                     {/*<Link*/}
                     {/*  to="login"*/}
                     {/*  style={{ textDecoration: "none", color: "white" }}*/}
@@ -60,7 +60,7 @@ export const NavBar: React.FC<{}> = () => {
                       <Typography>Login</Typography>
                     {/*</Link>*/}
                   </Button>
-                  <Button onClick={() => navigate(paths.ROOT + "signUp")} variant="contained">
+                  <Button onClick={() => navigate(paths.ROOT + "/signUp")} variant="contained">
                     {/*<Link*/}
                     {/*  to="signUp"*/}
                     {/*  style={{ textDecoration: "none", color: "white" }}*/}

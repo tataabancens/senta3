@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material";
 import { FC, useState } from "react";
-import { useNavigation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { handleResponse } from "../Utils";
 import useReservationService from "../hooks/serviceHooks/useReservationService";
 import { ReservationModel } from "../models"
@@ -15,9 +15,7 @@ const ReservationActions: FC<Props> = ({reservation, toggleReload}) => {
 
 
     const reservationService = useReservationService();
-    const navigate = useNavigation();
-
-
+    const navigate = useNavigate();
 
     const seatClient= () => {
         let updateReservation = new ReservationParams();
