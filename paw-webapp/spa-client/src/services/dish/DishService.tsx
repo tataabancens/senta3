@@ -23,7 +23,6 @@ export class DishService{
     public async getDishesNewVersion(dishCategory?: string): Promise<GetDishDetailsResponse> {
         let resp;
         try {
-            console.log(dishCategory);
             if (dishCategory) {
                 resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`);
             } else {

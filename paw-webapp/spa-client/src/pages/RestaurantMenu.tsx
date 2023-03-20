@@ -48,7 +48,7 @@ function RestaurantMenu() {
     );
   }, [canReload]);
 
-  const { dishes = [], error, loading } = useDishes(value, categoryMap);
+  const { dishes = [], error, loading } = useDishes(value, categoryMap?.get(value)?.name);
 
   return (
     <Grid container spacing={2} justifyContent="center">
