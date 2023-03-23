@@ -3,6 +3,7 @@ import { useEffect, useState, Suspense } from "react";
 import ConfirmationMessage from "../components/ConfirmationMessage";
 import DishDisplay from "../components/DishDisplay";
 import EditCategoryForm from "../components/forms/EditCategoryForm";
+import CreateDishForm from "../components/forms/CreateDishForm";
 import RestaurantHeader from "../components/RestaurantHeader";
 import { handleResponse } from "../Utils";
 import useDishService from "../hooks/serviceHooks/dishes/useDishService";
@@ -53,6 +54,7 @@ function RestaurantMenu() {
   return (
     <Grid container spacing={2} justifyContent="center">
       <EditCategoryForm isOpen={editIsOpen} handleOpen={toggleEditForm} category={categoryMap?.get(value)} canReload={toggleReload} />
+
       <RestaurantHeader role={"ROLE_RESTAURANT"} toggleReload={toggleReload} />
       <ConfirmationMessage isOpen={deleteIsOpen} handleOpen={toggleDeleteModal} data={categoryMap?.get(value)} canReload={toggleReload} />
       <Grid item container xs={11} marginTop={2} justifyContent="space-between">
@@ -67,6 +69,9 @@ function RestaurantMenu() {
           </Grid>
           <Grid item>
             <Button onClick={toggleDeleteModal} variant="contained" color="error">Delete category</Button>
+          </Grid>
+          <Grid item>
+            <CreateDishForm categoryList={categoryList}/>
           </Grid>
         </Grid>
       </Grid>

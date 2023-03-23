@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { awaitWrapper, handleResponse } from "../../Utils";
 import useReservationService from "../../hooks/serviceHooks/useReservationService";
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
-import {paths} from "../../constants/constants";
+import { paths } from "../../constants/constants";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ReservationModel } from "../../models";
@@ -37,7 +37,7 @@ const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => 
     const reservationParams = new ReservationParams();
     reservationParams.securityCode = securityCode;
 
-    const { ok, error, response} = await awaitWrapper(reservationService.getReservation(reservationParams));
+    const { ok, error, response } = await awaitWrapper(reservationService.getReservation(reservationParams));
 
     if (!ok) {
       const apiError = error.response?.data as ApiErrorDetails;

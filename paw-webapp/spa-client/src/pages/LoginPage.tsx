@@ -32,7 +32,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/"
+  const from = location.state?.from?.pathname || paths.ROOT;
 
   const userRef = useRef<HTMLInputElement>();
 
