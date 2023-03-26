@@ -21,3 +21,10 @@ export const userRoles = {
     WAITER: 3,
     RESTAURANT: 4
 }
+
+export const emptyAuth = {
+    user: "",
+    authorization: "",
+    roles: [],
+    id: -1,
+}

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { emptyAuth } from "../constants/constants";
 
 export interface Authentication {
     user: string;
@@ -10,13 +11,6 @@ export interface Authentication {
 export interface AuthContextValue {
     auth: Authentication;
     setAuth: (newAuth: any) => void;
-}
-
-const emptyAuth = {
-    user: "",
-    authorization: "",
-    roles: [],
-    id: -1,
 }
 
 const authContext: AuthContextValue = {

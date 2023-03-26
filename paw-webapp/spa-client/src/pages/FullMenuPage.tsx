@@ -18,7 +18,7 @@ function FullMenuPage() {
     const [restaurant, setRestaurant] = useState<RestaurantModel>();
     const [dishList, setDishes] = useState<DishModel[]>([]);
     const [customerReservation, setReservation] = useState<ReservationModel>();
-    const [ orderItems, setOrderItems ] = useState<OrderItemModel[]>([]);
+    const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
     const [categoryList, setCategories] = useState<DishCategoryModel[]>([]);
     const [categoryMap, setMap] = useState<Map<number,string>>();
     const [reloadOrderItems, setReload] = useState(false);

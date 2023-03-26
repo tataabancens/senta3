@@ -13,7 +13,6 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture.jpg";
 import { AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
-import { fromByteArray, toByteArray } from 'base64-js';
 import useAuth from "../hooks/useAuth";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -32,7 +31,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/"
+  const from = location.state?.from?.pathname || paths.ROOT;
 
   const userRef = useRef<HTMLInputElement>();
 
@@ -137,7 +136,7 @@ const LoginPage = () => {
                     disabled={props.isSubmitting}
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    {!props.isSubmitting?"Sign In": "Loading"}
+                    {!props.isSubmitting?"Login": "Loading"}
                   </Button>
                 </Form>
               )}
