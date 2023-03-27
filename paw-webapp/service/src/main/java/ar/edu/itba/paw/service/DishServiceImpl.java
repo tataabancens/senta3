@@ -75,15 +75,15 @@ public class DishServiceImpl implements DishService {
     @Transactional
     @Override
     public void updateDishPhoto(long dishId, CommonsMultipartFile photo) throws IOException {
-        long imageId = imageDao.create(photo);
-        Optional<Dish> maybeDish = dishDao.getDishById(dishId);
-        if(maybeDish.isPresent()) {
-            Dish dish = maybeDish.get();
-            if(dish.getImageId() > 1) {
-                imageDao.deleteImageById(dish.getImageId());
-            }
-            dish.setImageId(imageId);
-        }
+//        long imageId = imageDao.create(photo);
+//        Optional<Dish> maybeDish = dishDao.getDishById(dishId);
+//        if(maybeDish.isPresent()) {
+//            Dish dish = maybeDish.get();
+//            if(dish.getImageId() > 1) {
+//                imageDao.deleteImageById(dish.getImageId());
+//            }
+//            dish.setImageId(imageId);
+//        }
     }
 
     @Override

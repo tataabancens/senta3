@@ -22,8 +22,8 @@ public class ImageJpaDao implements ImageDao {
     }
 
     @Override
-    public long create(MultipartFile photo) throws IOException {
-        final Image image = new Image(photo.getBytes());
+    public long create(byte[] photo) throws IOException {
+        final Image image = new Image(photo);
         em.persist(image);
         return image.getImageId();
     }

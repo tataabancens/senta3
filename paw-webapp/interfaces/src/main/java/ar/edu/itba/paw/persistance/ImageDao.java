@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ImageDao {
     Optional<Image> getImageById(long id);
 
-    long create(MultipartFile photo) throws IOException;
+    long create(byte[] photo) throws IOException;
 
     void deleteImageById(long imageId);
 }

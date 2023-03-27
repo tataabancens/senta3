@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface ImageService {
     Optional<Image> getImageById(long id);
 
-    long createImage(MultipartFile photo);
+    long createImage(byte[] photo);
 
 }
