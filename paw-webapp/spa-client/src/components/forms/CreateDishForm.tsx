@@ -12,13 +12,14 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { DishCategoryModel } from '../../models';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
+import UploadImage from '../UploadImage';
 
-interface createDishFormValue {
+export interface createDishFormValue {
     name: string;
     categoryId: number;
     price: number;
     description: string;
-    imageId: number;
+    image: string | File;
 }
 
 type Props = {
@@ -30,7 +31,6 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
 
     const handleClickOpen = () => {
         setOpen(true);
-
     };
 
     const handleClose = () => {
@@ -38,7 +38,7 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
     };
 
     const handleSubmit = (values: createDishFormValue, props: FormikHelpers<createDishFormValue>) => {
-        console.log(categoryList);
+        console.log(values);
         props.setSubmitting(false);
         // handleClose();
     }
@@ -48,7 +48,7 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
         categoryId: 3,
         price: 0,
         description: "",
-        imageId: 0,
+        image: "",
     }
 
     const validationSchema = Yup.object().shape({
@@ -56,7 +56,8 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
         categoryId: Yup.number(),
         price: Yup.number(),
         description: Yup.string(),
-        imageId: Yup.number(),
+        image: Yup.mixed().required("Required")
+            .test("FILE_TYPE", "Invalid file type", (value) => value && ['image/png', 'image/jpeg'].includes(value.type)),
     })
 
     return (
@@ -124,6 +125,7 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
                                         </MenuItem>
                                     ))}
                                 </Field>
+                                <UploadImage props={props}></UploadImage>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancel</Button>

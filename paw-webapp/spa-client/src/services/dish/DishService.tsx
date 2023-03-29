@@ -20,13 +20,13 @@ export class DishService{
         return this.axios.get<DishModel[]>(`${this.basePath}`);
     }
 
-    public async getDishesNewVersion(dishCategory?: string): Promise<GetDishDetailsResponse> {
+    public async getDishesNewVersion(abortController:AbortController, dishCategory?: string): Promise<GetDishDetailsResponse> {
         let resp;
         try {
             if (dishCategory) {
-                resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`);
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`, {signal: abortController.signal});
             } else {
-                resp = await this.axios.get<DishModel[]>(`${this.basePath}`);
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}`, {signal: abortController.signal});
             }
             const data: DishModel[] = resp.data;
             return {
