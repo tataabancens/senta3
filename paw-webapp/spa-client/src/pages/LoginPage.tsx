@@ -136,7 +136,7 @@ const LoginPage = () => {
                     disabled={props.isSubmitting}
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    {!props.isSubmitting?"Login": "Loading"}
+                    {!props.isSubmitting?"Log In": "Loading"}
                   </Button>
                 </Form>
               )}

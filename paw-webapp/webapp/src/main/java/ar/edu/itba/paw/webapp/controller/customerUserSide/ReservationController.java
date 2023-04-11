@@ -100,7 +100,6 @@ public class ReservationController {
     @Path("/{securityCode}")
     public Response editReservation(@PathParam("securityCode") final String securityCode,
                                     final ReservationPatchForm reservationPatchForm){
-
         boolean success = rs.patchReservation(securityCode, reservationPatchForm.getReservationDate(), reservationPatchForm.getHour(), reservationPatchForm.getqPeople(), reservationPatchForm.getTable(), reservationPatchForm.isHand(), reservationPatchForm.isDiscount(), reservationPatchForm.getReservationStatus());
         if(success) {
             return Response.ok().build();

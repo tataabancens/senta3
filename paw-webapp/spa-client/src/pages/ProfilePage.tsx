@@ -173,6 +173,7 @@ function ProfilePage() {
           <Grid item component={Typography} variant="h5" xs={12} marginY={2}>Username: {user?.username}</Grid>
           <Grid item component={Typography} variant="h5" xs={12} marginY={2}>Mail: {customer?.mail}</Grid>
           <Grid item component={Typography} variant="h5" xs={12} marginY={2}>Phone: {customer?.phone}</Grid>
+          <Grid item component={Typography} variant="h5" xs={12} marginY={2}>Points: {customer?.points}</Grid>
         </Grid>
       </Grid>
     );

@@ -19,7 +19,7 @@ export class ReservationService {
     }
 
     public createReservation(params: ReservationParams): Promise<AxiosResponse>{
-        return this.axios.post(paths.RESERVATIONS, params.createReservationPayload);
+        return this.axios.post(paths.RESERVATIONS, params.createReservationPayload, {headers:{customerId: params.customerId}});
     }
 
     public getOrderItems(params: ReservationParams): Promise<AxiosResponse>{

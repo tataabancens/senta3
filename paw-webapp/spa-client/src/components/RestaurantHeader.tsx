@@ -73,6 +73,7 @@ const RestaurantHeader: FC<Props> = ({
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart orderItems={orderItems!} toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} securityCode={reservation?.securityCode} toggleReload={toggleReload}/>
+                <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={() => navigate("checkout")}>checkout</Button>
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><ShoppingCartIcon/></Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>Data</Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary">Orders</Button>

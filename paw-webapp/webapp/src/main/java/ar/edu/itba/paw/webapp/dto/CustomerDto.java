@@ -31,7 +31,7 @@ public class CustomerDto {
         dto.name = customer.getCustomerName();
         dto.mail = customer.getMail();
         dto.phone = customer.getPhone();
-        dto.points = 0;
+        dto.points = customer.getPoints();
         dto.self = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(customer.getId())).build();
         if(customer.getUser() != null){

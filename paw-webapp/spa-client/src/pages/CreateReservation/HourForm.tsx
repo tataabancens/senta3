@@ -16,7 +16,7 @@ interface hourFormProps {
 
 export default function HourForm({ props, availableHours }: hourFormProps) {
     const { handleBlur, handleChange, values, errors } = props;
-    console.log(errors);
+    //console.log(errors);
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>

@@ -4,6 +4,7 @@ package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.model.enums.Roles;
+import ar.edu.itba.paw.service.CustomerService;
 import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.auth.service.AuthFacade;
@@ -30,6 +31,9 @@ public class UserController {
     @Autowired
     private UserService us;
 
+    @Autowired
+    private CustomerService cs;
+
     @Context
     private UriInfo uriInfo;
 
@@ -52,7 +56,7 @@ public class UserController {
     public Response getById(@PathParam("id") final long id) {
         final Optional<User> maybeUser = us.getUserByID(id);
         if (maybeUser.isPresent()) {
-            return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get())).build();
+            return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get(), cs.getCustomerByUsername(maybeUser.get().getUsername()))).build();
         } else {
             throw new UserNotFoundException();
         }
@@ -76,7 +80,7 @@ public class UserController {
     public Response getByAuthentication() {
         final Optional<User> maybeUser = us.getUserByUsername(authFacade.getCurrentUsername());
         if (maybeUser.isPresent()) {
-            return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get())).build();
+            return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get(), cs.getCustomerByUsername(maybeUser.get().getUsername()))).build();
         } else {
             throw new UserNotFoundException();
         }

@@ -1,5 +1,5 @@
 import { CardContent, Typography, Card, Grid, CardActionArea } from "@mui/material";
-import { FC, useState} from "react";
+import { FC, useState } from "react";
 
 import { DishCategoryModel, ImageModel, ReservationModel } from "../models";
 import DishModel from "../models/Dishes/DishModel";

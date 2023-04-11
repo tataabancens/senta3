@@ -39,6 +39,15 @@ export const extractUserIdFromLocation = (location: string): number=> {
   return parseInt(stringValue);
 }
 
+export const extractCustomerIdFromContent = (content: string): number=> {
+  const parts = content.split('/');
+  const stringValue = parts.pop();
+  if (stringValue === undefined) {
+    return -1;
+  }
+  return parseInt(stringValue);
+}
+
 const SignUpPage = () => {
 
   const userService = useUserService();

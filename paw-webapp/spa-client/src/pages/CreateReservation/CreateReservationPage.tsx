@@ -15,6 +15,7 @@ import QPeopleForm from './QPeopleForm';
 import DateForm from './DateForm';
 import HourForm from './HourForm';
 import InfoForm from './InfoForm';
+import InfoFormStatic from './InfoFormStatic';
 import Done from './Done';
 import { useState, createContext, useContext } from "react";
 // import {customerService, reservationService, userService} from "../../services";
@@ -29,13 +30,14 @@ import ShortRegisterForm from "./ShortRegisterForm";
 import { UserParams } from "../../models/Users/UserParams";
 import { useNavigate } from "react-router-dom";
 import {paths} from "../../constants/constants";
-import { extractUserIdFromLocation } from "../SignUpPage";
+import {extractCustomerIdFromContent, extractUserIdFromLocation} from "../SignUpPage";
 
 import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
-import { awaitWrapper, loginErrorHandler, tryLogin } from '../../Utils';
+import {awaitWrapper, handleResponse, loginErrorHandler, tryLogin} from '../../Utils';
 import ApiErrorDetails from '../../models/ApiError/ApiErrorDetails';
 import useAuth from '../../hooks/useAuth';
+import {CustomerModel, UserModel} from "../../models";
 
 
 function Copyright() {
@@ -79,6 +81,7 @@ const CreateReservation = () => {
     const reservationService = useReservationService();
     const userService = useUserService();
   const { setAuth } = useAuth();
+  const { auth } = useAuth();
 
   const initialValues: createReservationFormValues = {
     qPeople: 1,
@@ -118,7 +121,8 @@ const CreateReservation = () => {
   const [secCode, setResCode] = useState<string>("");
   const [customerId, setCustomerId] = useState<number>(0);
 
-
+  const [user, setUser] = useState<UserModel>();
+  const [customer, setCustomer] = useState<CustomerModel>();
 
   const resParams: ReservationParams = new ReservationParams();
   const cusParams: CustomerParams = new CustomerParams();
@@ -131,8 +135,29 @@ const CreateReservation = () => {
 
     switch (activeStep) {
       case 0: //qPeople
+        // console.log("auth: ");
+        // console.log(auth);
+        // console.log("---");
+          if(auth.id > 0){ //there is a logged in user
+            handleResponse(userService.getUserById(auth.id), (user: UserModel) =>
+                setUser(user)
+            );
+          }
         break;
       case 1: //date
+        if (auth.id > 0) { //there is a logged in user
+          // console.log("user:");
+          // console.log(user);
+          if (user != undefined) {
+            const custId = extractCustomerIdFromContent(user.content);
+            // console.log("custId:");
+            // console.log(custId);
+            setCustomerId(custId);
+            handleResponse(customerService.getCustomerById(custId), (customer: CustomerModel) =>
+                setCustomer(customer)
+            );
+          }
+        }
         resParams.qPeople = qPeople;
         resParams.date = date.toString();
         resParams.restaurantId = 1;
@@ -145,14 +170,22 @@ const CreateReservation = () => {
         const data = response as any as AvailableHours;
         setAvailableHours(data.availableHours);
         break;
+
       case 2: //hour
         if (!availableHours.includes(hour)) {
           props.setFieldError("hour", `Select available hour`);
           props.setSubmitting(false);
           return;
         }
+        if(customer != undefined){
+          // console.log("customer:");
+          // console.log(customer);
+          setActiveStep(activeStep + 2); //skip create customer
+          return;
+        }
         props.setFieldValue("customerStep", true);
         break;
+
       case 3: //customer info
         cusParams.mail = mail;
         cusParams.customerName = firstName + " " + lastName;
@@ -166,7 +199,7 @@ const CreateReservation = () => {
           props.setSubmitting(false);
           return;
         }
-        console.log(customerResponse.headers.location);
+        // console.log(customerResponse.headers.location);
         const custId = extractUserIdFromLocation(customerResponse.headers.location!);
         setCustomerId(custId);
 
@@ -183,18 +216,40 @@ const CreateReservation = () => {
           return;
         }
         setResCode(resResponse!.headers["location"]!.split("/reservations/")[1]);
+        setActiveStep(activeStep + 2); //skip one
+        return;
         break;
-      case 4:
+
+      case 4: //static customer info
+        resParams.hour = hour;
+        resParams.qPeople = qPeople;
+        resParams.date = date.toString();
+        resParams.restaurantId = 1;
+
+        // @ts-ignore
+        resParams.customerId = customer.id;
+        const { ok: resCreated2, error: resError2, response: resResponse2 } = await awaitWrapper(reservationService.createReservation(resParams));
+        if (!resCreated2) {
+          console.log(resError2);
+          props.setSubmitting(false);
+          return;
+        }
+        setResCode(resResponse2!.headers["location"]!.split("/reservations/")[1]);
+        setActiveStep(activeStep + 3); //go to last
+        return;
+        break;
+
+      case 5: //done
         props.setFieldValue("userStep", true);
         break;
-      case 5:
 
+      case 6: //short register
         userParams.username = username;
         userParams.psPair = { password: password, checkPassword: repeatPassword };
         userParams.role = "CUSTOMER";
         userParams.customerId = customerId;
         const { ok: userCreated, error: userError, response: userResponse } = await awaitWrapper(userService.createUser(userParams));
-        
+
         if (!userCreated) {
           const errorData = userError.response?.data as ApiErrorDetails;
           props.setFieldError("username", errorData.errors?.find((e) => e.property == "username")?.description);
@@ -207,9 +262,16 @@ const CreateReservation = () => {
         await tryLogin<createReservationFormValues>(axios, username, password,
           props, path, setAuth, loginErrorHandler<createReservationFormValues>);
 
-        navigate(`/reservation/${secCode}`);
+        navigate(`/reservations/${secCode}`);
         return;
         break;
+
+      case 7:
+          props.setFieldValue("userStep", true);
+          navigate(`/reservations/${secCode}`);
+          return;
+        break;
+
       default:
         break;
     }
@@ -220,7 +282,10 @@ const CreateReservation = () => {
   const handleBack = (values: createReservationFormValues, props: FormikHelpers<createReservationFormValues>) => {
     let curr = activeStep;
     if (curr == 4) {
-      navigate(`/reservation/${secCode}`);
+      curr--;
+    }
+    if (curr == 5 || curr == 7) {
+      navigate(`/reservations/${secCode}`);
       return;
     }
     if (curr === 1) {
@@ -230,7 +295,7 @@ const CreateReservation = () => {
     if (curr !== 3) {
       props.setFieldValue("customerStep", false);
     }
-    if (curr !== 5) {
+    if (curr !== 5 && curr !==7) {
       props.setFieldValue("userStep", false);
     }
     setActiveStep(curr);
@@ -261,14 +326,30 @@ const CreateReservation = () => {
                           1: <DateForm props={props} />,
                           2: <HourForm props={props} availableHours={availableHours} />,
                           3: <InfoForm props={props} />,
-                          4: <Done props={props} secCode={secCode} />,
-                          5: <ShortRegisterForm props={props} />
+                          //@ts-ignore
+                          4: <InfoFormStatic customer={customer}/>,
+                          5: <Done props={props} secCode={secCode} />,
+                          6: <ShortRegisterForm props={props} />,
+                          7: <Done props={props} secCode={secCode} />
                         }[activeStep]
                       }
                       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button onClick={() => handleBack(props.values, props)} sx={{ mt: 3, ml: 1 }}>
-                          {activeStep == 4 ? 'Continue without signing up' : 'Back'}
-                        </Button>
+                        <Button onClick={() => handleBack(props.values, props)} sx={{ mt: 3, ml: 1 }}
+                          disabled={activeStep==7}
+                        >
+                          {
+                            {
+                              0: 'Back',
+                              1: 'Back',
+                              2: 'Back',
+                              3: 'Back',
+                              4: 'Back',
+                              5: 'Continue without signing up',
+                              6: 'Back',
+                              7: ''
+                            }[activeStep]
+                          }
+                        </Button >
                         <Button type="submit" sx={{ mt: 3, ml: 1 }}
                           disabled={props.isSubmitting}
                         >
@@ -278,8 +359,10 @@ const CreateReservation = () => {
                               1: 'Next',
                               2: 'Next',
                               3: 'Place order',
-                              4: 'Sign up',
-                              5: 'Continue to reservation'
+                              4: 'Place order',
+                              5: 'Sign up',
+                              6: 'Continue to reservation',
+                              7: 'Continue to reservation'
                             }[activeStep]
                           }
                         </Button>

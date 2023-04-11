@@ -10,7 +10,7 @@ import useDishService from "../hooks/serviceHooks/useDishService";
 import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
 import useReservationService from "../hooks/serviceHooks/useReservationService";
 import useRestaurantService from "../hooks/serviceHooks/useRestaurantService";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 function FullMenuPage() {
 
@@ -29,6 +29,8 @@ function FullMenuPage() {
     const restaurantService = useRestaurantService();
 
     const { securityCode } = useParams();
+
+    let navigate = useNavigate();
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -63,14 +65,16 @@ function FullMenuPage() {
             );
         });
 
-        let reservation = new ReservationParams();
-        reservation.securityCode = securityCode;
+        let resParams = new ReservationParams();
+        resParams.securityCode = securityCode;
         handleResponse(
-            reservationService.getReservation(reservation),
+            reservationService.getReservation(resParams),
             (reservation: ReservationModel) => setReservation(reservation)
         );
-
     }, []);
+    if(customerReservation?.status == "CANCELED" || customerReservation?.status == "FINISHED"){
+        navigate(`/reservations/${customerReservation.securityCode}/checkout`);
+    }
 
     useEffect(() => {
         let orderItems = new OrderitemParams();
@@ -91,6 +95,8 @@ function FullMenuPage() {
             }
         );
     }, [value]);
+
+
 
     return(
         <Grid container spacing={2} justifyContent="center">
