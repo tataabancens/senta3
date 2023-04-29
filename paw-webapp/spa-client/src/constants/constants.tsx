@@ -28,3 +28,5 @@ export const emptyAuth = {
     roles: [],
     id: -1,
 }
+
+export const shoppingCartTabs = ["Shopping Cart", "Orders"];

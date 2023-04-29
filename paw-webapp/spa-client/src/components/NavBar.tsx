@@ -33,6 +33,7 @@ export const NavBar: React.FC<{}> = () => {
     ["Profile","profile"],
   ]);
   const restaurantPages = new Map<string, string>([
+    ["Menu", "restaurantMenu"],
     ["Kitchen", "kitchen"],
     ["Reservations", "restaurantReservations"]
   ]);

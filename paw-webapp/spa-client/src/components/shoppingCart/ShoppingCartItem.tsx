@@ -1,11 +1,11 @@
 import { IconButton, TableCell, TableRow } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import { DishModel, OrderItemModel } from "../models";
+import { DishModel, OrderItemModel } from "../../models";
+import { handleResponse } from "../../Utils";
 import CloseIcon from '@mui/icons-material/Close';
-import useDishService from "../hooks/serviceHooks/useDishService";
-import { handleResponse } from "../Utils";
-import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
-import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
+import useDishService from "../../hooks/serviceHooks/useDishService";
+import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
+import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 
 type Props = {
     orderItem: OrderItemModel;

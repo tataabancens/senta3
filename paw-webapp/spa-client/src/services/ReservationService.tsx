@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
-import { OrderItemModel, ReservationModel } from "../models";
+import { DishModel, OrderItemModel, ReservationModel } from "../models";
 import {ReservationParams} from "../models/Reservations/ReservationParams";
 
 export class ReservationService {
@@ -24,6 +24,10 @@ export class ReservationService {
 
     public getOrderItems(params: ReservationParams): Promise<AxiosResponse>{
         return this.axios.get<OrderItemModel[]>(paths.RESERVATIONS + '/orderItems' + params.getOrderItemsQuery);
+    }
+
+    public getRecommendedDish(securityCode: string): Promise<AxiosResponse>{
+        return this.axios.get<DishModel>(paths.RESERVATIONS + '/' + securityCode + '/recommendedDish');
     }
 
     public patchReservation(params: ReservationParams): Promise<AxiosResponse>{

@@ -11,6 +11,7 @@ import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
 import useReservationService from "../hooks/serviceHooks/useReservationService";
 import useRestaurantService from "../hooks/serviceHooks/useRestaurantService";
 import {useNavigate, useParams} from "react-router-dom";
+import { ReservationContext } from "../context/ReservationContext";
 
 function FullMenuPage() {
 
@@ -72,7 +73,7 @@ function FullMenuPage() {
             (reservation: ReservationModel) => setReservation(reservation)
         );
     }, []);
-    if(customerReservation?.status == "CANCELED" || customerReservation?.status == "FINISHED"){
+    if(customerReservation?.status === "CANCELED" || customerReservation?.status === "FINISHED"){
         navigate(`/reservations/${customerReservation.securityCode}/checkout`);
     }
 
@@ -85,7 +86,7 @@ function FullMenuPage() {
                 setOrderItems(orderItems);
             }
         )
-    },[reloadOrderItems]);
+    },[reloadOrderItems, orderItemService]);
 
     useEffect(() => {
         handleResponse(
@@ -100,13 +101,15 @@ function FullMenuPage() {
 
     return(
         <Grid container spacing={2} justifyContent="center">
-            <RestaurantHeader restaurant={restaurant} reservation={customerReservation} orderItems={orderItems} role={"ROLE_CUSTOMER"} toggleReload={toggleReloadOrderItems}/>
-            <Grid item xs={11} marginTop={2}>
-              <Tabs value={value} onChange={(event,value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
-                {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
-              </Tabs>
-            </Grid>
-            <DishDisplay dishList={dishList} role={"ROLE_CUSTOMER"} reservation={customerReservation} toggleReload={toggleReloadOrderItems}/>
+            <ReservationContext.Provider value={customerReservation}>
+                <RestaurantHeader restaurant={restaurant} orderItems={orderItems} role={"ROLE_CUSTOMER"} toggleReload={toggleReloadOrderItems}/>
+                <Grid item xs={11} marginTop={2}>
+                    <Tabs value={value} onChange={(event,value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
+                    {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
+                    </Tabs>
+                </Grid>
+                <DishDisplay dishList={dishList} role={"ROLE_CUSTOMER"} reservation={customerReservation} toggleReload={toggleReloadOrderItems}/>
+            </ReservationContext.Provider>
         </Grid>
     );
 }

@@ -15,9 +15,9 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
 
     return(
         <Drawer anchor="right" open={state} onClose={toggleDrawer}>
-          <Grid container component={Box} sx={{ width: 300}} onClick={toggleDrawer} padding={1}>
+          <Grid container component={Box} sx={{ width: 300}} padding={1}>
             <Grid item xs={12} sx={{display:"flex", justifyContent:"flex-end"}}>
-                <IconButton>
+                <IconButton onClick={toggleDrawer}>
                     <CloseIcon  color="primary"/>
                 </IconButton>
             </Grid>

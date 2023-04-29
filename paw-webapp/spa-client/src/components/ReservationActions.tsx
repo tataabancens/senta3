@@ -39,18 +39,35 @@ const ReservationActions: FC<Props> = ({reservation, toggleReload}) => {
         )
     }
 
+    const endReservation = () => {
+        let updateReservation = new ReservationParams();
+        updateReservation.securityCode = reservation?.securityCode;
+        updateReservation.status = "FINISHED";
+        handleResponse(
+            reservationService.patchReservation(updateReservation),
+            (response) => {
+                toggleReload()}
+        )
+    }
+
     return (
         <>
             {reservation?.status === "OPEN" && 
-                <Stack direction="row" spacing={3}>
+                <Stack direction="row" spacing={2}>
                     <Button variant="outlined" sx={{width:10}} color="success" onClick={seatClient}>SEAT</Button>
-                    <Button variant="outlined" sx={{width:10}} color="error" onClick={cancelReservation}>Cancel</Button>
+                    <Button variant="outlined" sx={{width:10}} color="error" onClick={cancelReservation}>CANCEL RESERVATION</Button>
                 </Stack>
             }
             {reservation?.status === "SEATED" && 
                 <Stack direction="row" spacing={2}>
-                    <Button variant="outlined" sx={{width:200}} color="success">MAKE CHECK</Button>
-                    <Button variant="outlined" sx={{width:200}} color="secondary">ACCESS RESERVATION</Button>
+                    <Button variant="outlined" sx={{width:200}} color="success" onClick={() => navigate("reservations/"+reservation.securityCode+"/checkOut")}>MAKE CHECK</Button>
+                    <Button variant="outlined" sx={{width:200}} color="secondary" onClick={() => navigate("reservations/"+reservation.securityCode)}>ACCESS RESERVATION</Button>
+                </Stack>
+            }
+            {reservation?.status === "CHECK_ORDERED" && 
+                <Stack direction="row" spacing={2}>
+                    <Button variant="outlined" sx={{width:200}} color="success" onClick={() => navigate("reservations/"+reservation.securityCode+"/checkOut")}>MAKE CHECK</Button>
+                    <Button variant="outlined" sx={{width:200}} color="success" onClick={endReservation}>END RESERVATION</Button>
                 </Stack>
             }
         </>
