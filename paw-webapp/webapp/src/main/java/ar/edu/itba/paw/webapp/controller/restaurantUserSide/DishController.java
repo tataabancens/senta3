@@ -72,7 +72,7 @@ public class DishController {
         final Dish dish = rs.createDish(maybeRestaurant.get()
                 , form.getName(), form.getDescription()
                 , form.getPrice() //, Double.parseDouble(form.getPrice())
-                ,0, maybeCategory.get());
+                , form.getImageId(), maybeCategory.get());
 
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(dish.getId())).build();

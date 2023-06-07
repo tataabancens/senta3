@@ -13,7 +13,23 @@ type GetDishDetailsErrorResponse = {
 };
 
 export type GetDishDetailsResponse =
-  | GetDishSuccessResponse
-  | GetDishDetailsErrorResponse;
+    | GetDishSuccessResponse
+    | GetDishDetailsErrorResponse;
 
-  
+
+
+type PostDishSuccessResponse = {
+    isOk: true;
+    data: Number;
+    error: null;
+};
+
+type PostDishDetailsErrorResponse = {
+    isOk: false;
+    data: null;
+    error: string;
+};
+
+export type PostDishDetailsResponse =
+    | PostDishSuccessResponse
+    | PostDishDetailsErrorResponse;

@@ -13,6 +13,9 @@ import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import { DishCategoryModel } from '../../models';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import UploadImage from '../UploadImage';
+import useImageService from '../../hooks/serviceHooks/useImageService';
+import useDishService from '../../hooks/serviceHooks/dishes/useDishService';
+import { DishParams } from '../../models/Dishes/DishParams';
 
 export interface createDishFormValue {
     name: string;
@@ -28,6 +31,8 @@ type Props = {
 
 const CreateDishForm: FC<Props> = ({ categoryList }) => {
     const [open, setOpen] = React.useState(false);
+    const ims = useImageService();
+    const ds = useDishService();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -37,10 +42,24 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
         setOpen(false);
     };
 
-    const handleSubmit = (values: createDishFormValue, props: FormikHelpers<createDishFormValue>) => {
+    const handleSubmit = async (values: createDishFormValue, props: FormikHelpers<createDishFormValue>) => {
         console.log(values);
+
+        const formData = new FormData();
+        formData.append('image', values.image);
+        const imagePostResponse = await ims.createImage(formData);
+        const imageId = imagePostResponse.data;
+        
+        const dishParams = new DishParams();
+        dishParams.name = values.name;
+        dishParams.price = values.price;
+        dishParams.description = values.description;
+        dishParams.categoryId = values.categoryId;
+        dishParams.imageId = imageId;
+        const dishPostResponse = await ds.createDish(dishParams);
+
         props.setSubmitting(false);
-        // handleClose();
+        handleClose();
     }
 
     const initialValue: createDishFormValue = {

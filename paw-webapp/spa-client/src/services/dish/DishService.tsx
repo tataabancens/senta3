@@ -2,7 +2,7 @@ import { AxiosResponse, AxiosInstance } from "axios";
 import { paths } from "../../constants/constants";
 import {DishModel, DishCategoryModel } from "../../models";
 import { DishParams } from "../../models/Dishes/DishParams";
-import { GetDishDetailsResponse } from "./typings";
+import { GetDishDetailsResponse, PostDishDetailsResponse } from "./typings";
 export class DishService{
     private axios:AxiosInstance;
 
@@ -47,8 +47,13 @@ export class DishService{
         return  this.axios.get<DishModel>(this.basePath + '/' + dishId);
     }
 
-    public createDish(params: DishParams): Promise<AxiosResponse>{
-        return this.axios.post(this.basePath, params.createDishPayload)
+    public async createDish(params: DishParams): Promise<PostDishDetailsResponse>{
+        try {
+            const response = await this.axios.post(this.basePath, params.createDishPayload);
+            return { isOk: true, data: 0, error: null };
+        } catch (e) {
+            return { isOk: false, data: null, error: (e as Error).message }
+        }
     }
 
     public editDish(params: DishParams): Promise<AxiosResponse>{

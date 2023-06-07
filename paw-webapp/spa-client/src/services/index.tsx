@@ -4,7 +4,7 @@ import { CustomerService } from "./customer/CustomerService";
 import { RestaurantService } from "./RestaurantService";
 import { ReservationService } from "./ReservationService";
 import { OrderItemService } from "./OrderItemService";
-import { ImageService } from "./ImageService";
+import { ImageService } from "./image/ImageService";
 
 // const dishService = new DishService();
 // const userService =  new UserService();
