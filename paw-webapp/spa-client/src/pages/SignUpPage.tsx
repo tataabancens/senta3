@@ -15,7 +15,7 @@ import { handleResponse, handleFormResponse, awaitWrapper, loginErrorHandler, tr
 import useUserService from "../hooks/serviceHooks/useUserService";
 import { UserParams } from "../models/Users/UserParams";
 import ApiErrorDetails, { ApiError } from "../models/ApiError/ApiErrorDetails";
-import { CustomerService } from "../services/CustomerService";
+import { CustomerService } from "../services/customer/CustomerService";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import { CustomerParams } from "../models/Customers/CustomerParams";
 import axios from "../api/axios"

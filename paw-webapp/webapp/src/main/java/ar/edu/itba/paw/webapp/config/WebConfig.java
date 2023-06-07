@@ -136,20 +136,21 @@ public class WebConfig {
         return jacksonMessageConverter.getObjectMapper();
     }
 
-    @Bean
-    public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
-        ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
-        arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
-        return arrayHttpMessageConverter;
-    }
-
-    private List<MediaType> getSupportedMediaTypes() {
-        List<MediaType> list = new ArrayList<>();
-        list.add(MediaType.IMAGE_JPEG);
-        list.add(MediaType.IMAGE_PNG);
-        list.add(MediaType.APPLICATION_OCTET_STREAM);
-        return list;
-    }
+//    @Bean
+//    public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
+//        ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+//        arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
+//        return arrayHttpMessageConverter;
+//    }
+//
+//    private List<MediaType> getSupportedMediaTypes() {
+//        List<MediaType> list = new ArrayList<>();
+//        list.add(MediaType.IMAGE_JPEG);
+//        list.add(MediaType.IMAGE_PNG);
+//        list.add(MediaType.APPLICATION_OCTET_STREAM);
+//        list.add(MediaType.MULTIPART_FORM_DATA);
+//        return list;
+//    }
 
     @Bean
     public Executor taskExecutor() {

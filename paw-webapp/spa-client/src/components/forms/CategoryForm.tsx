@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import { handleResponse } from "../../Utils";
-import useDishService from "../../hooks/serviceHooks/useDishService";
+import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { DishParams } from "../../models/Dishes/DishParams";
 
 

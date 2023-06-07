@@ -1,4 +1,4 @@
-import { CustomerService } from "../../services/CustomerService";
+import { CustomerService } from "../../services/customer/CustomerService";
 import useAxiosPrivate from "../useAxiosPrivate";
 
 const useCustomerService = () => {

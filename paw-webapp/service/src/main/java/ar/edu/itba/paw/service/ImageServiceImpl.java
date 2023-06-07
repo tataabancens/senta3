@@ -26,7 +26,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional
     @Override
-    public long createImage(MultipartFile photo) {
+    public long createImage(byte[] photo) {
         try {
             return imageDao.create(photo);
         } catch(Exception e) {

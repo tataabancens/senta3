@@ -1,7 +1,7 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import { handleResponse } from "../Utils";
-import useDishService from "../hooks/serviceHooks/useDishService";
+import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import { DishCategoryModel, ReservationModel } from "../models";
 import { DishParams } from "../models/Dishes/DishParams";
 

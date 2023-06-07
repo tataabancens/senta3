@@ -1,5 +1,5 @@
 import DishModel from "./DishModel";
-import ImageModel from "../ImageModel";
+import ImageModel from "../Images/ImageModel";
 
 export class Dish {
     private _dishModel: DishModel;

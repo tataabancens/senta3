@@ -1,4 +1,4 @@
-import { ImageService } from "../../services/ImageService";
+import { ImageService } from "../../services/image/ImageService";
 import useAxiosPrivate from "../useAxiosPrivate";
 
 const useImageService = () => {

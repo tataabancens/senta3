@@ -1,7 +1,7 @@
 import { DishPayloadModel } from "./DishPayloadModel";
 import { DishCategoryPayloadModel } from "./DishCategoryPayloadModel";
 
-export class DishParams{
+export class DishParams {
     private _id: number | undefined;
     private _name: string | undefined;
     private _self: string | undefined;

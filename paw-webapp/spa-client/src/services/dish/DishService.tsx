@@ -1,7 +1,8 @@
 import { AxiosResponse, AxiosInstance } from "axios";
-import { paths } from "../constants/constants";
-import {DishModel, DishCategoryModel } from "../models";
-import { DishParams } from "../models/Dishes/DishParams";
+import { paths } from "../../constants/constants";
+import {DishModel, DishCategoryModel } from "../../models";
+import { DishParams } from "../../models/Dishes/DishParams";
+import { GetDishDetailsResponse, PostDishDetailsResponse } from "./typings";
 export class DishService{
     private axios:AxiosInstance;
 
@@ -19,12 +20,40 @@ export class DishService{
         return this.axios.get<DishModel[]>(`${this.basePath}`);
     }
 
+    public async getDishesNewVersion(abortController:AbortController, dishCategory?: string): Promise<GetDishDetailsResponse> {
+        let resp;
+        try {
+            if (dishCategory) {
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`, {signal: abortController.signal});
+            } else {
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}`, {signal: abortController.signal});
+            }
+            const data: DishModel[] = resp.data;
+            return {
+                isOk: true,
+                data: data,
+                error: null,
+            };
+        } catch (e) {
+            return {
+                isOk: false,
+                data: null,
+                error: (e as Error).message
+            }
+        }
+    }
+
     public async getDishById( dishId: number) : Promise<AxiosResponse<DishModel>>{
         return  this.axios.get<DishModel>(this.basePath + '/' + dishId);
     }
 
-    public createDish(params: DishParams): Promise<AxiosResponse>{
-        return this.axios.post(this.basePath, params.createDishPayload)
+    public async createDish(params: DishParams): Promise<PostDishDetailsResponse>{
+        try {
+            const response = await this.axios.post(this.basePath, params.createDishPayload);
+            return { isOk: true, data: 0, error: null };
+        } catch (e) {
+            return { isOk: false, data: null, error: (e as Error).message }
+        }
     }
 
     public editDish(params: DishParams): Promise<AxiosResponse>{
