@@ -3,11 +3,11 @@ import { FC, useContext, useEffect, useState } from "react";
 import { DishModel, OrderItemModel } from "../../models";
 import { handleResponse } from "../../Utils";
 import CloseIcon from '@mui/icons-material/Close';
-import useDishService from "../../hooks/serviceHooks/useDishService";
 import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import InfoIcon from '@mui/icons-material/Info';
 import { ReservationContext } from "../../context/ReservationContext";
+import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 
 type Props = {
     orderItem: OrderItemModel;
