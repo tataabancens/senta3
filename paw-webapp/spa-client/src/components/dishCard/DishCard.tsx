@@ -31,8 +31,7 @@ const DishCard: FC<Props> = ({
   const [isCardOpen, setCardOpen] = useState(false);
   let navigate = useNavigate();
   const { auth } = useAuth()
-  const imageService = useImageService();
-  const reservation = useContext(ReservationContext);
+  const { reservation } = useContext(ReservationContext);
   const [editIsOpen, setEditIsOpen] = useState(false);
 
   const handleDishForm = () => {

@@ -5,6 +5,7 @@ import { OrderItemModel } from "../../models";
 import { shoppingCartTabs } from "../../constants/constants";
 import OrdersPanel from "./OrdersPanel";
 import ShoppingCartPanel from "./ShoppingCartPanel";
+import CheckPanel from "./CheckPanel";
 
 type Props = {
     orderItems: OrderItemModel[];
@@ -39,6 +40,7 @@ const ShoppingCart: FC<Props> =({orderItems, isOpen, toggleCart, toggleReload}) 
                 <Grid item xs={12}>
                 <ShoppingCartPanel value={value} index={0} orderItems={orderItems} toggleReload={toggleReload}/>
                 <OrdersPanel value={value} index={1} orderItems={orderItems} />
+                <CheckPanel value={value} index={2} orderItems={orderItems} />
                 </Grid>            
             </Grid>
          </Grid>

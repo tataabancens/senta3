@@ -13,17 +13,10 @@ import { ReservationService } from "../services/ReservationService";
 function Kitchen (){
     const [orderedOrderItems, setOrderedOrderItems] = useState<OrderItemModel[]>([]);
     const [incomingOrderItems, setIncomingOrderItems] =useState<OrderItemModel[]>([]);
-    const [restaurant, setRestaurant] = useState<RestaurantModel>();
+    const [deliveringOrderItems, setDeliveringOrderItems] =useState<OrderItemModel[]>([]);
 
     const reservationService = useReservationService();
-    const restaurantService = useRestaurantService();
 
-    useEffect(() => {
-        handleResponse(
-            restaurantService.getRestaurant(1),
-            (response) => setRestaurant(response)
-        )
-    },[])
 
     useEffect(() => {
         let reservationParams = new ReservationParams();
@@ -32,7 +25,9 @@ function Kitchen (){
 
         handleResponse(
             reservationService.getOrderItems(reservationParams),
-            (response: OrderItemModel[]) => (response.length > 0 ? setOrderedOrderItems(response) : setOrderedOrderItems([]))
+            (response: OrderItemModel[]) => {response.length > 0 ? setOrderedOrderItems(response) : setOrderedOrderItems([])
+                console.log(response)
+            }
         )
 
         reservationParams.orderItemStatus = "2";
@@ -40,11 +35,34 @@ function Kitchen (){
             reservationService.getOrderItems(reservationParams),
             (response: OrderItemModel[]) => (response.length > 0 ? setIncomingOrderItems(response) : setIncomingOrderItems([]))
         )
+
+        reservationParams.orderItemStatus = "3";
+        handleResponse(
+            reservationService.getOrderItems(reservationParams),
+            (response: OrderItemModel[]) => (response.length > 0 ? setDeliveringOrderItems(response) : setDeliveringOrderItems([]))
+        )
     },[]);
 
     return(
-        <Grid container component={Box} sx={{background: themePalette.PURPLE}} marginY={3}> 
-            {orderedOrderItems.map(orderItem => <OrderItemCard orderItem={orderItem}/>)}
+        <Grid container xs={12}>
+            <Grid item container component={Box} sx={{background: themePalette.PURPLE}} marginY={3} xs={4}>
+                <Grid item xs={12}><Typography>Ordered</Typography></Grid>
+                <Grid item xs={10}>
+                    {orderedOrderItems.map(orderItem => <OrderItemCard orderItem={orderItem}/>)}
+                </Grid>
+            </Grid>
+            <Grid item container component={Box} sx={{background: themePalette.RED}} marginY={3} xs={4}>
+                <Grid item xs={12}><Typography>Ordered</Typography></Grid>
+                <Grid item xs={10}>
+                    {incomingOrderItems.map(orderItem => <OrderItemCard orderItem={orderItem}/>)}
+                </Grid>
+            </Grid>
+            <Grid item container component={Box} sx={{background: themePalette.BLUE}} marginY={3} xs={4}>
+                <Grid item xs={12}><Typography>Delivering</Typography></Grid>
+                <Grid item xs={10}>
+                    {deliveringOrderItems.map(orderItem => <OrderItemCard orderItem={orderItem}/>)}
+                </Grid>
+            </Grid>
         </Grid>
     );
 }

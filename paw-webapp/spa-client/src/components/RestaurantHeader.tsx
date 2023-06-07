@@ -29,7 +29,7 @@ const RestaurantHeader: FC<Props> = ({
     const [shoppingCartOpen, setShoppingCart] = useState(false);
     let navigate = useNavigate();
     const [createIsOpen, setIsOpen] = useState(false);
-    const reservation = useContext(ReservationContext);
+    const { reservation } = useContext(ReservationContext);
 
 
     const toggleDrawer = () => {
@@ -73,7 +73,6 @@ const RestaurantHeader: FC<Props> = ({
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart orderItems={orderItems!} toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
-                <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={() => navigate("checkout")}>checkout</Button>
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><ShoppingCartIcon/></Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>My reservation</Button>
             </Grid>

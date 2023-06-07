@@ -24,10 +24,10 @@ const DishDisplay: FC<Props> = ({
     const {auth} = useAuth();
     return (
         <Grid item container xs={11} spacing={2} marginTop={1}>
-            {dishList.length === 0? <Skeleton variant="rounded" animation="wave" width={310} height={100} /> :  dishList?.map((dish: DishModel) => 
-            (auth.roles[0] === "ROLE_RESTAURANT"? <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} categoryList={categoryList} toggleReload={toggleReload} /></Grid> :
-            auth.roles[0] === "ROLE_CUSTOMER"? <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} toggleReload={toggleReload}/></Grid>
-            : <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} toggleReload={toggleReload} /></Grid> ))}
+            {dishList?.map((dish: DishModel,i) => 
+            (auth.roles[0] === "ROLE_RESTAURANT"? <Grid item key={i} xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} categoryList={categoryList} toggleReload={toggleReload} /></Grid> :
+            auth.roles[0] === "ROLE_CUSTOMER"? <Grid item key={i} xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} toggleReload={toggleReload}/></Grid>
+            : <Grid item key={i} xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} toggleReload={toggleReload} /></Grid> ))}
         </Grid>
     );
   }

@@ -11,9 +11,10 @@ type Props = {
     orderItem: OrderItemModel;
     securityCode: string | undefined;
     toggleReload?: () => void;
+    isCartItem: boolean
 }
 
-const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload}) => {
+const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload, isCartItem}) => {
 
     const [dish, setDish] = useState<DishModel | undefined>();
     const dishService = useDishService();
@@ -44,12 +45,14 @@ const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload}) =>
         <TableRow>
             <TableCell align="left">{dish?.name}</TableCell>
             <TableCell align="center">{orderItem.quantity}</TableCell>
-            <TableCell align="center">{orderItem.quantity*orderItem.unitPrice}</TableCell>
-            <TableCell align="center">
-                <IconButton onClick={cancelItem}>
-                    <CloseIcon />
-                </IconButton>
-            </TableCell>
+            <TableCell align="center">${orderItem.quantity*orderItem.unitPrice}</TableCell>
+            {isCartItem && 
+                <TableCell align="center">
+                    <IconButton onClick={cancelItem}>
+                        <CloseIcon />
+                    </IconButton>
+                </TableCell>
+            }
         </TableRow>
     );
 }

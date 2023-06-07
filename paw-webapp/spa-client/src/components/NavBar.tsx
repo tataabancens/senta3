@@ -56,7 +56,6 @@ export const NavBar: React.FC<{}> = () => {
     }
     else{
       setRolePages([]);
-      console.log("reRender");
     }
 
   },[auth]);
@@ -92,10 +91,10 @@ export const NavBar: React.FC<{}> = () => {
                   </Stack>
                   :
                   <Stack direction="row" spacing={2}>
-                    <Button variant="contained" onClick={() => {navigate(paths.ROOT + "login")}}>
+                    <Button size="large" variant="contained" onClick={() => {navigate(paths.ROOT + "login")}}>
                       <Typography>Login</Typography>
                     </Button>
-                    <Button onClick={() => navigate(paths.ROOT + "signUp")} variant="contained">
+                    <Button size="large" onClick={() => navigate(paths.ROOT + "signUp")} variant="contained">
                       <Typography>Register</Typography>
                     </Button>
                   </Stack>                 

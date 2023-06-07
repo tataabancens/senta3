@@ -78,7 +78,7 @@ export class ReservationParams {
     get getOrderItemsQuery(): string{
         let query = "?"
         if(this._filterStatus !== undefined){
-            query += `&filterStatus=${this._filterStatus}`
+            query += `&reservationStatus=${this._filterStatus}`
         }
         if(this._orderItemStatus !== undefined){
             query += `&orderItemStatus=${this._orderItemStatus}`

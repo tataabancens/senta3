@@ -6,4 +6,5 @@ export default interface OrderItemModel{
     unitPrice: number,
     quantity: number,
     status: string,
+    tableNmbr: number
 }

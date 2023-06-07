@@ -24,13 +24,12 @@ const ShoppingCartPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
   const [ recommendedDish, setRecommendedDish ] = useState<DishModel | undefined>();
   const orderItemService = useOrderItemService();
   const reservationService = useReservationService();
-  const navigate = useNavigate();
-  const reservation = useContext(ReservationContext)
+  const { reservation } = useContext(ReservationContext);
 
   useEffect(() =>{
     handleResponse(reservationService.getRecommendedDish(reservation!.securityCode),
     response => setRecommendedDish(response))
-  },[orderItemService])
+  },[orderItems])
 
   const calculateTotal = (orderItems: OrderItemModel[]) =>{
     let total = 0;
@@ -92,7 +91,7 @@ const ShoppingCartPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
                 </TableHead>
                 <TableBody>
                   {orderItems.filter(orderItem => orderItem.status === "SELECTED").map((filteredItem) => (
-                      <ShoppingCartItem key={filteredItem.orderItemId} securityCode={reservation!.securityCode} orderItem={filteredItem} toggleReload={toggleReload} />
+                      <ShoppingCartItem key={filteredItem.orderItemId} securityCode={reservation!.securityCode} orderItem={filteredItem} toggleReload={toggleReload} isCartItem={true}/>
                   ))}
                 </TableBody>
               </Grid>

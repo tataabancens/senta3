@@ -18,10 +18,10 @@ const OrdersItem: FC<Props> = ({orderItem, toggleReload}) => {
 
     const [dish, setDish] = useState<DishModel | undefined>();
     const dishService = useDishService();
-    const reservation = useContext(ReservationContext);
+    const {reservation} = useContext(ReservationContext);
     const statusMap: Map<string, number> = new Map([
         ["ORDERED", 1],
-        ["INCOMING", 2],
+        ["INCOMING", 1],
         ["DELIVERED", 3]
     ]);
 

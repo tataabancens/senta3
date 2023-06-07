@@ -18,11 +18,12 @@ function FullMenuPage() {
     const [value, setValue] = useState(0);
     const [restaurant, setRestaurant] = useState<RestaurantModel>();
     const [dishList, setDishes] = useState<DishModel[]>([]);
-    const [customerReservation, setReservation] = useState<ReservationModel>();
+    const [reservation, setReservation] = useState<ReservationModel>();
     const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
     const [categoryList, setCategories] = useState<DishCategoryModel[]>([]);
     const [categoryMap, setMap] = useState<Map<number,string>>();
     const [reloadOrderItems, setReload] = useState(false);
+    const [reloadReservation, setReloadReservation] = useState(false);
 
     const dishService = useDishService();
     const orderItemService = useOrderItemService();
@@ -39,6 +40,10 @@ function FullMenuPage() {
 
     const toggleReloadOrderItems = () => {
         setReload(!reloadOrderItems);
+    }
+
+    const updateReservation = () => {
+        setReloadReservation(!reloadReservation);
     }
 
     useEffect(() => {
@@ -65,16 +70,19 @@ function FullMenuPage() {
                 }
             );
         });
+    }, []);
 
+    useEffect(() => {
         let resParams = new ReservationParams();
         resParams.securityCode = securityCode;
         handleResponse(
             reservationService.getReservation(resParams),
             (reservation: ReservationModel) => setReservation(reservation)
         );
-    }, []);
-    if(customerReservation?.status === "CANCELED" || customerReservation?.status === "FINISHED"){
-        navigate(`/reservations/${customerReservation.securityCode}/checkout`);
+    },[reloadReservation])
+
+    if(reservation?.status === "CANCELED" || reservation?.status === "FINISHED"){
+        navigate(`/reservations/${reservation.securityCode}/checkout`);
     }
 
     useEffect(() => {
@@ -86,7 +94,7 @@ function FullMenuPage() {
                 setOrderItems(orderItems);
             }
         )
-    },[reloadOrderItems, orderItemService]);
+    },[reloadOrderItems]);
 
     useEffect(() => {
         handleResponse(
@@ -101,14 +109,14 @@ function FullMenuPage() {
 
     return(
         <Grid container spacing={2} justifyContent="center">
-            <ReservationContext.Provider value={customerReservation}>
+            <ReservationContext.Provider value={{reservation, updateReservation}}>
                 <RestaurantHeader restaurant={restaurant} orderItems={orderItems} role={"ROLE_CUSTOMER"} toggleReload={toggleReloadOrderItems}/>
                 <Grid item xs={11} marginTop={2}>
                     <Tabs value={value} onChange={(event,value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
                     {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
                     </Tabs>
                 </Grid>
-                <DishDisplay dishList={dishList} role={"ROLE_CUSTOMER"} reservation={customerReservation} toggleReload={toggleReloadOrderItems}/>
+                <DishDisplay dishList={dishList} role={"ROLE_CUSTOMER"} reservation={reservation} toggleReload={toggleReloadOrderItems}/>
             </ReservationContext.Provider>
         </Grid>
     );

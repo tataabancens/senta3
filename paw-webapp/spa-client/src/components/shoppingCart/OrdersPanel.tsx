@@ -1,6 +1,5 @@
-import { Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { FC, useContext } from "react";
-import { ReservationContext } from "../../context/ReservationContext";
+import { Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { FC } from "react";
 import { OrderItemModel } from "../../models";
 import OrdersItem from "./OrdersItem";
 
@@ -13,7 +12,6 @@ type TabPanelProps = {
 
 const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
     const { children, value, index, orderItems, ...other } = props;
-    const reservation = useContext(ReservationContext);
   
     return (
       <div

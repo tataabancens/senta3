@@ -4,6 +4,8 @@ import axios from "../api/axios";
 import { handleResponse } from "../Utils";
 import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import { DishModel, ImageModel, OrderItemModel } from "../models";
+import useReservationService from "../hooks/serviceHooks/useReservationService";
+import { ReservationParams } from "../models/Reservations/ReservationParams";
 
 type Props = {
   orderItem: OrderItemModel;
@@ -14,16 +16,15 @@ const OrderItemCard: FC<Props> = ({
 }): JSX.Element => {
 
   const [dish, setDish] = useState<DishModel>();
-  const [dishImage, setDishImage] = useState<ImageModel>();
 
   const dishService = useDishService();
 
   useEffect(() =>{
     handleResponse(
-      dishService.getDishById(1),
+      dishService.getDishById(orderItem.dishId),
       (dish) => setDish(dish)
     );
-  })
+  },[]);
 
   return (
     <Grid
@@ -38,15 +39,9 @@ const OrderItemCard: FC<Props> = ({
   >
     <Card sx={{display: "flex"}}>
         <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-           {dish?.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-            mesa
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-            cantidad
-        </Typography>
+        <Typography gutterBottom variant="subtitle1">{dish?.name}</Typography>
+        <Typography variant="body2" color="text.secondary">mesa: {orderItem.tableNmbr}</Typography>
+        <Typography variant="body2" color="text.secondary">cantidad: {orderItem.quantity}</Typography>
       </CardContent>
     </Card>
   </Grid>

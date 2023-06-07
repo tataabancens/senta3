@@ -12,6 +12,7 @@ public class OrderItemDto {
     private long reservationId;
     private float unitPrice;
     private int quantity;
+    private int tableNmbr;
     private OrderItemStatus status;
 
     public static OrderItemDto fromOrderItem(final UriInfo uriInfo, OrderItem orderItem) {
@@ -20,6 +21,7 @@ public class OrderItemDto {
         dto.orderItemId = orderItem.getId();
         dto.dishId = orderItem.getDish().getId();
         dto.reservationId = orderItem.getReservation().getId();
+        dto.tableNmbr = orderItem.getReservation().getTableNumber();
         dto.unitPrice = orderItem.getUnitPrice();
         dto.unitPrice = orderItem.getUnitPrice();
         dto.status = orderItem.getStatus();
@@ -78,5 +80,13 @@ public class OrderItemDto {
 
     public void setStatus(OrderItemStatus status) {
         this.status = status;
+    }
+
+    public int getTableNmbr() {
+        return tableNmbr;
+    }
+
+    public void setTableNmbr(int tableNmbr) {
+        this.tableNmbr = tableNmbr;
     }
 }

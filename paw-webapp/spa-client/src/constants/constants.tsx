@@ -29,4 +29,4 @@ export const emptyAuth = {
     id: -1,
 }
 
-export const shoppingCartTabs = ["Shopping Cart", "Orders"];
+export const shoppingCartTabs = ["Shopping Cart", "Orders", "Summary"];

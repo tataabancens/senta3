@@ -12,6 +12,14 @@ type Props = {
 
 const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
 
+    const formatDate = (date: string) => {
+        const dateParts: string[] = date.split("-");
+        const year: string = dateParts[0];
+        const month: string = dateParts[1];
+        const day: string = dateParts[2];
+
+        return `${day}/${month}/${year}`;
+    };
 
     return(
         <Drawer anchor="right" open={state} onClose={toggleDrawer}>
@@ -24,7 +32,7 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
             <Grid item xs={12} sx={ {display:"flex", justifyContent:"center", marginBottom: 2}}><Typography variant="h5">Your reservation</Typography></Grid>
             <Grid item xs={12} component={Typography} variant="h6">Customer: {reservation?.customerName}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">Code: {reservation?.securityCode}</Grid>
-            <Grid item xs={12} component={Typography} variant="h6">Date: {reservation?.date}</Grid>
+            <Grid item xs={12} component={Typography} variant="h6">Date: {formatDate(reservation!.date)}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">Hour: {reservation?.hour}:00</Grid>
             <Grid item xs={12} component={Typography} variant="h6">Table: {reservation?.tableNumber}</Grid>
           </Grid>
