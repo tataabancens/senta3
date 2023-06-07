@@ -8,12 +8,59 @@ import {
   Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {paths} from "../constants/constants";
+import {emptyAuth, paths} from "../constants/constants";
+import useUserService from "../hooks/serviceHooks/useUserService";
+import useAuth from "../hooks/useAuth";
+import { UserModel } from "../models";
+import { handleResponse } from "../Utils";
+
+interface nameSitePair{
+  key: string,
+  value: string
+}
 
 export const NavBar: React.FC<{}> = () => {
   let navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
+  const [user, setUser] = useState<UserModel | undefined>();
+  const [rolePages, setRolePages] = useState<nameSitePair[]>([]);
+  const userService = useUserService();
+
+  const customerPages = new Map<string, string>([
+    ["Reservations","reservations"],
+    ["Profile","profile"],
+  ]);
+  const restaurantPages = new Map<string, string>([
+    ["Menu", "restaurantMenu"],
+    ["Kitchen", "kitchen"],
+    ["Reservations", "restaurantReservations"]
+  ]);
+
+  const logOut = () => {
+    setAuth(emptyAuth);
+    navigate(paths.ROOT);
+  } 
+
+  useEffect(() => {
+    if(auth.roles[0] === "ROLE_CUSTOMER"){
+      const pages: nameSitePair[] = Array.from(customerPages, ([key, value]) => ({key, value}));
+      handleResponse(userService.getUserById(auth.id), user => setUser(user));
+      setRolePages(pages);
+    }
+    else if(auth.roles[0] === "ROLE_RESTAURANT"){
+      const pages: nameSitePair[] = Array.from(restaurantPages, ([key, value]) => ({key, value}));
+      handleResponse(userService.getUserById(auth.id), user => setUser(user));
+      setRolePages(pages);
+    }
+    else{
+      setRolePages([]);
+      console.log("reRender");
+    }
+
+  },[auth]);
+
   return (
     <Box sx={{ flexGrow: 1, mb: 8}}>
       <AppBar position="fixed">
@@ -23,52 +70,36 @@ export const NavBar: React.FC<{}> = () => {
               <Grid item>
                 <Stack direction="row" spacing={2}>
                   <Button variant="contained" onClick={() => {navigate(paths.ROOT)}}>
-                    {/*<Link*/}
-                    {/*  to="/"*/}
-                    {/*  style={{ textDecoration: "none", color: "white" }}*/}
-                    {/*>*/}
                       <Typography variant="h5" sx={{ fontStyle: "italic" }}>
                         Senta3
                       </Typography>
-                    {/*</Link>*/}
                   </Button>
-                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/reservations")}}>
-                    {/*<Link*/}
-                    {/*  to="reservations"*/}
-                    {/*  style={{ textDecoration: "none", color: "white" }}*/}
-                    {/*>*/}
-                      <Typography>Reservations</Typography>
-                    {/*</Link>*/}
-                  </Button>
-                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/restaurantReservations")}}>
-                    {/*<Link*/}
-                    {/*  to="reservationsRestaurant"*/}
-                    {/*  style={{ textDecoration: "none", color: "white" }}*/}
-                    {/*>*/}
-                      <Typography>RestaurantReservations</Typography>
-                    {/*</Link>*/}
-                  </Button>
+                  {rolePages.map((pair: nameSitePair, index) => 
+                  <Button variant="contained" key={index} onClick={() => {navigate(paths.ROOT + pair.value)}}>
+                    <Typography>{pair.key}</Typography>
+                  </Button>)}
                 </Stack>
               </Grid>
               <Grid item>
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/login")}}>
-                    {/*<Link*/}
-                    {/*  to="login"*/}
-                    {/*  style={{ textDecoration: "none", color: "white" }}*/}
-                    {/*>*/}
+                {auth.roles.length > 0?
+                  <Stack direction="row" spacing={2}>
+                    <Button variant="contained" onClick={() => {navigate(paths.ROOT + "profile")}}>
+                      <Typography>{user?.username}</Typography>
+                    </Button>
+                    <Button onClick={logOut} variant="contained">
+                      <Typography>Logout</Typography>
+                    </Button>
+                  </Stack>
+                  :
+                  <Stack direction="row" spacing={2}>
+                    <Button variant="contained" onClick={() => {navigate(paths.ROOT + "login")}}>
                       <Typography>Login</Typography>
-                    {/*</Link>*/}
-                  </Button>
-                  <Button onClick={() => navigate(paths.ROOT + "/signUp")} variant="contained">
-                    {/*<Link*/}
-                    {/*  to="signUp"*/}
-                    {/*  style={{ textDecoration: "none", color: "white" }}*/}
-                    {/*>*/}
+                    </Button>
+                    <Button onClick={() => navigate(paths.ROOT + "signUp")} variant="contained">
                       <Typography>Register</Typography>
-                    {/*</Link>*/}
-                  </Button>
-                </Stack>
+                    </Button>
+                  </Stack>                 
+                }
               </Grid>
             </Grid>
           </Container>

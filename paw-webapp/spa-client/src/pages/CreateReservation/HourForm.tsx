@@ -16,7 +16,7 @@ interface hourFormProps {
 
 export default function HourForm({ props, availableHours }: hourFormProps) {
     const { handleBlur, handleChange, values, errors } = props;
-    console.log(errors);
+    //console.log(errors);
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -38,7 +38,7 @@ export default function HourForm({ props, availableHours }: hourFormProps) {
                 >
                     <MenuItem value="0"> <em>Select one</em> </MenuItem>
                     {availableHours.map((value) => (
-                        <MenuItem key={value} value={value}>{value}</MenuItem>
+                        <MenuItem key={value} value={value}>{value}:00</MenuItem>
 
                     ))}
                 </Field>

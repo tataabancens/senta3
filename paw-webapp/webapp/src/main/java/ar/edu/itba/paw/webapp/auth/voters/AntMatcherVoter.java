@@ -53,7 +53,7 @@ public class AntMatcherVoter {
         try{
             customerId = Long.parseLong(request.getHeader("customerId"));
         } catch (NumberFormatException e){
-            return false;
+            return false; //todo podría devolver un 400 bad request
         }
         Customer customer = customerService.getCustomerById(customerId).orElseThrow(CustomerNotFoundException::new);
         if(customer.getUser() == null) return true;

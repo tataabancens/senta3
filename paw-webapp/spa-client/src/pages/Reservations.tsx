@@ -53,7 +53,10 @@ function Reservations() {
       reservationParams.page = page;     
         handleResponse(
             reservationService.getReservations(reservationParams),
-            (response) => setReservations(response),
+            (response) => {
+              if(response.length > 0)
+                setReservations(response)
+              },
             navigate,
             location
         );
@@ -85,7 +88,7 @@ function Reservations() {
               <TableCell>Hour</TableCell>
               <TableCell>Table nmbr</TableCell>
               <TableCell>People</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

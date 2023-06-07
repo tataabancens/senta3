@@ -92,7 +92,7 @@ import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
           </DialogContent>
           <DialogActions>
             <Button onClick={handleSubmit} variant="contained" color="success">
-              Confirm
+              Add to cart
             </Button>
             <Button onClick={handleCancel} variant="contained">
               Cancel

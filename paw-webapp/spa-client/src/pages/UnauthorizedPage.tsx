@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import {
+    Button,
+} from "@mui/material";
 
 const UnauthorizedPage = () => {
     const navigate = useNavigate();
@@ -9,7 +12,7 @@ const UnauthorizedPage = () => {
         <div>
             <h1>Unauthorized</h1>
             <p>You dont have access here</p>
-            <button onClick={goBack}>GoBack</button>
+            <Button onClick={goBack}>GoBack</Button>
         </div>
     )
 }

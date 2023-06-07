@@ -13,6 +13,7 @@ export function handleResponse<T>(
     response.then((response: AxiosResponse<T>) => {
         setterFunction(response.data);
     }).catch((error) => {
+        console.log("error:")
         console.log(error)
         if (navigate && location)
             navigate('/login', { state: { from: location }, replace: true });
@@ -70,7 +71,7 @@ export async function tryLogin<T>(axios: AxiosInstance,
             const role = response?.data?.role;
             const roles: string[] = [role];
             const id = response?.data?.id;
-            console.log(username);
+            console.log("logged in username: " + username);
 
             setAuth({ username, roles, authorization, id });
             return true;

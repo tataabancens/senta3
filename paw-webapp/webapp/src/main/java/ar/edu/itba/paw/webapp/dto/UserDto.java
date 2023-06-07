@@ -1,9 +1,13 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.User;
+import ar.edu.itba.paw.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.Optional;
 
 public class UserDto {
     private String username;
@@ -12,24 +16,24 @@ public class UserDto {
 
     private URI content;
 
-    static public UserDto fromUser(final UriInfo uriInfo, User user) {
+    static public UserDto fromUser(final UriInfo uriInfo, User user, Optional<Customer> customer) {
         UserDto userDto = new UserDto();
 
         userDto.username = user.getUsername();
         userDto.role = user.getRole();
         userDto.id = user.getId();
-
         switch (userDto.role) {
             case "ROLE_RESTAURANT":
                 userDto.content = uriInfo.getBaseUriBuilder()
-                        .path("api")
-                        .path("restaurants").path(String.valueOf(user.getId())).build();
+                        .path("/api/restaurants").path(String.valueOf(user.getId())).build();
                 break;
 
             case "ROLE_CUSTOMER":
-                userDto.content = uriInfo.getBaseUriBuilder()
-                        .path("api")
-                        .path("customers").path(String.valueOf(user.getId())).build();
+                if(customer.isPresent()){
+                    userDto.content = uriInfo.getBaseUriBuilder()
+                            .path("/api/customers").path(String.valueOf(customer.get().getId())).build();
+                }
+
                 break;
             case "ROLE_ANONYMOUS":
 

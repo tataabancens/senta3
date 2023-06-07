@@ -50,7 +50,7 @@ const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => 
 
     props.resetForm();
     props.setSubmitting(false);
-    navigate(`/reservation/${reservation.securityCode}`);
+    navigate(`/reservations/${reservation.securityCode}`);
   };
 
   return (

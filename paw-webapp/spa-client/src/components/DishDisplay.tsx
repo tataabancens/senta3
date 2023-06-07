@@ -1,7 +1,8 @@
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid, Skeleton } from "@mui/material";
 import { FC } from "react";
+import useAuth from "../hooks/useAuth";
 import { DishCategoryModel, DishModel, ReservationModel } from "../models";
-import DishCard from "./DishCard";
+import DishCard from "./dishCard/DishCard";
 
 type Props = {
     dishList: DishModel[];
@@ -14,17 +15,19 @@ type Props = {
 
 const DishDisplay: FC<Props> = ({
     dishList,
-    role,
     categoryList,
     reservation,
     actualId,
     toggleReload
   }): JSX.Element => {
+
+    const {auth} = useAuth();
     return (
         <Grid item container xs={11} spacing={2} marginTop={1}>
-            {dishList.map((dish: DishModel) => (role === "ROLE_RESTAURANT"? <DishCard dish={dish} key={dish.id} categoryList={categoryList} role={role} toggleReload={toggleReload} /> :
-            role === "ROLE_CUSTOMER"? <DishCard dish={dish} key={dish.id} role={role}  reservation={reservation} toggleReload={toggleReload}/>
-            : <DishCard dish={dish} key={dish.id} role={role} reservation={reservation} toggleReload={toggleReload} /> ))}
+            {dishList.length === 0? <Skeleton variant="rounded" animation="wave" width={310} height={100} /> :  dishList?.map((dish: DishModel) => 
+            (auth.roles[0] === "ROLE_RESTAURANT"? <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} categoryList={categoryList} toggleReload={toggleReload} /></Grid> :
+            auth.roles[0] === "ROLE_CUSTOMER"? <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} toggleReload={toggleReload}/></Grid>
+            : <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}><DishCard dish={dish} key={dish.id} toggleReload={toggleReload} /></Grid> ))}
         </Grid>
     );
   }

@@ -200,7 +200,7 @@ public class ReservationServiceImpl implements ReservationService {
                     }
                     break;
                 case FINISHED:
-                    finishCustomerReservation(reservation);
+                    finishCustomerReservation(reservation); //todo si esta finished, queda congelada? debería
                     break;
                 case CANCELED: //this shouldnt happen bust just in case
                     cancelReservation(securityCode);
