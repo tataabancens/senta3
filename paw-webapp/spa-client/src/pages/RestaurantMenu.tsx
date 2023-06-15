@@ -5,20 +5,16 @@ import DishDisplay from "../components/DishDisplay";
 import EditCategoryForm from "../components/forms/EditCategoryForm";
 import CreateDishForm from "../components/forms/CreateDishForm";
 import RestaurantHeader from "../components/RestaurantHeader";
-import { handleResponse } from "../Utils";
-import useDishService from "../hooks/serviceHooks/dishes/useDishService";
-import { DishCategoryModel, DishModel } from "../models";
+import { DishCategoryModel } from "../models";
 import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
+import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
+import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
 
 function RestaurantMenu() {
-  const [categoryList, setCategories] = useState<DishCategoryModel[]>([]);
-  // const [dishes, setDishes] = useState<DishModel[]>([]);
   const [value, setValue] = useState(0);
-  const [categoryMap, setMap] = useState<Map<number, DishCategoryModel>>();
   const [editIsOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
   const [canReload, setReload] = useState(false);
-  const dishService = useDishService();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -36,20 +32,15 @@ function RestaurantMenu() {
     setReload(!canReload)
   }
 
-  useEffect(() => {
-    handleResponse(
-      dishService.getDishCategories(),
-      (categories: DishCategoryModel[]) => {
-        setCategories(categories);
-        setValue(categories[0].id);
-        let myMap = new Map<number, DishCategoryModel>();
-        categories.forEach(category => myMap.set(category.id, category));
-        setMap(myMap);
-      }
-    );
-  }, [canReload]);
+  const { restaurant, error: restaurantError, loading: restaurantLoading } = useRestaurant(1);
 
-  const { dishes = [], error, loading } = useDishes(value, categoryMap?.get(value)?.name);
+  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant)
+
+  useEffect(() => {
+    if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
+  }, categoryList);
+
+  const { dishes = [], error, loading } = useDishes(value, categoryMap?.get(value));
 
   return (
     <Grid container spacing={2} justifyContent="center">
@@ -71,7 +62,7 @@ function RestaurantMenu() {
             <Button onClick={toggleDeleteModal} variant="contained" color="error">Delete category</Button>
           </Grid>
           <Grid item>
-            <CreateDishForm categoryList={categoryList}/>
+            <CreateDishForm categoryList={categoryList || []} />
           </Grid>
         </Grid>
       </Grid>

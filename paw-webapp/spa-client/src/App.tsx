@@ -20,8 +20,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/*todo deploy*/}
-        {/*<Route path="/paw-2022a-05/ or /" element={<MainLayout />}>*/}
-        <Route path="/" element={<MainLayout />}>
+        {/* <Route path="/paw-2022a-05/ or /" element={<MainLayout />}> */}
+        <Route path="/paw-2022a-05/" element={<MainLayout />}>
           {/* These are public routes */}
           <Route index element={<MenuPage />} />
           <Route path="login" element={<LoginPage />} />

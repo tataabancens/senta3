@@ -7,6 +7,7 @@ import javax.ws.rs.core.UriInfo;
 
 
 public class OrderItemDto {
+    private String dishName;
     private long orderItemId;
     private long dishId;
     private long reservationId;
@@ -18,6 +19,7 @@ public class OrderItemDto {
     public static OrderItemDto fromOrderItem(final UriInfo uriInfo, OrderItem orderItem) {
         final OrderItemDto dto = new OrderItemDto();
 
+        dto.dishName = orderItem.getDish().getDishName();
         dto.orderItemId = orderItem.getId();
         dto.dishId = orderItem.getDish().getId();
         dto.reservationId = orderItem.getReservation().getId();
@@ -88,5 +90,13 @@ public class OrderItemDto {
 
     public void setTableNmbr(int tableNmbr) {
         this.tableNmbr = tableNmbr;
+    }
+
+    public String getDishName() {
+        return dishName;
+    }
+
+    public void setDishName(String dishName) {
+        this.dishName = dishName;
     }
 }

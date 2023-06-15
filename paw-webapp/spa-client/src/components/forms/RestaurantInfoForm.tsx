@@ -17,7 +17,7 @@ import {
   import { handleResponse } from "../../Utils";
   import {  RestaurantModel } from "../../models";
   import { RestParams } from "../../models/Restaurant/RestParams";
-  import useRestaurantService from "../../hooks/serviceHooks/useRestaurantService";
+  import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestaurantService";
   
   type Props = {
     data: RestaurantModel | undefined;

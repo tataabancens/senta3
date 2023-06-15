@@ -2,8 +2,8 @@ import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typogra
 import { FC, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../../context/ReservationContext";
-import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
-import useReservationService from "../../hooks/serviceHooks/useReservationService";
+import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
+import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import { DishModel, OrderItemModel } from "../../models";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import { handleResponse } from "../../Utils";

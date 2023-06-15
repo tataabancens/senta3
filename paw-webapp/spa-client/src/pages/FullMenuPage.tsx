@@ -7,21 +7,21 @@ import DishDisplay from "../components/DishDisplay";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
 import useDishService from "../hooks/serviceHooks/dishes/useDishService";
-import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
-import useReservationService from "../hooks/serviceHooks/useReservationService";
-import useRestaurantService from "../hooks/serviceHooks/useRestaurantService";
+import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
+import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
+import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
 import {useNavigate, useParams} from "react-router-dom";
 import { ReservationContext } from "../context/ReservationContext";
+import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
+import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
+import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
+import { paths } from "../constants/constants";
 
 function FullMenuPage() {
 
     const [value, setValue] = useState(0);
-    const [restaurant, setRestaurant] = useState<RestaurantModel>();
-    const [dishList, setDishes] = useState<DishModel[]>([]);
     const [reservation, setReservation] = useState<ReservationModel>();
     const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
-    const [categoryList, setCategories] = useState<DishCategoryModel[]>([]);
-    const [categoryMap, setMap] = useState<Map<number,string>>();
     const [reloadOrderItems, setReload] = useState(false);
     const [reloadReservation, setReloadReservation] = useState(false);
 
@@ -46,32 +46,17 @@ function FullMenuPage() {
         setReloadReservation(!reloadReservation);
     }
 
+    const { restaurant, error: restaurantError, loading: restaurantLoading } = useRestaurant(1);
+
+    const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant)
+
     useEffect(() => {
-        handleResponse(
-            restaurantService.getRestaurant(1),
-            (restaurantData: RestaurantModel) => {
-            setRestaurant(restaurantData);
-            }
-        );
+      if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
+    }, categoryList);
+  
+    const { dishes = [], error: dishesError, loading: dishesLoading } = useDishes(value, categoryMap?.get(value));
 
-        handleResponse(
-            dishService.getDishCategories(),
-            (categories: DishCategoryModel[]) => {
-            setCategories(categories);
-            setValue(categories[0].id);
-            let myMap = new Map<number, string>();
-            categories.forEach(category => myMap.set(category.id, category.name));
-            setMap(myMap);
-
-            handleResponse(
-                dishService.getDishes(categories[0].name),
-                (dishes: DishModel[]) => {
-                    dishes.length > 0 ? setDishes(dishes) : setDishes([]);
-                }
-            );
-        });
-    }, []);
-
+    // Volaran en breve xD
     useEffect(() => {
         let resParams = new ReservationParams();
         resParams.securityCode = securityCode;
@@ -79,10 +64,10 @@ function FullMenuPage() {
             reservationService.getReservation(resParams),
             (reservation: ReservationModel) => setReservation(reservation)
         );
-    },[reloadReservation])
+    }, [reloadReservation])
 
     if(reservation?.status === "CANCELED" || reservation?.status === "FINISHED"){
-        navigate(`/reservations/${reservation.securityCode}/checkout`);
+        navigate(`${paths.ROOT}/reservations/${reservation.securityCode}/checkout`);
     }
 
     useEffect(() => {
@@ -96,17 +81,6 @@ function FullMenuPage() {
         )
     },[reloadOrderItems]);
 
-    useEffect(() => {
-        handleResponse(
-            dishService.getDishes(categoryMap?.get(value)),
-            (dishes: DishModel[]) => {
-              dishes.length > 0 ? setDishes(dishes) : setDishes([]);
-            }
-        );
-    }, [value]);
-
-
-
     return(
         <Grid container spacing={2} justifyContent="center">
             <ReservationContext.Provider value={{reservation, updateReservation}}>
@@ -116,7 +90,7 @@ function FullMenuPage() {
                     {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
                     </Tabs>
                 </Grid>
-                <DishDisplay dishList={dishList} role={"ROLE_CUSTOMER"} reservation={reservation} toggleReload={toggleReloadOrderItems}/>
+                <DishDisplay dishList={dishes} role={"ROLE_CUSTOMER"} reservation={reservation} toggleReload={toggleReloadOrderItems}/>
             </ReservationContext.Provider>
         </Grid>
     );

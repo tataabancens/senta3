@@ -74,7 +74,7 @@ export const NavBar: React.FC<{}> = () => {
                       </Typography>
                   </Button>
                   {rolePages.map((pair: nameSitePair, index) => 
-                  <Button variant="contained" key={index} onClick={() => {navigate(paths.ROOT + pair.value)}}>
+                  <Button variant="contained" key={index} onClick={() => {navigate(`${paths.ROOT}/${pair.value}`)}}>
                     <Typography>{pair.key}</Typography>
                   </Button>)}
                 </Stack>
@@ -82,7 +82,7 @@ export const NavBar: React.FC<{}> = () => {
               <Grid item>
                 {auth.roles.length > 0?
                   <Stack direction="row" spacing={2}>
-                    <Button variant="contained" onClick={() => {navigate(paths.ROOT + "profile")}}>
+                    <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/profile")}}>
                       <Typography>{user?.username}</Typography>
                     </Button>
                     <Button onClick={logOut} variant="contained">
@@ -91,10 +91,10 @@ export const NavBar: React.FC<{}> = () => {
                   </Stack>
                   :
                   <Stack direction="row" spacing={2}>
-                    <Button size="large" variant="contained" onClick={() => {navigate(paths.ROOT + "login")}}>
+                    <Button size="large" variant="contained" onClick={() => {navigate(paths.ROOT + "/login")}}>
                       <Typography>Login</Typography>
                     </Button>
-                    <Button size="large" onClick={() => navigate(paths.ROOT + "signUp")} variant="contained">
+                    <Button size="large" onClick={() => navigate(paths.ROOT + "/signUp")} variant="contained">
                       <Typography>Register</Typography>
                     </Button>
                   </Stack>                 

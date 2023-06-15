@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import useUserService from "../hooks/serviceHooks/useUserService";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import useAuth from '../hooks/useAuth';
-import useReservationService from "../hooks/serviceHooks/useReservationService";
+import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import {useNavigate} from "react-router-dom";
 import {awaitWrapper, handleResponse} from "../Utils";
 import {AxiosResponse} from "axios";
@@ -116,7 +116,7 @@ function CustomerReservations() {
             {activeReservations && activeReservations.length > 0 ? (
               activeReservations?.map((reservation) => (
                 <Grid item key={reservation.securityCode} xs={6} sm={3}>
-                  <Button onClick={() => {navigate(paths.RESERVATIONS + "/" + reservation.securityCode)}}>
+                  <Button onClick={() => {navigate(paths.ROOT + paths.RESERVATIONS + "/" + reservation.securityCode)}}>
                     date:{reservation.date} hour:{reservation.hour}hs code:{reservation.securityCode}
                   </Button>
                 </Grid>
@@ -145,7 +145,7 @@ function CustomerReservations() {
             {finishedReservations && finishedReservations.length > 0 ? (
                 finishedReservations?.map((reservation) => (
                 <Grid item key={reservation.securityCode} xs={6} sm={3}>
-                  <Button onClick={() => {navigate(paths.RESERVATIONS + "/" + reservation.securityCode + "/checkout")}}>
+                  <Button onClick={() => {navigate(paths.ROOT + paths.RESERVATIONS + "/" + reservation.securityCode + "/checkout")}}>
                     {reservation.securityCode}
                   </Button>
                 </Grid>

@@ -11,7 +11,7 @@ import {
 import { FC, useState } from "react";
 import { awaitWrapper, handleResponse, loginErrorHandler, tryLogin } from "../../Utils";
 import useUserService from "../../hooks/serviceHooks/useUserService";
-import useRestaurantService from "../../hooks/serviceHooks/useRestaurantService";
+import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestaurantService";
 import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
 import { CustomerModel, RestaurantModel, UserModel } from "../../models";
 import { CustomerParams } from "../../models/Customers/CustomerParams";

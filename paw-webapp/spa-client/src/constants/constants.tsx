@@ -1,10 +1,9 @@
 //todo deploy
-// LOCAL_BASE_URL : 'http://localhost:8080' or 'http://pawserver.it.itba.edu.ar/paw-2022a-05'
+// BASE_URL : 'http://localhost:8080' or 'http://pawserver.it.itba.edu.ar/paw-2022a-05/api'
 // ROOT : '/' or /paw-2022a-05/
 export const paths = {
-    ROOT : '/',
+    ROOT : '/paw-2022a-05',
     BASE_URL : 'http://localhost:8080/api',
-    LOCAL_BASE_URL : 'http://localhost:8080',
     RESTAURANTS: '/restaurants',
     USERS: '/users',
     DISH_CATEGORIES: '/dishCategories',

@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { awaitWrapper, handleResponse } from "../../Utils";
-import useReservationService from "../../hooks/serviceHooks/useReservationService";
+import { awaitWrapper } from "../../Utils";
+import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
 import { paths } from "../../constants/constants";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
@@ -50,7 +50,7 @@ const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => 
 
     props.resetForm();
     props.setSubmitting(false);
-    navigate(`/reservations/${reservation.securityCode}`);
+    navigate(`${paths.ROOT}/reservations/${reservation.securityCode}`);
   };
 
   return (

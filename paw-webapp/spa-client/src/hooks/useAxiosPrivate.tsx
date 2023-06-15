@@ -2,6 +2,7 @@ import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
 import useAuth from "./useAuth";
 import { AxiosError, AxiosResponse } from "axios";
+import { emptyAuth } from "../constants/constants";
 
 const useAxiosPrivate = () => {
     const { auth, setAuth } = useAuth();
@@ -9,7 +10,7 @@ const useAxiosPrivate = () => {
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             (config: any) => {
-                if (!config.headers['Authorization']) {
+                if (!config.headers['Authorization'] && !config.sent) {
                     if (auth?.authorization) {
                         config.headers['Authorization'] = auth.authorization;
                     }
@@ -21,13 +22,20 @@ const useAxiosPrivate = () => {
         const responseIntercept = axiosPrivate.interceptors.response.use(
             (response: AxiosResponse) => response,
             async (error: any) => {
+                
                 if (auth?.authorization) {
                         const prevRequest = error?.config;
+                        if (!prevRequest?.sent) {
+                            console.log("Primero");
+                        } else {
+                            console.log("Segundo")
+                        }
                     if ((error?.response?.status === 403 || error?.response?.status === 401) && !prevRequest?.sent) {
                         prevRequest.sent = true;
                         // TODO: Aca se refresca el token de ser posible
                         // Por el momento vamos a borrar las credenciales del localStorage aca
-                        setAuth({});
+                        setAuth(emptyAuth);
+                        prevRequest.headers['Authorization'] = "";
                         return axiosPrivate(prevRequest);
                     }
                 }

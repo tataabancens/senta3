@@ -9,6 +9,7 @@ import ShoppingCart from "./shoppingCart/ShoppingCart";
 import {useNavigate} from "react-router-dom";
 import CategoryForm from "./forms/CategoryForm";
 import { ReservationContext } from "../context/ReservationContext";
+import { paths } from "../constants/constants";
 
 type Props = {
     restaurant?: RestaurantModel | undefined;
@@ -79,7 +80,7 @@ const RestaurantHeader: FC<Props> = ({
             :
             role === "ROLE_ANONYMOUS"?
             <Grid item>
-            <Button sx={{margin: 1}} variant="contained" color="success" onClick={() => navigate("createReservation")}>Make reservation</Button>
+            <Button sx={{margin: 1}} variant="contained" color="success" onClick={() => navigate(paths.ROOT + "/createReservation")}>Make reservation</Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={handleAuthReservation}> Have reservation</Button>
             </Grid>
             :

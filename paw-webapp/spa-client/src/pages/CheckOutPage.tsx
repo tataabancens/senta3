@@ -3,8 +3,8 @@ import { handleResponse } from "../Utils";
 import { OrderItemModel, ReservationModel } from "../models";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
-import useOrderItemService from "../hooks/serviceHooks/useOrderItemService";
-import useReservationService from "../hooks/serviceHooks/useReservationService";
+import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
+import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import { OrderItemService } from "../services/OrderItemService";
 import { useParams } from "react-router-dom";
 import {Button, Grid, Paper, Typography} from "@mui/material";
@@ -89,7 +89,7 @@ function CheckOutPage(){
                     ) : (
                         <Button
                             onClick={() => {
-                                if (reservation) navigate(paths.RESERVATIONS + "/" + reservation.securityCode);
+                                if (reservation) navigate(paths.ROOT + paths.RESERVATIONS + "/" + reservation.securityCode);
                             }}
                         >
                             You didn't order anything!
@@ -103,7 +103,7 @@ function CheckOutPage(){
                                 <Button
                                     fullWidth
                                     onClick={() => {
-                                        if (reservation) navigate(paths.RESERVATIONS + "/" + reservation.securityCode);
+                                        if (reservation) navigate(paths.ROOT + paths.RESERVATIONS + "/" + reservation.securityCode);
                                     }}
                                 >
                                     Continue ordering

@@ -15,7 +15,7 @@ import { handleResponse } from "../../Utils";
 import { DishModel, ReservationModel } from "../../models";
 import { CustomerParams } from "../../models/Customers/CustomerParams";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
-import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
+import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
 
   
   type Props = {

@@ -1,7 +1,7 @@
 import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { FC, useContext, useState } from "react";
 import { ReservationContext } from "../../context/ReservationContext";
-import useReservationService from "../../hooks/serviceHooks/useReservationService";
+import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import { OrderItemModel } from "../../models";
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
 import { handleResponse } from "../../Utils";

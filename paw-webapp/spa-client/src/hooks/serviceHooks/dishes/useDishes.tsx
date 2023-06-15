@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { DishModel } from "../../../models";
+import { DishCategoryModel, DishModel } from "../../../models";
 import useDishService from "./useDishService";
 
-export const useDishes = (value: number, category: string | undefined) => {
+export const useDishes = (value: number, category: DishCategoryModel | undefined) => {
     const [dishes, setDishes] = useState<DishModel[]>();
     const [error, setError] = useState<string>();
     const dishService = useDishService();
@@ -11,7 +11,7 @@ export const useDishes = (value: number, category: string | undefined) => {
     useEffect(() => {
         (async () => {
             if (category) {
-                const { isOk, data, error } = await dishService.getDishesNewVersion(abortController, category);
+                const { isOk, data, error } = await dishService.getDishes(abortController, category.name);
                 if (isOk) {
                     data.length > 0 ? setDishes(data) : setDishes([]);
                 }
@@ -21,7 +21,7 @@ export const useDishes = (value: number, category: string | undefined) => {
         return () => {
             abortController.abort();
         }
-    }, [value]);
+    }, [value, category]);
 
     return {
         dishes: dishes,

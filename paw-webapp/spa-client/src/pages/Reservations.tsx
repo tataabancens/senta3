@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { handleResponse } from "../Utils";
-import useReservationService from "../hooks/serviceHooks/useReservationService";
+import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import { ReservationModel } from "../models";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { useLocation, useNavigate } from "react-router-dom";

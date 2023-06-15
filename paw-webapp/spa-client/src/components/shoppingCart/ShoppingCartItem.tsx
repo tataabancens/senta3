@@ -4,7 +4,7 @@ import { DishModel, OrderItemModel } from "../../models";
 import { handleResponse } from "../../Utils";
 import CloseIcon from '@mui/icons-material/Close';
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
-import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
+import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 
 type Props = {

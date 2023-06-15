@@ -2,6 +2,8 @@ import { AxiosInstance, AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
 import { DishModel, OrderItemModel, ReservationModel } from "../models";
 import {ReservationParams} from "../models/Reservations/ReservationParams";
+import { ResponseDetails } from "./serviceUtils/typings";
+import { buildErrorResponse, buildSuccessResponse } from "./serviceUtils/returnTypesFactory";
 
 export class ReservationService {
     private axios:AxiosInstance;
@@ -24,6 +26,15 @@ export class ReservationService {
 
     public getOrderItems(params: ReservationParams): Promise<AxiosResponse>{
         return this.axios.get<OrderItemModel[]>(paths.RESERVATIONS + '/orderItems' + params.getOrderItemsQuery);
+    }
+
+    public async getOrderItemsNewVersion(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<OrderItemModel[]>>{
+        try {
+            const response = await this.axios.get<OrderItemModel[]>(paths.RESERVATIONS + '/orderItems' + params.getOrderItemsQuery, {signal: abortController.signal});
+            return buildSuccessResponse(response.data as OrderItemModel[]);
+        } catch (e) {
+            return buildErrorResponse(e as Error);
+        }
     }
 
     public getRecommendedDish(securityCode: string): Promise<AxiosResponse>{

@@ -3,6 +3,7 @@ import { NavigateFunction } from "react-router-dom";
 import ApiErrorDetails, { ApiError } from "./models/ApiError/ApiErrorDetails";
 import { FormikHelpers } from "formik";
 import { fromByteArray } from "base64-js";
+import { paths } from "./constants/constants";
 
 export function handleResponse<T>(
     response: Promise<AxiosResponse<T>>,
@@ -16,7 +17,7 @@ export function handleResponse<T>(
         console.log("error:")
         console.log(error)
         if (navigate && location)
-            navigate('/login', { state: { from: location }, replace: true });
+            navigate(`${paths.ROOT}/login`, { state: { from: location }, replace: true });
     });
 }
 

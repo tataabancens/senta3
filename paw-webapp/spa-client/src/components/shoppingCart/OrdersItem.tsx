@@ -3,7 +3,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import { DishModel, OrderItemModel } from "../../models";
 import { handleResponse } from "../../Utils";
 import CloseIcon from '@mui/icons-material/Close';
-import useOrderItemService from "../../hooks/serviceHooks/useOrderItemService";
+import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import InfoIcon from '@mui/icons-material/Info';
 import { ReservationContext } from "../../context/ReservationContext";

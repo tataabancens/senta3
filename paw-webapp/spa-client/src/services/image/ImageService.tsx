@@ -1,7 +1,7 @@
 import { AxiosResponse, AxiosInstance } from "axios";
 import { ImageModel } from "../../models";
 import { paths } from "../../constants/constants";
-import { PostImageDetailsResponse } from "./typings";
+import { ResponseDetails } from "../serviceUtils/typings";
 
 export class ImageService {
     private axios: AxiosInstance;
@@ -14,7 +14,7 @@ export class ImageService {
         return this.axios.get<ImageModel>(`${paths.IMAGES}/${imageId}`);
     }
 
-    public async createImage(formData: FormData): Promise<PostImageDetailsResponse> {
+    public async createImage(formData: FormData): Promise<ResponseDetails<number>> {
         try {
             const response = await this.axios.post(paths.IMAGES, formData, {
                 headers: {
@@ -32,7 +32,7 @@ export class ImageService {
         } catch (e) {
             return {
                 isOk: false,
-                data: undefined,
+                data: null,
                 error: (e as Error).message
             };
         }

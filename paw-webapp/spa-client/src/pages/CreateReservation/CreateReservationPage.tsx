@@ -20,7 +20,7 @@ import Done from './Done';
 import { useState, createContext, useContext } from "react";
 // import {customerService, reservationService, userService} from "../../services";
 import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
-import useReservationService from "../../hooks/serviceHooks/useReservationService";
+import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import useUserService from "../../hooks/serviceHooks/useUserService";
 import axios from "../../api/axios";
 
@@ -177,9 +177,7 @@ const CreateReservation = () => {
           props.setSubmitting(false);
           return;
         }
-        if(customer != undefined){
-          // console.log("customer:");
-          // console.log(customer);
+        if(customer != undefined) {
           setActiveStep(activeStep + 2); //skip create customer
           return;
         }
@@ -199,7 +197,7 @@ const CreateReservation = () => {
           props.setSubmitting(false);
           return;
         }
-        // console.log(customerResponse.headers.location);
+
         const custId = extractUserIdFromLocation(customerResponse.headers.location!);
         setCustomerId(custId);
 
@@ -262,13 +260,13 @@ const CreateReservation = () => {
         await tryLogin<createReservationFormValues>(axios, username, password,
           props, path, setAuth, loginErrorHandler<createReservationFormValues>);
 
-        navigate(`/reservations/${secCode}`);
+        navigate(`${paths.ROOT}/reservations/${secCode}`);
         return;
         break;
 
       case 7:
           props.setFieldValue("userStep", true);
-          navigate(`/reservations/${secCode}`);
+          navigate(`${paths.ROOT}/reservations/${secCode}`);
           return;
         break;
 
@@ -281,11 +279,14 @@ const CreateReservation = () => {
 
   const handleBack = (values: createReservationFormValues, props: FormikHelpers<createReservationFormValues>) => {
     let curr = activeStep;
+    if (curr == 0) {
+      navigate(`${paths.ROOT}`);
+    }
     if (curr == 4) {
       curr--;
     }
     if (curr == 5 || curr == 7) {
-      navigate(`/reservations/${secCode}`);
+      navigate(`${paths.ROOT}/reservations/${secCode}`);
       return;
     }
     if (curr === 1) {

@@ -55,7 +55,7 @@ const CreateDishForm: FC<Props> = ({ categoryList }) => {
         dishParams.price = values.price;
         dishParams.description = values.description;
         dishParams.categoryId = values.categoryId;
-        dishParams.imageId = imageId;
+        dishParams.imageId = imageId!;
         const dishPostResponse = await ds.createDish(dishParams);
 
         props.setSubmitting(false);

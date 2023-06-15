@@ -2,6 +2,8 @@ import { AxiosResponse, AxiosInstance } from "axios";
 import { paths } from "../constants/constants";
 import { RestaurantModel} from "../models";
 import {RestParams} from "../models/Restaurant/RestParams";
+import { buildErrorResponse, buildSuccessResponse } from "./serviceUtils/returnTypesFactory";
+import { ResponseDetails } from "./serviceUtils/typings";
 
 
 export class RestaurantService{
@@ -13,8 +15,14 @@ export class RestaurantService{
 
     private readonly basePath = paths.RESTAURANTS;
 
-    public getRestaurant(id: number): Promise<AxiosResponse<RestaurantModel>>{
-        return this.axios.get<RestaurantModel>(this.basePath + '/'+ id);
+    public async getRestaurant(id: number, abortController: AbortController): Promise<ResponseDetails<RestaurantModel>>{
+        try {
+            const response = await this.axios.get<RestaurantModel>(this.basePath + '/'+ id, { signal: abortController.signal });
+            const data: RestaurantModel = response.data;
+            return buildSuccessResponse(data);
+        } catch (e) {
+            return buildErrorResponse(e as Error);
+        }
     }
 
     public editRestaurant(params: RestParams): Promise<AxiosResponse>{

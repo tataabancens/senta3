@@ -20,6 +20,7 @@ import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import { CustomerParams } from "../models/Customers/CustomerParams";
 import axios from "../api/axios"
 import useAuth from "../hooks/useAuth";
+import { paths } from "../constants/constants";
 
 interface signUpFormValues {
   username: string;
@@ -119,7 +120,7 @@ const SignUpPage = () => {
     await tryLogin<signUpFormValues>(axios, username, password,
       props, path, setAuth, loginErrorHandler<signUpFormValues>);
 
-    navigate("/profile", { replace: true });
+    navigate(paths.ROOT + "/profile", { replace: true });
   }
 
   return (
