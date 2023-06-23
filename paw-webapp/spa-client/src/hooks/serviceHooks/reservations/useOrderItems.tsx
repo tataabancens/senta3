@@ -26,9 +26,19 @@ export const useOrderItems = (filterStatus: string, orderItemStatus: string) => 
         }
     }, []);
 
+    const removeItem = (item: OrderItemModel) => {
+        setOrderItems(prevItems => prevItems.filter(orderItem => orderItem !== item));
+    }
+
+    const addItem = (newItem: OrderItemModel) => {
+        setOrderItems(prevItems => [...prevItems, newItem]);
+    }
+
     return {
         orderItems: orderItems,
         error,
-        loading: !orderItems && !error
+        loading: !orderItems && !error,
+        removeItem,
+        addItem
     }
 }

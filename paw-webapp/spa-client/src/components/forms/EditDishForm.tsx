@@ -12,27 +12,24 @@ import {
     SelectChangeEvent,
     TextField,
   } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { handleResponse } from "../../Utils";
 import { DishCategoryModel, DishModel } from "../../models";
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { DishParams } from "../../models/Dishes/DishParams";
+import { CategoryContext } from "../../context/ReservationContext";
 
   
 type Props = {
     dish: DishModel;
     isOpen: boolean;
-    categoryList: DishCategoryModel[];
     handleOpen: () => void;
-    categoryId: number | undefined;
 };
   
 const EditDishForm: FC<Props> = ({
     dish,
     handleOpen,
     isOpen,
-    categoryList,
-    categoryId
   }): JSX.Element => {
 
     const [name, setName] = useState();
@@ -40,6 +37,7 @@ const EditDishForm: FC<Props> = ({
     const [description, setDescription] = useState();
     const [price, setPrice] = useState();
     const [selectState, setState] = useState("0");
+    const {categoryList, value } = useContext(CategoryContext);
     
     const dishService = useDishService();
 
@@ -69,9 +67,9 @@ const EditDishForm: FC<Props> = ({
     return (
       <>
         <Dialog open={isOpen}>
-          <DialogTitle>Dish edition</DialogTitle>
+          <DialogTitle align="center">Dish edition</DialogTitle>
           <DialogContent>
-            <DialogContentText>
+            <DialogContentText align="center">
                 edit any or all the fields you want changed
             </DialogContentText>
             <Grid container marginY={3} >
@@ -99,16 +97,6 @@ const EditDishForm: FC<Props> = ({
                     xs={12}
                     marginBottom={3}
                     component={TextField}
-                    fullWidth
-                    onChange={(e: any) => setDescription(e.target.value)}
-                    label="Description"
-                    defaultValue={dish.description}
-                />
-                <Grid
-                    item
-                    xs={12}
-                    marginBottom={3}
-                    component={TextField}
                     onChange={(e: any) => setPrice(e.target.value)}
                     label="Price"
                     defaultValue={dish.price}
@@ -121,7 +109,7 @@ const EditDishForm: FC<Props> = ({
                     <InputLabel id="demo-simple-select-helper-label">Category</InputLabel>
                     <Select
                         labelId="demo-simple-select-helper-label"
-                        value={categoryId?.toString()}
+                        value={value.toString()}
                         autoWidth
                         label="Category"
                         onChange={handleChange}
@@ -129,6 +117,17 @@ const EditDishForm: FC<Props> = ({
                         {categoryList?.map((category) => <MenuItem value={category.id.toString()} key={category.id}>{category.name}</MenuItem>)}
                     </Select>
                 </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    marginBottom={3}
+                    component={TextField}
+                    multiline
+                    fullWidth
+                    onChange={(e: any) => setDescription(e.target.value)}
+                    label="Description"
+                    defaultValue={dish.description}
+                />
             </Grid>
           </DialogContent>
           <DialogActions>

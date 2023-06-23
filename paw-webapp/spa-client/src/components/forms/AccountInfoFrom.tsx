@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import { awaitWrapper, handleResponse, loginErrorHandler, tryLogin } from "../../Utils";
-import useUserService from "../../hooks/serviceHooks/useUserService";
+import useUserService from "../../hooks/serviceHooks/users/useUserService";
 import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestaurantService";
 import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
 import { CustomerModel, RestaurantModel, UserModel } from "../../models";

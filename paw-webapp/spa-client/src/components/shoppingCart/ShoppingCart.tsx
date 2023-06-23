@@ -1,23 +1,24 @@
 import { Box, Dialog, DialogContent, DialogTitle, Grid, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { OrderItemModel } from "../../models";
 import { shoppingCartTabs } from "../../constants/constants";
 import OrdersPanel from "./OrdersPanel";
 import ShoppingCartPanel from "./ShoppingCartPanel";
 import CheckPanel from "./CheckPanel";
+import { ReservationContext } from "../../context/ReservationContext";
 
 type Props = {
-    orderItems: OrderItemModel[];
     isOpen: boolean;
     toggleCart: () => void;
     toggleReload?: () => void;
 };
 
 
-const ShoppingCart: FC<Props> =({orderItems, isOpen, toggleCart, toggleReload}) => {
+const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
 
     const [value, setValue] = useState(0);
+    const { orderItems } = useContext(ReservationContext);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -38,9 +39,9 @@ const ShoppingCart: FC<Props> =({orderItems, isOpen, toggleCart, toggleReload}) 
                     </Tabs>
                 </Grid>
                 <Grid item xs={12}>
-                <ShoppingCartPanel value={value} index={0} orderItems={orderItems} toggleReload={toggleReload}/>
-                <OrdersPanel value={value} index={1} orderItems={orderItems} />
-                <CheckPanel value={value} index={2} orderItems={orderItems} />
+                <ShoppingCartPanel value={value} index={0} orderItems={orderItems!} toggleReload={toggleReload}/>
+                <OrdersPanel value={value} index={1} orderItems={orderItems!} />
+                <CheckPanel value={value} index={2} orderItems={orderItems!} />
                 </Grid>            
             </Grid>
          </Grid>

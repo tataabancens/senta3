@@ -11,7 +11,7 @@ import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {emptyAuth, paths} from "../constants/constants";
-import useUserService from "../hooks/serviceHooks/useUserService";
+import useUserService from "../hooks/serviceHooks/users/useUserService";
 import useAuth from "../hooks/useAuth";
 import { UserModel } from "../models";
 import { handleResponse } from "../Utils";

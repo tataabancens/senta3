@@ -9,7 +9,7 @@ import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 
 type Props = {
     orderItem: OrderItemModel;
-    securityCode: string | undefined;
+    securityCode?: string | undefined;
     toggleReload?: () => void;
     isCartItem: boolean
 }

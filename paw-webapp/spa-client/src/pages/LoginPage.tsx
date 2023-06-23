@@ -8,16 +8,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useRef, FC } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture.jpg";
-import { AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
 import useAuth from "../hooks/useAuth";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { awaitWrapper, loginErrorHandler, tryLogin } from "../Utils";
-import axios from "../api/axios"
+import { loginErrorHandler, tryLogin } from "../Utils";
+import axios from "../api/axios";
+import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
+import useCustomerService from "../hooks/serviceHooks/useCustomerService";
+import { extractCustomerIdFromContent } from "./SignUpPage";
 
 export interface loginFormValues {
   username: string;
@@ -25,9 +27,11 @@ export interface loginFormValues {
   remember: boolean;
 }
 
-const LoginPage = () => {
+const LoginPage: FC = () => {
 
   const { setAuth } = useAuth();
+  const restaurantService = useRestaurantService();
+  const customerService = useCustomerService();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,13 +58,16 @@ const LoginPage = () => {
     const {username, password} = values;
     const path = `users/auth`;
     
-    const ok = await tryLogin(axios, username, password,
+    const auth = await tryLogin(axios, username, password,
       props, path, setAuth, loginErrorHandler<loginFormValues>);
-    if (!ok) {
+    
+    if (!auth) {
       props.setSubmitting(false);
       return;
     }
-    
+
+    setAuth(auth);
+
     props.setSubmitting(false);
     
     navigate(from, { replace: true });

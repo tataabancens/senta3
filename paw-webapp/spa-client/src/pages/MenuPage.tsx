@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { DishCategoryModel, DishModel, RestaurantModel } from "../models";
+import { FC, useEffect, useState } from "react";
+import { DishCategoryModel } from "../models";
 import { Grid, Tab, Tabs } from "@mui/material";
 import RestaurantHeader from "../components/RestaurantHeader";
 import DishDisplay from "../components/DishDisplay";
@@ -7,7 +7,7 @@ import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
 import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
 
-function MenuPage() {
+const MenuPage: FC = () => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -16,13 +16,14 @@ function MenuPage() {
 
   const { restaurant, error: restaurantError, loading: restaurantLoading } = useRestaurant(1);
 
-  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant)
+  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant);
+
+  const { dishes = [], error: dishesError, loading: dishesLoading } = useDishes(value, categoryMap?.get(value));
 
   useEffect(() => {
     if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
   }, categoryList);
 
-  const { dishes = [], error, loading } = useDishes(value, categoryMap?.get(value));
 
   return (
     <Grid container spacing={2} justifyContent="center">
@@ -32,7 +33,7 @@ function MenuPage() {
           {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
         </Tabs>
       </Grid>
-      <DishDisplay dishList={dishes} role={"ROLE_ANONYMOUS"} actualId={value} />
+      <DishDisplay isMenu={false} dishes={dishes} />
     </Grid>
   );
 }

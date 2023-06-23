@@ -6,13 +6,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture2.jpg";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { handleResponse, handleFormResponse, awaitWrapper, loginErrorHandler, tryLogin } from "../Utils";
-import useUserService from "../hooks/serviceHooks/useUserService";
+import useUserService from "../hooks/serviceHooks/users/useUserService";
 import { UserParams } from "../models/Users/UserParams";
 import ApiErrorDetails, { ApiError } from "../models/ApiError/ApiErrorDetails";
 import { CustomerService } from "../services/customer/CustomerService";
@@ -49,7 +49,7 @@ export const extractCustomerIdFromContent = (content: string): number=> {
   return parseInt(stringValue);
 }
 
-const SignUpPage = () => {
+const SignUpPage: FC = () => {
 
   const userService = useUserService();
   const customerService = useCustomerService();

@@ -15,7 +15,7 @@ import {
   Switch,
   Grid,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { handleResponse } from "../Utils";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import { ReservationModel } from "../models";
@@ -23,7 +23,7 @@ import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReservationRow from "../components/ReservationRow";
 
-function Reservations() {
+const Reservations: FC = () => {
   const [value, setValue] = useState(9);
   const [page, setPage] = useState(1);
   const [reservationList, setReservations] = useState<ReservationModel[]>([]);

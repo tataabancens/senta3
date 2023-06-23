@@ -1,15 +1,16 @@
 import { Box, Button, Grid, Paper, Typography } from "@mui/material";
-import axios, { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { AxiosResponse } from "axios";
+import { useEffect, useState, FC } from "react";
 import AccountInfoForm from "../components/forms/AccountInfoFrom";
 import RestaurantInfoForm from "../components/forms/RestaurantInfoForm";
 import { handleResponse } from "../Utils";
 import { CustomerModel, RestaurantModel, UserModel } from "../models";
-import useUserService from "../hooks/serviceHooks/useUserService";
+import useUserService from "../hooks/serviceHooks/users/useUserService";
 import useAuth from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { initCustomer, initRestaurant } from "../constants/constants";
 
-function ProfilePage() {
+const ProfilePage: FC = () => {
   const { auth } = useAuth();
 
   const initUser: UserModel = {
@@ -17,32 +18,6 @@ function ProfilePage() {
     role: auth.roles[0],
     content: '',
     id: auth.id,
-  }
-
-  const initRestaurant: RestaurantModel = {
-    id: 1,
-    name: '',
-    phone: '',
-    mail: '',
-    dishes: '',
-    reservations: '',
-    dishCategories: '',
-    user: '',
-    totalChairs: 0,
-    openHour: 0,
-    closeHour: 0,
-    self: ''
-  }
-
-  const initCustomer: CustomerModel = {
-    id: 0,
-    name: '',
-    phone: '',
-    mail: '',
-    points: 0,
-    user: '',
-    reservations: '',
-    self: '',
   }
 
 

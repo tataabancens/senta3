@@ -1,179 +1,55 @@
 import {
-  Button,
   Grid,
   Paper,
   Typography
 } from "@mui/material";
-import {CustomerModel, ReservationModel, UserModel} from "../models";
-import {useEffect, useState} from "react";
-import useUserService from "../hooks/serviceHooks/useUserService";
-import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import useAuth from '../hooks/useAuth';
-import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
-import {useNavigate} from "react-router-dom";
-import {awaitWrapper, handleResponse} from "../Utils";
-import {AxiosResponse} from "axios";
-import {extractCustomerIdFromContent} from "./SignUpPage";
-import {ReservationParams} from "../models/Reservations/ReservationParams";
-import {paths} from "../constants/constants";
+import { FC } from "react";
+import { CustomerModel, ReservationModel, UserModel } from "../models";
+import { useReservations } from "../hooks/serviceHooks/reservations/useReservations";
 
 
-function CustomerReservations() {
+const CustomerReservations: FC = () => {
   const { auth } = useAuth();
-  let navigate = useNavigate();
+  const { content: customer } = auth as { content: CustomerModel };
 
-  const [user, setUser] = useState<UserModel>();
-  const [customer, setCustomer] = useState<CustomerModel>();
-  const [activeReservations, setActiveReservations] = useState<Array<ReservationModel>>();
-  const [finishedReservations, setFinishedReservations] = useState<Array<ReservationModel>>();
-  const [cancelledReservations, setCancelledReservations] = useState<Array<ReservationModel>>();
+  const activeFilterStatus = "0"
+  const { reservations: activeReservations, error: activeReservationsError, loading: activeReservationsLoading } = useReservations(customer.id, activeFilterStatus);
 
-
-
-  const userService = useUserService();
-  const customerService = useCustomerService();
-  const reservationService = useReservationService();
-
-  const activeResParams: ReservationParams = new ReservationParams();
-  const finishedResParams: ReservationParams = new ReservationParams();
-  const cancelledResParams: ReservationParams = new ReservationParams();
-
-
-
-
-  useEffect(() => {
-    if(user == undefined){
-      handleResponse(userService.getUserById(auth.id), (user: UserModel) =>
-          setUser(user)
-      );
-    }
-  });
-
-  useEffect(() => {
-    if(user != undefined && customer == undefined) {
-      const custId = extractCustomerIdFromContent(user.content);
-      handleResponse(customerService.getCustomerById(custId), (customer: CustomerModel) =>
-          setCustomer(customer)
-      );
-    }
-  });
-
-  if(customer != undefined && activeReservations == undefined){
-    activeResParams.customerId = customer.id;
-    activeResParams.filterStatus = "0";
-    handleResponse(reservationService.getReservations(activeResParams), (activeReservations: Array<ReservationModel>) =>
-        setActiveReservations(activeReservations)
-    );
-  }
-
-  if(customer != undefined && finishedReservations == undefined){
-    finishedResParams.customerId = customer.id;
-    finishedResParams.filterStatus = "3";
-    handleResponse(reservationService.getReservations(finishedResParams), (finishedReservations: Array<ReservationModel>) =>
-        setFinishedReservations(finishedReservations)
-    );
-  }
-  if(customer != undefined && cancelledReservations == undefined){
-    cancelledResParams.customerId = customer.id;
-    cancelledResParams.filterStatus = "4";
-    handleResponse(reservationService.getReservations(cancelledResParams), (cancelledReservations: Array<ReservationModel>) =>
-        setCancelledReservations(cancelledReservations)
-    );
-  }
+  const finishedFilterStatus = "3"
+  const { reservations: finishedReservations, error: finishedReservationsError, loading: finishedReservationsLoading } = useReservations(customer.id, finishedFilterStatus);
 
   return (
-      <Grid
-          item
-          container
-          justifyContent="space-around"
-          sx={{ height: "40vh" }}
-      >
-        <Grid //POINTS
-            item
-            container
-            xs={11}
-            sm={11}
-            component={Paper}
-            borderRadius={3}
-            elevation={3}
-            padding={2}
-        >
-          <Grid item component={Typography} variant="h5" xs={12} marginY={2}>Points: {customer?.points}</Grid>
-        </Grid>
-
-        <Grid //ACTIVE RESERVATIONS
-            item
-            container
-            xs={6}
-            sm={6}
-            component={Paper}
-            borderRadius={3}
-            elevation={3}
-            padding={2}
-        >
-          <Grid item component={Typography} variant="h4" xl={11} lg={11} md={11} sm={12} xs={12} marginBottom={4}>Active reservations:</Grid>
-          <Grid container spacing={2}>
-            {activeReservations && activeReservations.length > 0 ? (
-              activeReservations?.map((reservation) => (
-                <Grid item key={reservation.securityCode} xs={6} sm={3}>
-                  <Button onClick={() => {navigate(paths.ROOT + paths.RESERVATIONS + "/" + reservation.securityCode)}}>
-                    date:{reservation.date} hour:{reservation.hour}hs code:{reservation.securityCode}
-                  </Button>
-                </Grid>
-            ))
-            ) : (
-                <Grid item xs={12}>
-                  No active reservations found.
-                </Grid>
-            )}
-          </Grid>
-        </Grid>
-
-        <Grid //HISTORY
-            item
-            container
-            xs={6}
-            sm={6}
-            component={Paper}
-            borderRadius={3}
-            elevation={3}
-            padding={2}
-        >
-          <Grid item component={Typography} variant="h4" xl={11} lg={11} md={11} sm={12} xs={12} marginBottom={4}>History:</Grid>
-          <Grid container spacing={2}>
-            Finished:
-            {finishedReservations && finishedReservations.length > 0 ? (
-                finishedReservations?.map((reservation) => (
-                <Grid item key={reservation.securityCode} xs={6} sm={3}>
-                  <Button onClick={() => {navigate(paths.ROOT + paths.RESERVATIONS + "/" + reservation.securityCode + "/checkout")}}>
-                    {reservation.securityCode}
-                  </Button>
-                </Grid>
-            ))
-            ) : (
-            <Grid item xs={12}>
-              No finished past reservations found.
-            </Grid>
-            )}
-
-            Cancelled:
-            {cancelledReservations && cancelledReservations.length > 0 ? (
-                cancelledReservations?.map((reservation) => (
-                    <Grid item key={reservation.securityCode} xs={6} sm={3}>
-                      {reservation.securityCode}
-                    </Grid>
-                ))
-            ) : (
-                <Grid item xs={12}>
-                  No cancelled past reservations found.
-                </Grid>
-            )}
-          </Grid>
-        </Grid>
-
+    <Grid container justifyContent="center" xs={12} padding={3}>
+      <Grid item container component={Paper} elevation={5} xs={12} padding={2} borderRadius={2} justifyContent="space-between" alignItems="center">
+        <Grid item xs={6}><Typography variant="h4">{customer?.name}</Typography></Grid>
+        <Grid item xs={6}><Typography variant="h4" align="right">Points: {customer?.points}</Typography></Grid>
       </Grid>
-
+      <Grid item container xs={12} component={Paper} elevation={5} padding={2} borderRadius={2} marginTop={3} sx={{ minHeight: 300 }}>
+        <Grid item xs={12}><Typography variant="h5" align="center">Active Reservations</Typography></Grid>
+        <Grid item container xs={12} spacing={2}>
+          {activeReservations.map(reservation =>
+            <Grid item container component={Paper} xs={3} elevation={4}>
+              <Grid item xs={12}><Typography>date: {reservation.date}</Typography></Grid>
+              <Grid item xs={12}><Typography>hour: {reservation.hour}:00</Typography></Grid>
+              <Grid item xs={12}><Typography>people: {reservation.peopleAmount}</Typography></Grid>
+            </Grid>)}
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} component={Paper} elevation={5} padding={2} borderRadius={2} marginTop={3} sx={{ minHeight: 300 }}>
+        <Grid item xs={12}><Typography variant="h5" align="center">Finished Reservations</Typography></Grid>
+        <Grid item container xs={12} spacing={2}>
+          {finishedReservations.map(reservation =>
+            <Grid item container component={Paper} xs={3} elevation={4}>
+              <Grid item xs={12}><Typography>date: {reservation.date}</Typography></Grid>
+              <Grid item xs={12}><Typography>hour: {reservation.hour}:00</Typography></Grid>
+              <Grid item xs={12}><Typography>people: {reservation.peopleAmount}</Typography></Grid>
+            </Grid>)}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 
 export default CustomerReservations;
+

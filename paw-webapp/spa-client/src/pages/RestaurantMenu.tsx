@@ -1,5 +1,5 @@
 import { Button, Grid, Tab, Tabs } from "@mui/material";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, FC } from "react";
 import ConfirmationMessage from "../components/ConfirmationMessage";
 import DishDisplay from "../components/DishDisplay";
 import EditCategoryForm from "../components/forms/EditCategoryForm";
@@ -9,8 +9,9 @@ import { DishCategoryModel } from "../models";
 import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
 import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
+import { CategoryContext } from "../context/ReservationContext";
 
-function RestaurantMenu() {
+const RestaurantMenu: FC = () => {
   const [value, setValue] = useState(0);
   const [editIsOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
@@ -34,13 +35,13 @@ function RestaurantMenu() {
 
   const { restaurant, error: restaurantError, loading: restaurantLoading } = useRestaurant(1);
 
-  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant)
+  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant);
+
+  const { dishes = [], error: dishesError, loading: dishesLoading } = useDishes(value, categoryMap?.get(value));
 
   useEffect(() => {
     if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
   }, categoryList);
-
-  const { dishes = [], error, loading } = useDishes(value, categoryMap?.get(value));
 
   return (
     <Grid container spacing={2} justifyContent="center">
@@ -61,12 +62,11 @@ function RestaurantMenu() {
           <Grid item>
             <Button onClick={toggleDeleteModal} variant="contained" color="error">Delete category</Button>
           </Grid>
-          <Grid item>
-            <CreateDishForm categoryList={categoryList || []} />
-          </Grid>
         </Grid>
       </Grid>
-      <DishDisplay dishList={dishes} role={"ROLE_RESTAURANT"} categoryList={categoryList} actualId={value} />
+      <CategoryContext.Provider value={{value, categoryList, categoryMap}}>
+        <DishDisplay isMenu={true} dishes={dishes}/>
+      </CategoryContext.Provider>
     </Grid>
   );
 }

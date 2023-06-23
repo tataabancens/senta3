@@ -17,11 +17,10 @@ import HourForm from './HourForm';
 import InfoForm from './InfoForm';
 import InfoFormStatic from './InfoFormStatic';
 import Done from './Done';
-import { useState, createContext, useContext } from "react";
-// import {customerService, reservationService, userService} from "../../services";
+import { useState, createContext, useContext, FC } from "react";
 import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
 import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
-import useUserService from "../../hooks/serviceHooks/useUserService";
+import useUserService from "../../hooks/serviceHooks/users/useUserService";
 import axios from "../../api/axios";
 
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
@@ -29,7 +28,7 @@ import { CustomerParams } from "../../models/Customers/CustomerParams";
 import ShortRegisterForm from "./ShortRegisterForm";
 import { UserParams } from "../../models/Users/UserParams";
 import { useNavigate } from "react-router-dom";
-import {paths} from "../../constants/constants";
+import {paths, steps} from "../../constants/constants";
 import {extractCustomerIdFromContent, extractUserIdFromLocation} from "../SignUpPage";
 
 import * as Yup from "yup";
@@ -72,11 +71,7 @@ interface AvailableHours {
   availableHours: number[];
 }
 
-const steps = ['How many?', 'Date?', 'Hour?', 'Contact info', 'Done!'];
-
-const theme = createTheme();
-
-const CreateReservation = () => {
+const CreateReservation: FC = () => {
     const customerService = useCustomerService();
     const reservationService = useReservationService();
     const userService = useUserService();
@@ -135,9 +130,6 @@ const CreateReservation = () => {
 
     switch (activeStep) {
       case 0: //qPeople
-        // console.log("auth: ");
-        // console.log(auth);
-        // console.log("---");
           if(auth.id > 0){ //there is a logged in user
             handleResponse(userService.getUserById(auth.id), (user: UserModel) =>
                 setUser(user)
@@ -146,12 +138,8 @@ const CreateReservation = () => {
         break;
       case 1: //date
         if (auth.id > 0) { //there is a logged in user
-          // console.log("user:");
-          // console.log(user);
           if (user != undefined) {
             const custId = extractCustomerIdFromContent(user.content);
-            // console.log("custId:");
-            // console.log(custId);
             setCustomerId(custId);
             handleResponse(customerService.getCustomerById(custId), (customer: CustomerModel) =>
                 setCustomer(customer)

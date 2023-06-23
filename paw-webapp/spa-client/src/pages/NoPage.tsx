@@ -1,6 +1,7 @@
+import { FC } from "react";
 
 
-function NoPage(){
+const NoPage: FC = () => {
     return(
         <h1> 404 page</h1>
     );

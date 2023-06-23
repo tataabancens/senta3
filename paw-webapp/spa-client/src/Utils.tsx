@@ -72,13 +72,15 @@ export async function tryLogin<T>(axios: AxiosInstance,
             const role = response?.data?.role;
             const roles: string[] = [role];
             const id = response?.data?.id;
+            const contentURL = response?.data?.content;
+            const content = undefined;
             console.log("logged in username: " + username);
 
-            setAuth({ username, roles, authorization, id });
-            return true;
+            const auth = { username, roles, authorization, id, contentURL, content }
+            return auth;
         } catch (err: any) {
             errorHandler(err, props);
-            return false;
+            return null;
         }
 }
 

@@ -14,14 +14,12 @@ import { paths } from "../constants/constants";
 type Props = {
     restaurant?: RestaurantModel | undefined;
     role: string;
-    orderItems?: OrderItemModel[];
     toggleReload?: () => void;
 };
 
 const RestaurantHeader: FC<Props> = ({
     restaurant,
     role,
-    orderItems,
     toggleReload
   }): JSX.Element => {
 
@@ -73,7 +71,7 @@ const RestaurantHeader: FC<Props> = ({
         {reservation? 
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
-            <ShoppingCart orderItems={orderItems!} toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
+            <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><ShoppingCartIcon/></Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>My reservation</Button>
             </Grid>

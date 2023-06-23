@@ -1,14 +1,30 @@
 import { createContext } from "react";
-import { ReservationModel } from "../models";
+import { DishCategoryModel, OrderItemModel, ReservationModel } from "../models";
 
 
 interface ReservationContextProps{
     reservation: ReservationModel | undefined;
     updateReservation: () => void;
+    orderItems: OrderItemModel[] | undefined;
+    updateOrderItems: () => void;
 }
 const emptyReservationContext: ReservationContextProps = {
     reservation: undefined,
-    updateReservation: () => null
+    updateReservation: () => null,
+    orderItems: undefined,
+    updateOrderItems: () => null
 }
-
 export const ReservationContext = createContext<ReservationContextProps>(emptyReservationContext);
+
+interface CategoryContextProps{
+    value: number;
+    categoryList: DishCategoryModel[] | undefined;
+    categoryMap: Map<number, DishCategoryModel> | undefined;
+}
+const defaultCategoryContext = {
+    value: 0,
+    categoryList: undefined,
+    categoryMap: undefined,
+  };
+
+export const CategoryContext = createContext<CategoryContextProps>(defaultCategoryContext);

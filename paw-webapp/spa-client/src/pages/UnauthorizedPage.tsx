@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom";
 import {
     Button,
 } from "@mui/material";
+import { FC } from "react";
 
-const UnauthorizedPage = () => {
+const UnauthorizedPage: FC = () => {
     const navigate = useNavigate();
 
     const goBack = () => navigate(-1);
