@@ -17,7 +17,11 @@ const UploadImage: FC<Props> = ({props}) => {
     // create a preview as a side effect, whenever selected file is changed
     useEffect(() => {
         if (!selectedFile) {
-            setPreview("");
+            if (image === ""){
+                setPreview("");
+            } else {
+                setPreview(image as string);
+            }
             return
         }
 
@@ -42,7 +46,7 @@ const UploadImage: FC<Props> = ({props}) => {
     return (
         <Grid>
             <input type='file'
-                required
+                // required
                 id="image"
                 name="image"
                 onChange={onSelectFile}
@@ -50,7 +54,7 @@ const UploadImage: FC<Props> = ({props}) => {
             />
             { errors.image ?
                     (<p style={{color: 'red'}}>{errors.image}</p>)
-                :   (selectedFile && <img src={preview}/>)
+                :   ((selectedFile || image !== "") && <img src={preview}/>)
             }
         </Grid>
     );

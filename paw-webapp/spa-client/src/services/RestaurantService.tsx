@@ -17,7 +17,9 @@ export class RestaurantService{
 
     public async getRestaurant(id: number, abortController: AbortController): Promise<ResponseDetails<RestaurantModel>>{
         try {
+            console.log("Hola");
             const response = await this.axios.get<RestaurantModel>(this.basePath + '/'+ id, { signal: abortController.signal });
+            console.log(response.data);
             const data: RestaurantModel = response.data;
             return buildSuccessResponse(data);
         } catch (e) {

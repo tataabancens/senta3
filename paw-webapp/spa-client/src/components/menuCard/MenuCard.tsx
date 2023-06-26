@@ -6,6 +6,7 @@ import useAuth from "../../hooks/useAuth";
 import { DishCategoryModel, DishModel } from "../../models";
 import EditDishForm from "../forms/EditDishForm";
 import './styles.css';
+import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
 
 type Props = {
     dish: DishModel;
@@ -17,15 +18,15 @@ type Props = {
   
     const [editIsOpen, setEditIsOpen] = useState(false);
 
-    const {categoryList, value } = useContext(CategoryContext);
+    const { useEditDishIsOpen: { setEditDishIsOpen }, useDish: { setDish }} = useRestaurantMenuContext();
   
     const toggleEditForm = () => {
-      setEditIsOpen(!editIsOpen)
+      setDish(dish);
+      setEditDishIsOpen(true);
     };
   
     return (
     <>
-      <EditDishForm isOpen={editIsOpen} handleOpen={toggleEditForm} dish={dish}/>
       <Link className="menuCardHover" style={linkStyle} onClick={toggleEditForm} color="inherit" underline="none">
         <img src={dish.image}  alt="la foto del plato" style={{objectFit:"cover", width: 110, borderRadius: ".8rem", aspectRatio: 1, marginRight: 20}}/>
         <div>

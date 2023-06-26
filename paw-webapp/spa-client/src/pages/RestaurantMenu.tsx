@@ -8,21 +8,34 @@ import RestaurantHeader from "../components/RestaurantHeader";
 import { DishCategoryModel } from "../models";
 import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
-import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
-import { CategoryContext } from "../context/ReservationContext";
+import EditDishForm from "../components/forms/EditDishForm";
+import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
 
 const RestaurantMenu: FC = () => {
-  const [value, setValue] = useState(0);
-  const [editIsOpen, setIsOpen] = useState(false);
+  const [editCategoryIsOpen, setEditCetgoryIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
   const [canReload, setReload] = useState(false);
 
+  const { useDish: { dish }, useCurrentCategory: { categoryId, setCategoryId },
+    useEditDishIsOpen: { editDishIsOpen, setEditDishIsOpen }, 
+    getRestaurant, getDishCategories, getDishes } = useRestaurantMenuContext();
+
+  const { restaurant, error: restaurantError, loading: restaurantLoading } = getRestaurant;
+
+  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = getDishCategories;
+
+  const { dishes = [], error, loading, setDishes } = getDishes;
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setCategoryId(newValue);
   };
 
-  const toggleEditForm = () => {
-    setIsOpen(!editIsOpen);
+  const toggleEditCategoryForm = () => {
+    setEditCetgoryIsOpen(!editCategoryIsOpen);
+  }
+
+  const toggleEditDishForm = () => {
+    setEditDishIsOpen(!editDishIsOpen);
   }
 
   const toggleDeleteModal = () => {
@@ -33,40 +46,34 @@ const RestaurantMenu: FC = () => {
     setReload(!canReload)
   }
 
-  const { restaurant, error: restaurantError, loading: restaurantLoading } = useRestaurant(1);
-
-  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = useDishCategories(restaurant);
-
-  const { dishes = [], error: dishesError, loading: dishesLoading } = useDishes(value, categoryMap?.get(value));
-
-  useEffect(() => {
-    if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
-  }, categoryList);
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      <EditCategoryForm isOpen={editIsOpen} handleOpen={toggleEditForm} category={categoryMap?.get(value)} canReload={toggleReload} />
-
+      <EditCategoryForm isOpen={editCategoryIsOpen} handleOpen={toggleEditCategoryForm} />
       <RestaurantHeader role={"ROLE_RESTAURANT"} toggleReload={toggleReload} />
-      <ConfirmationMessage isOpen={deleteIsOpen} handleOpen={toggleDeleteModal} data={categoryMap?.get(value)} canReload={toggleReload} />
+      <ConfirmationMessage isOpen={deleteIsOpen} handleOpen={toggleDeleteModal} category={categoryMap?.get(categoryId)!} canReload={toggleReload} />
       <Grid item container xs={11} marginTop={2} justifyContent="space-between">
         <Grid item xs={10}>
-          <Tabs value={value} onChange={(event, value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
+          <Tabs value={categoryId} onChange={(event, value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
             {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
           </Tabs>
         </Grid>
         <Grid item container xs={2} justifyContent="space-evenly">
           <Grid item>
-            <Button onClick={toggleEditForm} variant="contained" color="success">Edit category</Button>
+            <Button onClick={toggleEditCategoryForm} variant="contained" color="success">Edit category</Button>
           </Grid>
           <Grid item>
             <Button onClick={toggleDeleteModal} variant="contained" color="error">Delete category</Button>
           </Grid>
+          <Grid item>
+            {/* <CreateDishForm categoryList={categoryList || []} dishes={dishes} setDishes={setDishes} /> */}
+          </Grid>
+          <Grid item>
+            {editDishIsOpen && <EditDishForm isOpen={editDishIsOpen} handleOpen={toggleEditDishForm} categoryList={categoryList!} dish={dish!} dishes={dishes} setDishes={setDishes} />}
+          </Grid>
         </Grid>
       </Grid>
-      <CategoryContext.Provider value={{value, categoryList, categoryMap}}>
-        <DishDisplay isMenu={true} dishes={dishes}/>
-      </CategoryContext.Provider>
+      <DishDisplay isMenu={true} dishes={dishes}/>
     </Grid>
   );
 }

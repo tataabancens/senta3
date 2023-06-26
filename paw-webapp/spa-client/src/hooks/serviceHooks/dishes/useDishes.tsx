@@ -23,9 +23,34 @@ export const useDishes = (value: number, category: DishCategoryModel | undefined
         }
     }, [value, category]);
 
+    const addDish = (dish: DishModel) => {
+        setDishes([...dishes!, dish]);
+    }
+
+    const updateDish = (dish: DishModel) => {
+        const updatedDishes = dishes!.map((d) => {
+            if (dish.id === d.id) {
+                return dish;
+            }
+            return d;
+        })
+        setDishes(updatedDishes);
+    }
+
+    const removeDish = (dish: DishModel) => {
+        const updatedDishes = dishes!.filter((d) => {
+            return dish.id !== d.id;
+        })
+        setDishes(updatedDishes);
+    }
+
     return {
         dishes: dishes,
         error,
         loading: !dishes && !error,
+        setDishes,
+        addDish,
+        updateDish,
+        removeDish
     }
 }

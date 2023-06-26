@@ -14,6 +14,7 @@ import FullMenuPage from "./pages/FullMenuPage";
 import CheckOutPage from "./pages/CheckOutPage";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import Kitchen from "./pages/Kitchen";
+import { RestaurantMenuProvider } from "./context/RestaurantMenuContext";
 
 function App() {
   return (
@@ -39,8 +40,11 @@ function App() {
           {/* Restaurant only Routes*/}
           <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT"]} />}>
             <Route path="restaurantReservations" element={<Reservations />} />
-            <Route path="restaurantMenu" element={<RestaurantMenu />}/>
-            <Route path="kitchen" element={<Kitchen />}/>
+            <Route path="restaurantMenu" element={
+              <RestaurantMenuProvider>
+                <RestaurantMenu />
+              </RestaurantMenuProvider>} />
+            <Route path="kitchen" element={<Kitchen />} />
           </Route>
 
           {/* Restaurant and customer */}

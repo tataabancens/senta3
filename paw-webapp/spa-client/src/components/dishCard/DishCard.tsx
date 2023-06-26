@@ -1,5 +1,5 @@
-import { Typography } from "@mui/material";
-import { FC, useContext, useState} from "react";
+import { Typography, Grid } from "@mui/material";
+import { FC, useContext, useState } from "react";
 
 import DishModel from "../../models/Dishes/DishModel";
 import Link from '@mui/material/Link';
@@ -9,6 +9,7 @@ import {linkStyle, paths} from "../../constants/constants";
 import useAuth from "../../hooks/useAuth";
 import './styles.css';
 import { ReservationContext } from "../../context/ReservationContext";
+import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
 
 
 type Props = {
@@ -25,11 +26,21 @@ const DishCard: FC<Props> = ({
   let navigate = useNavigate();
   const { auth } = useAuth()
   const { reservation } = useContext(ReservationContext);
+  const { useDish: { setDish }, useCurrentCategory: { setCategoryId }, useEditDishIsOpen: { setEditDishIsOpen } } = useRestaurantMenuContext();
+
+  const extractCategoryIdFromUrl = (urlCategory: string) => {
+    const parts = urlCategory.split('/');
+    return parseInt(parts.pop()!);
+  }
 
   const handleDishForm = () => {
     if(!reservation){
       navigate(paths.ROOT + "/createReservation");
-    }else if(reservation || (reservation && auth.roles[0] === "ROLE_RESTAURANT")){
+    } else if (auth.roles[0] === "ROLE_RESTAURANT") {
+      setDish(dish);
+      setCategoryId(extractCategoryIdFromUrl(dish.category));
+      setEditDishIsOpen(true);
+    } else if (reservation || (reservation && auth.roles[0] === "ROLE_RESTAURANT")) {
       setCardOpen(!isCardOpen);
     }
   };

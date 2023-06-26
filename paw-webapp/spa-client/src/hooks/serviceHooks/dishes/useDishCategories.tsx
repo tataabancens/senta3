@@ -4,7 +4,7 @@ import useDishService from "./useDishService";
 
 export const useDishCategories = (restaurant: RestaurantModel | undefined) => {
     const [categories, setCategories] = useState<DishCategoryModel[]>();
-    const [categoryMap, setMap] = useState<Map<number, DishCategoryModel>>();
+    const [categoryMap, setCategoryMap] = useState<Map<number, DishCategoryModel>>();
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
     const dishService = useDishService();
@@ -18,7 +18,7 @@ export const useDishCategories = (restaurant: RestaurantModel | undefined) => {
                         setCategories(data);
                         let myMap = new Map<number, DishCategoryModel>();
                         data.forEach(category => myMap.set(category.id, category));
-                        setMap(myMap);
+                        setCategoryMap(myMap);
                     } else {
                         setCategories([]);
                     }
@@ -37,5 +37,7 @@ export const useDishCategories = (restaurant: RestaurantModel | undefined) => {
         categoryMap: categoryMap,
         error,
         loading: !categories && !error && !categoryMap,
+        setCategories,
+        setCategoryMap,
     }
 }

@@ -16,7 +16,7 @@ export interface Authentication {
 
 export interface AuthContextValue {
     auth: Authentication;
-    setAuth: (newAuth: any) => void;
+    setAuth: (newAuth: Authentication) => void;
 }
 
 const authContext: AuthContextValue = {

@@ -76,7 +76,7 @@ export async function tryLogin<T>(axios: AxiosInstance,
             const content = undefined;
             console.log("logged in username: " + username);
 
-            const auth = { username, roles, authorization, id, contentURL, content }
+            const auth = { user: username, roles, authorization, id, contentURL, content }
             return auth;
         } catch (err: any) {
             errorHandler(err, props);
