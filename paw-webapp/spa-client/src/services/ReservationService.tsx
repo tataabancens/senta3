@@ -45,19 +45,6 @@ export class ReservationService {
         return this.axios.post(paths.RESERVATIONS, params.createReservationPayload, {headers:{customerId: params.customerId}});
     }
 
-    public getOrderItems(params: ReservationParams): Promise<AxiosResponse>{
-        return this.axios.get<OrderItemModel[]>(paths.RESERVATIONS + '/orderItems' + params.getOrderItemsQuery);
-    }
-
-    public async getOrderItemsNewVersion(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<OrderItemModel[]>>{
-        try {
-            const response = await this.axios.get<OrderItemModel[]>(paths.RESERVATIONS + '/orderItems' + params.getOrderItemsQuery, {signal: abortController.signal});
-            return buildSuccessResponse(response.data as OrderItemModel[]);
-        } catch (e) {
-            return buildErrorResponse(e as Error);
-        }
-    }
-
     public getRecommendedDish(securityCode: string): Promise<AxiosResponse>{
         return this.axios.get<DishModel>(paths.RESERVATIONS + '/' + securityCode + '/recommendedDish');
     }

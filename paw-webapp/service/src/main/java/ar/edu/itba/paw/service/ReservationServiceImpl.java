@@ -48,6 +48,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
+    public Optional<Reservation> getReservationById(long id) {
+        return reservationDao.getReservationById(id);
+    }
+
+    @Transactional
+    @Override
     public Optional<Reservation> getReservationByIdAndIsActive(String securityCode) {
         List<ReservationStatus> statusList = new ArrayList<>();
         statusList.add(ReservationStatus.OPEN);
@@ -329,7 +335,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsQuery(String reservationStatus, String orderItemStatus) {
+    public List<OrderItem> getOrderItemsQuery(String reservationStatus, String orderItemStatus, String securityCode) {
         String[] reservationStauses = (reservationStatus == null) ? new String[0] : reservationStatus.split(",");
         String[] orderItemStatuses = (orderItemStatus == null) ? new String[0] : orderItemStatus.split(",");
         List<Integer> intResS = new ArrayList<>();
@@ -340,7 +346,7 @@ public class ReservationServiceImpl implements ReservationService {
         for(String ordS : orderItemStatuses){
             intOrdS.add(Integer.valueOf(ordS));
         }
-        return reservationDao.getOrderItemsByStatusListAndReservationStatusList(intResS, intOrdS);
+        return reservationDao.getOrderItemsByStatusListAndReservationStatusList(intResS, intOrdS, securityCode);
     }
 
     @Transactional

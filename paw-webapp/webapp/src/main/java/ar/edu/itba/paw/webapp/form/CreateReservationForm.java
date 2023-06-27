@@ -10,10 +10,13 @@ import java.time.LocalDateTime;
 public class CreateReservationForm {
 
     private long restaurantId;
-    private long customerId;
 
     private int hour;
     private int qPeople;
+
+    public CreateReservationForm() {
+
+    }
 
 //    private LocalDateTime startedAtTime;
     private String reservationDate;
@@ -24,14 +27,6 @@ public class CreateReservationForm {
 
     public void setReservationDate(String reservationDate) {
         this.reservationDate = reservationDate;
-    }
-
-    public long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
     }
 
     public long getRestaurantId() {

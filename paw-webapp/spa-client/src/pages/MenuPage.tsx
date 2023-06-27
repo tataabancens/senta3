@@ -6,13 +6,35 @@ import DishDisplay from "../components/DishDisplay";
 import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
 import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
+import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
+import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
 
 const MenuPage: FC = () => {
   const [value, setValue] = useState(0);
 
+  const orderItemService = useOrderItemService();
+  const abortController = new AbortController();
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    (async () => {
+      const orderItemParams = new OrderitemParams();
+      orderItemParams.orderItemId = 111;
+      orderItemParams.status = "ORDERED";
+      orderItemParams.securityCode = "FT9Q6M";
+      const { isOk, data, error } = await orderItemService.editOrderItem(orderItemParams, abortController);
+
+      if (!isOk) {
+        console.log(error);
+      } else {
+      console.log(data);
+      }
+    })();
+    return () => { abortController.abort()};
+  }, []);
 
   const { restaurant, error: restaurantError, loading: restaurantLoading } = useRestaurant(1);
 

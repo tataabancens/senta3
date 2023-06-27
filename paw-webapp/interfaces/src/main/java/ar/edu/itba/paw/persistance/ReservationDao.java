@@ -42,7 +42,7 @@ public interface ReservationDao {
 
     void deleteAllOrderItems(String securityCode);
 
-    List<OrderItem> getOrderItemsByStatusListAndReservationStatusList(List<Integer> reservationStauses, List<Integer> orderItemStatuses);
+    List<OrderItem> getOrderItemsByStatusListAndReservationStatusList(List<Integer> reservationStauses, List<Integer> orderItemStatuses, String securityCode);
 
     int getTotalPages(long restaurantId, String filterStatus, long customerId);
 }

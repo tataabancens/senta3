@@ -54,16 +54,22 @@ import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderIte
         handleOpen();
     }
   
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       if(qty > 0){
         let orderItem = new OrderitemParams();
+        const abortController = new AbortController();
         orderItem.dishId = dish.id;
         orderItem.quantity = qty;
         orderItem.securityCode = reservation?.securityCode;
-        handleResponse(
-          orderItemService.createOrderItem(orderItem),
-          (response) => (toggleReload? toggleReload(): null)
-        );
+        const {isOk, data, error } = await orderItemService.createOrderItem(orderItem, abortController);
+
+        if (!isOk) {
+          console.log(error);
+          return;
+        }
+        if (toggleReload) {
+          toggleReload();
+        }
         setQty(0);
       }
 

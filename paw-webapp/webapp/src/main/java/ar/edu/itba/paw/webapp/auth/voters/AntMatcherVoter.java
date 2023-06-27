@@ -75,17 +75,25 @@ public class AntMatcherVoter {
         return requestedUser.isPresent() && Objects.equals(requestedUser.get().getUsername(), authentication.getName());
     }
 
-    public boolean canAccessOrderItem(Authentication authentication, String securityCode, long orderItemId) {
+    public boolean canAccessOrderItem(Authentication authentication, long orderItemId) {
         if(isRestaurant(authentication)) return true;
-        Optional<Reservation> requestedRes = reservationService.getReservationBySecurityCode(securityCode);
         Optional<OrderItem> requestedOI = reservationService.getOrderItemById(orderItemId);
-        if(!requestedRes.isPresent() || !requestedOI.isPresent()) return false;
-        if(requestedRes.get().getCustomer().getUser() == null) return true;
-        if(!Objects.equals(requestedOI.get().getReservation().getSecurityCode(), requestedRes.get().getSecurityCode())) return false;
+
+        if(!requestedOI.isPresent()) return false;
+        Reservation requestedReservation = requestedOI.get().getReservation();
+        if(requestedReservation.getCustomer().getUser() == null) return true;
         if(authentication instanceof AnonymousAuthenticationToken){
-            return requestedRes.get().getCustomer().getUser() == null;
+            return requestedReservation.getCustomer().getUser() == null;
         }
-        return Objects.equals(authentication.getName(), requestedRes.get().getCustomer().getUser().getUsername());
+        return Objects.equals(authentication.getName(), requestedReservation.getCustomer().getUser().getUsername());
+    }
+
+    public boolean canAccessAllOrderItems(Authentication authentication, HttpServletRequest request) {
+        String securityCode = request.getParameter("securityCode");
+        if (securityCode != null) {
+            return canAccessOrderItems(authentication, securityCode);
+        }
+        return isRestaurant(authentication);
     }
 
     public boolean canAccessOrderItems(Authentication authentication, String securityCode) {

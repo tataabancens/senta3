@@ -1,4 +1,5 @@
 export interface CreateOrderitemPayloadModel {
     dishId: number,
-    quantity: number
+    quantity: number,
+    securityCode: string,
 }

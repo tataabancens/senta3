@@ -12,6 +12,8 @@ public interface ReservationService {
 
     Optional<Reservation> getReservationBySecurityCode(String securityCode);
 
+    Optional<Reservation> getReservationById(long id);
+
     //todo integrate queries in ordercontroller?
     List<OrderItem> getOrderItemsByReservationAndStatus(Reservation reservation, OrderItemStatus status);
 
@@ -25,7 +27,7 @@ public interface ReservationService {
     List<Integer> getAvailableHours(long restaurantId, long qPeople, LocalDateTime reservationDate);
 
 
-    List<OrderItem> getOrderItemsQuery(String reservationStatus, String orderItemStatus);
+    List<OrderItem> getOrderItemsQuery(String reservationStatus, String orderItemStatus, String securityCode);
 
     Reservation createReservation(Restaurant restaurant, Customer customer, int reservationHour, int qPeople);
 

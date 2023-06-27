@@ -19,6 +19,7 @@ const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload, isC
     const [dish, setDish] = useState<DishModel | undefined>();
     const dishService = useDishService();
     const orderItemService = useOrderItemService();
+    const abortController = new AbortController();
 
     useEffect(() => {
         handleResponse(
@@ -27,18 +28,22 @@ const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload, isC
         )
     },[])
 
-    const cancelItem = () => {
+    const cancelItem = async () => {
         let orderItemParams = new OrderitemParams();
         orderItemParams.status = "DELETED";
         orderItemParams.securityCode = securityCode;
         orderItemParams.orderItemId = orderItem.orderItemId;
-        handleResponse(
-            orderItemService.editOrderItem(orderItemParams),
-            (response) => {if(toggleReload){
-                toggleReload();
-            }
-            }
-        )
+
+        const { isOk, data, error } = await orderItemService.editOrderItem(orderItemParams, abortController);
+
+        if (!isOk) {
+            console.log(error);
+            return;
+        }
+
+        if (toggleReload) {
+            toggleReload();
+        }
     }
 
     return (

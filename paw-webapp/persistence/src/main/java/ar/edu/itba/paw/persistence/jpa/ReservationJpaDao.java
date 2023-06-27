@@ -202,11 +202,22 @@ public class ReservationJpaDao implements ReservationDao {
     }
 
     @Override
-    public List<OrderItem> getOrderItemsByStatusListAndReservationStatusList(List<Integer> reservationStauses, List<Integer> orderItemStatuses) {
+    public List<OrderItem> getOrderItemsByStatusListAndReservationStatusList(List<Integer> reservationStauses, List<Integer> orderItemStatuses, String securityCode) {
+        String queryString = "SELECT id FROM orderItem NATURAL JOIN dish NATURAL JOIN reservation WHERE status IN :orderItemStatus AND reservation.reservationStatus IN :reservationStatus ";
+
+        if (!Objects.equals(securityCode, "")) {
+            queryString += "AND securitycode = :securitycode" ;
+        }
+
+        queryString += " ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY";
+
         //técnica 1+1
-        final Query idQuery = em.createNativeQuery("SELECT id FROM orderItem NATURAL JOIN dish NATURAL JOIN reservation WHERE status IN :orderItemStatus AND reservation.reservationStatus IN :reservationStatus ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY");
+        final Query idQuery = em.createNativeQuery(queryString);
         idQuery.setParameter("orderItemStatus", orderItemStatuses);
         idQuery.setParameter("reservationStatus", reservationStauses);
+        if (!Objects.equals(securityCode, "")) {
+            idQuery.setParameter("securitycode", securityCode);
+        }
         @SuppressWarnings("unchecked")
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());

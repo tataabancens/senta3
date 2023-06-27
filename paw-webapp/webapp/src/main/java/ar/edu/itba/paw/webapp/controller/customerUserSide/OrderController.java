@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Path("/api/reservations/{securityCode}/orderItems")
+@Path("/api/orderItems")
 @Controller
 public class OrderController {
     private final RestaurantService res;
@@ -42,26 +42,45 @@ public class OrderController {
 
     @GET
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getOrderItems(@PathParam("securityCode") final String securityCode) {
-        Optional<Reservation> maybeReservation = rs.getReservationBySecurityCode(securityCode);
-        if (!maybeReservation.isPresent()) {
-            throw new ReservationNotFoundException();
+    public Response getOrderItemsQuery(@DefaultValue("0,1,2,3,4,5") @QueryParam("reservationStatus") final String reservationStatus,
+                                       @DefaultValue("0,1,2,3,4,5,6,7") @QueryParam("orderItemStatus") final String orderItemStatus,
+                                       @DefaultValue("") @QueryParam("securityCode") final String securityCode) {
+        List<OrderItem> orderItems;
+        try {
+            orderItems = rs.getOrderItemsQuery(reservationStatus, orderItemStatus, securityCode);
+        } catch (NumberFormatException e) {
+            return Response.status(400).build();
         }
-        List<OrderItemDto> orderItemDtoList = rs.getOrderItemsOfReservation(maybeReservation.get().getId())
+
+        List<OrderItemDto> orderItemDtoList = orderItems
                 .stream()
                 .map(o -> OrderItemDto.fromOrderItem(uriInfo, o))
                 .collect(Collectors.toList());
 
-        return Response.ok(new GenericEntity<List<OrderItemDto>>(orderItemDtoList) {}).build();
+        return Response.ok(new GenericEntity<List<OrderItemDto>>(orderItemDtoList) {
+        }).build();
     }
+
+//    @GET
+//    @Produces(value = {MediaType.APPLICATION_JSON,})
+//    public Response getOrderItems(@PathParam("securityCode") final String securityCode) {
+//        Optional<Reservation> maybeReservation = rs.getReservationBySecurityCode(securityCode);
+//        if (!maybeReservation.isPresent()) {
+//            throw new ReservationNotFoundException();
+//        }
+//        List<OrderItemDto> orderItemDtoList = rs.getOrderItemsOfReservation(maybeReservation.get().getId())
+//                .stream()
+//                .map(o -> OrderItemDto.fromOrderItem(uriInfo, o))
+//                .collect(Collectors.toList());
+//
+//        return Response.ok(new GenericEntity<List<OrderItemDto>>(orderItemDtoList) {}).build();
+//    }
 
 
     @GET
     @Path("/{orderItemId}")
     @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getOrderItems(@PathParam("securityCode") final String securityCode,
-                                  @PathParam("orderItemId") final long orderItemId) {
-        Reservation reservation = rs.getReservationBySecurityCode(securityCode).orElseThrow(ReservationNotFoundException::new);
+    public Response getOrderItems(@PathParam("orderItemId") final long orderItemId) {
         Optional<OrderItemDto> maybeOrderItem = rs.getOrderItemById(orderItemId).map(o -> OrderItemDto.fromOrderItem(uriInfo, o));
 
         if (!maybeOrderItem.isPresent()) {
@@ -73,9 +92,8 @@ public class OrderController {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
-    public Response createOrderItem(@PathParam("securityCode") final String securityCode,
-                                    @Valid final CreateOrderItemForm orderItemForm) {
-        final OrderItem newOrderItem = rs.createOrderItemPost(securityCode, orderItemForm.getDishId(), orderItemForm.getQuantity());
+    public Response createOrderItem(@Valid final CreateOrderItemForm orderItemForm) {
+        final OrderItem newOrderItem = rs.createOrderItemPost(orderItemForm.getSecurityCode(), orderItemForm.getDishId(), orderItemForm.getQuantity());
         if(null == newOrderItem){
             return Response.status(400).build();
         }
@@ -87,10 +105,9 @@ public class OrderController {
     @PATCH
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
     @Path("/{id}")
-    public Response editReservation(@PathParam("securityCode") final String securityCode,
-                                    @PathParam("id") final long id,
+    public Response editReservation(@PathParam("id") final long id,
                                     final OrderItemPatchForm orderItemPatchForm){
 
-        return (rs.patchOrderItem(securityCode, id, orderItemPatchForm.getStatus())) ? Response.ok().build() : Response.status(400).build();
+        return (rs.patchOrderItem(orderItemPatchForm.getSecurityCode(), id, orderItemPatchForm.getStatus())) ? Response.ok().build() : Response.status(400).build();
     }
 }

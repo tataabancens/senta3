@@ -1,15 +1,12 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 
-import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.OrderItem;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.service.DishService;
 import ar.edu.itba.paw.model.exceptions.DateFormatException;
 import ar.edu.itba.paw.service.ReservationService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.DishDto;
-import ar.edu.itba.paw.webapp.dto.OrderItemDto;
 import ar.edu.itba.paw.webapp.dto.ReservationDto;
 import ar.edu.itba.paw.model.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.webapp.form.CreateReservationForm;
@@ -17,6 +14,7 @@ import ar.edu.itba.paw.webapp.form.ReservationPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -79,12 +77,14 @@ public class ReservationController {
 
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
-    public Response createReservation(@Valid final CreateReservationForm reservationForm) {
+    public Response createReservation(@Valid final CreateReservationForm reservationForm,
+                                      @Context  HttpServletRequest request) {
         Optional<LocalDateTime> maybeDate = timestampParser(reservationForm.getReservationDate());
         if(!maybeDate.isPresent()) {
             throw new DateFormatException();
         }
-        final Reservation newReservation = rs.createReservationPost(reservationForm.getRestaurantId(), reservationForm.getCustomerId(), reservationForm.getHour(), reservationForm.getqPeople(), LocalDateTime.now(), maybeDate.get());
+        long customerId = Long.parseLong(request.getHeader("customerId"));
+        final Reservation newReservation = rs.createReservationPost(reservationForm.getRestaurantId(), customerId, reservationForm.getHour(), reservationForm.getqPeople(), LocalDateTime.now(), maybeDate.get());
         if(null == newReservation) {
             return Response.status(400).build(); //Bad request, //informar cual error
         }
@@ -116,28 +116,6 @@ public class ReservationController {
             return Response.ok().build();
         }
         return Response.status(400).build();
-    }
-
-
-    @Path("/orderItems")
-    @GET
-    @Produces(value = {MediaType.APPLICATION_JSON,})
-    public Response getOrderItemsQuery(@DefaultValue("0,1,2,3,4,5") @QueryParam("reservationStatus") final String reservationStatus,
-                                       @DefaultValue("0,1,2,3,4,5,6,7") @QueryParam("orderItemStatus") final String orderItemStatus) {
-        List<OrderItem> orderItems;
-        try {
-            orderItems = rs.getOrderItemsQuery(reservationStatus, orderItemStatus);
-        } catch (NumberFormatException e) {
-            return Response.status(400).build();
-        }
-
-        List<OrderItemDto> orderItemDtoList = orderItems
-                .stream()
-                .map(o -> OrderItemDto.fromOrderItem(uriInfo, o))
-                .collect(Collectors.toList());
-
-        return Response.ok(new GenericEntity<List<OrderItemDto>>(orderItemDtoList) {
-        }).build();
     }
 
     @Path("/{securityCode}/recommendedDish")
