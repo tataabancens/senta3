@@ -6,6 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { ErrorMessage, Field, FormikProps } from 'formik';
 import { createReservationFormValues } from './CreateReservationPage';
+import { useTranslation } from 'react-i18next';
 
 interface infoFormProps {
   props: FormikProps<createReservationFormValues>
@@ -15,11 +16,10 @@ interface infoFormProps {
 export default function InfoForm({ props }: infoFormProps) {
   const { handleBlur, handleChange, values, errors } = props;
   const {firstName, lastName, mail, phone} = values;
+  const { t } = useTranslation();
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        We need some info to confirm your reservation
-      </Typography>
+      <Typography variant="h6" gutterBottom>{t('createReservation.step4.stepDescription')}</Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Field as={TextField}

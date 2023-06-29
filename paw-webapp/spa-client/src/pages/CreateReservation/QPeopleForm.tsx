@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { createReservationFormValues } from './CreateReservationPage';
 import { Field, ErrorMessage, FormikProps } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 
 interface qPeopleFormProps {
@@ -18,11 +19,10 @@ function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaEl
 
 export default function QPeopleForm({ props }: qPeopleFormProps) {
   const {handleBlur, handleChange, values, errors} = props;
+  const { t } = useTranslation();
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        How many people will come?
-      </Typography>
+      <Typography variant="h6" gutterBottom>{t('createReservation.step1.stepDescription')}</Typography>
       <Grid item xs={12} sm={6}>
         <Field as={TextField}
           type="number"

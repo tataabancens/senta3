@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
 import {emptyAuth, paths} from "../constants/constants";
 import useUserService from "../hooks/serviceHooks/users/useUserService";
@@ -27,15 +28,15 @@ export const NavBar: React.FC<{}> = () => {
   const [user, setUser] = useState<UserModel | undefined>();
   const [rolePages, setRolePages] = useState<nameSitePair[]>([]);
   const userService = useUserService();
+  const { t } = useTranslation();
 
   const customerPages = new Map<string, string>([
-    ["Reservations","reservations"],
-    ["Profile","profile"],
+    [t('navBar.customerPages.reservations'),"reservations"],
   ]);
   const restaurantPages = new Map<string, string>([
-    ["Menu", "restaurantMenu"],
-    ["Kitchen", "kitchen"],
-    ["Reservations", "restaurantReservations"]
+    [t('navBar.restaurantPages.menu'), "restaurantMenu"],
+    [t('navBar.restaurantPages.kitchen'), "kitchen"],
+    [t('navBar.restaurantPages.reservations'), "restaurantReservations"]
   ]);
 
   const logOut = () => {
@@ -86,16 +87,16 @@ export const NavBar: React.FC<{}> = () => {
                       <Typography>{user?.username}</Typography>
                     </Button>
                     <Button onClick={logOut} variant="contained">
-                      <Typography>Logout</Typography>
+                      <Typography>{t('navBar.logoutButton')}</Typography>
                     </Button>
                   </Stack>
                   :
                   <Stack direction="row" spacing={2}>
                     <Button size="large" variant="contained" onClick={() => {navigate(paths.ROOT + "/login")}}>
-                      <Typography>Login</Typography>
+                      <Typography>{t('navBar.loginButton')}</Typography>
                     </Button>
                     <Button size="large" onClick={() => navigate(paths.ROOT + "/signUp")} variant="contained">
-                      <Typography>Register</Typography>
+                      <Typography>{t('navBar.registerButton')}</Typography>
                     </Button>
                   </Stack>                 
                 }

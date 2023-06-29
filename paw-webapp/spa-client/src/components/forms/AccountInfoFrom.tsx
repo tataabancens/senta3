@@ -38,6 +38,7 @@ type Props = {
   data: CustomerModel | RestaurantModel;
   isOpen: boolean;
   handleOpen: () => void;
+  reload: () => void;
 };
 
 const AccountInfoForm: FC<Props> = ({
@@ -45,6 +46,7 @@ const AccountInfoForm: FC<Props> = ({
   data,
   handleOpen,
   isOpen,
+  reload,
 }): JSX.Element => {
   
   const initialValues: accountInfoFormValues = {
@@ -91,7 +93,7 @@ const AccountInfoForm: FC<Props> = ({
       restaurantData.phone = phone;
       handleResponse(
         restaurantService.editRestaurant(restaurantData),
-        (response) => console.log(response)
+        (response) => reload()
       );
 
     } else {
@@ -102,7 +104,7 @@ const AccountInfoForm: FC<Props> = ({
       customerData.phone = phone;
       handleResponse(
         customerService.editCustomer(customerData),
-        (response) => console.log(response)
+        (response) => reload()
       );
     }
 
@@ -121,13 +123,6 @@ const AccountInfoForm: FC<Props> = ({
       props.setSubmitting(false);
       return;
     }
-
-
-    // handleResponse(
-    //   ,
-    //   (response) => console.log(response)
-    // );
-
 
     handleOpen();
   };

@@ -1,6 +1,7 @@
 //todo deploy
 // BASE_URL : 'http://localhost:8080' or 'http://pawserver.it.itba.edu.ar/paw-2022a-05/api'
 
+import { useTranslation } from "react-i18next";
 import { CustomerModel, RestaurantModel } from "../models";
 
 // ROOT : '/' or /paw-2022a-05/
@@ -69,7 +70,3 @@ export const linkStyle = {
     borderRadius: ".8rem",
     display: "flex"
 }
-
-export const steps = ['How many?', 'Date?', 'Hour?', 'Contact info', 'Done!'];
-
-export const shoppingCartTabs = ["Shopping Cart", "Orders", "Summary"];

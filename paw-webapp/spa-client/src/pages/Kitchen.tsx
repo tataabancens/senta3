@@ -1,5 +1,6 @@
 import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import KitchenTable from "../components/KitchenTable";
 import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
 import { OrderItemModel } from "../models";
@@ -8,6 +9,7 @@ import { OrderItemModel } from "../models";
 const Kitchen: FC = () => {
     let filterStatus = "1";
     let orderItemStatus = "1";
+    const { t } = useTranslation();
     const { orderItems: orderedOrderItems,
             error: orderedOrderItemsError,
             loading: orderedOrderItemsLoading,
@@ -44,22 +46,22 @@ const Kitchen: FC = () => {
     return (
         <Grid container xs={12} padding={2} justifyContent="space-evenly" >
             <Grid item container xs={3} component={Paper} elevation={5}>
-                <Grid item xs={12}><Typography variant="h4" align="center">Ordered</Typography></Grid>
+                <Grid item xs={12}><Typography variant="h4" align="center">{t('kitchenPage.orderedTitle')}</Typography></Grid>
                 {orderedOrderItems  && !orderedOrderItemsError && <KitchenTable orderItems={orderedOrderItems} actionFunction={cookItem} processStage={"ORDERED"}/>}
                 {orderedOrderItemsLoading  && <CircularProgress />}
-                {orderedOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">There was an error in the system. Try again later.</Typography></Grid>}
+                {orderedOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
             <Grid item container xs={3} component={Paper} elevation={5}>
-                <Grid xs={12}><Typography variant="h4" align="center">Cooking</Typography></Grid>
+                <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.cookingTitle')}</Typography></Grid>
                 {incomingOrderItems && !incomingOrderItemsError && <KitchenTable orderItems={incomingOrderItems} actionFunction={deliverItem} processStage={"INCOMING"}/>}
                 {incomingOrderItemsLoading  && <CircularProgress />}
-                {incomingOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">There was an error in the system. Try again later.</Typography></Grid>}
+                {incomingOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
             <Grid item container xs={3} component={Paper} elevation={5}>
-                <Grid xs={12}><Typography variant="h4" align="center">Delivered</Typography></Grid>
+                <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
                 {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}
                 {deliveringOrderItemsLoading  && <CircularProgress />}
-                {deliveringOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">There was an error in the system. Try again later.</Typography></Grid>}
+                {deliveringOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
         </Grid>
     );

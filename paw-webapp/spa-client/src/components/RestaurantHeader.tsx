@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import CategoryForm from "./forms/CategoryForm";
 import { ReservationContext } from "../context/ReservationContext";
 import { paths } from "../constants/constants";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     restaurant?: RestaurantModel | undefined;
@@ -29,6 +30,7 @@ const RestaurantHeader: FC<Props> = ({
     let navigate = useNavigate();
     const [createIsOpen, setIsOpen] = useState(false);
     const { reservation } = useContext(ReservationContext);
+    const { t } = useTranslation();
 
 
     const toggleDrawer = () => {
@@ -66,24 +68,24 @@ const RestaurantHeader: FC<Props> = ({
         <AuthReservationForm handleOpen={handleAuthReservation} isOpen={authIsOpen} />
         <CategoryForm isOpen={createIsOpen} handleOpen={toggleCreateCategoryForm} canReload={toggleReload}/>
         <Grid item component={Typography} variant="h2" sx={{ color: "white" }}>
-          {role === "ROLE_RESTAURANT" ? "Menu" : restaurant?  restaurant.name : <Skeleton  variant="rounded" animation="wave" width={410} height={50} />}
+          {role === "ROLE_RESTAURANT" ? t('restaurantHeader.menuHeader') : restaurant?  restaurant.name : <Skeleton  variant="rounded" animation="wave" width={410} height={50} />}
         </Grid>
         {reservation? 
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><ShoppingCartIcon/></Button>
-            <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>My reservation</Button>
+            <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>{t('restaurantHeader.myReservation')}</Button>
             </Grid>
             :
             role === "ROLE_ANONYMOUS"?
             <Grid item>
-            <Button sx={{margin: 1}} variant="contained" color="success" onClick={() => navigate(paths.ROOT + "/createReservation")}>Make reservation</Button>
-            <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={handleAuthReservation}> Have reservation</Button>
+            <Button sx={{margin: 1}} variant="contained" color="success" onClick={() => navigate(paths.ROOT + "/createReservation")}>{t('restaurantHeader.makeReservation')}</Button>
+            <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={handleAuthReservation}>{t('restaurantHeader.haveReservation')}</Button>
             </Grid>
             :
             <Grid item xs={1}>
-              <Button onClick={toggleCreateCategoryForm} variant="contained" fullWidth color="success">Create category</Button>
+              <Button onClick={toggleCreateCategoryForm} variant="contained" fullWidth color="success">{t('restaurantHeader.createCategory')}</Button>
             </Grid>
         }
       </Grid>

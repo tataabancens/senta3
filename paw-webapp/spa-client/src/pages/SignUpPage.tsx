@@ -21,6 +21,7 @@ import { CustomerParams } from "../models/Customers/CustomerParams";
 import axios from "../api/axios"
 import useAuth from "../hooks/useAuth";
 import { paths } from "../constants/constants";
+import { useTranslation } from "react-i18next";
 
 interface signUpFormValues {
   username: string;
@@ -57,6 +58,7 @@ const SignUpPage: FC = () => {
   const navigate = useNavigate();
 
   const { setAuth } = useAuth();
+  const { t } = useTranslation();
 
   const initialValues: signUpFormValues = {
     username: '',
@@ -148,7 +150,7 @@ const SignUpPage: FC = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Register
+            {t('registerPage.registerTitle')}
           </Typography>
           <Box
             sx={{ mt: 1 }}
@@ -237,7 +239,7 @@ const SignUpPage: FC = () => {
                     disabled={props.isSubmitting}
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    Sign Up
+                    {t('registerPage.registerButton')}
                   </Button>
                 </Form>
               )}
@@ -258,7 +260,7 @@ const SignUpPage: FC = () => {
                   to="/login"
                   style={{ textDecoration: "none", color: "black" }}
                 >
-                  Already have account? login!
+                 {t('registerPage.loginCallToAction')}
                 </Link>
               </Grid>
             </Grid>

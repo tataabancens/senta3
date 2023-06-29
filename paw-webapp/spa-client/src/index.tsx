@@ -5,17 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeConfig } from './config/theme.config';
 import { AuthProvider } from './context/AuthProvider';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './locales';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   // <React.StrictMode>
+  <I18nextProvider i18n={i18n}>
     <AuthProvider>
       <ThemeConfig>
         <App />
       </ThemeConfig>
     </AuthProvider>
+  </I18nextProvider>
   // </React.StrictMode>
 );
 

@@ -1,5 +1,6 @@
 import { Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { OrderItemModel } from "../../models";
 import OrdersItem from "./OrdersItem";
 
@@ -12,6 +13,7 @@ type TabPanelProps = {
 
 const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
     const { children, value, index, orderItems, ...other } = props;
+    const { t } = useTranslation();
   
     return (
       <div
@@ -24,9 +26,9 @@ const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
             <Grid item xs={12} component={Table}>
               <TableHead>
                 <TableRow>
-                  <TableCell align="left">Dish</TableCell>
-                  <TableCell align="center">Qty</TableCell>
-                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="left">{t('shoppingCart.tableHeaders.dish')}</TableCell>
+                  <TableCell align="center">{t('shoppingCart.tableHeaders.qty')}</TableCell>
+                  <TableCell align="center">{t('shoppingCart.tableHeaders.status')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

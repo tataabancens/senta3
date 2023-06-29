@@ -1,13 +1,11 @@
-import { CircularProgress, Grid, Link, Skeleton, Typography } from "@mui/material";
-import { FC, useContext, useState } from "react";
+import { Grid, Link, Typography } from "@mui/material";
+import { FC, useState } from "react";
 import { linkStyle } from "../constants/constants";
-import { DishCategoryModel, DishModel, ReservationModel } from "../models";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { DishModel } from "../models";
 import DishCard from "./dishCard/DishCard";
 import MenuCard from "./menuCard/MenuCard";
-import { CategoryContext } from "../context/ReservationContext";
 import CreateDishForm from "./forms/CreateDishForm";
-import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     toggleReload?: () => void;
@@ -21,10 +19,11 @@ const DishDisplay: FC<Props> = ({
     isMenu
   }): JSX.Element => {
 
-    const { categoryList, value, categoryMap } = useContext(CategoryContext);
     const [ openForm, setOpenForm ] = useState(false);
 
     const handleFormOpen = () => { setOpenForm(!openForm)}
+
+    const { t } = useTranslation();
 
 
     return (
@@ -38,7 +37,7 @@ const DishDisplay: FC<Props> = ({
               <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}>
                 <Link className="dishCardHover" style={linkStyle} color="inherit" underline="none" sx={{display: "flex", alignItems: "center"}} onClick={handleFormOpen}>
                   <Grid item xs={12}>
-                    <Typography variant="h4" align="center">Create Dish</Typography>
+                    <Typography variant="h4" align="center">{t('dishDisplay.createDish')}</Typography>
                   </Grid>
                 </Link>
               </Grid>

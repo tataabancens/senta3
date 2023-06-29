@@ -20,6 +20,7 @@ import axios from "../api/axios";
 import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import { extractCustomerIdFromContent } from "./SignUpPage";
+import { useTranslation } from "react-i18next";
 
 export interface loginFormValues {
   username: string;
@@ -30,8 +31,7 @@ export interface loginFormValues {
 const LoginPage: FC = () => {
 
   const { setAuth } = useAuth();
-  const restaurantService = useRestaurantService();
-  const customerService = useCustomerService();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -97,9 +97,7 @@ const LoginPage: FC = () => {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
+          <Typography variant="h5">{t('loginPage.loginTitle')}</Typography>
           <Box
             sx={{ mt: 1 }}
           >
@@ -143,7 +141,7 @@ const LoginPage: FC = () => {
                     disabled={props.isSubmitting}
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    {!props.isSubmitting?"Log In": "Loading"}
+                    {!props.isSubmitting? t('loginPage.formSubmit.login'): t('loginPage.formSubmit.loading')}
                   </Button>
                 </Form>
               )}
@@ -163,7 +161,7 @@ const LoginPage: FC = () => {
                   to="/*"
                   style={{ textDecoration: "none", color: "black" }}
                 >
-                  Forgot password?
+                  {t('loginPage.forgotPassword')}
                 </Link>
               </Grid>
               <Grid item>
@@ -171,7 +169,7 @@ const LoginPage: FC = () => {
                   to="/signup"
                   style={{ textDecoration: "none", color: "black" }}
                 >
-                  {"Don't have an account? Sign Up"}
+                  {t('loginPage.registerCallToAction')}
                 </Link>
               </Grid>
             </Grid>

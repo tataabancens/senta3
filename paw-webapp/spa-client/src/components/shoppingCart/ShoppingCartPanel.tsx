@@ -1,5 +1,6 @@
 import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../../context/ReservationContext";
 import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
@@ -26,6 +27,7 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
   const reservationService = useReservationService();
   const { reservation } = useContext(ReservationContext);
   const abortController = new AbortController();
+  const { t } = useTranslation();
 
   useEffect(() => {
     handleResponse(reservationService.getRecommendedDish(reservation!.securityCode),
@@ -90,9 +92,9 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
           <Grid item xs={6} component={Table}>
             <TableHead>
               <TableRow>
-                <TableCell align="left">Dish</TableCell>
-                <TableCell>Qty</TableCell>
-                <TableCell>Subtotal</TableCell>
+                <TableCell align="left">{t('shoppingCart.tableHeaders.dish')}</TableCell>
+                <TableCell>{t('shoppingCart.tableHeaders.qty')}</TableCell>
+                <TableCell>{t('shoppingCart.tableHeaders.subtotal')}</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -104,10 +106,10 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
           </Grid>
           <Grid item container xs={5}>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography variant="h6" >Other people also ordered:</Typography>
+              <Typography variant="h6" >{t('shoppingCart.cartPanel.recommendationTitle')}</Typography>
             </Grid>
             <Grid item xs={11} sx={{ display: "flex", justifyContent: "center" }}>
-              {recommendedDish ? <DishCard dish={recommendedDish} /> : <Typography variant="subtitle1" sx={{ marginTop: 10 }}> We can't recommend any dish</Typography>}
+              {recommendedDish ? <DishCard dish={recommendedDish} /> : <Typography variant="subtitle1" sx={{ marginTop: 10 }}>{t('shoppingCart.cartPanel.noRecommendation')}</Typography>}
             </Grid>
           </Grid>
           <Grid item container xs={12} sx={{ marginTop: 8 }}>
@@ -116,8 +118,8 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
               <Typography>${calculateTotal(orderItems)}</Typography>
             </Grid>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-evenly" }}>
-              <Button color="success" variant="outlined" onClick={confirmDishes}><Typography>Order Items</Typography></Button>
-              <Button color="error" variant="outlined" onClick={cancelDishes}><Typography>Clear Items</Typography></Button>
+              <Button color="success" variant="outlined" onClick={confirmDishes}><Typography>{t('shoppingCart.cartPanel.orderItems')}</Typography></Button>
+              <Button color="error" variant="outlined" onClick={cancelDishes}><Typography>{t('shoppingCart.cartPanel.clearItems')}</Typography></Button>
             </Grid>
           </Grid>
         </Grid>

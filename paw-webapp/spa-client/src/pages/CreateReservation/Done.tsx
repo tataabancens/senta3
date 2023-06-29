@@ -1,11 +1,8 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Grid from '@mui/material/Grid';
 import { createReservationFormValues } from './CreateReservationPage';
 import { FormikProps } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 interface doneProps {
   props: FormikProps<createReservationFormValues>  
@@ -14,10 +11,18 @@ interface doneProps {
 
 export default function Done({props, secCode}: doneProps) {
   const { values: {date, hour, qPeople} } = props;
+  const { t } = useTranslation();
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-      You made a reservation on Atuel, for {date.toString()} at {hour}hs for {qPeople} people. Your reservation code is: {secCode}
+        {t('createReservation.step5.stepDescription',
+        {
+          date: date.toString(),
+          hour: hour,
+          qPeople: qPeople,
+          secCode: secCode
+        })}
       </Typography>
     </React.Fragment>
   );

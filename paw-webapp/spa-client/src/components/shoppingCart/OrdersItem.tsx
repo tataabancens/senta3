@@ -1,13 +1,11 @@
-import { IconButton, Stack, Step, StepLabel, Stepper, TableCell, TableRow, Typography } from "@mui/material";
+import { Step, StepLabel, Stepper, TableCell, TableRow, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { DishModel, OrderItemModel } from "../../models";
 import { handleResponse } from "../../Utils";
-import CloseIcon from '@mui/icons-material/Close';
-import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
-import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import InfoIcon from '@mui/icons-material/Info';
 import { ReservationContext } from "../../context/ReservationContext";
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     orderItem: OrderItemModel;
@@ -24,6 +22,7 @@ const OrdersItem: FC<Props> = ({orderItem, toggleReload}) => {
         ["INCOMING", 1],
         ["DELIVERED", 3]
     ]);
+    const { t } = useTranslation();
 
 
     useEffect(() => {
@@ -40,15 +39,15 @@ const OrdersItem: FC<Props> = ({orderItem, toggleReload}) => {
             {reservation!.status === "OPEN" &&
                 <TableCell align="center">
                     <InfoIcon color="secondary"/>
-                    <Typography variant="body1" color="secondary">Your orders status will be seen when you arrive at the restaurants</Typography>
+                    <Typography variant="body1" color="secondary">{t('shoppingCart.ordersPanel.disclaimer')}</Typography>
                 </TableCell>
             }
             {reservation!.status !== "OPEN" &&
                 <TableCell>
                     <Stepper activeStep={statusMap.get(orderItem.status)}>
-                        <Step><StepLabel>Ordered</StepLabel></Step>
-                        <Step><StepLabel>Incoming</StepLabel></Step>
-                        <Step><StepLabel>Delivered</StepLabel></Step>
+                        <Step><StepLabel>{t('shoppingCart.ordersPanel.orderedStatus')}</StepLabel></Step>
+                        <Step><StepLabel>{t('shoppingCart.ordersPanel.cookingStatus')}</StepLabel></Step>
+                        <Step><StepLabel>{t('shoppingCart.ordersPanel.deliveringStatus')}</StepLabel></Step>
                     </Stepper>
                 </TableCell>  
             }                

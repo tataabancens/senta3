@@ -1,6 +1,4 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -10,14 +8,13 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import QPeopleForm from './QPeopleForm';
 import DateForm from './DateForm';
 import HourForm from './HourForm';
 import InfoForm from './InfoForm';
 import InfoFormStatic from './InfoFormStatic';
 import Done from './Done';
-import { useState, createContext, useContext, FC } from "react";
+import { useState, FC } from "react";
 import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
 import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import useUserService from "../../hooks/serviceHooks/users/useUserService";
@@ -28,15 +25,16 @@ import { CustomerParams } from "../../models/Customers/CustomerParams";
 import ShortRegisterForm from "./ShortRegisterForm";
 import { UserParams } from "../../models/Users/UserParams";
 import { useNavigate } from "react-router-dom";
-import {paths, steps} from "../../constants/constants";
+import {paths } from "../../constants/constants";
 import {extractCustomerIdFromContent, extractUserIdFromLocation} from "../SignUpPage";
 
 import * as Yup from "yup";
-import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import {awaitWrapper, handleResponse, loginErrorHandler, tryLogin} from '../../Utils';
 import ApiErrorDetails from '../../models/ApiError/ApiErrorDetails';
 import useAuth from '../../hooks/useAuth';
 import {CustomerModel, UserModel} from "../../models";
+import { useTranslation } from 'react-i18next';
 
 
 function Copyright() {
@@ -72,11 +70,12 @@ interface AvailableHours {
 }
 
 const CreateReservation: FC = () => {
-    const customerService = useCustomerService();
-    const reservationService = useReservationService();
-    const userService = useUserService();
+  const customerService = useCustomerService();
+  const reservationService = useReservationService();
+  const userService = useUserService();
   const { setAuth } = useAuth();
   const { auth } = useAuth();
+  const { t } = useTranslation();
 
   const initialValues: createReservationFormValues = {
     qPeople: 1,
@@ -122,6 +121,11 @@ const CreateReservation: FC = () => {
   const resParams: ReservationParams = new ReservationParams();
   const cusParams: CustomerParams = new CustomerParams();
   const userParams: UserParams = new UserParams();
+  const steps = [t('createReservation.step1.stepTitle'),
+                 t('createReservation.step2.stepTitle'),
+                 t('createReservation.step3.stepTitle'),
+                 t('createReservation.step4.stepTitle'),
+                 t('createReservation.step5.stepTitle')];
 
   let navigate = useNavigate();
 
@@ -291,11 +295,9 @@ const CreateReservation: FC = () => {
   };
 
   return (
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Container component="main" maxWidth="md" sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Create Reservation
-          </Typography>
+          <Typography variant="h4" align="center">{t('createReservation.pageTitle')}</Typography>
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
             {steps.map((label) => (
               <Step key={label}>
@@ -328,13 +330,13 @@ const CreateReservation: FC = () => {
                         >
                           {
                             {
-                              0: 'Back',
-                              1: 'Back',
-                              2: 'Back',
-                              3: 'Back',
-                              4: 'Back',
-                              5: 'Continue without signing up',
-                              6: 'Back',
+                              0: t('createReservation.back'),
+                              1: t('createReservation.back'),
+                              2: t('createReservation.back'),
+                              3: t('createReservation.back'),
+                              4: t('createReservation.back'),
+                              5: t('createReservation.continueWithoutSigning'),
+                              6: t('createReservation.back'),
                               7: ''
                             }[activeStep]
                           }
@@ -344,14 +346,14 @@ const CreateReservation: FC = () => {
                         >
                           {
                             {
-                              0: 'Next',
-                              1: 'Next',
-                              2: 'Next',
-                              3: 'Place order',
-                              4: 'Place order',
-                              5: 'Sign up',
-                              6: 'Continue to reservation',
-                              7: 'Continue to reservation'
+                              0: t('createReservation.next'),
+                              1: t('createReservation.next'),
+                              2: t('createReservation.next'),
+                              3: t('createReservation.makeReservation'),
+                              4: t('createReservation.makeReservation'),
+                              5: t('createReservation.signUp'),
+                              6: t('createReservation.goToReservation'),
+                              7: t('createReservation.goToReservation')
                             }[activeStep]
                           }
                         </Button>

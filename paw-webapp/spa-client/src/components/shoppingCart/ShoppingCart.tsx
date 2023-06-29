@@ -1,12 +1,11 @@
 import { Box, Dialog, DialogContent, DialogTitle, Grid, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { FC, useContext, useState } from "react";
-import { OrderItemModel } from "../../models";
-import { shoppingCartTabs } from "../../constants/constants";
 import OrdersPanel from "./OrdersPanel";
 import ShoppingCartPanel from "./ShoppingCartPanel";
 import CheckPanel from "./CheckPanel";
 import { ReservationContext } from "../../context/ReservationContext";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     isOpen: boolean;
@@ -22,6 +21,9 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+    const { t } = useTranslation();
+
+    const shoppingCartTabs = [t('shoppingCart.cartPanel.title'),t('shoppingCart.ordersPanel.title'),t('shoppingCart.checkPanel.title')];
 
     return(
         <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { height: 700}}}>

@@ -1,5 +1,6 @@
 import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { OrderItemModel } from "../models";
 
 type Props = {
@@ -10,18 +11,20 @@ type Props = {
   
 const KitchenTable: FC<Props> = ({orderItems, actionFunction, processStage}) => {
 
+    const { t } = useTranslation();
+
     return(
         <Grid item xs={12} paddingX={2}>
         {orderItems.length === 0 &&
-            <Typography align="center" variant="h6">There are not dishes here</Typography>
+            <Typography align="center" variant="h6">{t('kitchenPage.emptyTable')}</Typography>
         }
         {orderItems.length > 0 &&
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Dish</TableCell>
-                        <TableCell>Quantity</TableCell>
-                        <TableCell>Table</TableCell>
+                        <TableCell>{t('kitchenPage.kitchenHeaders.dish')}</TableCell>
+                        <TableCell>{t('kitchenPage.kitchenHeaders.qty')}</TableCell>
+                        <TableCell>{t('kitchenPage.kitchenHeaders.table')}</TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
@@ -33,7 +36,7 @@ const KitchenTable: FC<Props> = ({orderItems, actionFunction, processStage}) => 
                             <TableCell align="center">{item.tableNmbr}</TableCell>
                             <TableCell align="center">
                                 <Button size="small" variant="outlined" onClick={() => actionFunction(item)}>
-                                    { processStage === "ORDERED" ? "Cook" : processStage === "INCOMING"? "Deliver" : "Done"}  
+                                    { processStage === "ORDERED" ? t('kitchenPage.cookAction') : processStage === "INCOMING"? t('kitchenPage.deliverAction') : t('kitchenPage.doneAction')}  
                                 </Button>
                             </TableCell>
                         </TableRow>    
