@@ -15,11 +15,13 @@ import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
 import { paths } from "../constants/constants";
 import { useReservation } from "../hooks/serviceHooks/reservations/useReservation";
+import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
+import { useOrderItemsBySecCode } from "../hooks/serviceHooks/reservations/useOrderItemsBySecCode";
 
 const FullMenuPage: FC = () => {
 
     const [value, setValue] = useState(0);
-    const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
+    // const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
     const [reloadOrderItems, setReload] = useState(false);
 
     const orderItemService = useOrderItemService();
@@ -53,16 +55,7 @@ const FullMenuPage: FC = () => {
         navigate(`${paths.ROOT}/reservations/${reservation.securityCode}/checkout`);
     }
 
-    useEffect(() => {
-        let orderItems = new OrderitemParams();
-        orderItems.securityCode = securityCode;
-        handleResponse(
-            orderItemService.getOrderItems(orderItems),
-            (orderItems: OrderItemModel[]) => {
-                setOrderItems(orderItems);
-            }
-        )
-    },[reloadOrderItems]);
+    const {orderItems, error: orderItemsError, loading: orderItemLoading} = useOrderItemsBySecCode(reservation, reloadOrderItems);
 
     return(
         <Grid container spacing={2} justifyContent="center">

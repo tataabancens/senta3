@@ -16,6 +16,7 @@ import { DishModel, ReservationModel } from "../../models";
 import { CustomerParams } from "../../models/Customers/CustomerParams";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
+import { extractCustomerIdFromContent } from "../../pages/SignUpPage";
 
   
   type Props = {
@@ -61,6 +62,7 @@ import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderIte
         orderItem.dishId = dish.id;
         orderItem.quantity = qty;
         orderItem.securityCode = reservation?.securityCode;
+        orderItem.customerId = extractCustomerIdFromContent(reservation?.customer!);
         const {isOk, data, error } = await orderItemService.createOrderItem(orderItem, abortController);
 
         if (!isOk) {

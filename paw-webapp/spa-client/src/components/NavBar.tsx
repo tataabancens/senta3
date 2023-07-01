@@ -47,12 +47,12 @@ export const NavBar: React.FC<{}> = () => {
   useEffect(() => {
     if(auth.roles[0] === "ROLE_CUSTOMER"){
       const pages: nameSitePair[] = Array.from(customerPages, ([key, value]) => ({key, value}));
-      handleResponse(userService.getUserById(auth.id), user => setUser(user));
+      // handleResponse(userService.getUserById(auth.id), user => setUser(user));
       setRolePages(pages);
     }
     else if(auth.roles[0] === "ROLE_RESTAURANT"){
       const pages: nameSitePair[] = Array.from(restaurantPages, ([key, value]) => ({key, value}));
-      handleResponse(userService.getUserById(auth.id), user => setUser(user));
+      // handleResponse(userService.getUserById(auth.id), user => setUser(user));
       setRolePages(pages);
     }
     else{
@@ -84,7 +84,7 @@ export const NavBar: React.FC<{}> = () => {
                 {auth.roles.length > 0?
                   <Stack direction="row" spacing={2}>
                     <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/profile")}}>
-                      <Typography>{user?.username}</Typography>
+                      <Typography>{auth?.user}</Typography>
                     </Button>
                     <Button onClick={logOut} variant="contained">
                       <Typography>{t('navBar.logoutButton')}</Typography>

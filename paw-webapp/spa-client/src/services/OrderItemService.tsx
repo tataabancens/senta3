@@ -15,11 +15,7 @@ export class OrderItemService {
 
     private readonly basePath = paths.ORDERITEMS
 
-    public getOrderItems(params: OrderitemParams): Promise<AxiosResponse<Array<OrderItemModel>>> {
-        return this.axios.get<Array<OrderItemModel>>(this.basePath + `/${params.securityCode}` + paths.ORDERITEMS);
-    }
-
-    public async getOrderItemsNewVersion(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<OrderItemModel[]>> {
+    public async getOrderItems(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<OrderItemModel[]>> {
         try {
             const response = await this.axios.get<OrderItemModel[]>(this.basePath + params.getOrderItemsQuery, { signal: abortController.signal });
             return buildSuccessResponse(response.data as OrderItemModel[]);

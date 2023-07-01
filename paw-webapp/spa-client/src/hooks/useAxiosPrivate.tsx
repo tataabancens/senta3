@@ -34,7 +34,12 @@ const useAxiosPrivate = () => {
                         prevRequest.sent = true;
                         // TODO: Aca se refresca el token de ser posible
                         // Por el momento vamos a borrar las credenciales del localStorage aca
-                        setAuth(emptyAuth);
+                        const errorMessage = error.response.data.message as string;
+                        if (errorMessage === "The access token expired") {
+                            console.log(errorMessage);
+                            setAuth(emptyAuth);
+                        }
+                        
                         prevRequest.headers['Authorization'] = "";
                         return axiosPrivate(prevRequest);
                     }

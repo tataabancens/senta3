@@ -37,6 +37,9 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     const abortController = new AbortController();
 
     useEffect(() => {
+        if (auth === emptyAuth) {
+            return ;
+        }
         (async () => {
             if (auth.roles[0] === "ROLE_CUSTOMER") {
                 const customerId = extractCustomerIdFromContent(auth.contentURL);
