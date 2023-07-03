@@ -31,7 +31,7 @@ const ProfilePage: FC = () => {
   const userService = useUserService();
   const axiosPrivate = useAxiosPrivate();
   const { t } = useTranslation();
-  
+
   const handleReload = () => {
     setReload(!reloadUser);
   }
@@ -71,14 +71,14 @@ const ProfilePage: FC = () => {
         borderRadius={3}
         sx={{
           background:
-          `linear-gradient(51deg, rgba(217,30,54,1) 40%, rgba(255,253,247,1) 80%);`,
+            `linear-gradient(51deg, rgba(217,30,54,1) 40%, rgba(255,253,247,1) 80%);`,
         }}
       >
-      <Typography variant="h2" sx={{ color: "white" }}>{t('profilePage.title')}</Typography>
+        <Typography variant="h2" sx={{ color: "white" }}>{t('profilePage.title')}</Typography>
       </Grid>
-      {user?.role === "ROLE_RESTAURANT"? 
-      <RestaurantInfo user={user} restaurant={restaurant} reloadInfo={handleReload}/> :
-      <CustomerInfo user={user} customer={customer} reloadInfo={handleReload} />}
+      {user?.role === "ROLE_RESTAURANT" ?
+        <RestaurantInfo user={user} restaurant={restaurant} reloadInfo={handleReload} /> :
+        <CustomerInfo user={user} customer={customer} reloadInfo={handleReload} />}
     </Grid>
   );
 }

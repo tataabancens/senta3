@@ -9,6 +9,7 @@ import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ReservationModel } from "../../models";
 import ApiErrorDetails, { ApiError } from "../../models/ApiError/ApiErrorDetails";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   isOpen: boolean;
@@ -22,13 +23,14 @@ interface findReservationFormValue {
 const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
   const navigate = useNavigate();
   const reservationService = useReservationService()
+  const { t } = useTranslation();
 
   const initialValue: findReservationFormValue = {
     securityCode: '',
   }
 
   const validationSchema = Yup.object().shape({
-    securityCode: Yup.string().length(6, "Must be 6 characters long").required("Required")
+    securityCode: Yup.string().length(6, t('validationSchema.secCodeValidation',{length: 6})).required(t('validationSchema.required'))
   })
 
   const handleSubmit = async (values: findReservationFormValue, props: FormikHelpers<findReservationFormValue>) => {
@@ -59,10 +61,10 @@ const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => 
         <Formik initialValues={initialValue} onSubmit={handleSubmit} validationSchema={validationSchema}>
           {(props) => (
             <Form>
-              <DialogTitle>Reservation security code</DialogTitle>
+              <DialogTitle>{t('forms.authReservation.title')}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Enter the security code given in the email we sent you.
+                {t('forms.authReservation.description')}
                 </DialogContentText>
                 <Grid container marginY={3} xs={12}>
                   <Field as={TextField}
@@ -70,7 +72,7 @@ const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => 
                     xs={12}
                     required
                     id="securityCode"
-                    label="security code"
+                    label={t('forms.authReservation.label')}
                     name="securityCode"
                     helperText={<ErrorMessage name="securityCode" />}
                     error={props.errors.securityCode}
@@ -84,10 +86,10 @@ const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => 
                   color="success"
                   disabled={props.isSubmitting}
                 >
-                  Confirm
+                  {t('forms.confirmButton')}
                 </Button>
                 <Button onClick={handleOpen} variant="contained">
-                  Cancel
+                {t('forms.cancelButton')}
                 </Button>
               </DialogActions>
             </Form>

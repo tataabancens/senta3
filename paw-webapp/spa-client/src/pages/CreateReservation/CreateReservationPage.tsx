@@ -35,6 +35,8 @@ import ApiErrorDetails from '../../models/ApiError/ApiErrorDetails';
 import useAuth from '../../hooks/useAuth';
 import {CustomerModel, UserModel} from "../../models";
 import { useTranslation } from 'react-i18next';
+import { useRestaurant } from '../../hooks/serviceHooks/restaurants/useRestaurant';
+import useRestaurantService from '../../hooks/serviceHooks/restaurants/useRestaurantService';
 
 
 function Copyright() {
@@ -72,6 +74,7 @@ interface AvailableHours {
 const CreateReservation: FC = () => {
   const customerService = useCustomerService();
   const reservationService = useReservationService();
+  const restaurantService = useRestaurantService();
   const userService = useUserService();
   const { setAuth } = useAuth();
   const { auth } = useAuth();
@@ -93,20 +96,20 @@ const CreateReservation: FC = () => {
   }
 
   const validationSchema = Yup.object().shape({
-    qPeople: Yup.number().positive("Greater than 0").required("Required"),
-    date: Yup.date().min(new Date(), "Date must be in the future").required("Required"),
-    hour: Yup.number().positive("Greater than 0").max(24, "Less than 24"),
+    qPeople: Yup.number().positive(t('validationSchema.positiveValidation')).required(t('validationSchema.required')),
+    date: Yup.date().min(new Date(), t('validationSchema.dateValidation')).required(t('validationSchema.required')),
+    hour: Yup.number().positive(t('validationSchema.positiveValidation')).max(24, "Less than 24"),
     customerStep: Yup.boolean(),
-    firstName: Yup.string().when("customerStep", { is: true, then: Yup.string().required("Required") }),
-    lastName: Yup.string().when("customerStep", { is: true, then: Yup.string().required("Required") }),
-    mail: Yup.string().when("customerStep", { is: true, then: Yup.string().email('Enter valid email').required("Required") }),
-    phone: Yup.string().when("customerStep", { is: true, then: Yup.string().required("Required") }),
+    firstName: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
+    lastName: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
+    mail: Yup.string().when("customerStep", { is: true, then: Yup.string().email(t('validationSchema.mailValidation')).required(t('validationSchema.required')) }),
+    phone: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     userStep: Yup.boolean(),
-    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, "Minimun 8 caracters long").required("Required") }),
-    password: Yup.string().when("userStep", { is: true, then: Yup.string().required("Required") }),
+    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength')).required(t('validationSchema.required')) }),
+    password: Yup.string().when("userStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     repeatPassword: Yup.string().when("userStep", {
       is: true, then: Yup.string()
-        .oneOf([Yup.ref('password'), undefined], 'Passwords must match').required("Required")
+        .oneOf([Yup.ref('password'), undefined], t('validationSchema.passwordMatch')).required(t('validationSchema.required'))
     }),
   })
 
@@ -153,7 +156,7 @@ const CreateReservation: FC = () => {
         resParams.qPeople = qPeople;
         resParams.date = date.toString();
         resParams.restaurantId = 1;
-        const { ok, error, response } = await awaitWrapper<AvailableHours>(reservationService.getAvailableHours(resParams));
+        const { ok, error, response } = await awaitWrapper<AvailableHours>(restaurantService.getAvailableHours(resParams));
         if (!ok) {
           props.setFieldError("date", error.message);
           props.setSubmitting(false);
@@ -210,7 +213,7 @@ const CreateReservation: FC = () => {
         return;
         break;
 
-      case 4: //static customer info
+      case 4:
         resParams.hour = hour;
         resParams.qPeople = qPeople;
         resParams.date = date.toString();

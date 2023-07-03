@@ -21,6 +21,7 @@ import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ApiErrorDetails from "../../models/ApiError/ApiErrorDetails";
 import axios from "../../api/axios";
+import { useTranslation } from "react-i18next";
 
 interface accountInfoFormValues {
   restaurantName: string;
@@ -49,6 +50,8 @@ const AccountInfoForm: FC<Props> = ({
   reload,
 }): JSX.Element => {
   
+
+  const { t } = useTranslation();
   const initialValues: accountInfoFormValues = {
     restaurantName: data.name,
     customerName: data.name,
@@ -61,15 +64,15 @@ const AccountInfoForm: FC<Props> = ({
   }
 
   const validationSchema = Yup.object().shape({
-    restaurantName: Yup.string().when("isRestaurantUser", { is: true, then: Yup.string().required("Required") }),
-    customerName: Yup.string().when("isRestaurantUser", { is: false, then: Yup.string().required("Required") }),
+    restaurantName: Yup.string().when("isRestaurantUser", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
+    customerName: Yup.string().when("isRestaurantUser", { is: false, then: Yup.string().required(t('validationSchema.required')) }),
     isRestaurantUser: Yup.boolean(),
-    username: Yup.string().required("Required"),
-    phone: Yup.string().required("Required"),
-    mail: Yup.string().required("Required"),
-    password: Yup.string().min(8, "Minimun 8 caracters long"),
+    username: Yup.string().required(t('validationSchema.required')),
+    phone: Yup.string().required(t('validationSchema.required')),
+    mail: Yup.string().required(t('validationSchema.required')),
+    password: Yup.string().min(8, t('validationSchema.passwordLength',{length: 8})),
     repeatPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+      .oneOf([Yup.ref('password'), null], t('validationSchema.passwordMatch')),
   
   })
 
@@ -133,10 +136,10 @@ const AccountInfoForm: FC<Props> = ({
         <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
           {(props) => (
             <Form>
-              <DialogTitle>Account info</DialogTitle>
+              <DialogTitle>{t('forms.accountInfo.title')}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Write the fields you want to be modified
+                {t('forms.accountInfo.description')}
                 </DialogContentText>
                 <Grid container marginY={3}>
                   {user?.role === "ROLE_RESTAURANT" ? (
@@ -148,7 +151,7 @@ const AccountInfoForm: FC<Props> = ({
                       <Field as={TextField}
                         required
                         id="restaurantName"
-                        label="Restaurant Name"
+                        label={t('forms.accountInfo.restaurantName')}
                         name="restaurantName"
                         value={props.values.restaurantName}
                         helperText={<ErrorMessage name="restaurantName"></ErrorMessage>}
@@ -164,7 +167,7 @@ const AccountInfoForm: FC<Props> = ({
                       <Field as={TextField}
                         required
                         id="customerName"
-                        label="Customer Name"
+                        label={t('forms.accountInfo.customerName')}
                         name="customerName"
                         value={props.values.customerName}
                         helperText={<ErrorMessage name="customerName"></ErrorMessage>}
@@ -180,7 +183,7 @@ const AccountInfoForm: FC<Props> = ({
                     <Field as={TextField}
                       required
                       id="username"
-                      label="Username"
+                      label={t('forms.accountInfo.username')}
                       name="username"
                       value={props.values.username}
                       helperText={<ErrorMessage name="username"></ErrorMessage>}
@@ -195,7 +198,7 @@ const AccountInfoForm: FC<Props> = ({
                     <Field as={TextField}
                       required
                       id="mail"
-                      label="Mail"
+                      label={t('forms.accountInfo.mail')}
                       name="mail"
                       value={props.values.mail}
                       helperText={<ErrorMessage name="mail"></ErrorMessage>}
@@ -210,7 +213,7 @@ const AccountInfoForm: FC<Props> = ({
                     <Field as={TextField}
                       required
                       id="phone"
-                      label="Phone"
+                      label={t('forms.accountInfo.phone')}
                       name="phone"
                       value={props.values.phone}
                       helperText={<ErrorMessage name="phone"></ErrorMessage>}
@@ -225,7 +228,7 @@ const AccountInfoForm: FC<Props> = ({
                     <Field as={TextField}
                       
                       id="password"
-                      label="Password"
+                      label={t('forms.accountInfo.password')}
                       name="password"
                       type="password"
                       value={props.values.password}
@@ -241,7 +244,7 @@ const AccountInfoForm: FC<Props> = ({
                     <Field as={TextField}
             
                       id="repeatPassword"
-                      label="Repeat Password"
+                      label={t('forms.accountInfo.passwordRepeat')}
                       type="password"
                       name="repeatPassword"
                       value={props.values.repeatPassword}
@@ -253,10 +256,10 @@ const AccountInfoForm: FC<Props> = ({
               </DialogContent>
               <DialogActions>
                 <Button type="submit" disabled={props.isSubmitting} variant="contained" color="success">
-                  Confirm
+                {t('forms.confirmButton')}
                 </Button>
                 <Button onClick={handleOpen} variant="contained">
-                  Cancel
+                  {t('forms.cancelButton')}
                 </Button>
               </DialogActions>
             </Form>

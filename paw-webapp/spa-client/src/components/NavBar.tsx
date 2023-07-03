@@ -10,12 +10,9 @@ import {
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {emptyAuth, paths} from "../constants/constants";
-import useUserService from "../hooks/serviceHooks/users/useUserService";
 import useAuth from "../hooks/useAuth";
-import { UserModel } from "../models";
-import { handleResponse } from "../Utils";
 
 interface nameSitePair{
   key: string,
@@ -25,9 +22,7 @@ interface nameSitePair{
 export const NavBar: React.FC<{}> = () => {
   let navigate = useNavigate();
   const { auth, setAuth } = useAuth();
-  const [user, setUser] = useState<UserModel | undefined>();
   const [rolePages, setRolePages] = useState<nameSitePair[]>([]);
-  const userService = useUserService();
   const { t } = useTranslation();
 
   const customerPages = new Map<string, string>([
@@ -47,12 +42,10 @@ export const NavBar: React.FC<{}> = () => {
   useEffect(() => {
     if(auth.roles[0] === "ROLE_CUSTOMER"){
       const pages: nameSitePair[] = Array.from(customerPages, ([key, value]) => ({key, value}));
-      // handleResponse(userService.getUserById(auth.id), user => setUser(user));
       setRolePages(pages);
     }
     else if(auth.roles[0] === "ROLE_RESTAURANT"){
       const pages: nameSitePair[] = Array.from(restaurantPages, ([key, value]) => ({key, value}));
-      // handleResponse(userService.getUserById(auth.id), user => setUser(user));
       setRolePages(pages);
     }
     else{

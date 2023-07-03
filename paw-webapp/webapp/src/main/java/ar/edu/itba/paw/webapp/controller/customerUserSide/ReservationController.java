@@ -38,9 +38,11 @@ public class ReservationController {
     @Context
     private UriInfo uriInfo;
 
+    private final static String RESERVATION_VERSION_1 = "application/vnd.sentate.reservation.v1+json";
+
     @GET
     @Path("{securityCode}")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { RESERVATION_VERSION_1 })
     public Response getReservationBySecurityCode(@PathParam("securityCode") final String securityCode){
         final Optional<ReservationDto> maybeReservation = rs.getReservationBySecurityCode(securityCode).map(r -> ReservationDto.fromReservation(uriInfo, r));
         if(!maybeReservation.isPresent()){
@@ -51,7 +53,7 @@ public class ReservationController {
     }
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { RESERVATION_VERSION_1 })
     public Response getReservationsOrderedBy(@DefaultValue("1") @QueryParam("restaurantId") final long restaurantId,
                                                  @DefaultValue("0") @QueryParam("customerId") final long customerId,
                                                  @DefaultValue("reservationid")@QueryParam("orderBy") final String orderBy,
@@ -76,7 +78,7 @@ public class ReservationController {
     }
 
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ RESERVATION_VERSION_1 })
     public Response createReservation(@Valid final CreateReservationForm reservationForm,
                                       @Context  HttpServletRequest request) {
         Optional<LocalDateTime> maybeDate = timestampParser(reservationForm.getReservationDate());
@@ -96,7 +98,7 @@ public class ReservationController {
 
 
     @PATCH
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ RESERVATION_VERSION_1 })
     @Path("/{securityCode}")
     public Response editReservation(@PathParam("securityCode") final String securityCode,
                                     final ReservationPatchForm reservationPatchForm){
@@ -109,6 +111,7 @@ public class ReservationController {
     }
 
     @DELETE
+    @Produces(value = { RESERVATION_VERSION_1 })
     @Path("/{securityCode}")
     public Response deleteReservation(@PathParam("securityCode") final String securityCode){
         boolean success = rs.cancelReservation(securityCode);
@@ -120,7 +123,7 @@ public class ReservationController {
 
     @Path("/{securityCode}/recommendedDish")
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Produces(value = { RESERVATION_VERSION_1 })
     public Response getRecommendedDish(@PathParam("securityCode") final String securityCode){
         Optional<DishDto> recommendedDish = ds.getRecommendedDish(securityCode).map(d -> DishDto.fromDish(uriInfo, d));
         if(!recommendedDish.isPresent()){
@@ -128,6 +131,4 @@ public class ReservationController {
         }
         return Response.ok(recommendedDish.get()).build();
     }
-
-
 }

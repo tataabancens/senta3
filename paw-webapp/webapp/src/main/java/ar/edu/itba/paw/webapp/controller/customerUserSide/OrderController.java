@@ -40,8 +40,10 @@ public class OrderController {
         this.cs = cs;
     }
 
+    private final static String ORDER_ITEM_VERSION_1 = "application/vnd.sentate.order_item.v1+json";
+
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Produces(value = { ORDER_ITEM_VERSION_1 })
     public Response getOrderItemsQuery(@DefaultValue("0,1,2,3,4,5") @QueryParam("reservationStatus") final String reservationStatus,
                                        @DefaultValue("0,1,2,3,4,5,6,7") @QueryParam("orderItemStatus") final String orderItemStatus,
                                        @DefaultValue("") @QueryParam("securityCode") final String securityCode) {
@@ -79,7 +81,7 @@ public class OrderController {
 
     @GET
     @Path("/{orderItemId}")
-    @Produces(value = {MediaType.APPLICATION_JSON,})
+    @Produces(value = { ORDER_ITEM_VERSION_1 })
     public Response getOrderItems(@PathParam("orderItemId") final long orderItemId) {
         Optional<OrderItemDto> maybeOrderItem = rs.getOrderItemById(orderItemId).map(o -> OrderItemDto.fromOrderItem(uriInfo, o));
 
@@ -91,7 +93,7 @@ public class OrderController {
     }
 
     @POST
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ ORDER_ITEM_VERSION_1 })
     public Response createOrderItem(@Valid final CreateOrderItemForm orderItemForm) {
         final OrderItem newOrderItem = rs.createOrderItemPost(orderItemForm.getSecurityCode(), orderItemForm.getDishId(), orderItemForm.getQuantity());
         if(null == newOrderItem){
@@ -103,7 +105,7 @@ public class OrderController {
     }
 
     @PATCH
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ ORDER_ITEM_VERSION_1 })
     @Path("/{id}")
     public Response editReservation(@PathParam("id") final long id,
                                     final OrderItemPatchForm orderItemPatchForm){

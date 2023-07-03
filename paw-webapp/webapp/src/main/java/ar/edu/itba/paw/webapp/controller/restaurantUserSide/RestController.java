@@ -35,9 +35,11 @@ public class RestController {
     @Context
     private UriInfo uriInfo;
 
+    private final static String RESTAURANT_VERSION_1 = "application/vnd.sentate.restaurant.v1+json";
+
     @GET
     @Path("/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { RESTAURANT_VERSION_1 })
     public Response getRestById(@PathParam("id") final long id) {
         final Optional<RestaurantDto> maybeRestaurant = rs.getRestaurantById(id).map(u -> RestaurantDto.fromRestaurant(uriInfo, u));
         if (!maybeRestaurant.isPresent()) {
@@ -50,7 +52,7 @@ public class RestController {
 
     @GET
     @Path("/{id}/availableHours/{date}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces( RESTAURANT_VERSION_1 )
     public Response getAvailableHours(@PathParam("id") final long id,
                                       @PathParam("date") final String date,
                                       @DefaultValue("0")@QueryParam("qPeople") final int qPeople) throws JsonProcessingException {
@@ -84,11 +86,11 @@ public class RestController {
 
 
     @PATCH
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ RESTAURANT_VERSION_1 })
     @Path("/{id}")
     public Response editRestaurant(@PathParam("id") final long id,
                                     final RestaurantPatchForm restaurantPatchForm){
-        if(restaurantPatchForm == null){
+        if(restaurantPatchForm == null) {
             return Response.status(400).build();
         }
         boolean success = rs.patchRestaurant(id, restaurantPatchForm.getRestaurantName(), restaurantPatchForm.getPhone(), restaurantPatchForm.getMail(), restaurantPatchForm.getTotalChairs(), restaurantPatchForm.getOpenHour(), restaurantPatchForm.getCloseHour());

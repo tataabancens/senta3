@@ -26,7 +26,7 @@ export default function InfoForm({ props }: infoFormProps) {
             autoFocus
             id="firstName"
             name="firstName"
-            label="First name"
+            label={t('createReservation.step4.firstName')}
             fullWidth
             autoComplete="given-name"
             variant="standard"
@@ -41,7 +41,7 @@ export default function InfoForm({ props }: infoFormProps) {
           <TextField
             id="lastName"
             name="lastName"
-            label="Last name"
+            label={t('createReservation.step4.lastName')}
             fullWidth
             autoComplete="family-name"
             variant="standard"
@@ -57,7 +57,7 @@ export default function InfoForm({ props }: infoFormProps) {
             required
             id="mail"
             name="mail"
-            label="Mail"
+            label={t('createReservation.step4.mail')}
             fullWidth
             autoComplete="mail"
             type="mail"
@@ -74,7 +74,7 @@ export default function InfoForm({ props }: infoFormProps) {
             required
             id="phone"
             name="phone"
-            label="Phone"
+            label={t('createReservation.step4.phone')}
             fullWidth
             autoComplete="phone"
             variant="standard"

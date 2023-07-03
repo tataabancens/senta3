@@ -2,14 +2,17 @@ import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import KitchenTable from "../components/KitchenTable";
+import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
 import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
 import { OrderItemModel } from "../models";
+import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
 
 
 const Kitchen: FC = () => {
     let filterStatus = "1";
     let orderItemStatus = "1";
     const { t } = useTranslation();
+    const orderItemService = useOrderItemService();
     const { orderItems: orderedOrderItems,
             error: orderedOrderItemsError,
             loading: orderedOrderItemsLoading,
@@ -29,35 +32,56 @@ const Kitchen: FC = () => {
             removeItem: removeDeliveredItem,
             addItem: addDeliveredItem } = useOrderItems(filterStatus, orderItemStatus)
 
-    const cookItem = (item: OrderItemModel) => {
-        removeOrderedItem(item);
-        addIncomingItem(item);
+    const cookItem = async (item: OrderItemModel) => {
+        let params = new OrderitemParams();
+        params.orderItemId = item.orderItemId;
+        params.status = "INCOMING";
+        params.securityCode = item.securityCode;
+        const { isOk } = await orderItemService.editOrderItem(params, new AbortController());
+        if(isOk){
+            removeOrderedItem(item);
+            addIncomingItem(item);
+        }
     }
 
-    const deliverItem = (item: OrderItemModel) => {
-        removeIncomingItem(item)
-        addDeliveredItem(item)
+    const deliverItem = async (item: OrderItemModel) => {
+        let params = new OrderitemParams();
+        params.orderItemId = item.orderItemId;
+        params.status = "DELIVERED";
+        params.securityCode = item.securityCode;
+        const { isOk } = await orderItemService.editOrderItem(params, new AbortController());
+        if(isOk){
+            removeIncomingItem(item)
+            addDeliveredItem(item)
+        }
     }
 
-    const itemDelivered = (item: OrderItemModel) => {
-        removeDeliveredItem(item)
+    const itemDelivered = async (item: OrderItemModel) => {
+        let params = new OrderitemParams();
+        params.orderItemId = item.orderItemId;
+        params.status = "FINISHED";
+        params.securityCode = item.securityCode;
+        const { isOk } = await orderItemService.editOrderItem(params, new AbortController());
+        if(isOk){
+            removeDeliveredItem(item);
+        }
     }
 
     return (
         <Grid container xs={12} padding={2} justifyContent="space-evenly" >
-            <Grid item container xs={3} component={Paper} elevation={5}>
+            <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid item xs={12}><Typography variant="h4" align="center">{t('kitchenPage.orderedTitle')}</Typography></Grid>
                 {orderedOrderItems  && !orderedOrderItemsError && <KitchenTable orderItems={orderedOrderItems} actionFunction={cookItem} processStage={"ORDERED"}/>}
                 {orderedOrderItemsLoading  && <CircularProgress />}
                 {orderedOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
-            <Grid item container xs={3} component={Paper} elevation={5}>
+            <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.cookingTitle')}</Typography></Grid>
                 {incomingOrderItems && !incomingOrderItemsError && <KitchenTable orderItems={incomingOrderItems} actionFunction={deliverItem} processStage={"INCOMING"}/>}
                 {incomingOrderItemsLoading  && <CircularProgress />}
                 {incomingOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
-            <Grid item container xs={3} component={Paper} elevation={5}>
+            <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
                 {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}
                 {deliveringOrderItemsLoading  && <CircularProgress />}

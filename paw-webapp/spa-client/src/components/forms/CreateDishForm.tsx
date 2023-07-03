@@ -1,23 +1,20 @@
-import * as React from 'react';
 import { FC } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Select from '@mui/material/Select/Select';
 import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
-import { DishCategoryModel, DishModel } from '../../models';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import UploadImage from '../UploadImage';
 import useImageService from '../../hooks/serviceHooks/useImageService';
 import useDishService from '../../hooks/serviceHooks/dishes/useDishService';
 import { DishParams } from '../../models/Dishes/DishParams';
-import { Dish } from '../../models/Dishes/Dish';
 import useRestaurantMenuContext from '../../hooks/useRestaurantMenuContext';
+import { useTranslation } from 'react-i18next';
 
 export interface createDishFormValue {
     name: string;
@@ -36,6 +33,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
 
     const ims = useImageService();
     const ds = useDishService();
+    const { t } = useTranslation();
 
     const { useCurrentCategory: { categoryId }, getDishCategories: { categoryList }, getDishes: { addDish } } = useRestaurantMenuContext();
 
@@ -84,7 +82,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
         categoryId: Yup.number(),
         price: Yup.number(),
         description: Yup.string(),
-        image: Yup.mixed().required("Required")
+        image: Yup.mixed().required(t('validationSchema.required'))
             .test("FILE_TYPE", "Invalid file type", (value) => value && ['image/png', 'image/jpeg'].includes(value.type)),
     })
 
@@ -93,7 +91,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
             <Formik initialValues={initialValue} onSubmit={handleSubmit} validationSchema={validationSchema}>
                 {(props) => (
                     <Form>
-                        <DialogTitle align="center">Create Dish</DialogTitle>
+                        <DialogTitle align="center">{t('forms.createDish.title')}</DialogTitle>
                         <DialogContent>
                             <Field as={TextField}
                                 item
@@ -101,7 +99,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 variant="standard"
                                 fullWidth
                                 id="name"
-                                label="Name"
+                                label={t('forms.createDish.name')}
                                 name="name"
                                 helperText={<ErrorMessage name="name" />}
                                 error={props.errors.name}
@@ -113,7 +111,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 variant="standard"
                                 fullWidth
                                 id="price"
-                                label="Price"
+                                label={t('forms.createDish.price')}
                                 name="price"
                                 helperText={<ErrorMessage name="price" />}
                                 error={props.errors.price}
@@ -124,7 +122,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 variant="standard"
                                 fullWidth
                                 id="description"
-                                label="Description"
+                                label={t('forms.createDish.description')}
                                 name="description"
                                 helperText={<ErrorMessage name="description" />}
                                 error={props.errors.description}
@@ -135,14 +133,13 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 fullWidth
                                 autoComplete="given-name"
                                 id="categoryId"
-                                label="Category"
+                                label={t('forms.createDish.category')}
                                 value={props.values.categoryId.toString()}
                                 name="categoryId"
                                 helperText={<ErrorMessage name="category" />}
                                 error={props.errors.categoryId}
                             >
-                                <MenuItem value={-1}>Select one
-                                </MenuItem>
+                                <MenuItem value={-1}>{t('forms.select')}</MenuItem>
                                 {categoryList!.map((category) => (
                                     <MenuItem key={category.id} value={category.id}>
                                         {category.name}
@@ -157,8 +154,8 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 variant="contained"
                                 color="success"
                                 disabled={props.isSubmitting}
-                            >Create</Button>
-                            <Button onClick={handleOpenForm} variant="contained">Cancel</Button>
+                            >{t('forms.createDish.createButton')}</Button>
+                            <Button onClick={handleOpenForm} variant="contained">{t('forms.cancelButton')}</Button>
                         </DialogActions>
                     </Form>
                 )}

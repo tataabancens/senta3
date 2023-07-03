@@ -15,13 +15,16 @@ export class CustomerService {
 
     private readonly basePath = paths.CUSTOMERS;
 
+    private readonly ACCEPT = { "Accept": "application/vnd.sentate.customer.v1+json" };
+    private readonly CONTENT_TYPE = { "Content-type": "application/vnd.sentate.customer.v1+json" };
+
     public getCustomerById(id: number): Promise<AxiosResponse<CustomerModel>> {
-        return this.axios.get<CustomerModel>(this.basePath + "/" + id);
+        return this.axios.get<CustomerModel>(this.basePath + "/" + id, { headers: this.ACCEPT });
     }
 
     public async getCustomerByIdNewVersion(id: number): Promise<ResponseDetails<CustomerModel>> {
         try {
-            const response = await this.axios.get<CustomerModel>(this.basePath + "/" + id);
+            const response = await this.axios.get<CustomerModel>(this.basePath + "/" + id, { headers: this.ACCEPT });
             return buildSuccessResponse(response.data);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -29,18 +32,18 @@ export class CustomerService {
     }
 
     public getCustomers(page: number): Promise<AxiosResponse<Array<CustomerModel>>> {
-        return this.axios.get<Array<CustomerModel>>(this.basePath + '?page=' + page);
+        return this.axios.get<Array<CustomerModel>>(this.basePath + '?page=' + page, { headers: this.ACCEPT });
     }
 
     public createCustomer(params: CustomerParams): Promise<AxiosResponse> {
-        return this.axios.post(this.basePath, params.createCustomerPayload);
+        return this.axios.post(this.basePath, params.createCustomerPayload, { headers: this.CONTENT_TYPE });
     }
 
     public editCustomer(params: CustomerParams): Promise<AxiosResponse<CustomerModel>> {
-        return this.axios.patch(this.basePath + `/${params.customerId}`, params.patchCustomerPayload)
+        return this.axios.patch(this.basePath + `/${params.customerId}`, params.patchCustomerPayload, { headers: this.CONTENT_TYPE })
     }
 
     public deleteCustomer(id: number) {
-        return this.axios.delete(this.basePath + '/' + id);
+        return this.axios.delete(this.basePath + '/' + id, { headers: this.ACCEPT });
     }
 }

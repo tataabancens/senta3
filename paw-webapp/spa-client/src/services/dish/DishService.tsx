@@ -14,13 +14,16 @@ export class DishService {
     private readonly basePath = paths.RESTAURANTS + '/1' + paths.DISHES;
     private readonly categoryPath = paths.RESTAURANTS + '/1' + paths.DISH_CATEGORIES;
 
+    private readonly ACCEPT = { "Accept": "application/vnd.sentate.dish.v1+json" };
+    private readonly CONTENT_TYPE = { "Content-type": "application/vnd.sentate.dish.v1+json" };
+
     public async getDishes(abortController: AbortController, dishCategory?: string): Promise<ResponseDetails<DishModel[]>> {
         let resp;
         try {
             if (dishCategory) {
-                resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`, { signal: abortController.signal });
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}?dishCategory=${dishCategory}`, { signal: abortController.signal, headers: this.ACCEPT });
             } else {
-                resp = await this.axios.get<DishModel[]>(`${this.basePath}`, { signal: abortController.signal });
+                resp = await this.axios.get<DishModel[]>(`${this.basePath}`, { signal: abortController.signal, headers: this.ACCEPT });
             }
             const data: DishModel[] = resp.data;
             return buildSuccessResponse(data);
@@ -30,12 +33,12 @@ export class DishService {
     }
 
     public async getDishById(dishId: number): Promise<AxiosResponse<DishModel>> {
-        return this.axios.get<DishModel>(this.basePath + '/' + dishId);
+        return this.axios.get<DishModel>(this.basePath + '/' + dishId, { headers: this.ACCEPT });
     }
 
     public async getDishByIdNew(dishId: number): Promise<ResponseDetails<DishModel>> {
         try {
-            const response = await this.axios.get<DishModel>(this.basePath + '/' + dishId);
+            const response = await this.axios.get<DishModel>(this.basePath + '/' + dishId, { headers: this.ACCEPT });
             return buildSuccessResponse(response.data as DishModel);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -44,7 +47,7 @@ export class DishService {
 
     public async createDish(params: DishParams): Promise<ResponseDetails<Number>> {
         try {
-            const response = await this.axios.post(this.basePath, params.createDishPayload);
+            const response = await this.axios.post(this.basePath, params.createDishPayload, { headers: this.CONTENT_TYPE });
 
             const dishLocation = response.headers['location'] as string;
             const parts = dishLocation.split("/");
@@ -59,7 +62,7 @@ export class DishService {
 
     public async editDish(params: DishParams): Promise<ResponseDetails<Number>> {
         try {
-            const response = await this.axios.patch(this.basePath + `/${params.id}`, params.patchDishPayload)
+            const response = await this.axios.patch(this.basePath + `/${params.id}`, params.patchDishPayload, { headers: this.CONTENT_TYPE })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -67,19 +70,18 @@ export class DishService {
     }
 
     public deleteDish(dishId: number) {
-        return this.axios.delete(this.basePath + '/' + dishId);
+        return this.axios.delete(this.basePath + '/' + dishId, { headers: this.ACCEPT });
     }
 
 
     ////// Categories:
 
-    public getDishCategories(): Promise<AxiosResponse<Array<DishCategoryModel>>> {
-        return this.axios.get<Array<DishCategoryModel>>(this.categoryPath);
-    }
+    private readonly ACCEPT_CATEGORY = { "Accept": "application/vnd.sentate.dish_category.v1+json" };
+    private readonly CONTENT_TYPE_CATEGORY = { "Content-type": "application/vnd.sentate.dish_category.v1+json" };
 
-    public async getDishCategoriesNew(abortController: AbortController): Promise<ResponseDetails<DishCategoryModel[]>> {
+    public async getDishCategories(abortController: AbortController): Promise<ResponseDetails<DishCategoryModel[]>> {
         try {
-            const response = await this.axios.get<Array<DishCategoryModel>>(this.categoryPath, { signal: abortController.signal });
+            const response = await this.axios.get<Array<DishCategoryModel>>(this.categoryPath, { signal: abortController.signal, headers: this.ACCEPT_CATEGORY });
             const data: DishCategoryModel[] = response.data;
             return buildSuccessResponse(data);
         } catch (e) {
@@ -89,7 +91,7 @@ export class DishService {
 
     public async getDishCategory(params: DishParams): Promise<ResponseDetails<DishCategoryModel>> {
         try {
-            const response = await this.axios.get<DishCategoryModel>(this.categoryPath + `/${params.categoryId}`);
+            const response = await this.axios.get<DishCategoryModel>(this.categoryPath + `/${params.categoryId}`, { headers: this.ACCEPT_CATEGORY });
             return buildSuccessResponse(response.data as DishCategoryModel);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -98,7 +100,7 @@ export class DishService {
 
     public async createCategory(params: DishParams): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.post(this.categoryPath, params.createDishCategoryPayload);
+            const response = await this.axios.post(this.categoryPath, params.createDishCategoryPayload, { headers: this.CONTENT_TYPE_CATEGORY } );
 
             const categoryLocation = response.headers['location'] as string;
             const parts = categoryLocation.split("/");
@@ -113,7 +115,7 @@ export class DishService {
 
     public async editCategory(params: DishParams): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.patch(this.categoryPath + `/${params.categoryId}`, params.patchDishCategoryPayload)
+            const response = await this.axios.patch(this.categoryPath + `/${params.categoryId}`, params.patchDishCategoryPayload, { headers: this.CONTENT_TYPE_CATEGORY })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -122,7 +124,7 @@ export class DishService {
 
     public async deleteCategory(params: DishParams): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.delete(this.categoryPath + `/${params.categoryId}`)
+            const response = await this.axios.delete(this.categoryPath + `/${params.categoryId}`, { headers: this.ACCEPT_CATEGORY })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);

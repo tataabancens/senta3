@@ -32,13 +32,26 @@ interface Props {
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
     const [auth, setAuth] = useState(getAuthInfo());
+    const [authUpdated, setAuthUpdated] = useState<boolean>(false);
     const customerService = useCustomerService();
     const restaurantService = useRestaurantService();
     const abortController = new AbortController();
 
+    // if (auth !== emptyAuth) {
+    //     const token = auth.authorization?.split(" ")[1];
+    //     console.log(token);
+    //     const decodedToken = parseJwt(token!);
+    //     console.log(decodedToken);
+    // }
+
     useEffect(() => {
         if (auth === emptyAuth) {
-            return ;
+            saveAuthInfo(auth);
+            return;
+        }
+        if (authUpdated) {
+            setAuthUpdated(false);
+            return;
         }
         (async () => {
             if (auth.roles[0] === "ROLE_CUSTOMER") {
@@ -46,14 +59,16 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
                 const { isOk, data, error } = await customerService.getCustomerByIdNewVersion(customerId);
                 if (isOk) {
                     auth.content = data as CustomerModel;
+                    setAuthUpdated(true);
                     setAuth(auth);
                 }
             } else if (auth.roles[0] === "ROLE_RESTAURANT") {
                 const restaurantId = 1;
                 const { isOk, data, error } = await restaurantService.getRestaurant(restaurantId, abortController);
                 if (isOk) {
-                    auth.content = data as RestaurantModel;
-                    setAuth(auth);
+                    const newAuth = { ...auth, content: data as RestaurantModel };
+                    setAuthUpdated(true);
+                    setAuth(newAuth);
                 }
             }
             saveAuthInfo(auth);

@@ -47,7 +47,7 @@ const DishCard: FC<Props> = ({
 
   return (
   <>
-    {reservation?.securityCode && <ConfirmDishForm isOpen={isCardOpen} handleOpen={handleDishForm} dish={dish!} reservation={reservation} toggleReload={toggleReload} />}
+    {reservation?.securityCode && <ConfirmDishForm isOpen={isCardOpen} handleOpen={handleDishForm} dish={dish!}/>}
     <Link className="dishCardHover" style={linkStyle} onClick={handleDishForm} color="inherit" underline="none">
       <img src={dish.image}  alt="la foto del plato" style={{objectFit:"cover", width: 110, borderRadius: ".8rem", aspectRatio: 1, marginRight: 20}}/>
       <div>

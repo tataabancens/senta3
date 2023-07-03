@@ -1,24 +1,27 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
 import { DishModel, OrderItemModel, ReservationModel } from "../models";
-import {ReservationParams} from "../models/Reservations/ReservationParams";
+import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { ResponseDetails } from "./serviceUtils/typings";
 import { buildErrorResponse, buildSuccessResponse } from "./serviceUtils/returnTypesFactory";
 
 export class ReservationService {
-    private axios:AxiosInstance;
+    private axios: AxiosInstance;
 
     constructor(axios: AxiosInstance) {
         this.axios = axios;
     }
 
-    public getReservation(params: ReservationParams): Promise<AxiosResponse<ReservationModel>>{
-        return this.axios.get<ReservationModel>(paths.RESERVATIONS + '/'+ params.securityCode);
+    private readonly ACCEPT = { "Accept": "application/vnd.sentate.reservation.v1+json" };
+    private readonly CONTENT_TYPE = { "Content-type": "application/vnd.sentate.reservation.v1+json" };
+
+    public getReservation(params: ReservationParams): Promise<AxiosResponse<ReservationModel>> {
+        return this.axios.get<ReservationModel>(paths.RESERVATIONS + '/' + params.securityCode, { headers: this.ACCEPT });
     }
 
-    public async newGetReservation(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<ReservationModel>>{
+    public async newGetReservation(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<ReservationModel>> {
         try {
-            const response = await this.axios.get<ReservationModel>(paths.RESERVATIONS + '/'+ params.securityCode, { signal: abortController.signal });
+            const response = await this.axios.get<ReservationModel>(paths.RESERVATIONS + '/' + params.securityCode, { signal: abortController.signal, headers: this.ACCEPT });
             const data: ReservationModel = response.data;
             return buildSuccessResponse(data);
         } catch (e) {
@@ -26,39 +29,34 @@ export class ReservationService {
         }
     }
 
-    public getReservations(params: ReservationParams): Promise<AxiosResponse<Array<ReservationModel>>>{
-        return this.axios.get<Array<ReservationModel>>(paths.RESERVATIONS + params.getReservationsQuery);
+    public getReservations(params: ReservationParams): Promise<AxiosResponse<Array<ReservationModel>>> {
+        return this.axios.get<Array<ReservationModel>>(paths.RESERVATIONS + params.getReservationsQuery, { headers: this.ACCEPT });
     }
 
-    public async getReservationsNewVersion(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<ReservationModel[]>>{
+    public async getReservationsNewVersion(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<ReservationModel[]>> {
         try {
-            const response = await this.axios.get<Array<ReservationModel>>(paths.RESERVATIONS + params.getReservationsQuery);;
+            const response = await this.axios.get<Array<ReservationModel>>(paths.RESERVATIONS + params.getReservationsQuery, { signal: abortController.signal, headers: this.ACCEPT });;
             return buildSuccessResponse(response.data as ReservationModel[]);
         } catch (e) {
             return buildErrorResponse(e as Error);
         }
-    
-    }
-    
 
-    public createReservation(params: ReservationParams): Promise<AxiosResponse>{
-        return this.axios.post(paths.RESERVATIONS, params.createReservationPayload, {headers:{customerId: params.customerId}});
     }
 
-    public getRecommendedDish(securityCode: string): Promise<AxiosResponse>{
-        return this.axios.get<DishModel>(paths.RESERVATIONS + '/' + securityCode + '/recommendedDish');
+
+    public createReservation(params: ReservationParams): Promise<AxiosResponse> {
+        return this.axios.post(paths.RESERVATIONS, params.createReservationPayload, { headers: { customerId: params.customerId, "Content-Type": "application/vnd.sentate.reservation.v1+json" } });
     }
 
-    public patchReservation(params: ReservationParams): Promise<AxiosResponse>{
-        return this.axios.patch(paths.RESERVATIONS + '/' + params.securityCode, params.patchReservationPayload);
+    public getRecommendedDish(securityCode: string): Promise<AxiosResponse> {
+        return this.axios.get<DishModel>(paths.RESERVATIONS + '/' + securityCode + '/recommendedDish', { headers: this.ACCEPT });
     }
 
-    public cancelReservation(securityCode: string): Promise<AxiosResponse>{
-        return this.axios.delete(paths.RESERVATIONS + '/' + securityCode);
+    public patchReservation(params: ReservationParams): Promise<AxiosResponse> {
+        return this.axios.patch(paths.RESERVATIONS + '/' + params.securityCode, params.patchReservationPayload, { headers: this.CONTENT_TYPE });
     }
 
-    public async getAvailableHours(params: ReservationParams): Promise<number[]> {
-        const response = await this.axios.get(paths.BASE_URL + `/restaurants/${params.restaurantId}/availableHours/${params.date}?qPeople=${params.qPeople}`)
-        return response.data;
+    public cancelReservation(securityCode: string): Promise<AxiosResponse> {
+        return this.axios.delete(paths.RESERVATIONS + '/' + securityCode, { headers: this.ACCEPT });
     }
 }

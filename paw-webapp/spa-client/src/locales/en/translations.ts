@@ -1,5 +1,3 @@
-import { SystemSecurityUpdate } from "@mui/icons-material";
-
 export const TRANSLATIONS_EN = {
     navBar: {
         customerPages:{
@@ -25,12 +23,26 @@ export const TRANSLATIONS_EN = {
     loginPage: {
         loginTitle: "Login",
         usernameInput: "Username",
+        label:{
+            username: "Username",
+            password: "Password"
+        },
         formSubmit:{
             login: "Login",
             loading: "Loading"
         },
+        rememberMe: "Remember me",
         forgotPassword: "Forgot password?",
         registerCallToAction: "Don't have an account? Sign Up!"
+    },
+    validationSchema:{
+        required: "Required",
+        mailValidation: "Enter valid email",
+        passwordMatch: "Password must match",
+        passwordLength: "Minimun {{length}} caracters long",
+        positiveValidation: "Must be greater than 0",
+        dateValidation: "Date cannot be in the past",
+        secCodeValidation: "Must be {{length}} characters long"
     },
     createReservation:{
         pageTitle: "Create reservation",
@@ -49,7 +61,11 @@ export const TRANSLATIONS_EN = {
         },
         step4:{
             stepTitle: "Contact info",
-            stepDescription: "We need some info to confirm your reservation"
+            stepDescription: "We need some info to confirm your reservation",
+            firstName: "First name",
+            lastName: "Last name",
+            mail: "Mail",
+            phone: "Phone",
         },
         step5:{
             stepTitle: "Done!",
@@ -70,6 +86,25 @@ export const TRANSLATIONS_EN = {
         date: "Date: ",
         hour: "Hour: {{hour}}:00",
         table: "Table: {{table}}"
+    },
+    reservationsPage:{
+        tabs:{
+            all: "All",
+            open: "Open",
+            seated: "Seated",
+            checkOrdered: "Check Ordered",
+            finished: "Finished",
+            cancelled: "Cancelled"
+        },
+        tableHeaders:{
+            code: "Code",
+            customer: "Customer",
+            date: "Date",
+            hour: "Hour",
+            table: "Table",
+            people: "People"
+        },
+        sortBy: "Sort By:",
     },
     shoppingCart:{
         cartPanel:{
@@ -135,6 +170,14 @@ export const TRANSLATIONS_EN = {
         registerTitle: "Sign up",
         registerButton: "sign up",
         loginCallToAction: "Already have an account? login!",
+        label:{
+            mail: "Mail",
+            name: "Name",
+            username: "Username",
+            phone: "Phone",
+            password: "Password",
+            passwordRepeat: "Repeat password"
+        }
     },
     profilePage: {
         title: "Profile",
@@ -154,6 +197,65 @@ export const TRANSLATIONS_EN = {
             closeHours: "Close hour: {{hour}}:00"
         },
         editButton: "Edit"
+    },
+    forms:{
+        accountInfo:{
+            title: "Account info",
+            description: "Write the fields you want to be modified",
+            restaurantName: "Restaurant Name",
+            customerName: "Customer Name",
+            username: "Username",
+            mail: "Mail",
+            phone: "Phone",
+            password: "Password",
+            passwordRepeat: "Repeat password"
+        },
+        authReservation:{
+            title: "Reservation security code",
+            description: "Enter the security code given in the email we sent you.",
+            label: "Reservation Code",
+        },
+        createCategory:{
+            title: "Create category",
+            description: "Enter the name of the new category",
+            label: "Enter new category name"
+        },
+        confirmDish:{
+            dishPrice: "Price: ${{price}}",
+            subtotal: "Subtotal: ${{subtotal}}",
+            addToCart: "Add to cart"
+        },
+        createDish:{
+            title: "Create Dish",
+            createButton: "Create",
+            name: "Name",
+            price: "Price",
+            description: "Description",
+            category: "Category",
+        },
+        editCategory:{
+            title: "Edit category",
+            description: "Enter the new name of the category",
+            label: "Category name"
+        },
+        editDish:{
+            title: "Dish edition",
+            description: "Edit any or all the fields you want changed",
+            name: "Name",
+            dishDescription: "Description",
+            price: "Price",
+            category: "Category",
+        },
+        restaurantInfo:{
+            title: "Restaurant info",
+            description: "Write the fields you want to be modified",
+            openHour: "Open hour",
+            closeHour: "Close hour",
+            chairs: "Chairs"
+        },
+        confirmButton: "Confirm",
+        select: "Select one",
+        cancelButton: "Cancel"
     },
     systemError: "There was an error in the system. Try again later."
 }

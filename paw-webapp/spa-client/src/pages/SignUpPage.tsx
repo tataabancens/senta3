@@ -6,16 +6,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useRef, useEffect, FC } from "react";
+import { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture2.jpg";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { handleResponse, handleFormResponse, awaitWrapper, loginErrorHandler, tryLogin } from "../Utils";
+import { awaitWrapper, loginErrorHandler, tryLogin } from "../Utils";
 import useUserService from "../hooks/serviceHooks/users/useUserService";
 import { UserParams } from "../models/Users/UserParams";
-import ApiErrorDetails, { ApiError } from "../models/ApiError/ApiErrorDetails";
-import { CustomerService } from "../services/customer/CustomerService";
+import ApiErrorDetails from "../models/ApiError/ApiErrorDetails";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import { CustomerParams } from "../models/Customers/CustomerParams";
 import axios from "../api/axios"
@@ -70,13 +69,13 @@ const SignUpPage: FC = () => {
   }
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Required"),
-    password: Yup.string().min(8, "Minimun 8 caracters long").required("Required"),
+    username: Yup.string().required(t('validationSchema.required')),
+    password: Yup.string().min(8, t('validationSchema.passwordLength')).required(t('validationSchema.required')),
     passwordRepeat: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match').required("Required"),
-    customerName: Yup.string().required("Required"),
-    email: Yup.string().email('Enter valid email').required("Required"),
-    phone: Yup.string().required("Required")
+      .oneOf([Yup.ref('password'), null], t('validationSchema.passwordMatch')).required(t('validationSchema.required')),
+    customerName: Yup.string().required(t('validationSchema.required')),
+    email: Yup.string().email(t('validationSchema.mailValidation')).required(t('validationSchema.required')),
+    phone: Yup.string().required(t('validationSchema.required'))
   })
 
   const handleSubmit = async (values: signUpFormValues, props: FormikHelpers<signUpFormValues>) => {
@@ -93,8 +92,8 @@ const SignUpPage: FC = () => {
 
     if (!userCreated) {
       const errorData = userError.response?.data as ApiErrorDetails;
-      props.setFieldError("username", errorData.errors?.find((e) => e.property == "username")?.description);
-      props.setFieldError("password", errorData.errors?.find((e) => e.property == "psPair")?.description);
+      props.setFieldError("username", errorData.errors?.find((e) => e.property === "username")?.description);
+      props.setFieldError("password", errorData.errors?.find((e) => e.property === "psPair")?.description);
       props.setSubmitting(false);
       return;
     }
@@ -111,9 +110,9 @@ const SignUpPage: FC = () => {
     const { ok: customerCreated, error: customerError, response: customerResponse } = await awaitWrapper(customerService.createCustomer(customerParams));
     if (!customerCreated) {
       const errorData = customerError.response?.data as ApiErrorDetails;
-      props.setFieldError("customerName", errorData.errors?.find((e) => e.property == "customerName")?.description);
-      props.setFieldError("email", errorData.errors?.find((e) => e.property == "email")?.description);
-      props.setFieldError("phone", errorData.errors?.find((e) => e.property == "phone")?.description);
+      props.setFieldError("customerName", errorData.errors?.find((e) => e.property === "customerName")?.description);
+      props.setFieldError("email", errorData.errors?.find((e) => e.property === "email")?.description);
+      props.setFieldError("phone", errorData.errors?.find((e) => e.property === "phone")?.description);
       props.setSubmitting(false);
       return;
     }
@@ -164,7 +163,7 @@ const SignUpPage: FC = () => {
                     required
                     fullWidth
                     id="email"
-                    label="email address"
+                    label={t('registerPage.label.mail')}
                     name="email"
                     autoComplete="email"
                     autoFocus
@@ -176,7 +175,7 @@ const SignUpPage: FC = () => {
                     required
                     fullWidth
                     id="customerName"
-                    label="name"
+                    label={t('registerPage.label.name')}
                     name="customerName"
                     autoComplete="username"
 
@@ -188,7 +187,7 @@ const SignUpPage: FC = () => {
                     required
                     fullWidth
                     id="username"
-                    label="username"
+                    label={t('registerPage.label.username')}
                     name="username"
                     autoComplete="username"
 
@@ -200,7 +199,7 @@ const SignUpPage: FC = () => {
                     required
                     fullWidth
                     id="phone"
-                    label="phone"
+                    label={t('registerPage.label.phone')}
                     name="phone"
                     autoComplete="phone"
 
@@ -212,7 +211,7 @@ const SignUpPage: FC = () => {
                     required
                     fullWidth
                     name="password"
-                    label="password"
+                    label={t('registerPage.label.password')}
                     type="password"
                     id="password"
                     autoComplete="current-password"
@@ -224,7 +223,7 @@ const SignUpPage: FC = () => {
                     required
                     fullWidth
                     name="passwordRepeat"
-                    label="repeat password"
+                    label={t('registerPage.label.passwordRepeat')}
                     type="password"
                     id="passwordRepeat"
                     autoComplete="current-password"

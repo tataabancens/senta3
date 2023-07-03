@@ -1,9 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
 import { FC, useState } from "react";
-import { handleResponse } from "../../Utils";
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { DishParams } from "../../models/Dishes/DishParams";
 import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   isOpen: boolean;
@@ -15,6 +15,7 @@ const CategoryForm: FC<Props> = ({ isOpen, handleOpen, canReload }): JSX.Element
 
   const [categoryName, setCategoryName] = useState("");
   const dishService = useDishService();
+  const { t } = useTranslation();
   const { getDishCategories: { categoryList, categoryMap, setCategories, setCategoryMap }, useCurrentCategory: { setCategoryId } } = useRestaurantMenuContext();
 
   const handleCancel = () => {
@@ -52,10 +53,10 @@ const CategoryForm: FC<Props> = ({ isOpen, handleOpen, canReload }): JSX.Element
 
   return (
     <Dialog open={isOpen} fullWidth>
-      <DialogTitle>Create category</DialogTitle>
+      <DialogTitle>{t('forms.createCategory.title')}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Enter the name of the new category
+        {t('forms.createCategory.description')}
         </DialogContentText>
         <Grid container marginY={3}>
           <Grid
@@ -65,16 +66,16 @@ const CategoryForm: FC<Props> = ({ isOpen, handleOpen, canReload }): JSX.Element
             marginBottom={3}
             component={TextField}
             onChange={(e: any) => setCategoryName(e.target.value)}
-            label="Enter category name"
+            label={t('forms.createCategory.label')}
           />
         </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSubmit} variant="contained" color="success">
-          Confirm
+        {t('forms.confirmButton')}
         </Button>
         <Button onClick={handleCancel} variant="contained">
-          Cancel
+        {t('forms.cancelButton')}
         </Button>
       </DialogActions>
     </Dialog>

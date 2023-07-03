@@ -14,6 +14,7 @@ public class OrderItemDto {
     private float unitPrice;
     private int quantity;
     private int tableNmbr;
+    private String securityCode;
     private OrderItemStatus status;
 
     public static OrderItemDto fromOrderItem(final UriInfo uriInfo, OrderItem orderItem) {
@@ -27,6 +28,7 @@ public class OrderItemDto {
         dto.unitPrice = orderItem.getUnitPrice();
         dto.unitPrice = orderItem.getUnitPrice();
         dto.status = orderItem.getStatus();
+        dto.securityCode = orderItem.getReservation().getSecurityCode();
         dto.quantity = orderItem.getQuantity();
 
         return dto;
@@ -98,5 +100,13 @@ public class OrderItemDto {
 
     public void setDishName(String dishName) {
         this.dishName = dishName;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 }

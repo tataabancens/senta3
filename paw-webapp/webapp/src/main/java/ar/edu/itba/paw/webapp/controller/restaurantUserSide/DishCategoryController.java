@@ -29,9 +29,11 @@ public class DishCategoryController {
     @Context
     private UriInfo uriInfo;
 
+    private final static String DISH_CATEGORY_VERSION_1 = "application/vnd.sentate.dish_category.v1+json";
+
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = {DISH_CATEGORY_VERSION_1})
     public Response getDishCategories(@PathParam("restaurantId") final long restaurantId){
         final Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
 
@@ -44,7 +46,7 @@ public class DishCategoryController {
 
     @GET
     @Path("/{categoryId}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = { DISH_CATEGORY_VERSION_1 })
     public Response getDishCategoryById(@PathParam("restaurantId") final long restaurantId
             , @PathParam("categoryId") final long categoryId){
         final Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
@@ -55,7 +57,7 @@ public class DishCategoryController {
     }
 
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ DISH_CATEGORY_VERSION_1 })
     public Response createCategory(@PathParam("restaurantId")final long restaurantId,
                                   @Valid CategoryForm categoryForm){
         final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
@@ -73,7 +75,7 @@ public class DishCategoryController {
 
     @PATCH
     @Path("/{categoryId}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = { DISH_CATEGORY_VERSION_1 })
     public Response editCategory(@PathParam("restaurantId") final long restaurantId,
                                  @PathParam("categoryId") final long categoryId,
                                  final CategoryForm dishCategoryPatchForm){
@@ -84,7 +86,7 @@ public class DishCategoryController {
 
     @DELETE
     @Path("/{categoryId}")
-    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Produces(value = { DISH_CATEGORY_VERSION_1 })
     public Response deleteCategory(@PathParam("restaurantId") final long restaurantId,
                                    @PathParam("categoryId") final long categoryId){
         final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);

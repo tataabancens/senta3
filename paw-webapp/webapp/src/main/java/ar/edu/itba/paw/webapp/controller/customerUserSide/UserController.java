@@ -50,9 +50,11 @@ public class UserController {
 //        return Response.ok(allUsers).build();
 //    }
 
+    private final static String USER_VERSION_1 = "application/vnd.sentate.user.v1+json";
+
     @GET
     @Path("/{id}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { USER_VERSION_1 })
     public Response getById(@PathParam("id") final long id) {
         final Optional<User> maybeUser = us.getUserByID(id);
         if (maybeUser.isPresent()) {
@@ -62,7 +64,7 @@ public class UserController {
         }
     }
 
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ USER_VERSION_1 })
     @POST
     public Response createUser(@Valid final CreateUserForm createUserForm) {
         final User user = us.create(createUserForm.getUsername(), createUserForm.getPsPair(), Roles.valueOf(createUserForm.getRole()), createUserForm.getCustomerId());
@@ -76,7 +78,7 @@ public class UserController {
 
     @GET
     @Path("/auth")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { USER_VERSION_1 })
     public Response getByAuthentication() {
         final Optional<User> maybeUser = us.getUserByUsername(authFacade.getCurrentUsername());
         if (maybeUser.isPresent()) {
@@ -88,7 +90,7 @@ public class UserController {
 
     @DELETE
     @Path("/{id}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { USER_VERSION_1 })
     public Response deleteById(@PathParam("id") final long id) {
         boolean succes = us.deleteById(id);
         if(succes){
@@ -99,7 +101,7 @@ public class UserController {
     }
 
     @PATCH
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ USER_VERSION_1 })
     @Path("/{id}")
     public Response editUser(@PathParam("id") final long id,
                                     @Valid final UserPatchForm userPatchForm){

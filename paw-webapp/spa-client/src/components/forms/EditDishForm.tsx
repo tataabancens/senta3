@@ -6,14 +6,11 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
-  InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { FC, useState } from "react";
-import { handleResponse } from "../../Utils";
+import { FC } from "react";
 import { DishCategoryModel, DishModel } from "../../models";
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { DishParams } from "../../models/Dishes/DishParams";
@@ -22,6 +19,7 @@ import { ErrorMessage, Field, Formik, FormikHelpers, Form } from "formik";
 import * as Yup from "yup";
 import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
 import useImageService from "../../hooks/serviceHooks/useImageService";
+import { useTranslation } from "react-i18next";
 
 
 type Props = {
@@ -46,12 +44,11 @@ const EditDishForm: FC<Props> = ({
   handleOpen,
   isOpen,
   categoryList,
-  setDishes,
-  dishes
 }): JSX.Element => {
 
   const dishService = useDishService();
   const imageService = useImageService();
+  const { t } = useTranslation();
 
   const { useCurrentCategory: { categoryId }, getDishes: { updateDish, removeDish } } = useRestaurantMenuContext();
   
@@ -127,10 +124,10 @@ const EditDishForm: FC<Props> = ({
         <Formik initialValues={initialValue} onSubmit={handleSubmit} validationSchema={validationSchema}>
           {(props) => (
             <Form>
-              <DialogTitle>Dish edition</DialogTitle>
+              <DialogTitle align="center">{t('forms.editDish.title')}</DialogTitle>
               <DialogContent>
-                <DialogContentText>
-                  edit any or all the fields you want changed
+                <DialogContentText align="center">
+                  {t('forms.editDish.description')}
                 </DialogContentText>
                 <Grid container marginY={3} >
                   <Grid
@@ -147,7 +144,7 @@ const EditDishForm: FC<Props> = ({
                     item
                     required
                     id="name"
-                    label="Name"
+                    label={t('forms.editDish.name')}
                     name="name"
                     helperText={<ErrorMessage name="name" />}
                     error={props.errors.name}
@@ -162,7 +159,7 @@ const EditDishForm: FC<Props> = ({
                       item
                       required
                       id="description"
-                      label="Description"
+                      label={t('forms.editDish.dishDescription')}
                       name="description"
                       helperText={<ErrorMessage name="description" />}
                       error={props.errors.description}
@@ -177,7 +174,7 @@ const EditDishForm: FC<Props> = ({
                       item
                       required
                       id="price"
-                      label="Price"
+                      label={t('forms.editDish.price')}
                       name="price"
                       helperText={<ErrorMessage name="price" />}
                       error={props.errors.price}
@@ -188,19 +185,17 @@ const EditDishForm: FC<Props> = ({
                     xs={12}
                     marginBottom={3}
                   >
-                    {/* <InputLabel id="demo-simple-select-helper-label">Category</InputLabel> */}
                     <Field as={Select}
                       required
                       fullWidth
                       id="categoryId"
-                      label="Category"
+                      label={t('forms.editDish.category')}
                       value={props.values.categoryId}
                       name="categoryId"
                       helperText={<ErrorMessage name="category" />}
                       error={props.errors.categoryId}
                     >
-                      <MenuItem value={categoryId}>Select one
-                      </MenuItem>
+                      <MenuItem value={categoryId}>{t('forms.select')}</MenuItem>
                       {categoryList.map((category) => (
                         <MenuItem key={category.id} value={category.id}>
                           {category.name}
@@ -213,10 +208,10 @@ const EditDishForm: FC<Props> = ({
               </DialogContent>
               <DialogActions>
                 <Button type="submit" variant="contained" color="success">
-                  Confirm
+                {t('forms.confirmButton')}
                 </Button>
                 <Button onClick={handleCancel} variant="contained">
-                  Cancel
+                {t('forms.cancelButton')}
                 </Button>
               </DialogActions>
             </Form>

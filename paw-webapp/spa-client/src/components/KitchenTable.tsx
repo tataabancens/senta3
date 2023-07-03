@@ -29,8 +29,8 @@ const KitchenTable: FC<Props> = ({orderItems, actionFunction, processStage}) => 
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {orderItems.map(item => 
-                        <TableRow>
+                    {orderItems.map((item,i) => 
+                        <TableRow key={i}>
                             <TableCell>{item.dishName}</TableCell>
                             <TableCell align="center">{item.quantity}</TableCell>
                             <TableCell align="center">{item.tableNmbr}</TableCell>

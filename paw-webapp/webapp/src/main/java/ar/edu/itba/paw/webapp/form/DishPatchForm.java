@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class DishPatchForm {
 
@@ -9,13 +8,18 @@ public class DishPatchForm {
     @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String name;
 
+    @NotNull
+    @Positive
     private Integer price;
 
     @Size(min = 1, max = 200)
     @Pattern(regexp = "^[a-zA-Z 0-9,.'-]+$")
     private String description;
 
+    @NotNull
     private Long imageId;
+
+    @NotNull
     private Long categoryId;
 
 

@@ -1,10 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from "@mui/material";
 import { FC, useState } from "react";
-import { handleResponse } from "../../Utils";
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { DishCategoryModel } from "../../models";
 import { DishParams } from "../../models/Dishes/DishParams";
 import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
+import { useTranslation } from "react-i18next";
 
 
 type Props = {
@@ -16,6 +16,7 @@ const EditCategoryForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
 
   const [categoryName, setCategoryName] = useState("");
   const dishService = useDishService();
+  const { t } = useTranslation();
   const { getDishCategories: { categoryList, categoryMap, setCategories, setCategoryMap }, useCurrentCategory: { categoryId, setCategoryId } } = useRestaurantMenuContext();
 
   const handleCancel = () => {
@@ -50,7 +51,6 @@ const EditCategoryForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
       updatedCategoryMap.set(editedCategory.id, editedCategory);
       setCategoryMap(updatedCategoryMap);
 
-      // setCategoryId(editedCategory.id);
       console.log(categoryId);
     }
     handleOpen();
@@ -58,10 +58,10 @@ const EditCategoryForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
 
   return (
     <Dialog open={isOpen} fullWidth>
-      <DialogTitle>Edit category</DialogTitle>
+      <DialogTitle>{t('forms.editCategory.title')}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Enter the new name of the category
+        {t('forms.editCategory.description')}
         </DialogContentText>
         <Grid container marginY={3}>
           <Grid
@@ -72,16 +72,16 @@ const EditCategoryForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
             defaultValue={category?.name}
             component={TextField}
             onChange={(e: any) => setCategoryName(e.target.value)}
-            label="Enter category name"
+            label={t('forms.editCategory.label')}
           />
         </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSubmit} variant="contained" color="success">
-          Confirm
+        {t('forms.confirmButton')}
         </Button>
         <Button onClick={handleCancel} variant="contained">
-          Cancel
+        {t('forms.cancelButton')}
         </Button>
       </DialogActions>
     </Dialog>

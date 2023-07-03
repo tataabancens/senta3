@@ -15,6 +15,7 @@ import ar.edu.itba.paw.webapp.form.DishPatchForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
@@ -35,9 +36,11 @@ public class DishController {
     @Context
     private UriInfo uriInfo;
 
+    private final static String DISH_VERSION_1 = "application/vnd.sentate.dish.v1+json";
+
     @GET
     @Path("/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { DISH_VERSION_1 })
     public Response getDishById(@PathParam("restaurantId") final long restaurantId, @PathParam("id") final long dishId) {
         final Restaurant restaurant = rs.getRestaurantById(restaurantId).orElseThrow(RestaurantNotFoundException::new);
         final Optional<DishDto> maybeDish = ds.getDishById(dishId).map(u -> DishDto.fromDish(uriInfo, u));
@@ -48,7 +51,7 @@ public class DishController {
     }
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { DISH_VERSION_1 })
     public Response getDishes(@PathParam("restaurantId") final long restaurantId,
                               @DefaultValue("")@QueryParam("dishCategory") final String dishCategory) {
         Optional<List<Dish>> maybeDishList = ds.getDishes(restaurantId, dishCategory);
@@ -62,10 +65,10 @@ public class DishController {
     }
 
     @POST
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
-    public Response createDish(@PathParam("restaurantId") final long restaurantId, DishPatchForm form) {
+    @Consumes({ DISH_VERSION_1 })
+    public Response createDish(@PathParam("restaurantId") final long restaurantId, @Valid DishPatchForm form) {
         final Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
-        final Optional<DishCategory> maybeCategory = rs.getDishCategoryById(form.getCategoryId());//getDishCategoryByName(form.getCategory());
+        final Optional<DishCategory> maybeCategory = rs.getDishCategoryById(form.getCategoryId());
         if (!maybeRestaurant.isPresent() || !maybeCategory.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -81,14 +84,14 @@ public class DishController {
 
     @DELETE
     @Path("/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { DISH_VERSION_1 })
     public Response deleteDish(@PathParam("restaurantId") final long restaurantId, @PathParam("id") final long dishId){
         ds.deleteDish(dishId);
         return Response.noContent().build();
     }
 
     @PATCH
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ DISH_VERSION_1 })
     @Path("/{id}")
     public Response editDish(@PathParam("restaurantId") final String restaurantId,
                              @PathParam("id") final long dishId,

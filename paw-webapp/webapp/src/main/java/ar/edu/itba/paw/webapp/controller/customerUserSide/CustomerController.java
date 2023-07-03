@@ -35,9 +35,11 @@ public class CustomerController {
     @Context
     private UriInfo uriInfo;
 
+    private final static String CUSTOMER_VERSION_1 = "application/vnd.sentate.customer.v1+json";
+
     @GET
     @Path("/{id}")
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { CUSTOMER_VERSION_1 })
     public Response getCustomerById(@PathParam("id") final long id){
         final Optional<CustomerDto> maybeCustomer = cs.getCustomerById(id).map(c -> CustomerDto.fromCustomer(uriInfo, c));
         if(!maybeCustomer.isPresent()){
@@ -48,7 +50,7 @@ public class CustomerController {
     }
 
     @GET
-    @Produces(value = {MediaType.APPLICATION_JSON, })
+    @Produces(value = { CUSTOMER_VERSION_1 })
     public Response getCustomers(@DefaultValue("1")@QueryParam("page") final int page){
                         //        @DefaultValue("")@QueryParam("username") final String username,
         final List<CustomerDto> customers = cs.getCustomers(page)
@@ -65,7 +67,7 @@ public class CustomerController {
 
 
 
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ CUSTOMER_VERSION_1 })
     @POST
     public Response CreateCustomer(@Valid final CustomerRegisterForm customerForm) {
         final Customer newCustomer = cs.create(customerForm.getCustomerName(), customerForm.getPhone(), customerForm.getMail(), us.getUserByID(customerForm.getUserId()));
@@ -80,7 +82,7 @@ public class CustomerController {
 
 
     @PATCH
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Consumes({ CUSTOMER_VERSION_1 })
     @Path("/{id}")
     public Response EditCustomer(@PathParam("id") final long id,
                                  final CustomerPatchForm customerPatchForm){

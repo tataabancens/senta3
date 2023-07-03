@@ -18,6 +18,8 @@ import {
   import {  RestaurantModel } from "../../models";
   import { RestParams } from "../../models/Restaurant/RestParams";
   import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestaurantService";
+import { useTranslation } from "react-i18next";
+import { timeArray } from "../../constants/constants";
   
   type Props = {
     data: RestaurantModel | undefined;
@@ -34,6 +36,7 @@ const RestaurantInfoForm: FC<Props> = ({
     const [openHour, setOpenHour] = useState<number | undefined>();
     const [totalChairs, setTotalChairs] = useState<number | undefined>();
     const [closeHour, setCloseHour] = useState<number | undefined>();
+    const { t } = useTranslation();
 
     const restaurantService = useRestaurantService();
   
@@ -53,22 +56,20 @@ const RestaurantInfoForm: FC<Props> = ({
     };
 
     const handleOpenHourChange = (event: SelectChangeEvent) => {
-      console.log(parseInt(event.target.value))
       setOpenHour(parseInt(event.target.value));
     };
 
     const handleCloseHourChange = (event: SelectChangeEvent) => {
-      console.log(parseInt(event.target.value))
       setCloseHour(parseInt(event.target.value));
     };
   
     return (
       <>
         <Dialog open={isOpen}>
-          <DialogTitle>Restaurant info</DialogTitle>
+          <DialogTitle>{t('forms.restaurantInfo.title')}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Write the fields you want to be modified
+              {t('forms.restaurantInfo.description')}
             </DialogContentText>
             <Grid container>
               <Grid
@@ -78,85 +79,39 @@ const RestaurantInfoForm: FC<Props> = ({
                 marginY={2}
                 component={TextField}
                 onChange={(e: any) => setTotalChairs(e.target.value)}
-                label="Total chairs"
+                label={t('forms.restaurantInfo.chairs')}
                 defaultValue={data?.totalChairs}
               />
               <Grid item component={FormControl} xs={5} marginY={2} marginX={1}>
-              <InputLabel id="Open-hour-select">Open hour</InputLabel>
+              <InputLabel id="Open-hour-select">{t('forms.restaurantInfo.openHour')}</InputLabel>
                 <Select
                     labelId="Open-hour-select"
                     onChange={handleOpenHourChange}
                     defaultValue={data?.openHour.toString()}
                     fullWidth
-                    label="Open hour"
+                    label={t('forms.restaurantInfo.openHour')}
                 >
-                    <MenuItem value={0}>0:00</MenuItem>
-                    <MenuItem value={1}>1:00</MenuItem>
-                    <MenuItem value={2}>2:00</MenuItem>
-                    <MenuItem value={3}>3:00</MenuItem>
-                    <MenuItem value={4}>4:00</MenuItem>
-                    <MenuItem value={5}>5:00</MenuItem>
-                    <MenuItem value={6}>6:00</MenuItem>
-                    <MenuItem value={7}>7:00</MenuItem>
-                    <MenuItem value={8}>8:00</MenuItem>
-                    <MenuItem value={9}>9:00</MenuItem>
-                    <MenuItem value={10}>10:00</MenuItem>
-                    <MenuItem value={11}>11:00</MenuItem>
-                    <MenuItem value={12}>12:00</MenuItem>
-                    <MenuItem value={13}>13:00</MenuItem>
-                    <MenuItem value={14}>14:00</MenuItem>
-                    <MenuItem value={15}>15:00</MenuItem>
-                    <MenuItem value={16}>16:00</MenuItem>
-                    <MenuItem value={17}>17:00</MenuItem>
-                    <MenuItem value={18}>18:00</MenuItem>
-                    <MenuItem value={19}>19:00</MenuItem>
-                    <MenuItem value={20}>20:00</MenuItem>
-                    <MenuItem value={21}>21:00</MenuItem>
-                    <MenuItem value={22}>22:00</MenuItem>
-                    <MenuItem value={23}>23:00</MenuItem>
+                    {timeArray.map((time, index) => <MenuItem value={index}>{time}</MenuItem>)}
               </Select>
               </Grid>
               <Grid item component={FormControl} xs={5} marginY={2} marginX={1}>
-              <InputLabel>Close hour</InputLabel>
+              <InputLabel>{t('forms.restaurantInfo.closeHour')}</InputLabel>
                 <Select
                     onChange={handleCloseHourChange}
                     defaultValue={data?.closeHour.toString()}
                     fullWidth
                 >
-                    <MenuItem value={0}>0:00</MenuItem>
-                    <MenuItem value={1}>1:00</MenuItem>
-                    <MenuItem value={2}>2:00</MenuItem>
-                    <MenuItem value={3}>3:00</MenuItem>
-                    <MenuItem value={4}>4:00</MenuItem>
-                    <MenuItem value={5}>5:00</MenuItem>
-                    <MenuItem value={6}>6:00</MenuItem>
-                    <MenuItem value={7}>7:00</MenuItem>
-                    <MenuItem value={8}>8:00</MenuItem>
-                    <MenuItem value={9}>9:00</MenuItem>
-                    <MenuItem value={10}>10:00</MenuItem>
-                    <MenuItem value={11}>11:00</MenuItem>
-                    <MenuItem value={12}>12:00</MenuItem>
-                    <MenuItem value={13}>13:00</MenuItem>
-                    <MenuItem value={14}>14:00</MenuItem>
-                    <MenuItem value={15}>15:00</MenuItem>
-                    <MenuItem value={16}>16:00</MenuItem>
-                    <MenuItem value={17}>17:00</MenuItem>
-                    <MenuItem value={18}>18:00</MenuItem>
-                    <MenuItem value={19}>19:00</MenuItem>
-                    <MenuItem value={20}>20:00</MenuItem>
-                    <MenuItem value={21}>21:00</MenuItem>
-                    <MenuItem value={22}>22:00</MenuItem>
-                    <MenuItem value={23}>23:00</MenuItem>
+                  {timeArray.map((time, index) => <MenuItem value={index}>{time}</MenuItem>)}
               </Select>
               </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleSubmit} variant="contained" color="success">
-              Confirm
+              {t('forms.confirmButton')}
             </Button>
             <Button onClick={handleOpen} variant="contained">
-              Cancel
+              {t('forms.cancelButton')}
             </Button>
           </DialogActions>
         </Dialog>

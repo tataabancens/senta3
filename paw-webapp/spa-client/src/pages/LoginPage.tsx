@@ -46,8 +46,8 @@ const LoginPage: FC = () => {
   }
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Required"),
-    password: Yup.string().required("Required")
+    username: Yup.string().required(t('validationSchema.required')),
+    password: Yup.string().required(t('validationSchema.required'))
   })
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const LoginPage: FC = () => {
                     required
                     fullWidth
                     id="username"
-                    label="Username"
+                    label={t('loginPage.label.username')}
                     name="username"
                     autoComplete="username"
                     helperText={<ErrorMessage name="username"/>}
@@ -121,7 +121,7 @@ const LoginPage: FC = () => {
                     required
                     fullWidth
                     name="password"
-                    label="Password"
+                    label={t('loginPage.label.password')}
                     type="password"
                     id="password"
                     autoComplete="current-password"
@@ -131,8 +131,7 @@ const LoginPage: FC = () => {
                   <Field as={FormControlLabel}
                     name="remember"
                     control={<Checkbox color="primary" />}
-                    label="Remember me"
-          
+                    label={t('loginPage.rememberMe')}          
                   />
                   <Button
                     type="submit"
@@ -156,14 +155,6 @@ const LoginPage: FC = () => {
               }}
               spacing={2}
             >
-              <Grid item xs>
-                <Link
-                  to="/*"
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  {t('loginPage.forgotPassword')}
-                </Link>
-              </Grid>
               <Grid item>
                 <Link
                   to="/signup"

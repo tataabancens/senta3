@@ -12,7 +12,7 @@ export const useDishCategories = (restaurant: RestaurantModel | undefined) => {
     useEffect(() => {
         (async () => {
             if (restaurant) {
-                const { isOk, data, error } = await dishService.getDishCategoriesNew(abortController);
+                const { isOk, data, error } = await dishService.getDishCategories(abortController);
                 if (isOk) {
                     if (data.length > 0) {
                         setCategories(data);

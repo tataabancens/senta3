@@ -4,7 +4,7 @@ import useOrderItemService from "../orderItems/useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
 
 export const useOrderItems = (reservationFilterStatus: string, orderItemStatus: string) => {
-    const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
+    const [orderItems, setOrderItems] = useState<OrderItemModel[] | undefined>(undefined);
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
     const orderItemService = useOrderItemService();
@@ -27,11 +27,11 @@ export const useOrderItems = (reservationFilterStatus: string, orderItemStatus: 
     }, []);
 
     const removeItem = (item: OrderItemModel) => {
-        setOrderItems(prevItems => prevItems.filter(orderItem => orderItem !== item));
+        setOrderItems(prevItems => prevItems!.filter(orderItem => orderItem !== item));
     }
 
     const addItem = (newItem: OrderItemModel) => {
-        setOrderItems(prevItems => [...prevItems, newItem]);
+        setOrderItems(prevItems => [...prevItems!, newItem]);
     }
 
     return {

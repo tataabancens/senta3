@@ -15,9 +15,12 @@ export class OrderItemService {
 
     private readonly basePath = paths.ORDERITEMS
 
+    private readonly ACCEPT = { "Accept": "application/vnd.sentate.order_item.v1+json" };
+    private readonly CONTENT_TYPE = { "Content-type": "application/vnd.sentate.order_item.v1+json" };
+
     public async getOrderItems(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<OrderItemModel[]>> {
         try {
-            const response = await this.axios.get<OrderItemModel[]>(this.basePath + params.getOrderItemsQuery, { signal: abortController.signal });
+            const response = await this.axios.get<OrderItemModel[]>(this.basePath + params.getOrderItemsQuery, { signal: abortController.signal, headers: this.ACCEPT });
             return buildSuccessResponse(response.data as OrderItemModel[]);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -26,7 +29,7 @@ export class OrderItemService {
 
     public async getOrderItem(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<OrderItemModel>> {
         try {
-            const response = await this.axios.get<OrderItemModel>(this.basePath + `/${params.orderItemId}`, { signal: abortController.signal });
+            const response = await this.axios.get<OrderItemModel>(this.basePath + `/${params.orderItemId}`, { signal: abortController.signal, headers: this.ACCEPT });
             return buildSuccessResponse(response.data as OrderItemModel);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -35,7 +38,7 @@ export class OrderItemService {
 
     public async createOrderItem(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.post(this.basePath, params.createOrderitemPayload, { headers: { customerId: params.customerId }, signal: abortController.signal });
+            const response = await this.axios.post(this.basePath, params.createOrderitemPayload, { headers: { customerId: params.customerId, "Content-Type": "application/vnd.sentate.order_item.v1+json" }, signal: abortController.signal });
             const location = response.headers['location'] as string;
 
             return buildSuccessResponse(this.extractOrderItemId(location));
@@ -47,7 +50,7 @@ export class OrderItemService {
 
     public async editOrderItem(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.patch<OrderItemModel>(this.basePath + `/${params.orderItemId}`,params.patchOrderitemPayload, { signal: abortController.signal });
+            const response = await this.axios.patch<OrderItemModel>(this.basePath + `/${params.orderItemId}`, params.patchOrderitemPayload, { signal: abortController.signal, headers: this.CONTENT_TYPE     });
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);
