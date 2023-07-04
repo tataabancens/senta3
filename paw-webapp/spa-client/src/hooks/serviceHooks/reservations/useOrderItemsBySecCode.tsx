@@ -3,11 +3,14 @@ import { OrderItemModel, ReservationModel } from "../../../models";
 import useOrderItemService from "../orderItems/useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
 
-export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined, reloadOrderItems: boolean) => {
+export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined) => {
     const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
+    const [reload, setReload] = useState(false)
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
     const orderItemService = useOrderItemService();
+
+    const reloadItems = () => {setReload(!reload)}
 
     useEffect(() => {
         if (!reservation) return;
@@ -24,19 +27,23 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
         return () => {
             abortController.abort();
         }
-    }, [reservation, reloadOrderItems]);
-
-    const removeItem = (item: OrderItemModel) => {
-        setOrderItems(prevItems => prevItems.filter(orderItem => orderItem !== item));
-    }
+    }, [reservation, reload]);
 
     const addItem = (newItem: OrderItemModel) => {
-        setOrderItems(prevItems => [...prevItems, newItem]);
-    }
+        setOrderItems((prevItems) => [...prevItems, newItem]);
+    };
+    
+    const removeItem = (item: OrderItemModel) => {
+        setOrderItems((prevItems) => prevItems.filter((orderItem) => orderItem !== item));
+    };
+
 
     return {
         orderItems: orderItems,
         error,
         loading: !orderItems && !error,
+        reloadItems,
+        addItem,
+        removeItem
     }
 }

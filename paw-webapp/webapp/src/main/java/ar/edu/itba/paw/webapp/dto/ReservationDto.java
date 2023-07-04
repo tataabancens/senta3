@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.model.Customer;
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Reservation;
+import ar.edu.itba.paw.service.DishService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -22,7 +25,7 @@ public class ReservationDto {
     private URI orderItems;
     private URI restaurant;
     private URI customer;
-
+    private URI recommendedDish;
 
     public static ReservationDto fromReservation(final UriInfo uriInfo, Reservation reservation) {
         final ReservationDto dto = new ReservationDto();
@@ -141,5 +144,18 @@ public class ReservationDto {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public void setRecommendedDish(URI recommendedDish) {
+        this.recommendedDish = recommendedDish;
+    }
+
+    public void setRecommendedDishFromOut(UriInfo uriInfo, Dish dish) {
+        this.recommendedDish = uriInfo.getBaseUriBuilder()
+                .path("api")
+                .path("dishes").path(String.valueOf(dish.getId())).build();
+    }
+    public URI getRecommendedDish() {
+        return recommendedDish;
     }
 }

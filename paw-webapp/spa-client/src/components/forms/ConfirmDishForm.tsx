@@ -19,58 +19,58 @@ import { useTranslation } from "react-i18next";
 import { extractCustomerIdFromContent } from "../../pages/SignUpPage";
 
   
-  type Props = {
-    dish: DishModel;
-    isOpen: boolean;
-    handleOpen: () => void;
-  };
+type Props = {
+  dish: DishModel;
+  isOpen: boolean;
+  handleOpen: () => void;
+};
   
-  const AccountInfoForm: FC<Props> = ({
-    dish,
-    handleOpen,
-    isOpen,
-  }): JSX.Element => {
-    const [qty, setQty] = useState(0);
+const ConfirmDishForm: FC<Props> = ({
+  dish,
+  handleOpen,
+  isOpen,
+}): JSX.Element => {
+  const [qty, setQty] = useState(0);
     
-    const orderItemService = useOrderItemService();
-    const { reservation } = useContext(ReservationContext);
-    const { t } = useTranslation();
+  const orderItemService = useOrderItemService();
+  const { reservation, reloadItems } = useContext(ReservationContext);
+  const { t } = useTranslation();
 
-    const handleDecrease = () => {
-        if(qty > 0){
-        setQty(qty-1);
-        }
+  const handleDecrease = () => {
+    if(qty > 0){
+      setQty(qty-1);
     }
+  }
 
-    const handleIncrease = () => {
-        if(qty < 30){
-        setQty(qty+1);
-        }
+  const handleIncrease = () => {
+    if(qty < 30){
+      setQty(qty+1);
     }
+  }
 
-    const handleCancel = () => {
-        setQty(0);
-        handleOpen();
-    }
+  const handleCancel = () => {
+    setQty(0);
+    handleOpen();
+  }
   
-    const handleSubmit = async () => {
-      if(qty > 0){
-        let orderItem = new OrderitemParams();
-        const abortController = new AbortController();
-        orderItem.dishId = dish.id;
-        orderItem.quantity = qty;
-        orderItem.securityCode = reservation?.securityCode;
-        orderItem.customerId = extractCustomerIdFromContent(reservation?.customer!);
-        const {isOk, data, error } = await orderItemService.createOrderItem(orderItem, abortController);
+  const handleSubmit = async () => {
+    if(qty > 0){
+      let orderItem = new OrderitemParams();
+      const abortController = new AbortController();
+      orderItem.dishId = dish.id;
+      orderItem.quantity = qty;
+      orderItem.securityCode = reservation?.securityCode;
+      orderItem.customerId = extractCustomerIdFromContent(reservation?.customer!);
+      const { isOk } = await orderItemService.createOrderItem(orderItem, abortController);
 
-        if (error) {
-          return;
-        }
-        
+      if(isOk){
+        reloadItems()
         setQty(0);
       }
+        
+    }
 
-      handleOpen();
+    handleOpen();
     };
   
     return (
@@ -106,4 +106,4 @@ import { extractCustomerIdFromContent } from "../../pages/SignUpPage";
     );
   };
   
-  export default AccountInfoForm;
+  export default ConfirmDishForm;

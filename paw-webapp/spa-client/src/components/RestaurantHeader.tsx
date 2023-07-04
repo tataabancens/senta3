@@ -1,7 +1,7 @@
-import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
-import { FC, useContext, useState } from "react";
+import { Badge, Box, Button, Grid, Skeleton, Typography } from "@mui/material";
+import { FC, useContext, useEffect, useState } from "react";
 import { themePalette } from "../config/theme.config";
-import { OrderItemModel, ReservationModel, RestaurantModel } from "../models";
+import { RestaurantModel } from "../models";
 import AuthReservationForm from "./forms/AuthReservationForm";
 import ReservationData from "./ReservationData";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -29,9 +29,16 @@ const RestaurantHeader: FC<Props> = ({
     const [shoppingCartOpen, setShoppingCart] = useState(false);
     let navigate = useNavigate();
     const [createIsOpen, setIsOpen] = useState(false);
-    const { reservation } = useContext(ReservationContext);
+    const { reservation, orderItems } = useContext(ReservationContext);
+    const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
     const { t } = useTranslation();
 
+    useEffect(() => {
+      const selectedItems = orderItems?.filter(item => item.status === "SELECTED")
+      if(selectedItems){
+        setSelectedItemsAmount(selectedItems.length)
+      }
+    },[orderItems])
 
     const toggleDrawer = () => {
       setState(!state);
@@ -74,7 +81,7 @@ const RestaurantHeader: FC<Props> = ({
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
-            <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><ShoppingCartIcon/></Button>
+            <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><Badge badgeContent={selectedItemsAmount} color="secondary"><ShoppingCartIcon/></Badge></Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>{t('restaurantHeader.myReservation')}</Button>
             </Grid>
             :

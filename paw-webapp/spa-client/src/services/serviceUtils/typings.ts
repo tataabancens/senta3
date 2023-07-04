@@ -1,4 +1,3 @@
-import { DishModel } from "../../models";
 
 export type SuccessResponse<T> = {
     isOk: true;

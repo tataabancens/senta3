@@ -8,6 +8,7 @@ export default interface ReservationModel{
     orderItems: string,
     restaurant: string,
     customerName: string,
+    recommendedDish?: string,
     customer: string,
     status: string
 }

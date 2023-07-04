@@ -103,7 +103,8 @@ export const TRANSLATIONS_ES ={
             table: "Mesa",
             people: "Personas"
         },
-        sortBy: "Ordenar por:"
+        sortBy: "Ordenar por:",
+        noReservations: "No hay reservas aquí"
     },
     shoppingCart:{
         cartPanel:{

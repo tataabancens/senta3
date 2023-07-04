@@ -6,13 +6,15 @@ interface ReservationContextProps{
     reservation: ReservationModel | undefined;
     updateReservation: () => void;
     orderItems: OrderItemModel[] | undefined;
-    updateOrderItems: () => void;
+    reloadItems: () => void;
+    removeItem: (item: OrderItemModel) => void;
 }
 const emptyReservationContext: ReservationContextProps = {
     reservation: undefined,
     updateReservation: () => null,
     orderItems: undefined,
-    updateOrderItems: () => null
+    reloadItems: () => null,
+    removeItem: () => null
 }
 export const ReservationContext = createContext<ReservationContextProps>(emptyReservationContext);
 

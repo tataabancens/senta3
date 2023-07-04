@@ -55,11 +55,11 @@ const FullMenuPage: FC = () => {
         navigate(`${paths.ROOT}/reservations/${reservation.securityCode}/checkout`);
     }
 
-    const {orderItems, error: orderItemsError, loading: orderItemLoading} = useOrderItemsBySecCode(reservation, reloadOrderItems);
+    const { orderItems, reloadItems, removeItem } = useOrderItemsBySecCode(reservation);
 
     return(
         <Grid container spacing={2} justifyContent="center">
-            <ReservationContext.Provider value={{reservation, updateReservation, orderItems, updateOrderItems}}>
+            <ReservationContext.Provider value={{reservation, updateReservation, orderItems, reloadItems, removeItem }}>
                 <RestaurantHeader restaurant={restaurant} role={"ROLE_CUSTOMER"} toggleReload={updateOrderItems}/>
                 <Grid item xs={11} marginTop={2}>
                     <Tabs value={value} onChange={(event,value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">

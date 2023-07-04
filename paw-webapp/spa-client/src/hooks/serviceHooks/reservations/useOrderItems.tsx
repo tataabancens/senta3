@@ -3,24 +3,30 @@ import { OrderItemModel } from "../../../models";
 import useOrderItemService from "../orderItems/useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
 
-export const useOrderItems = (reservationFilterStatus: string, orderItemStatus: string) => {
+export const useOrderItems = (reservationFilterStatus: string, orderItemStatus: string, interval?: number) => {
     const [orderItems, setOrderItems] = useState<OrderItemModel[] | undefined>(undefined);
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
     const orderItemService = useOrderItemService();
 
+    const getOrderItems = async () => {
+        let orderItemParams = new OrderitemParams();
+        orderItemParams.reservationStatus = reservationFilterStatus;
+        orderItemParams.status = orderItemStatus;
+        
+        const { isOk, data, error } = await orderItemService.getOrderItems(orderItemParams, abortController);
+        if (isOk) {
+            data.length > 0 ? setOrderItems(data) : setOrderItems([]);
+        }
+        else setError(error);
+    };
+
     useEffect(() => {
-        (async () => {
-            let orderItemParams = new OrderitemParams();
-            orderItemParams.reservationStatus = reservationFilterStatus;
-            orderItemParams.status = orderItemStatus;
-            
-            const { isOk, data, error } = await orderItemService.getOrderItems(orderItemParams, abortController);
-            if (isOk) {
-                data.length > 0 ? setOrderItems(data) : setOrderItems([]);
-            }
-            else setError(error);
-        })();
+        getOrderItems();
+        if(interval){
+            const intervalId = setInterval(getOrderItems, interval);
+            return () => clearInterval(intervalId);
+        }
         return () => {
             abortController.abort();
         }

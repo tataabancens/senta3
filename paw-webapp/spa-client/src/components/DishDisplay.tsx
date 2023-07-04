@@ -32,7 +32,7 @@ const DishDisplay: FC<Props> = ({
             {dishes.map((dish: DishModel, i) => 
              <Grid item key={i} xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}>
               {isMenu? <MenuCard dish={dish} key={dish.id} /> : <DishCard dish={dish} key={dish.id} toggleReload={toggleReload} />}
-             </Grid> )}
+            </Grid> )}
              {isMenu && 
               <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}>
                 <Link className="dishCardHover" style={linkStyle} color="inherit" underline="none" sx={{display: "flex", alignItems: "center"}} onClick={handleFormOpen}>

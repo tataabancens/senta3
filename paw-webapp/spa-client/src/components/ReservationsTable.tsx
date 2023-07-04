@@ -1,10 +1,8 @@
-import { Grid, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { CircularProgress, Grid, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
+import { useReservationsPagination } from "../hooks/serviceHooks/reservations/usePagination";
 import { ReservationModel } from "../models";
-import { ReservationParams } from "../models/Reservations/ReservationParams";
-import { handleResponse } from "../Utils";
 import ReservationRow from "./ReservationRow";
 
 type Props = {
@@ -15,30 +13,17 @@ type Props = {
 const ReservationsTable: FC<Props> = ({sortDirection, value}) =>{
     const { t } = useTranslation();
     const [page, setPage] = useState(1);
-    const [reload, setReload] = useState(false);
-    const [reservationList, setReservations ] = useState<ReservationModel[]>([]);
-    const reservationService = useReservationService();
+    const { reservations: reservationList, error: reservationsError, loading: reservationsLoading, toggleReload } = useReservationsPagination(page, value, sortDirection);
 
     const handlePagination = (event: React.ChangeEvent<unknown>,page: number) => {
         setPage(page);
     };
-    const toggleReload = () => {
-        setReload(!reload);
-    }
 
-    useEffect(() => {
-        let reservationParams = new ReservationParams();
-        reservationParams.filterStatus = value.toString();
-        reservationParams.page = page;
-        sortDirection? reservationParams.direction = "DESC" :  reservationParams.direction = "ASC";   
-        handleResponse(
-          reservationService.getReservations(reservationParams),
-          (response) => {response.length > 0? setReservations(response) : setReservations([]);}
-        );
-    },[value, page, reload, sortDirection]);
+    
 
     return(
         <Grid item xs ={12}>
+            {reservationList && !reservationsError && reservationList.length > 0 &&
             <TableContainer component={Paper}>
                 <Table sx={{ width: 1 }} aria-label="simple table">
                     <TableHead>
@@ -53,7 +38,7 @@ const ReservationsTable: FC<Props> = ({sortDirection, value}) =>{
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {reservationList?.map((reservation: ReservationModel, i) => <ReservationRow key={i} reservation={reservation}  toggleReload={toggleReload}/>)}
+                        {reservationList.map((reservation: ReservationModel, i) => <ReservationRow key={i} reservation={reservation}  toggleReload={toggleReload}/>)}
                     </TableBody>
                     <TableFooter>
                         <TableRow>
@@ -61,7 +46,14 @@ const ReservationsTable: FC<Props> = ({sortDirection, value}) =>{
                         </TableRow>
                     </TableFooter>
                 </Table> 
-            </TableContainer>
+            </TableContainer>}
+            {reservationList && reservationList.length === 0 && <Typography variant="h4" align="center" marginTop={30}>{t('reservationsPage.noReservations')}</Typography>}
+            {reservationsError && !reservationList && <Typography variant="h4" align="center" marginTop={30}>{t('systemError')}</Typography>}
+            {reservationsLoading && !reservationsError &&
+            <Grid item xs={12} minHeight={500} sx={{display:"flex"}} alignItems="center" justifyContent="center">
+                <CircularProgress />
+            </Grid> 
+            }
         </Grid>
     );
 }

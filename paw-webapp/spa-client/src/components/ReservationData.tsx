@@ -12,7 +12,7 @@ type Props = {
 };
 
 const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const formatDate = (date: string) => {
         const dateParts: string[] = date.split("-");
@@ -34,7 +34,7 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
             <Grid item xs={12} sx={ {display:"flex", justifyContent:"center", marginBottom: 2}}><Typography variant="h5">{t('reservationData.title')}</Typography></Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.customer',{customer: reservation?.customerName})}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.code',{code: reservation?.securityCode})}</Grid>
-            <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.date')}{formatDate(reservation!.date)}</Grid>
+            <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.date', {date: formatDate})}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.hour',{hour: reservation?.hour})}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.table',{table: reservation?.tableNumber})}</Grid>
           </Grid>

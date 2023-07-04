@@ -1,24 +1,25 @@
 import { IconButton, TableCell, TableRow } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { DishModel, OrderItemModel } from "../../models";
 import { handleResponse } from "../../Utils";
 import CloseIcon from '@mui/icons-material/Close';
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
+import { ReservationContext } from "../../context/ReservationContext";
 
 type Props = {
     orderItem: OrderItemModel;
     securityCode?: string | undefined;
-    toggleReload?: () => void;
     isCartItem: boolean
 }
 
-const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload, isCartItem}) => {
+const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, isCartItem}) => {
 
     const [dish, setDish] = useState<DishModel | undefined>();
     const dishService = useDishService();
     const orderItemService = useOrderItemService();
+    const { removeItem } = useContext(ReservationContext);
     const abortController = new AbortController();
 
     useEffect(() => {
@@ -34,15 +35,11 @@ const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, toggleReload, isC
         orderItemParams.securityCode = securityCode;
         orderItemParams.orderItemId = orderItem.orderItemId;
 
-        const { isOk, data, error } = await orderItemService.editOrderItem(orderItemParams, abortController);
+        const { isOk } = await orderItemService.editOrderItem(orderItemParams, abortController);
 
-        if (!isOk) {
-            console.log(error);
+        if (isOk) {
+            removeItem(orderItem)
             return;
-        }
-
-        if (toggleReload) {
-            toggleReload();
         }
     }
 

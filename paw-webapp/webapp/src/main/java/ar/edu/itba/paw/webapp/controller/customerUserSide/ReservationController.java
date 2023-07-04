@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller.customerUserSide;
 
 
+import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.service.DishService;
 import ar.edu.itba.paw.model.exceptions.DateFormatException;
@@ -45,11 +46,15 @@ public class ReservationController {
     @Produces(value = { RESERVATION_VERSION_1 })
     public Response getReservationBySecurityCode(@PathParam("securityCode") final String securityCode){
         final Optional<ReservationDto> maybeReservation = rs.getReservationBySecurityCode(securityCode).map(r -> ReservationDto.fromReservation(uriInfo, r));
+
         if(!maybeReservation.isPresent()){
             throw new ReservationNotFoundException();
-        } else {
-            return Response.ok(maybeReservation.get()).build();
         }
+        ReservationDto reservationDto = maybeReservation.get();
+
+        Optional<Dish> recommendedDish = ds.getRecommendedDish(securityCode);
+        recommendedDish.ifPresent(dish -> reservationDto.setRecommendedDishFromOut(uriInfo, dish));
+        return Response.ok(reservationDto).build();
     }
 
     @GET

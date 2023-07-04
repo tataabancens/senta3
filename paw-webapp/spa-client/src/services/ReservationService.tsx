@@ -40,16 +40,22 @@ export class ReservationService {
         } catch (e) {
             return buildErrorResponse(e as Error);
         }
+    
+    }
 
+    public async getReservationsPaginated(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<AxiosResponse>>{
+        try {
+            const response = await this.axios.get(paths.RESERVATIONS + params.getReservationsQuery, {signal: abortController.signal, headers: this.ACCEPT});;
+            return buildSuccessResponse(response);
+        } catch (e) {
+            return buildErrorResponse(e as Error);
+        }
+    
     }
 
 
     public createReservation(params: ReservationParams): Promise<AxiosResponse> {
         return this.axios.post(paths.RESERVATIONS, params.createReservationPayload, { headers: { customerId: params.customerId, "Content-Type": "application/vnd.sentate.reservation.v1+json" } });
-    }
-
-    public getRecommendedDish(securityCode: string): Promise<AxiosResponse> {
-        return this.axios.get<DishModel>(paths.RESERVATIONS + '/' + securityCode + '/recommendedDish', { headers: this.ACCEPT });
     }
 
     public patchReservation(params: ReservationParams): Promise<AxiosResponse> {

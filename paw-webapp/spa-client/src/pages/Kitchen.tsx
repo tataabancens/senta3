@@ -16,7 +16,7 @@ const Kitchen: FC = () => {
     const { orderItems: orderedOrderItems,
             error: orderedOrderItemsError,
             loading: orderedOrderItemsLoading,
-            removeItem:removeOrderedItem } = useOrderItems(filterStatus, orderItemStatus)
+            removeItem:removeOrderedItem } = useOrderItems(filterStatus, orderItemStatus,10000)
 
     orderItemStatus = "2";
     const { orderItems: incomingOrderItems,
@@ -72,20 +72,20 @@ const Kitchen: FC = () => {
             <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid item xs={12}><Typography variant="h4" align="center">{t('kitchenPage.orderedTitle')}</Typography></Grid>
                 {orderedOrderItems  && !orderedOrderItemsError && <KitchenTable orderItems={orderedOrderItems} actionFunction={cookItem} processStage={"ORDERED"}/>}
-                {orderedOrderItemsLoading  && <CircularProgress />}
-                {orderedOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                {orderedOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                {orderedOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
             <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.cookingTitle')}</Typography></Grid>
                 {incomingOrderItems && !incomingOrderItemsError && <KitchenTable orderItems={incomingOrderItems} actionFunction={deliverItem} processStage={"INCOMING"}/>}
-                {incomingOrderItemsLoading  && <CircularProgress />}
-                {incomingOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                {incomingOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                {incomingOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
             <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
                 {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}
-                {deliveringOrderItemsLoading  && <CircularProgress />}
-                {deliveringOrderItemsError && <Grid xs={12} marginY={2}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                {deliveringOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                {deliveringOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
         </Grid>
     );

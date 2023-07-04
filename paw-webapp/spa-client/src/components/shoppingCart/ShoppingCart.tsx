@@ -41,7 +41,7 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
                     </Tabs>
                 </Grid>
                 <Grid item xs={12}>
-                <ShoppingCartPanel value={value} index={0} orderItems={orderItems!} toggleReload={toggleReload}/>
+                <ShoppingCartPanel value={value} index={0}/>
                 <OrdersPanel value={value} index={1} orderItems={orderItems!} />
                 <CheckPanel value={value} index={2} orderItems={orderItems!} />
                 </Grid>            

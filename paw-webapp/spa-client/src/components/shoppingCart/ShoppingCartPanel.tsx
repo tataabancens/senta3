@@ -1,8 +1,9 @@
-import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../../context/ReservationContext";
+import { useRecommendedDish } from "../../hooks/serviceHooks/dishes/useRecommendedDish";
 import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
 import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import { DishModel, OrderItemModel } from "../../models";
@@ -15,24 +16,17 @@ type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
   value: number;
-  orderItems: OrderItemModel[];
-  toggleReload?: () => void;
 }
 
 const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
-  const { children, value, index, orderItems, toggleReload, ...other } = props;
+  const { children, value, index } = props;
 
-  const [recommendedDish, setRecommendedDish] = useState<DishModel | undefined>();
   const orderItemService = useOrderItemService();
-  const reservationService = useReservationService();
-  const { reservation } = useContext(ReservationContext);
+  const { reservation, updateReservation, orderItems, removeItem } = useContext(ReservationContext);
   const abortController = new AbortController();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    handleResponse(reservationService.getRecommendedDish(reservation!.securityCode),
-      response => setRecommendedDish(response))
-  }, [orderItems])
+  const {recomendedDish, error: systemError, loading: loadingRecomendation, noDish} = useRecommendedDish(reservation!, orderItems!, updateReservation)
 
   const calculateTotal = (orderItems: OrderItemModel[]) => {
     let total = 0;
@@ -42,40 +36,31 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
   }
 
   const cancelDishes = async () => {
-    orderItems.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
+    orderItems?.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
       let orderItemParams = new OrderitemParams();
       orderItemParams.securityCode = reservation!.securityCode;
       orderItemParams.orderItemId = filteredItem.orderItemId;
       orderItemParams.status = "DELETED";
-      const { isOk, data, error } = await orderItemService.editOrderItem(orderItemParams, abortController);
+      const { isOk } = await orderItemService.editOrderItem(orderItemParams, abortController);
 
-      if (!isOk) {
-        console.log(error);
-        return;
+      if (isOk) {
+        removeItem(filteredItem)
       }
 
-      if (toggleReload) {
-        toggleReload();
-      }
     }
     );
   }
 
   const confirmDishes = async () => {
-    orderItems.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
+    orderItems?.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
       let orderItemParams = new OrderitemParams();
       orderItemParams.securityCode = reservation!.securityCode;
       orderItemParams.orderItemId = filteredItem.orderItemId;
       orderItemParams.status = "ORDERED";
-      const { isOk, data, error } = await orderItemService.editOrderItem(orderItemParams, abortController);
+      const { isOk } = await orderItemService.editOrderItem(orderItemParams, abortController);
 
-      if (!isOk) {
-        console.log(error);
-        return;
-      }
-
-      if (toggleReload) {
-        toggleReload();
+      if (isOk) {
+        removeItem(filteredItem)
       }
     }
     );
@@ -85,7 +70,6 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
     <div
       role="tabpanel"
       hidden={value !== index}
-      {...other}
     >
       {value === index && (
         <Grid item container xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -99,8 +83,8 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orderItems.filter(orderItem => orderItem.status === "SELECTED").map((filteredItem) => (
-                <ShoppingCartItem key={filteredItem.orderItemId} securityCode={reservation!.securityCode} orderItem={filteredItem} toggleReload={toggleReload} isCartItem={true} />
+              {orderItems?.filter(orderItem => orderItem.status === "SELECTED").map((filteredItem) => (
+                <ShoppingCartItem key={filteredItem.orderItemId} securityCode={reservation!.securityCode} orderItem={filteredItem} isCartItem={true} />
               ))}
             </TableBody>
           </Grid>
@@ -109,13 +93,15 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
               <Typography variant="h6" >{t('shoppingCart.cartPanel.recommendationTitle')}</Typography>
             </Grid>
             <Grid item xs={11} sx={{ display: "flex", justifyContent: "center" }}>
-              {recommendedDish ? <DishCard dish={recommendedDish} /> : <Typography variant="subtitle1" sx={{ marginTop: 10 }}>{t('shoppingCart.cartPanel.noRecommendation')}</Typography>}
+              {noDish !== undefined && <Typography variant="subtitle1" sx={{ marginTop: 10 }}>{t('shoppingCart.cartPanel.noRecommendation')}</Typography>}
+              {loadingRecomendation && <CircularProgress />}
+              {recomendedDish && !systemError && noDish === undefined  && <DishCard dish={recomendedDish} />}
             </Grid>
           </Grid>
           <Grid item container xs={12} sx={{ marginTop: 8 }}>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-evenly" }} marginY={2}>
               <Typography>Total:</Typography>
-              <Typography>${calculateTotal(orderItems)}</Typography>
+              <Typography>${calculateTotal(orderItems!)}</Typography>
             </Grid>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-evenly" }}>
               <Button color="success" variant="outlined" onClick={confirmDishes}><Typography>{t('shoppingCart.cartPanel.orderItems')}</Typography></Button>

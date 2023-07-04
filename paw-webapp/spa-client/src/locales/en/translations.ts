@@ -105,6 +105,7 @@ export const TRANSLATIONS_EN = {
             people: "People"
         },
         sortBy: "Sort By:",
+        noReservations: "There are no reservations here"
     },
     shoppingCart:{
         cartPanel:{
