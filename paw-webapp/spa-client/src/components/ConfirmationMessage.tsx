@@ -1,17 +1,17 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Alert, Box, Button, Modal, Snackbar, Typography } from "@mui/material";
 import { FC, useState } from "react";
-import { handleResponse } from "../Utils";
 import useDishService from "../hooks/serviceHooks/dishes/useDishService";
-import { DishCategoryModel, ReservationModel } from "../models";
+import { DishCategoryModel } from "../models";
 import { DishParams } from "../models/Dishes/DishParams";
 import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
+import { useTranslation } from "react-i18next";
 
 
 type Props = {
   isOpen: boolean;
   handleOpen: () => void;
   category: DishCategoryModel;
-  canReload: () => void;
+  dishes: number;
 };
 
 const style = {
@@ -31,10 +31,12 @@ const style = {
   p: 4,
 };
 
-const ConfirmationMessage: FC<Props> = ({ isOpen, handleOpen, category, canReload }) => {
+const ConfirmationMessage: FC<Props> = ({ isOpen, handleOpen, category, dishes}) => {
 
   const dishService = useDishService();
   const { getDishCategories: { categoryList, categoryMap, setCategories, setCategoryMap }, useCurrentCategory: { setCategoryId } } = useRestaurantMenuContext();
+  const { t } = useTranslation();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleClose = () => {
     handleOpen();
@@ -43,25 +45,30 @@ const ConfirmationMessage: FC<Props> = ({ isOpen, handleOpen, category, canReloa
   const handleAccept = async () => {
     let dishParams = new DishParams();
     dishParams.categoryId = category?.id;
-    const { isOk, data: deleteResponse, error } = await dishService.deleteCategory(dishParams);
-    if (!isOk) {
-      console.log(error);
+    if(dishes === 0){
+      const { isOk } = await dishService.deleteCategory(dishParams);
+      if (isOk) {
+        const updatedCategoryList = categoryList?.filter((c) => c.id !== category.id) || [];
+        setCategories(updatedCategoryList!);
+  
+        const updateCategoryMap = new Map(categoryMap);
+        updateCategoryMap.delete(category.id);
+        setCategoryMap(updateCategoryMap);
+  
+        setCategoryId(updatedCategoryList[0].id);
+        handleClose();
+        setSnackbarOpen(true);
+      }
     }
-
-    const updatedCategoryList = categoryList?.filter((c) => c.id !== category.id) || [];
-    setCategories(updatedCategoryList!);
-
-    const updateCategoryMap = new Map(categoryMap);
-    updateCategoryMap.delete(category.id);
-    setCategoryMap(updateCategoryMap);
-
-    setCategoryId(updatedCategoryList[0].id);
-
-    handleClose();
   }
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
-    <Modal
+    <>
+        <Modal
       open={isOpen}
       onClose={handleOpen}
       aria-labelledby="modal-modal-title"
@@ -69,17 +76,28 @@ const ConfirmationMessage: FC<Props> = ({ isOpen, handleOpen, category, canReloa
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h5" component="h2" marginY={1}>
-          Delete category
+          {t('restaurantMenu.deleteMessage.title')}
         </Typography>
         <Typography id="modal-modal-description" marginY={1}>
-          Are you sure you want to delete this category?
+          {t('restaurantMenu.deleteMessage.description')}
         </Typography>
+        { dishes > 0 &&
+        <Typography id="modal-modal-description" marginY={1} variant="subtitle2" align="center" color="error">
+          {t('restaurantMenu.deleteMessage.disableMessage')}
+        </Typography>}
         <Box sx={{ display: "flex", width: 1, justifyContent: "space-between", marginY: 1 }}>
-          <Button variant="contained" color="success" onClick={handleAccept}><Typography>Accept</Typography></Button>
-          <Button variant="contained" color="error" onClick={handleClose}><Typography>Cancel</Typography></Button>
+          {dishes === 0 && <Button variant="contained" color="success" onClick={handleAccept}><Typography>{t('forms.confirmButton')}</Typography></Button>}
+          {dishes > 0 && <Button variant="contained" disabled color="success" onClick={handleAccept}><Typography>{t('forms.confirmButton')}</Typography></Button>}
+          <Button variant="contained" color="error" onClick={handleClose}><Typography>{t('forms.cancelButton')}</Typography></Button>
         </Box>
       </Box>
     </Modal>
+    <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="success">
+          {t('restaurantMenu.deleteMessage.succesfulDeleteMessage')}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
 

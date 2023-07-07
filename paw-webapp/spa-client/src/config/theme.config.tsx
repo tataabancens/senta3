@@ -28,6 +28,9 @@ const theme = createTheme({
         },
         secondary:{
             main: themePalette.BLUE,
+        },
+        info:{
+            main: themePalette.BG
         }
 
     },

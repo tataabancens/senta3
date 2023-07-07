@@ -11,6 +11,8 @@ import CategoryForm from "./forms/CategoryForm";
 import { ReservationContext } from "../context/ReservationContext";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
+import { ReservationParams } from "../models/Reservations/ReservationParams";
+import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 
 type Props = {
     restaurant?: RestaurantModel | undefined;
@@ -29,8 +31,10 @@ const RestaurantHeader: FC<Props> = ({
     const [shoppingCartOpen, setShoppingCart] = useState(false);
     let navigate = useNavigate();
     const [createIsOpen, setIsOpen] = useState(false);
-    const { reservation, orderItems } = useContext(ReservationContext);
+    const { reservation, orderItems, discount, toggleDiscount } = useContext(ReservationContext);
     const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
+    const [callWaiter, setCallWaiter] = useState(false);
+    const rs = useReservationService();
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -43,6 +47,25 @@ const RestaurantHeader: FC<Props> = ({
     const toggleDrawer = () => {
       setState(!state);
     };
+
+    const toggleCallWaiter = async () => {
+      let reservationParams = new ReservationParams();
+      reservationParams.securityCode = reservation!.securityCode;
+      if(callWaiter){
+        reservationParams.hand = false;
+        const { isOk } = await rs.patchReservation(reservationParams);
+        if(isOk){
+          setCallWaiter(false);
+        }
+      }else{
+        reservationParams.hand = true;
+        const { isOk } = await rs.patchReservation(reservationParams);
+        if(isOk){
+          setCallWaiter(true);
+        }
+      }
+
+    }
 
     const toggleShoppingCart = () => {
       setShoppingCart(!shoppingCartOpen);
@@ -81,6 +104,12 @@ const RestaurantHeader: FC<Props> = ({
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
+            <Button sx={{margin: 1}} variant="contained" color={discount? "info" : "secondary"} onClick={toggleDiscount}>
+              <Typography color={discount? "secondary" : "info" }>{discount? "Remove discount" : "Apply discount"}</Typography>
+            </Button>
+            <Button sx={{margin: 1}} variant="contained" color={callWaiter? "info" : "secondary"} onClick={toggleCallWaiter}>
+              <Typography color={callWaiter? "secondary" : "info" }>{callWaiter? t('restaurantHeader.callingWaiter') : t('restaurantHeader.callWaiter')}</Typography>
+            </Button>
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><Badge badgeContent={selectedItemsAmount} color="secondary"><ShoppingCartIcon/></Badge></Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>{t('restaurantHeader.myReservation')}</Button>
             </Grid>

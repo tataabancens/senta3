@@ -24,11 +24,8 @@ import { useTranslation } from "react-i18next";
 
 type Props = {
   dish: DishModel;
-  isOpen: boolean;
   categoryList: DishCategoryModel[];
-  handleOpen: () => void;
   setDishes: (dishes: DishModel[]) => void;
-  dishes: DishModel[];
 };
 
 export interface createDishFormValue {
@@ -41,8 +38,6 @@ export interface createDishFormValue {
 
 const EditDishForm: FC<Props> = ({
   dish,
-  handleOpen,
-  isOpen,
   categoryList,
 }): JSX.Element => {
 
@@ -50,8 +45,8 @@ const EditDishForm: FC<Props> = ({
   const imageService = useImageService();
   const { t } = useTranslation();
 
-  const { useCurrentCategory: { categoryId }, getDishes: { updateDish, removeDish } } = useRestaurantMenuContext();
-  
+  const { useCurrentCategory: { categoryId }, getDishes: { updateDish, removeDish }, useEditDishIsOpen: { editDishIsOpen, setEditDishIsOpen } } = useRestaurantMenuContext();
+
   const handleSubmit = async (values: createDishFormValue, props: FormikHelpers<createDishFormValue>) => {
     const { name, price, description, categoryId: newCategory, image } = values;
     let imageId = undefined;
@@ -70,14 +65,14 @@ const EditDishForm: FC<Props> = ({
     newDish.description = description;
     newDish.categoryId = newCategory;
     if (imageId) { newDish.imageId = imageId }
-    const { isOk, data, error } = await dishService.editDish(newDish);
+    const { isOk } = await dishService.editDish(newDish);
 
     if (!isOk) {
       // Handle error maybe
       console.log("No okey post");
     }
 
-    const { isOk: isOkGetDish, data: dishData, error: errorGetDish } = await dishService.getDishByIdNew(dish.id);
+    const { isOk: isOkGetDish, data: dishData } = await dishService.getDishByIdNew(dish.id);
 
     if (!isOkGetDish) {
       // handle error
@@ -89,12 +84,11 @@ const EditDishForm: FC<Props> = ({
     if (newCategory === categoryId) {
       updateDish(updatedDish);
     } else {
-      console.log("Hola");
       removeDish(updatedDish);
     }
 
     props.setSubmitting(false);
-    handleOpen();
+    setEditDishIsOpen(false);
   };
 
   const initialValue: createDishFormValue = {
@@ -115,12 +109,12 @@ const EditDishForm: FC<Props> = ({
   })
 
   const handleCancel = () => {
-    handleOpen()
+    setEditDishIsOpen(false);
   }
 
   return (
     <div>
-      <Dialog open={isOpen}>
+      <Dialog open={editDishIsOpen}>
         <Formik initialValues={initialValue} onSubmit={handleSubmit} validationSchema={validationSchema}>
           {(props) => (
             <Form>

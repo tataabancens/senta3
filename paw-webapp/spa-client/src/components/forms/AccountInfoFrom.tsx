@@ -8,8 +8,8 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { FC, useState } from "react";
-import { awaitWrapper, handleResponse, loginErrorHandler, tryLogin } from "../../Utils";
+import { FC } from "react";
+import { awaitWrapper, handleResponse } from "../../Utils";
 import useUserService from "../../hooks/serviceHooks/users/useUserService";
 import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestaurantService";
 import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
@@ -20,7 +20,6 @@ import { UserParams } from "../../models/Users/UserParams";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ApiErrorDetails from "../../models/ApiError/ApiErrorDetails";
-import axios from "../../api/axios";
 import { useTranslation } from "react-i18next";
 
 interface accountInfoFormValues {
@@ -75,11 +74,6 @@ const AccountInfoForm: FC<Props> = ({
       .oneOf([Yup.ref('password'), null], t('validationSchema.passwordMatch')),
   
   })
-
-  const [name, setName] = useState();
-  const [username, setUsername] = useState();
-  const [mail, setMail] = useState();
-  const [phone, setPhone] = useState();
 
   const userService = useUserService();
   const restaurantService = useRestaurantService();

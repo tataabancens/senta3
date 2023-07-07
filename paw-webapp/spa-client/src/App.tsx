@@ -44,9 +44,13 @@ function App() {
               <RestaurantMenuProvider>
                 <RestaurantMenu />
               </RestaurantMenuProvider>} />
-            <Route path="kitchen" element={<Kitchen />} />
           </Route>
-
+          
+          {/* Kitchen, waiter and restaurant*/}
+          <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT", "ROLE_WAITER", "ROLE_KITCHEN"]} />}>
+            <Route path="kitchen" element={<Kitchen />}/>
+          </Route>
+            
           {/* Restaurant and customer */}
           <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT", "ROLE_CUSTOMER"]} />}>
             <Route path="profile" element={<ProfilePage />} />

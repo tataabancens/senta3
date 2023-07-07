@@ -32,7 +32,6 @@ export default function DateForm({ props }: dateFormProps) {
           error={errors.date}
            />
       </Grid>
-
     </React.Fragment>
   );
 }

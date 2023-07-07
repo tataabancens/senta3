@@ -1,11 +1,11 @@
-import { Button, Divider, Stack } from "@mui/material";
-import { FC, useState } from "react";
+import { Button, Stack } from "@mui/material";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleResponse } from "../Utils";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import { ReservationModel } from "../models"
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { paths } from "../constants/constants";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     reservation: ReservationModel | undefined;
@@ -17,61 +17,56 @@ const ReservationActions: FC<Props> = ({ reservation, toggleReload }) => {
 
     const reservationService = useReservationService();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
-    const seatClient = () => {
+    const seatClient = async () => {
         let updateReservation = new ReservationParams();
         updateReservation.securityCode = reservation?.securityCode;
         updateReservation.status = "SEATED";
-        handleResponse(
-            reservationService.patchReservation(updateReservation),
-            (response) => {
-                toggleReload()
-            }
-        )
+        const { isOk } = await reservationService.patchReservation(updateReservation);
+        if(isOk){
+            toggleReload();
+        }
     }
 
-    const cancelReservation = () => {
+    const cancelReservation = async () => {
         let updateReservation = new ReservationParams();
         updateReservation.securityCode = reservation?.securityCode;
         updateReservation.status = "CANCELED";
-        handleResponse(
-            reservationService.patchReservation(updateReservation),
-            (response) => {
-                toggleReload()
-            }
-        )
+        const { isOk } = await reservationService.patchReservation(updateReservation);
+        if(isOk){
+            toggleReload();
+        }
     }
 
-    const endReservation = () => {
+    const endReservation = async () => {
         let updateReservation = new ReservationParams();
         updateReservation.securityCode = reservation?.securityCode;
         updateReservation.status = "FINISHED";
-        handleResponse(
-            reservationService.patchReservation(updateReservation),
-            (response) => {
-                toggleReload()
-            }
-        )
+        const { isOk } = await reservationService.patchReservation(updateReservation);
+        if(isOk){
+            toggleReload();
+        }
     }
 
     return (
         <>
             {reservation?.status === "OPEN" &&
                 <Stack direction="row" spacing={2} justifyContent="space-evenly">
-                    <Button variant="outlined" sx={{ width: 10 }} color="success" onClick={seatClient}>SEAT</Button>
-                    <Button variant="outlined" sx={{ width: 200 }} color="error" onClick={cancelReservation}>CANCEL RESERVATION</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 10 }} color="success" onClick={seatClient}>{t('reservationActions.seat')}</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 200 }} color="error" onClick={cancelReservation}>{t('reservationActions.cancel')}</Button>
                 </Stack>
             }
             {reservation?.status === "SEATED" &&
                 <Stack direction="row" spacing={2} justifyContent="space-evenly">
-                    <Button variant="outlined" sx={{ width: 200 }} color="success" onClick={() => navigate(paths.ROOT + "/reservations/" + reservation.securityCode + "/checkOut")}>MAKE CHECK</Button>
-                    <Button variant="outlined" sx={{ width: 200 }} color="secondary" onClick={() => navigate(paths.ROOT + "/reservations/" + reservation.securityCode)}>ACCESS RESERVATION</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 200 }} color="success" onClick={() => navigate(paths.ROOT + "/reservations/" + reservation.securityCode + "/checkOut")}>{t('reservationActions.makeCheck')}</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 200 }} color="secondary" onClick={() => navigate(paths.ROOT + "/reservations/" + reservation.securityCode)}>{t('reservationActions.accessReservation')}</Button>
                 </Stack>
             }
             {reservation?.status === "CHECK_ORDERED" &&
                 <Stack direction="row" spacing={2} justifyContent="space-evenly">
-                    <Button variant="outlined" sx={{ width: 200 }} color="success" onClick={() => navigate(paths.ROOT + "/reservations/" + reservation.securityCode + "/checkOut")}>MAKE CHECK</Button>
-                    <Button variant="outlined" sx={{ width: 200 }} color="success" onClick={endReservation}>END RESERVATION</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 200 }} color="secondary" onClick={() => navigate(paths.ROOT + "/reservations/" + reservation.securityCode + "/checkOut")}>{t('reservationActions.makeCheck')}</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 200 }} color="success" onClick={endReservation}>{t('reservationActions.endReservation')}</Button>
                 </Stack>
             }
         </>

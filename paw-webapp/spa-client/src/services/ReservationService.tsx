@@ -58,8 +58,13 @@ export class ReservationService {
         return this.axios.post(paths.RESERVATIONS, params.createReservationPayload, { headers: { customerId: params.customerId, "Content-Type": "application/vnd.sentate.reservation.v1+json" } });
     }
 
-    public patchReservation(params: ReservationParams): Promise<AxiosResponse> {
-        return this.axios.patch(paths.RESERVATIONS + '/' + params.securityCode, params.patchReservationPayload, { headers: this.CONTENT_TYPE });
+    public async patchReservation(params: ReservationParams): Promise<ResponseDetails<number>> {
+        try{
+            await this.axios.patch(paths.RESERVATIONS + '/' + params.securityCode, params.patchReservationPayload, { headers: this.CONTENT_TYPE });
+            return buildSuccessResponse(1);
+        }catch(e) {
+            return buildErrorResponse(e as Error);
+        }
     }
 
     public cancelReservation(securityCode: string): Promise<AxiosResponse> {

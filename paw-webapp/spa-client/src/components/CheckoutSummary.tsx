@@ -1,6 +1,12 @@
-import { Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { FC } from "react";
+import { Alert, Button, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../constants/constants";
+import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
+import useAuth from "../hooks/useAuth";
 import { OrderItemModel, ReservationModel } from "../models";
+import { ReservationParams } from "../models/Reservations/ReservationParams";
 import ShoppingCartItem from "./shoppingCart/ShoppingCartItem";
 
 type Props = {
@@ -9,6 +15,12 @@ type Props = {
 };
 
 const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
+
+    const { t } = useTranslation();
+    const { auth } = useAuth();
+    const rs = useReservationService();
+    const navigate = useNavigate();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
 
     const formatDate = (date?: string) => {
@@ -30,27 +42,41 @@ const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
         return total;
     }
 
+    const endReservation = async () => {
+        let resParams = new ReservationParams();
+        resParams.securityCode = reservation.securityCode;
+        resParams.status = "FINISHED";
+        const { isOk } = await rs.patchReservation(resParams);
+        if(isOk){
+            setSnackbarOpen(true);
+        }
+    }
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+        navigate(paths.ROOT + "/restaurantReservations");
+    };
 
     return (
-        <Grid item container component={Paper} xs={11} marginTop={2} padding={3} elevation={5} borderRadius={3}>
-            <Grid item xs={12}><Typography variant="h4" align="center" color="primary">Reservation Summary</Typography></Grid>
+        <>
+                <Grid item container component={Paper} xs={11} marginTop={2} padding={3} elevation={5} borderRadius={3}>
+            <Grid item xs={12}><Typography variant="h4" align="center" color="primary">{t('checkoutSummary.title')}</Typography></Grid>
             <Grid item container xs={12} marginTop={6}>
-                <Grid item xs={12}><Typography variant="h5">Reservation info:</Typography></Grid>
-                <Grid item xs={12}><Typography variant="subtitle1">Customer: {reservation?.customerName}</Typography></Grid>  
-                <Grid item xs={12}><Typography variant="subtitle1">Date: {formatDate(reservation?.date)}</Typography></Grid>
-                <Grid item xs={12}><Typography variant="subtitle1">Hour: {reservation?.hour}:00</Typography></Grid>  
-                <Grid item xs={12}><Typography variant="subtitle1">People: {reservation?.peopleAmount}</Typography></Grid>
-                <Grid item xs={12}><Typography variant="subtitle1">Table: {reservation?.tableNumber}</Typography></Grid>
-                <Grid item xs={12}><Typography variant="subtitle1">Status: {reservation?.status}</Typography></Grid> 
+                <Grid item xs={12}><Typography variant="h5">{t('checkoutSummary.reservationInfo')}</Typography></Grid>
+                <Grid item xs={12}><Typography variant="subtitle1">{t('checkoutSummary.customer',{customer: reservation?.customerName})}</Typography></Grid>  
+                <Grid item xs={12}><Typography variant="subtitle1">{t('checkoutSummary.date')}{formatDate(reservation?.date)}</Typography></Grid>
+                <Grid item xs={12}><Typography variant="subtitle1">{t('checkoutSummary.hour',{hour: reservation?.hour})}</Typography></Grid>  
+                <Grid item xs={12}><Typography variant="subtitle1">{t('checkoutSummary.people',{people: reservation?.peopleAmount})}</Typography></Grid>
+                <Grid item xs={12}><Typography variant="subtitle1">{t('checkoutSummary.table',{table: reservation?.tableNumber})}</Typography></Grid>
             </Grid>
-            <Grid item xs={12}><Typography variant="h5" align="center">Items Summary</Typography></Grid>
+            <Grid item xs={12}><Typography variant="h5" align="center">{t('checkoutSummary.itemSummary')}</Typography></Grid>
             <Grid item container xs={12}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">Dish</TableCell>
-                            <TableCell align="center">Quantity</TableCell>
-                            <TableCell align="center">Subtotal</TableCell>
+                            <TableCell align="left">{t('checkoutSummary.tableHeaders.dish')}</TableCell>
+                            <TableCell align="center">{t('checkoutSummary.tableHeaders.qty')}</TableCell>
+                            <TableCell align="center">{t('checkoutSummary.tableHeaders.subtotal')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -64,7 +90,18 @@ const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
                 <Grid item xs={6}><Typography variant="h5" align="center" color="primary">Total:</Typography></Grid>
                 <Grid item xs ={6}><Typography variant="h5" align="center" color="primary">${calculateTotal(orderItems)}</Typography></Grid>
             </Grid>
+            { auth.roles[0] === "ROLE_RESTAURANT" &&
+                <Grid item xs={12} marginTop={5}>
+                    <Button variant="contained" fullWidth onClick={endReservation}>{t('checkoutSummary.finishButton')}</Button>
+                </Grid>
+            }
         </Grid>
+        <Snackbar open={snackbarOpen} autoHideDuration={1500} onClose={handleSnackbarClose}>
+            <Alert onClose={handleSnackbarClose} severity="success">
+                {t('checkoutSummary.finishMessage')}
+            </Alert>
+        </Snackbar>
+        </>
     );
 }
 

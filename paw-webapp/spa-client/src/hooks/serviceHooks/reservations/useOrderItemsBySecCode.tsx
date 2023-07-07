@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { OrderItemModel, ReservationModel } from "../../../models";
 import useOrderItemService from "../orderItems/useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
+import { ORDERITEMS_INTERVAL } from "../../../constants/constants";
 
 export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined) => {
     const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
@@ -12,19 +13,23 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
 
     const reloadItems = () => {setReload(!reload)}
 
-    useEffect(() => {
-        if (!reservation) return;
-        (async () => {
-            let orderItemParams = new OrderitemParams();
-            orderItemParams.securityCode = reservation.securityCode;
+    const getOrderItems = async () => {
+        if(!reservation) return;
+        let orderItemParams = new OrderitemParams();
+        orderItemParams.securityCode = reservation.securityCode;
             
-            const { isOk, data, error } = await orderItemService.getOrderItems(orderItemParams, abortController);
-            if (isOk) {
-                data.length > 0 ? setOrderItems(data) : setOrderItems([]);
-            }
-            else setError(error);
-        })();
+        const { isOk, data, error } = await orderItemService.getOrderItems(orderItemParams, abortController);
+        if (isOk) {
+            data.length > 0 ? setOrderItems(data) : setOrderItems([]);
+        }
+        else setError(error);
+    }
+
+    useEffect(() => {
+        getOrderItems()
+        const interval = setInterval(getOrderItems, ORDERITEMS_INTERVAL); 
         return () => {
+            clearInterval(interval);
             abortController.abort();
         }
     }, [reservation, reload]);

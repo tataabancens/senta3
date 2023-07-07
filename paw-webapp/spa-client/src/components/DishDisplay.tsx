@@ -8,13 +8,11 @@ import CreateDishForm from "./forms/CreateDishForm";
 import { useTranslation } from "react-i18next";
 
 type Props = {
-    toggleReload?: () => void;
     dishes: DishModel[];
     isMenu: boolean;
 };
 
 const DishDisplay: FC<Props> = ({
-    toggleReload,
     dishes,
     isMenu
   }): JSX.Element => {
@@ -25,13 +23,12 @@ const DishDisplay: FC<Props> = ({
 
     const { t } = useTranslation();
 
-
     return (
         <Grid item container xs={11} spacing={2} marginTop={1}>
             {isMenu && <CreateDishForm formIsOpen={openForm} handleOpenForm={handleFormOpen} />}
             {dishes.map((dish: DishModel, i) => 
              <Grid item key={i} xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}>
-              {isMenu? <MenuCard dish={dish} key={dish.id} /> : <DishCard dish={dish} key={dish.id} toggleReload={toggleReload} />}
+              {isMenu? <MenuCard dish={dish} key={dish.id} /> : <DishCard dish={dish} key={dish.id} />}
             </Grid> )}
              {isMenu && 
               <Grid item xl={3} lg={5} md={5} sm={12} xs={12} margin={2} maxHeight={120}>

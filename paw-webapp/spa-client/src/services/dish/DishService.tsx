@@ -69,8 +69,13 @@ export class DishService {
         }
     }
 
-    public deleteDish(dishId: number) {
-        return this.axios.delete(this.basePath + '/' + dishId, { headers: this.ACCEPT });
+    public async deleteDish(dishId: number): Promise<ResponseDetails<number>> {
+        try {
+            const response = await this.axios.delete(this.basePath + '/' + dishId, { headers: this.ACCEPT })
+            return buildSuccessResponse(0);
+        } catch (e) {
+            return buildErrorResponse(e as Error);
+        }
     }
 
 

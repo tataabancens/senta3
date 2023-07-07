@@ -1,36 +1,39 @@
 import { CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import HandsTable from "../components/HandsTable";
 import KitchenTable from "../components/KitchenTable";
 import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
 import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
+import useAuth from "../hooks/useAuth";
 import { OrderItemModel } from "../models";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
-
+  
 
 const Kitchen: FC = () => {
     let filterStatus = "1";
     let orderItemStatus = "1";
     const { t } = useTranslation();
     const orderItemService = useOrderItemService();
+    const { auth } = useAuth();
     const { orderItems: orderedOrderItems,
             error: orderedOrderItemsError,
             loading: orderedOrderItemsLoading,
-            removeItem:removeOrderedItem } = useOrderItems(filterStatus, orderItemStatus,10000)
+            removeItem:removeOrderedItem } = useOrderItems(filterStatus, orderItemStatus,10000);
 
     orderItemStatus = "2";
     const { orderItems: incomingOrderItems,
             error: incomingOrderItemsError, 
             loading: incomingOrderItemsLoading,
             removeItem: removeIncomingItem,
-            addItem: addIncomingItem } = useOrderItems(filterStatus, orderItemStatus)
+            addItem: addIncomingItem } = useOrderItems(filterStatus, orderItemStatus);
 
     orderItemStatus = "3";
     const { orderItems: deliveringOrderItems, 
             error: deliveringOrderItemsError, 
             loading: deliveringOrderItemsLoading,
             removeItem: removeDeliveredItem,
-            addItem: addDeliveredItem } = useOrderItems(filterStatus, orderItemStatus)
+            addItem: addDeliveredItem } = useOrderItems(filterStatus, orderItemStatus);
 
     const cookItem = async (item: OrderItemModel) => {
         let params = new OrderitemParams();
@@ -68,7 +71,9 @@ const Kitchen: FC = () => {
     }
 
     return (
-        <Grid container xs={12} padding={2} justifyContent="space-evenly" >
+        <>
+        {auth.roles[0] === "ROLE_KITCHEN" && 
+        <Grid container xs={12} padding={2} justifyContent="space-evenly" height="90vh">
             <Grid item container xs={3.8} component={Paper} elevation={5}>
                 <Grid item xs={12}><Typography variant="h4" align="center">{t('kitchenPage.orderedTitle')}</Typography></Grid>
                 {orderedOrderItems  && !orderedOrderItemsError && <KitchenTable orderItems={orderedOrderItems} actionFunction={cookItem} processStage={"ORDERED"}/>}
@@ -87,7 +92,48 @@ const Kitchen: FC = () => {
                 {deliveringOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
                 {deliveringOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
-        </Grid>
+        </Grid>}
+        {auth.roles[0] === "ROLE_RESTAURANT" &&
+            <Grid container xs={12} padding={2} justifyContent="space-evenly" height="90vh">
+                <Grid item container xs={3.8} component={Paper} elevation={5}>
+                    <Grid item xs={12}><Typography variant="h4" align="center">{t('kitchenPage.orderedTitle')}</Typography></Grid>
+                    {orderedOrderItems  && !orderedOrderItemsError && <KitchenTable orderItems={orderedOrderItems} actionFunction={cookItem} processStage={"ORDERED"}/>}
+                    {orderedOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                    {orderedOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                </Grid>
+                <Grid item container xs={3.8} component={Paper} elevation={5}>
+                    <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.cookingTitle')}</Typography></Grid>
+                    {incomingOrderItems && !incomingOrderItemsError && <KitchenTable orderItems={incomingOrderItems} actionFunction={deliverItem} processStage={"INCOMING"}/>}
+                    {incomingOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                    {incomingOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                </Grid>
+                <Grid item container xs={3.8} component={Paper} elevation={5}>
+                    <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
+                    {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}
+                    {deliveringOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                    {deliveringOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                </Grid>
+                <Grid item container xs={6} component={Paper} elevation={5} margin={2}>
+                    <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.handsTitle')}</Typography></Grid>
+                    <HandsTable />
+                </Grid>
+            </Grid>
+        }
+         {auth.roles[0] === "ROLE_WAITER" &&
+            <Grid container xs={12} padding={2} justifyContent="space-evenly" height="90vh">
+                <Grid item container xs={4} component={Paper} elevation={5}>
+                    <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
+                    {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}
+                    {deliveringOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
+                    {deliveringOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
+                </Grid>
+                <Grid item container xs={4} component={Paper} elevation={5}>
+                    <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.handsTitle')}</Typography></Grid>
+                    <HandsTable />
+                </Grid>
+            </Grid>
+        }
+        </>
     );
     
 }

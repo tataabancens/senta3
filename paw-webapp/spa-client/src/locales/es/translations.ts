@@ -18,6 +18,8 @@ export const TRANSLATIONS_ES ={
         makeReservation: "Hacer reserva",
         haveReservation: "Tengo reserva",
         myReservation: "Mi reserva",
+        callWaiter: "Llamar mozo",
+        callingWaiter: "Llamando mozo",
         createCategory: "Crear categoría"
     },
     loginPage: {
@@ -42,7 +44,8 @@ export const TRANSLATIONS_ES ={
         passwordLength: "La contraseña debe tener al menos {{length}} caracteres",
         positiveValidation: "Debe ser mayor que 0",
         dateValidation: "La fecha no puede ser en el pasado",
-        secCodeValidation: "Debe ser de {{length}} caracteres"
+        secCodeValidation: "Debe ser de {{length}} caracteres",
+        invalidUsernamePassword: "Usuario/contraseña invalidos. Por favor, intente nuevamente. "
     },
     createReservation:{
         pageTitle: "Crear reserva",
@@ -85,6 +88,13 @@ export const TRANSLATIONS_ES ={
         date: "Día: ",
         hour: "Hora: {{hour}}:00",
         table: "Mesa: {{table}}"
+    },
+    reservationActions:{
+        seat: "Sentar",
+        cancel: "Cancelar reserva",
+        makeCheck: "Hacer la cuenta",
+        accessReservation: "Acceder reserva",
+        endReservation: "Terminar reserva",
     },
     reservationsPage:{
         tabs:{
@@ -134,10 +144,45 @@ export const TRANSLATIONS_ES ={
     },
     restaurantMenu:{
         editCategory: "Editar categoría",
-        deleteCategory: "Eliminar categoría"
+        deleteCategory: "Eliminar categoría",
+        deleteMessage:{
+            title: "Borrar categoría",
+            description: "¿Esta seguro que desea eliminar esta categoría?",
+            disableMessage: "No es posible borrar una categoría que tiene platos. Por favor elimina los platos primero.",
+            succesfulDeleteMessage: "La categoría fue borrada con exito."
+        },
+        deleteDish:{
+            title: "Borrar plato",
+            description: "¿Esta seguro que desea eliminar este plato?"
+        }
+    },
+    checkoutSummary:{
+        title: "Resumen de la reserva",
+        reservationInfo: "Información de reserva:",
+        customer: "Cliente: {{customer}}",
+        date: "Día: ",
+        hour: "Hora: {{hour}}:00",
+        people: "Personas: {{people}}",
+        table: "Mesa: {{table}}",
+        itemSummary: "Resumen de pedidos",
+        tableHeaders:{
+            dish: "Plato",
+            qty: "Cantidad",
+            subtotal: "Subtotal",
+        },
+        finishButton: "Finalizar reserva",
+        finishMessage: "La reserva fue finalizada exitosamente."
     },
     dishDisplay:{
         createDish: "Crear plato"
+    },
+    finishReservationModal:{
+        title: "Terminando reserva",
+        waitingMessage: "Por favor aguarda a que el restaurant finalice tu reserva",
+        finishedTitle: "Reserva finzalizada",
+        finishedMessageNoPints: "La reserva fue finalizada con exito. Por favor vuelva pronto!",
+        finishedMessageWithPoints: "La reserva fue finalizada con exito y se agregaron puntos a su cuenta. Por favor vuelva pronto!",
+        goToMenu: "Ir al menú"
     },
     kitchenPage:{
         orderedTitle: "Pedidos",
@@ -151,7 +196,14 @@ export const TRANSLATIONS_ES ={
         cookAction: "Cocinar",
         deliverAction: "Entregar",
         doneAction: "Entregado",
-        emptyTable: "No hay pedidos aqui"
+        emptyTable: "No hay pedidos aqui",
+        handsTableHeaders:{
+            table: "Mesa",
+            customer: "Cliente"
+        },
+        handsTitle: "Necesitan atención",
+        handsActionButton: "cliente asistido",
+        noHands: "Nadie necesita atención"
     },
     customerReservations:{
         points: "Puntos: {{points}}",

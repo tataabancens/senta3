@@ -3,7 +3,7 @@ import { DishCategoryModel, DishModel } from "../../../models";
 import useDishService from "./useDishService";
 
 export const useDishes = (value: number, category: DishCategoryModel | undefined) => {
-    const [dishes, setDishes] = useState<DishModel[]>();
+    const [dishes, setDishes] = useState<DishModel[] | undefined>(undefined);
     const [error, setError] = useState<string>();
     const dishService = useDishService();
     const abortController = new AbortController();

@@ -3,7 +3,7 @@ import { ReservationModel } from "../../../models";
 import { ReservationParams } from "../../../models/Reservations/ReservationParams";
 import useReservationService from "./useReservationService";
 
-export const useReservation = (securityCode: string) => {
+export const useReservation = (securityCode: string, interval?: number) => {
     const reservationService= useReservationService();
     const abortController = new AbortController();
     const [reservation, setReservation] = useState<ReservationModel>();
@@ -14,17 +14,26 @@ export const useReservation = (securityCode: string) => {
         setReloadReservation(!toggleReloadReservation);
     }
 
-    useEffect(() => {
+    const  getReservation = async () => {
         let resParams = new ReservationParams();
         resParams.securityCode = securityCode;
-        (async () => {
-            const { isOk, data, error } = await reservationService.newGetReservation(resParams, abortController);
-            if (isOk) {
-                data ? setReservation(data) : setReservation(undefined);
-            } else {
-                setError(error);
+        const { isOk, data, error } = await reservationService.newGetReservation(resParams, abortController);
+        if (isOk) {
+            data ? setReservation(data) : setReservation(undefined);
+        } else {
+            setError(error);
+        }
+
+    }
+    useEffect(() => {
+        getReservation();
+        if(interval){
+            const intervalCall = setInterval(getReservation, interval); 
+            return () => {
+                clearInterval(intervalCall);
+                abortController.abort();
             }
-        })();
+        }
         return () => {
             abortController.abort();
         }

@@ -62,7 +62,7 @@ export const initCustomer: CustomerModel = {
 
 export const linkStyle = {
     width: "100%",
-    height: 100,
+    Height: 150,
     margin: "1%",
     transition: "0.8s",
     backgroundColor: "white",
@@ -94,4 +94,9 @@ export const timeArray =
  "20:00",
  "21:00",
  "22:00",
- "23:00"]
+ "23:00"
+]
+export const ORDERITEMS_INTERVAL = 30000 //in milliseconds
+
+export const RESERVATION_INTERVAL = 10000 //in milliseconds
+

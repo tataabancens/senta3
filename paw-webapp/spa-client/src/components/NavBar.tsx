@@ -10,7 +10,7 @@ import {
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {emptyAuth, paths} from "../constants/constants";
 import useAuth from "../hooks/useAuth";
 
@@ -20,9 +20,10 @@ interface nameSitePair{
 }
 
 export const NavBar: React.FC<{}> = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
   const [rolePages, setRolePages] = useState<nameSitePair[]>([]);
+  const location = useLocation();
   const { t } = useTranslation();
 
   const customerPages = new Map<string, string>([
@@ -32,6 +33,9 @@ export const NavBar: React.FC<{}> = () => {
     [t('navBar.restaurantPages.menu'), "restaurantMenu"],
     [t('navBar.restaurantPages.kitchen'), "kitchen"],
     [t('navBar.restaurantPages.reservations'), "restaurantReservations"]
+  ]);
+  const servicePages = new Map<string, string>([
+    [t('navBar.restaurantPages.kitchen'), "kitchen"],
   ]);
 
   const logOut = () => {
@@ -46,6 +50,10 @@ export const NavBar: React.FC<{}> = () => {
     }
     else if(auth.roles[0] === "ROLE_RESTAURANT"){
       const pages: nameSitePair[] = Array.from(restaurantPages, ([key, value]) => ({key, value}));
+      setRolePages(pages);
+    }
+    else if(auth.roles[0] === "ROLE_WAITER" || auth.roles[0] === "ROLE_KITCHEN"){
+      const pages: nameSitePair[] = Array.from(servicePages, ([key, value]) => ({key, value}));
       setRolePages(pages);
     }
     else{
@@ -68,16 +76,22 @@ export const NavBar: React.FC<{}> = () => {
                       </Typography>
                   </Button>
                   {rolePages.map((pair: nameSitePair, index) => 
-                  <Button variant="contained" key={index} onClick={() => {navigate(`${paths.ROOT}/${pair.value}`)}}>
-                    <Typography>{pair.key}</Typography>
+                  <Button variant="contained" color={location.pathname === `${paths.ROOT}/${pair.value}`? "info" : "primary"}
+                   key={index} 
+                   onClick={() => {navigate(`${paths.ROOT}/${pair.value}`)}}
+                   >
+                    <Typography color={location.pathname === `${paths.ROOT}/${pair.value}`? "primary" : "info"}>{pair.key}</Typography>
                   </Button>)}
                 </Stack>
               </Grid>
               <Grid item>
                 {auth.roles.length > 0?
                   <Stack direction="row" spacing={2}>
-                    <Button variant="contained" onClick={() => {navigate(paths.ROOT + "/profile")}}>
-                      <Typography>{auth?.user}</Typography>
+                    <Button variant="contained"
+                      color={location.pathname === `${paths.ROOT}/profile`? "info" : "primary"}
+                     onClick={() => {navigate(paths.ROOT + "/profile")}}
+                     >
+                      <Typography color={location.pathname === `${paths.ROOT}/profile`? "primary" : "info"}>{auth?.user}</Typography>
                     </Button>
                     <Button onClick={logOut} variant="contained">
                       <Typography>{t('navBar.logoutButton')}</Typography>
@@ -85,13 +99,15 @@ export const NavBar: React.FC<{}> = () => {
                   </Stack>
                   :
                   <Stack direction="row" spacing={2}>
+                    {location.pathname !== `${paths.ROOT}/login` &&
                     <Button size="large" variant="contained" onClick={() => {navigate(paths.ROOT + "/login")}}>
                       <Typography>{t('navBar.loginButton')}</Typography>
-                    </Button>
+                    </Button>}
+                    {location.pathname !== `${paths.ROOT}/signUp` &&
                     <Button size="large" onClick={() => navigate(paths.ROOT + "/signUp")} variant="contained">
                       <Typography>{t('navBar.registerButton')}</Typography>
-                    </Button>
-                  </Stack>                 
+                    </Button>}
+                  </Stack>
                 }
               </Grid>
             </Grid>

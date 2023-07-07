@@ -39,7 +39,6 @@ export default function QPeopleForm({ props }: qPeopleFormProps) {
           helperText={<ErrorMessage name="qPeople" />}
           error={errors.qPeople}
         />
-        {errors.qPeople ? <p>{errors.qPeople}</p> : null}
       </Grid>
     </React.Fragment>
   );

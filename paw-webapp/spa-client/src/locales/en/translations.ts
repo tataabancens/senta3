@@ -18,6 +18,8 @@ export const TRANSLATIONS_EN = {
         makeReservation: "Make reservation",
         haveReservation: "Have reservation",
         myReservation: "My reservation",
+        callWaiter: "Call waiter",
+        callingWaiter: "Calling waiter",
         createCategory: "Create category"
     },
     loginPage: {
@@ -42,7 +44,8 @@ export const TRANSLATIONS_EN = {
         passwordLength: "Minimun {{length}} caracters long",
         positiveValidation: "Must be greater than 0",
         dateValidation: "Date cannot be in the past",
-        secCodeValidation: "Must be {{length}} characters long"
+        secCodeValidation: "Must be {{length}} characters long",
+        invalidUsernamePassword: "Invalid username/password. Please try again."
     },
     createReservation:{
         pageTitle: "Create reservation",
@@ -86,6 +89,13 @@ export const TRANSLATIONS_EN = {
         date: "Date: ",
         hour: "Hour: {{hour}}:00",
         table: "Table: {{table}}"
+    },
+    reservationActions:{
+        seat: "Seat",
+        cancel: "Cancel reservation",
+        makeCheck: "Make check",
+        accessReservation: "Access reservation",
+        endReservation: "End reservation",
     },
     reservationsPage:{
         tabs:{
@@ -135,10 +145,45 @@ export const TRANSLATIONS_EN = {
     },
     restaurantMenu:{
         editCategory: "Edit category",
-        deleteCategory: "Delete category"
+        deleteCategory: "Delete category",
+        deleteMessage:{
+            title: "Delete category",
+            description: "Are you sure you want to delete this category?",
+            disableMessage: "It is not possible to delete a category that has dishes. Please delete the dishes first.",
+            succesfulDeleteMessage: "the category was successfully deleted."
+        },
+        deleteDish:{
+            title: "Delete dish",
+            description: "Are you sure you want to delete this dish?"
+        }
+    },
+    checkoutSummary:{
+        title: "Reservation summary",
+        reservationInfo: "Reservation info:",
+        customer: "Customer: {{customer}}",
+        date: "Date: ",
+        hour: "Hour: {{hour}}:00",
+        people: "People: {{people}}",
+        table: "Table: {{table}}",
+        itemSummary: "Item summary",
+        tableHeaders:{
+            dish: "Dish",
+            qty: "Quantity",
+            subtotal: "Subtotal",
+        },
+        finishButton: "Finish reservation",
+        finishMessage: "Reservation was successfully finished."
     },
     dishDisplay:{
         createDish: "Create dish"
+    },
+    finishReservationModal:{
+        title: "Finishing reservation",
+        waitingMessage: "Please wait until the restaurant finishes the reservation",
+        finishedTitle: "Reservation Finished",
+        finishedMessageNoPints: "The reservation was successfully finished. Please come back soon!",
+        finishedMessageWithPoints: "The reservation was successfully finished and the points have been added to your account. Please came back soon!",
+        goToMenu: "Go to menu"
     },
     kitchenPage:{
         orderedTitle: "Ordered",
@@ -152,7 +197,14 @@ export const TRANSLATIONS_EN = {
         cookAction: "Cook",
         deliverAction: "Deliver",
         doneAction: "Done",
-        emptyTable: "There are no orders here"
+        emptyTable: "There are no orders here",
+        handsTableHeaders:{
+            table: "Table",
+            customer: "Customer"
+        },
+        handsTitle: "Attention needed",
+        handsActionButton: "client assisted",
+        noHands: "No attention needed"
 
     },
     customerReservations:{

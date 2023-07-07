@@ -35,22 +35,7 @@ import ApiErrorDetails from '../../models/ApiError/ApiErrorDetails';
 import useAuth from '../../hooks/useAuth';
 import {CustomerModel, UserModel} from "../../models";
 import { useTranslation } from 'react-i18next';
-import { useRestaurant } from '../../hooks/serviceHooks/restaurants/useRestaurant';
 import useRestaurantService from '../../hooks/serviceHooks/restaurants/useRestaurantService';
-
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://www.tribuna.com.mx/u/fotografias/m/2022/8/29/f768x1-284455_284582_92.jpg">
-        Pepito Masterchef
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 export interface createReservationFormValues {
   qPeople: number;
@@ -320,8 +305,7 @@ const CreateReservation: FC = () => {
                           1: <DateForm props={props} />,
                           2: <HourForm props={props} availableHours={availableHours} />,
                           3: <InfoForm props={props} />,
-                          //@ts-ignore
-                          4: <InfoFormStatic customer={customer}/>,
+                          4: <InfoFormStatic customer={customer!}/>,
                           5: <Done props={props} secCode={secCode} />,
                           6: <ShortRegisterForm props={props} />,
                           7: <Done props={props} secCode={secCode} />

@@ -26,9 +26,9 @@ const useAxiosPrivate = () => {
                 if (auth?.authorization) {
                         const prevRequest = error?.config;
                         if (!prevRequest?.sent) {
-                            console.log(error);
+                            // console.log(error);
                         } else {
-                            console.log("Segundo")
+                            // console.log("Segundo")
                         }
                     if ((error?.response?.status === 403 || error?.response?.status === 401) && !prevRequest?.sent) {
                         prevRequest.sent = true;

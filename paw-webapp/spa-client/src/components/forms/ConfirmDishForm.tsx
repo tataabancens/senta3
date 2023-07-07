@@ -33,7 +33,7 @@ const ConfirmDishForm: FC<Props> = ({
   const [qty, setQty] = useState(0);
     
   const orderItemService = useOrderItemService();
-  const { reservation, reloadItems } = useContext(ReservationContext);
+  const { reservation, reloadItems, updateReservation } = useContext(ReservationContext);
   const { t } = useTranslation();
 
   const handleDecrease = () => {
@@ -64,7 +64,8 @@ const ConfirmDishForm: FC<Props> = ({
       const { isOk } = await orderItemService.createOrderItem(orderItem, abortController);
 
       if(isOk){
-        reloadItems()
+        reloadItems();
+        updateReservation();
         setQty(0);
       }
         

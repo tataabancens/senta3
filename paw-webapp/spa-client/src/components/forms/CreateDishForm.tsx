@@ -35,7 +35,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
     const ds = useDishService();
     const { t } = useTranslation();
 
-    const { useCurrentCategory: { categoryId }, getDishCategories: { categoryList }, getDishes: { addDish } } = useRestaurantMenuContext();
+    const { useCurrentCategory: { categoryId, setCategoryId }, getDishCategories: { categoryList }, getDishes: { addDish } } = useRestaurantMenuContext();
 
     const handleSubmit = async (values: createDishFormValue, props: FormikHelpers<createDishFormValue>) => {
         const formData = new FormData();
@@ -63,7 +63,12 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
             console.log("No okey get");
         }
 
-        addDish(dishData!);
+        if (categoryId === values.categoryId) {
+            addDish(dishData!);
+        } else {
+            setCategoryId(values.categoryId);
+        }
+        
 
         props.setSubmitting(false);
         handleOpenForm();
