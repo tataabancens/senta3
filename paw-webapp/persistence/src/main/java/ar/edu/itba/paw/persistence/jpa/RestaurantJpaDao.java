@@ -29,7 +29,7 @@ public class RestaurantJpaDao implements RestaurantDao {
 
     @Override
     public Restaurant create(String restaurantName, String phone, String mail) {
-        final Restaurant restaurant = new Restaurant(restaurantName, phone, mail, 20, 9, 13);
+        final Restaurant restaurant = new Restaurant(restaurantName, phone, mail, 20, 9, 13, 100);
         em.persist(restaurant);
         return restaurant;
     }

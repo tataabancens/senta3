@@ -25,17 +25,18 @@ import { CustomerParams } from "../../models/Customers/CustomerParams";
 import ShortRegisterForm from "./ShortRegisterForm";
 import { UserParams } from "../../models/Users/UserParams";
 import { useNavigate } from "react-router-dom";
-import {paths } from "../../constants/constants";
-import {extractCustomerIdFromContent, extractUserIdFromLocation} from "../SignUpPage";
+import { paths } from "../../constants/constants";
+import { extractCustomerIdFromContent, extractUserIdFromLocation } from "../SignUpPage";
 
 import * as Yup from "yup";
 import { Formik, Form, FormikHelpers } from "formik";
-import {awaitWrapper, handleResponse, loginErrorHandler, tryLogin} from '../../Utils';
+import { awaitWrapper, handleResponse, loginErrorHandler, tryLogin } from '../../Utils';
 import ApiErrorDetails from '../../models/ApiError/ApiErrorDetails';
-import useAuth from '../../hooks/useAuth';
-import {CustomerModel, UserModel} from "../../models";
+import useAuth from '../../hooks/serviceHooks/authentication/useAuth';
+import { CustomerModel, UserModel } from "../../models";
 import { useTranslation } from 'react-i18next';
 import useRestaurantService from '../../hooks/serviceHooks/restaurants/useRestaurantService';
+import useAuthenticationService from '../../hooks/serviceHooks/authentication/useAutenticationService';
 
 export interface createReservationFormValues {
   qPeople: number;
@@ -60,6 +61,7 @@ const CreateReservation: FC = () => {
   const customerService = useCustomerService();
   const reservationService = useReservationService();
   const restaurantService = useRestaurantService();
+  const authenticationService = useAuthenticationService();
   const userService = useUserService();
   const { setAuth } = useAuth();
   const { auth } = useAuth();
@@ -110,10 +112,10 @@ const CreateReservation: FC = () => {
   const cusParams: CustomerParams = new CustomerParams();
   const userParams: UserParams = new UserParams();
   const steps = [t('createReservation.step1.stepTitle'),
-                 t('createReservation.step2.stepTitle'),
-                 t('createReservation.step3.stepTitle'),
-                 t('createReservation.step4.stepTitle'),
-                 t('createReservation.step5.stepTitle')];
+  t('createReservation.step2.stepTitle'),
+  t('createReservation.step3.stepTitle'),
+  t('createReservation.step4.stepTitle'),
+  t('createReservation.step5.stepTitle')];
 
   let navigate = useNavigate();
 
@@ -122,11 +124,11 @@ const CreateReservation: FC = () => {
 
     switch (activeStep) {
       case 0: //qPeople
-          if(auth.id > 0){ //there is a logged in user
-            handleResponse(userService.getUserById(auth.id), (user: UserModel) =>
-                setUser(user)
-            );
-          }
+        if (auth.id > 0) { //there is a logged in user
+          handleResponse(userService.getUserById(auth.id), (user: UserModel) =>
+            setUser(user)
+          );
+        }
         break;
       case 1: //date
         if (auth.id > 0) { //there is a logged in user
@@ -134,7 +136,7 @@ const CreateReservation: FC = () => {
             const custId = extractCustomerIdFromContent(user.content);
             setCustomerId(custId);
             handleResponse(customerService.getCustomerById(custId), (customer: CustomerModel) =>
-                setCustomer(customer)
+              setCustomer(customer)
             );
           }
         }
@@ -157,7 +159,7 @@ const CreateReservation: FC = () => {
           props.setSubmitting(false);
           return;
         }
-        if(customer != undefined) {
+        if (customer != undefined) {
           setActiveStep(activeStep + 2); //skip create customer
           return;
         }
@@ -236,18 +238,22 @@ const CreateReservation: FC = () => {
           return;
         }
 
-        const path = `users/auth`;
-        await tryLogin<createReservationFormValues>(axios, username, password,
-          props, path, setAuth, loginErrorHandler<createReservationFormValues>);
+        const newAuth = await authenticationService.tryLogin(username, password, props)
+
+        if (!newAuth) {
+          props.setSubmitting(false);
+          return;
+        }
+        setAuth(newAuth);
 
         navigate(`${paths.ROOT}/reservations/${secCode}`);
         return;
         break;
 
       case 7:
-          props.setFieldValue("userStep", true);
-          navigate(`${paths.ROOT}/reservations/${secCode}`);
-          return;
+        props.setFieldValue("userStep", true);
+        navigate(`${paths.ROOT}/reservations/${secCode}`);
+        return;
         break;
 
       default:
@@ -276,83 +282,84 @@ const CreateReservation: FC = () => {
     if (curr !== 3) {
       props.setFieldValue("customerStep", false);
     }
-    if (curr !== 5 && curr !==7) {
+    if (curr !== 5 && curr !== 7) {
       props.setFieldValue("userStep", false);
     }
     setActiveStep(curr);
   };
 
   return (
-      <Container component="main" maxWidth="md" sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography variant="h4" align="center">{t('createReservation.pageTitle')}</Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <Formik initialValues={initialValues} onSubmit={handleNext} validationSchema={validationSchema}>
-            {
-              (props) => (
-                <Form>
-                  {
-                    <React.Fragment>
+    <Container component="main" maxWidth="md" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <Typography variant="h4" align="center">{t('createReservation.pageTitle')}</Typography>
+        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Formik initialValues={initialValues} onSubmit={handleNext} validationSchema={validationSchema}>
+          {
+            (props) => (
+              <Form>
+                {
+                  <React.Fragment>
+                    {
                       {
+                        0: <QPeopleForm props={props} />,
+                        1: <DateForm props={props} />,
+                        2: <HourForm props={props} availableHours={availableHours} />,
+                        3: <InfoForm props={props} />,
+                        //@ts-ignore
+                        4: <InfoFormStatic customer={customer} />,
+                        5: <Done props={props} secCode={secCode} />,
+                        6: <ShortRegisterForm props={props} />,
+                        7: <Done props={props} secCode={secCode} />
+                      }[activeStep]
+                    }
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Button onClick={() => handleBack(props.values, props)} sx={{ mt: 3, ml: 1 }}
+                        disabled={activeStep == 7}
+                      >
                         {
-                          0: <QPeopleForm props={props} />,
-                          1: <DateForm props={props} />,
-                          2: <HourForm props={props} availableHours={availableHours} />,
-                          3: <InfoForm props={props} />,
-                          4: <InfoFormStatic customer={customer!}/>,
-                          5: <Done props={props} secCode={secCode} />,
-                          6: <ShortRegisterForm props={props} />,
-                          7: <Done props={props} secCode={secCode} />
-                        }[activeStep]
-                      }
-                      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button onClick={() => handleBack(props.values, props)} sx={{ mt: 3, ml: 1 }}
-                          disabled={activeStep==7}
-                        >
                           {
-                            {
-                              0: t('createReservation.back'),
-                              1: t('createReservation.back'),
-                              2: t('createReservation.back'),
-                              3: t('createReservation.back'),
-                              4: t('createReservation.back'),
-                              5: t('createReservation.continueWithoutSigning'),
-                              6: t('createReservation.back'),
-                              7: ''
-                            }[activeStep]
-                          }
-                        </Button >
-                        <Button type="submit" sx={{ mt: 3, ml: 1 }}
-                          disabled={props.isSubmitting}
-                        >
+                            0: t('createReservation.back'),
+                            1: t('createReservation.back'),
+                            2: t('createReservation.back'),
+                            3: t('createReservation.back'),
+                            4: t('createReservation.back'),
+                            5: t('createReservation.continueWithoutSigning'),
+                            6: t('createReservation.back'),
+                            7: ''
+                          }[activeStep]
+                        }
+                      </Button >
+                      <Button type="submit" sx={{ mt: 3, ml: 1 }}
+                        disabled={props.isSubmitting}
+                      >
+                        {
                           {
-                            {
-                              0: t('createReservation.next'),
-                              1: t('createReservation.next'),
-                              2: t('createReservation.next'),
-                              3: t('createReservation.makeReservation'),
-                              4: t('createReservation.makeReservation'),
-                              5: t('createReservation.signUp'),
-                              6: t('createReservation.goToReservation'),
-                              7: t('createReservation.goToReservation')
-                            }[activeStep]
-                          }
-                        </Button>
-                      </Box>
-                    </React.Fragment>
-                  }
-                </Form>
-              )
-            }
-          </Formik>
-        </Paper>
-      </Container>
+                            0: t('createReservation.next'),
+                            1: t('createReservation.next'),
+                            2: t('createReservation.next'),
+                            3: t('createReservation.makeReservation'),
+                            4: t('createReservation.makeReservation'),
+                            5: t('createReservation.signUp'),
+                            6: t('createReservation.goToReservation'),
+                            7: t('createReservation.goToReservation')
+                          }[activeStep]
+                        }
+                      </Button>
+                    </Box>
+                  </React.Fragment>
+                }
+              </Form>
+            )
+          }
+        </Formik>
+      </Paper>
+    </Container>
   );
 }
 

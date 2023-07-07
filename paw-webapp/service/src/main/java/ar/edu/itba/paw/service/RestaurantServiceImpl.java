@@ -78,7 +78,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public boolean patchRestaurant(long id, String restaurantName, String phone, String mail, Integer totalChairs, Integer openHour, Integer closeHour) {
+    public boolean patchRestaurant(long id, String restaurantName, String phone, String mail, Integer totalChairs, Integer openHour, Integer closeHour, Integer pointsForDiscount) {
         Optional<Restaurant> maybeRestaurant = restaurantDao.getRestaurantById(id);
         if(!maybeRestaurant.isPresent()){
             return false;
@@ -102,6 +102,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
         if(closeHour != null){
             restaurant.setCloseHour(closeHour);
+        }
+        if(pointsForDiscount != null){
+            restaurant.setPointsForDiscount(pointsForDiscount);
         }
         return true;
     }

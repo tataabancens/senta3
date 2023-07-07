@@ -76,7 +76,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessOrderItem(Authentication authentication, long orderItemId) {
-        if(isRestaurant(authentication)) return true;
+        if(isRestaurant(authentication) || isWaiter(authentication) || isKitchen(authentication)) return true;
         Optional<OrderItem> requestedOI = reservationService.getOrderItemById(orderItemId);
 
         if(!requestedOI.isPresent()) return false;
@@ -97,7 +97,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessOrderItems(Authentication authentication, String securityCode) {
-        if(isRestaurant(authentication)) return true;
+        if(isRestaurant(authentication) || isWaiter(authentication) || isKitchen(authentication)) return true;
         Optional<Reservation> requestedReservation = reservationService.getReservationBySecurityCode(securityCode);
         if(!requestedReservation.isPresent()) return false;
         if(requestedReservation.get().getCustomer().getUser() == null) return true;
@@ -110,6 +110,16 @@ public class AntMatcherVoter {
     private boolean isRestaurant(Authentication authentication){
         if(authentication instanceof AnonymousAuthenticationToken) return false;
         return Objects.equals(getUser(authentication).getRole(), "ROLE_RESTAURANT");
+    }
+
+    private boolean isWaiter(Authentication authentication){
+        if(authentication instanceof AnonymousAuthenticationToken) return false;
+        return Objects.equals(getUser(authentication).getRole(), "ROLE_WAITER");
+    }
+
+    private boolean isKitchen(Authentication authentication){
+        if(authentication instanceof AnonymousAuthenticationToken) return false;
+        return Objects.equals(getUser(authentication).getRole(), "ROLE_KITCHEN");
     }
 
     public boolean canAccessReservationList(Authentication authentication, String query){

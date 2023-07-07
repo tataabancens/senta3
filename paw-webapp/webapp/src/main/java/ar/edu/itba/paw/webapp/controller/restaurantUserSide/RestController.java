@@ -93,7 +93,7 @@ public class RestController {
         if(restaurantPatchForm == null) {
             return Response.status(400).build();
         }
-        boolean success = rs.patchRestaurant(id, restaurantPatchForm.getRestaurantName(), restaurantPatchForm.getPhone(), restaurantPatchForm.getMail(), restaurantPatchForm.getTotalChairs(), restaurantPatchForm.getOpenHour(), restaurantPatchForm.getCloseHour());
+        boolean success = rs.patchRestaurant(id, restaurantPatchForm.getRestaurantName(), restaurantPatchForm.getPhone(), restaurantPatchForm.getMail(), restaurantPatchForm.getTotalChairs(), restaurantPatchForm.getOpenHour(), restaurantPatchForm.getCloseHour(), restaurantPatchForm.getPointsForDiscount());
         if(success) {
             return Response.ok().build();
         } else {

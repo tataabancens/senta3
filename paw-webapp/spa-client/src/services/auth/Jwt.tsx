@@ -1,13 +1,19 @@
-// import jwt from "jsonwebtoken";
+interface SentateToken {
+    jti: string;
+    iss: string;
+    aud: string;
+    iat: number;
+    exp: number;
+    authorities: string[];
+    userId: number;
+}
 
-// export const decodeToken = (token: string) => {
-//     try {
-//         const decoded = jwt.decode(token);
-//         return decoded;
-//       } catch (error) {
-//         console.error('Error al decodificar el token:', error);
-//         return null;
-//       }
-// }
+export const parseJwt = (token: string): SentateToken => {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
-export { }
+    return JSON.parse(jsonPayload) as SentateToken;
+}

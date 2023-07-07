@@ -9,6 +9,7 @@ import EditDishForm from "../components/forms/EditDishForm";
 import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
 import { useTranslation } from "react-i18next";
 import { RestaurantMenuProvider } from "../context/RestaurantMenuContext";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 const RestaurantMenu: FC = () => {
   const [editCategoryIsOpen, setEditCetgoryIsOpen] = useState(false);
@@ -46,7 +47,7 @@ const RestaurantMenu: FC = () => {
   return (
     <Grid container spacing={2} justifyContent="center">
         <EditCategoryForm isOpen={editCategoryIsOpen} handleOpen={toggleEditCategoryForm} />
-        <RestaurantHeader role={"ROLE_RESTAURANT"} toggleReload={toggleReload} />
+      <RestaurantHeader role={UserRoles.RESTAURANT} toggleReload={toggleReload} />
         <ConfirmationMessage isOpen={deleteIsOpen} handleOpen={toggleDeleteModal} category={categoryMap?.get(categoryId)!} dishes={dishes.length} />
         <Grid item container xs={11} marginTop={2} justifyContent="space-between">
           <Grid item xs={9}>

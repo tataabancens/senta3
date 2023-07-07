@@ -17,6 +17,7 @@ import { paths, RESERVATION_INTERVAL } from "../constants/constants";
 import { useReservation } from "../hooks/serviceHooks/reservations/useReservation";
 import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
 import { useOrderItemsBySecCode } from "../hooks/serviceHooks/reservations/useOrderItemsBySecCode";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 const FullMenuPage: FC = () => {
 
@@ -62,7 +63,7 @@ const FullMenuPage: FC = () => {
     return(
         <Grid container spacing={2} justifyContent="center">
             <ReservationContext.Provider value={{reservation, updateReservation, orderItems, reloadItems, removeItem, discount, toggleDiscount }}>
-                <RestaurantHeader restaurant={restaurant} role={"ROLE_CUSTOMER"} toggleReload={updateOrderItems}/>
+                <RestaurantHeader restaurant={restaurant} role={UserRoles.CUSTOMER} toggleReload={updateOrderItems}/>
                 {dishCategoriesLoading && dishesLoading && <CircularProgress />}
                 {categoryList &&
                 <Grid item xs={11} marginTop={2}>

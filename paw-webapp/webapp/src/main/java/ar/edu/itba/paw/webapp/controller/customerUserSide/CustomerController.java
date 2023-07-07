@@ -6,7 +6,9 @@ import ar.edu.itba.paw.service.UserService;
 import ar.edu.itba.paw.webapp.annotations.PATCH;
 import ar.edu.itba.paw.webapp.dto.CustomerDto;
 import ar.edu.itba.paw.model.exceptions.CustomerNotFoundException;
+import ar.edu.itba.paw.webapp.dto.PointsDto;
 import ar.edu.itba.paw.webapp.form.CustomerPatchForm;
+import ar.edu.itba.paw.webapp.form.CustomerPointsPatchForm;
 import ar.edu.itba.paw.webapp.form.CustomerRegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.awt.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -90,6 +93,32 @@ public class CustomerController {
             return Response.status(400).build();
         }
         boolean success = cs.patchCustomer(id, customerPatchForm.getName(), customerPatchForm.getPhone(), customerPatchForm.getMail(), customerPatchForm.getUserId());
+        if(success)
+            return Response.ok().build();
+        return Response.status(400).build();
+    }
+
+    @GET
+    @Path("/{id}/points")
+    @Produces(value = { CUSTOMER_VERSION_1 })
+    public Response getCustomerPointsById(@PathParam("id") final long id){
+        final Optional<PointsDto> maybePoints = cs.getCustomerById(id).map(c -> PointsDto.fromCustomer(uriInfo, c));
+        if(!maybePoints.isPresent()){
+            throw new CustomerNotFoundException();
+        } else {
+            return Response.ok(maybePoints.get()).build();
+        }
+    }
+
+    @PATCH
+    @Consumes({ CUSTOMER_VERSION_1 })
+    @Path("/{id}/points")
+    public Response EditPoints(@PathParam("id") final long id,
+                                 final @Valid CustomerPointsPatchForm pointsPatchForm){
+        if(pointsPatchForm == null){
+            return Response.status(400).build();
+        }
+        boolean success = cs.patchCustomerPoints(id, pointsPatchForm.getPoints());
         if(success)
             return Response.ok().build();
         return Response.status(400).build();

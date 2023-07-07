@@ -8,6 +8,7 @@ import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
 import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 const MenuPage: FC = () => {
   const [value, setValue] = useState(0);
@@ -32,7 +33,7 @@ const MenuPage: FC = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      <RestaurantHeader restaurant={restaurant} role={"ROLE_ANONYMOUS"} />
+      <RestaurantHeader restaurant={restaurant} role={UserRoles.ANONYMOUS} />
       <Grid item xs={11} marginTop={2}>
         <Tabs value={value} onChange={(event, value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
           {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}

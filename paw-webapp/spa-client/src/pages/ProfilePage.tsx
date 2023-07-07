@@ -6,12 +6,13 @@ import RestaurantInfoForm from "../components/forms/RestaurantInfoForm";
 import { handleResponse } from "../Utils";
 import { CustomerModel, RestaurantModel, UserModel } from "../models";
 import useUserService from "../hooks/serviceHooks/users/useUserService";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { initCustomer, initRestaurant } from "../constants/constants";
 import RestaurantInfo from "../components/RestaurantInfo";
 import CustomerInfo from "../components/CustomerInfo";
 import { useTranslation } from "react-i18next";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 const ProfilePage: FC = () => {
   const { auth } = useAuth();
@@ -43,14 +44,14 @@ const ProfilePage: FC = () => {
   }, [reloadUser]);
 
   useEffect(() => {
-    if (user?.role === "ROLE_RESTAURANT") {
+    if (user?.role === UserRoles.RESTAURANT) {
       axiosPrivate
         .get(user.content)
         .then((response: AxiosResponse<RestaurantModel>) => {
           setRestaurant(response.data);
         })
         .catch((err) => console.log(err));
-    } else if (user?.role === "ROLE_CUSTOMER") {
+    } else if (user?.role === UserRoles.CUSTOMER) {
       axiosPrivate
         .get(user.content)
         .then((response: AxiosResponse<CustomerModel>) => {
@@ -76,7 +77,7 @@ const ProfilePage: FC = () => {
       >
         <Typography variant="h2" sx={{ color: "white" }}>{t('profilePage.title')}</Typography>
       </Grid>
-      {user?.role === "ROLE_RESTAURANT" ?
+      {user?.role === UserRoles.RESTAURANT ?
         <RestaurantInfo user={user} restaurant={restaurant} reloadInfo={handleReload} /> :
         <CustomerInfo user={user} customer={customer} reloadInfo={handleReload} />}
     </Grid>

@@ -3,7 +3,7 @@ import {
   Paper,
   Typography
 } from "@mui/material";
-import useAuth from '../hooks/useAuth';
+import useAuth from '../hooks/serviceHooks/authentication/useAuth';
 import { FC } from "react";
 import { CustomerModel } from "../models";
 import { useReservations } from "../hooks/serviceHooks/reservations/useReservations";

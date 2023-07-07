@@ -56,7 +56,7 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad username/password combination");
         }
         UserDetails userDetails = pawUserDetailsService.loadUserByUsername(credentials[0]);
-        String authenticationToken = tokenService.issueToken(credentials[0], mapToAuthority(userDetails.getAuthorities()));
+        String authenticationToken = tokenService.issueToken(credentials[0], mapToAuthority(userDetails.getAuthorities()), maybeUser.getId());
         AuthenticationTokenDetails tokenDetails = tokenService.parseToken(authenticationToken);
 
         BasicAuthenticationToken trustedAuth = new BasicAuthenticationToken(credentials[0], credentials[1],

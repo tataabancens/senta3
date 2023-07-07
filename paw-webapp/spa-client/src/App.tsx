@@ -15,6 +15,7 @@ import CheckOutPage from "./pages/CheckOutPage";
 import RestaurantMenu from "./pages/RestaurantMenu";
 import Kitchen from "./pages/Kitchen";
 import { RestaurantMenuProvider } from "./context/RestaurantMenuContext";
+import { UserRoles } from "./models/Enums/UserRoles";
 
 function App() {
   return (
@@ -33,12 +34,12 @@ function App() {
           <Route path="reservations/:securityCode/checkOut" element={<CheckOutPage />} />
 
           {/* Customer only routes*/}
-          <Route element={<RequireAuth allowedRoles={["ROLE_CUSTOMER"]} />}>
+          <Route element={<RequireAuth allowedRoles={[UserRoles.CUSTOMER]} />}>
             <Route path="reservations" element={<CustomerReservations />} />
           </Route>
 
           {/* Restaurant only Routes*/}
-          <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT"]} />}>
+          <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT]} />}>
             <Route path="restaurantReservations" element={<Reservations />} />
             <Route path="restaurantMenu" element={
               <RestaurantMenuProvider>
@@ -52,7 +53,7 @@ function App() {
           </Route>
             
           {/* Restaurant and customer */}
-          <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT", "ROLE_CUSTOMER"]} />}>
+          <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT, UserRoles.CUSTOMER]} />}>
             <Route path="profile" element={<ProfilePage />} />
           </Route>
 

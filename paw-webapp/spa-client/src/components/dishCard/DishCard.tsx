@@ -6,9 +6,11 @@ import Link from '@mui/material/Link';
 import ConfirmDishForm from "../forms/ConfirmDishForm";
 import { useNavigate } from "react-router-dom";
 import {linkStyle, paths} from "../../constants/constants";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/serviceHooks/authentication/useAuth";
 import './styles.css';
 import { ReservationContext } from "../../context/ReservationContext";
+import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
+import { UserRoles } from "../../models/Enums/UserRoles";
 
 
 type Props = {
@@ -40,7 +42,7 @@ const DishCard: FC<Props> = ({
       setCategoryId(extractCategoryIdFromUrl(dish.category));
       setEditDishIsOpen(true);
     } */
-    else if (reservation || (reservation && auth.roles[0] === "ROLE_RESTAURANT")) {
+    else if (reservation || (reservation && auth.roles[0] === UserRoles.RESTAURANT)) {
       setCardOpen(!isCardOpen);
     }
   };

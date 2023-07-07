@@ -21,6 +21,7 @@ import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ApiErrorDetails from "../../models/ApiError/ApiErrorDetails";
 import { useTranslation } from "react-i18next";
+import { UserRoles } from "../../models/Enums/UserRoles";
 
 interface accountInfoFormValues {
   restaurantName: string;
@@ -82,7 +83,7 @@ const AccountInfoForm: FC<Props> = ({
   const handleSubmit = async (values: accountInfoFormValues, props: FormikHelpers<accountInfoFormValues>) => {
     const {restaurantName, customerName, mail, phone, password, repeatPassword} = values;
     
-    if (user?.role === "ROLE_RESTAURANT") {
+    if (user?.role === UserRoles.RESTAURANT) {
       let restaurantData = new RestParams();
       restaurantData.mail = mail;
       restaurantData.restaurantId = data?.id;
@@ -136,7 +137,7 @@ const AccountInfoForm: FC<Props> = ({
                 {t('forms.accountInfo.description')}
                 </DialogContentText>
                 <Grid container marginY={3}>
-                  {user?.role === "ROLE_RESTAURANT" ? (
+                  {user?.role === UserRoles.RESTAURANT ? (
                     <Grid
                       item
                       xs={3}

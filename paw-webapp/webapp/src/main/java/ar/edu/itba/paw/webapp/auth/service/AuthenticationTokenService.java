@@ -6,6 +6,6 @@ import ar.edu.itba.paw.webapp.auth.models.AuthenticationTokenDetails;
 import java.util.Set;
 
 public interface AuthenticationTokenService {
-    String issueToken(String username, Set<Roles> authorities);
+    String issueToken(String username, Set<Roles> authorities, long userId);
     AuthenticationTokenDetails parseToken(String token);
 }

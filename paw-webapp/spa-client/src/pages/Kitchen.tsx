@@ -5,7 +5,7 @@ import HandsTable from "../components/HandsTable";
 import KitchenTable from "../components/KitchenTable";
 import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
 import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { OrderItemModel } from "../models";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
   

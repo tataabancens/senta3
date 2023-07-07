@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../constants/constants";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { OrderItemModel, ReservationModel } from "../models";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import ShoppingCartItem from "./shoppingCart/ShoppingCartItem";

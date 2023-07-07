@@ -18,6 +18,7 @@ public class RestaurantDto {
     private int totalChairs;
     private int openHour, closeHour;
     private long id;
+    private int pointsForDiscount;
 
     public RestaurantDto() {
         // for jersey
@@ -32,6 +33,7 @@ public class RestaurantDto {
         dto.openHour = res.getOpenHour();
         dto.closeHour = res.getCloseHour();
         dto.id = res.getId();
+        dto.pointsForDiscount = res.getPointsForDiscount();
 
         final UriBuilder restaurantUriBuilder = uriInfo.getBaseUriBuilder()
                 .path("api")
@@ -151,5 +153,13 @@ public class RestaurantDto {
 
     public void setCloseHour(int closeHour) {
         this.closeHour = closeHour;
+    }
+
+    public int getPointsForDiscount() {
+        return pointsForDiscount;
+    }
+
+    public void setPointsForDiscount(int pointsForDiscount) {
+        this.pointsForDiscount = pointsForDiscount;
     }
 }

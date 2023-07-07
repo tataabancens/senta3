@@ -20,6 +20,9 @@ public class Settings {
     @Value("${authentication.jwt.claimNames.authorities}")
     private String authoritiesClaimName;
 
+    @Value("${authentication.jwt.claimNames.userId}")
+    private String userIdClaimName;
+
 
     public String getSecret() {
         return secret;
@@ -39,5 +42,9 @@ public class Settings {
 
     public String getAuthoritiesClaimName() {
         return authoritiesClaimName;
+    }
+
+    public String getUserIdClaimName() {
+        return userIdClaimName;
     }
 }

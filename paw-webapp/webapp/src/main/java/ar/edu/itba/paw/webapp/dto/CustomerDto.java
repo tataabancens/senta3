@@ -15,8 +15,8 @@ public class CustomerDto {
 
     private String phone;
     private String mail;
-    private int points;
 
+    private URI points;
     private URI user;
     private URI reservations;
     private URI self;
@@ -31,9 +31,9 @@ public class CustomerDto {
         dto.name = customer.getCustomerName();
         dto.mail = customer.getMail();
         dto.phone = customer.getPhone();
-        dto.points = customer.getPoints();
-        dto.self = uriInfo.getAbsolutePathBuilder()
-                .path(String.valueOf(customer.getId())).build();
+        dto.points = uriInfo.getAbsolutePathBuilder()
+                .path("points").build();
+        dto.self = uriInfo.getAbsolutePathBuilder().build();
         if(customer.getUser() != null){
             dto.user = uriInfo.getBaseUriBuilder()
                     .path("api")
@@ -77,11 +77,11 @@ public class CustomerDto {
         this.mail = mail;
     }
 
-    public int getPoints() {
+    public URI getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(URI points) {
         this.points = points;
     }
 

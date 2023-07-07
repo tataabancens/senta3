@@ -25,6 +25,16 @@ public class RestaurantPatchForm {
     @Pattern(regexp = "[1]?[0-9]|[2][0-4]")
     private Integer closeHour;
 
+    private int pointsForDiscount;
+
+    public int getPointsForDiscount() {
+        return pointsForDiscount;
+    }
+
+    public void setPointsForDiscount(int pointsForDiscount) {
+        this.pointsForDiscount = pointsForDiscount;
+    }
+
     public String getRestaurantName() {
         return restaurantName;
     }

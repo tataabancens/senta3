@@ -103,6 +103,17 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
+    @Transactional
+    @Override
+    public boolean patchCustomerPoints(long id, int points) {
+        Optional<Customer> maybeCustomer = getCustomerById(id);
+        if(!maybeCustomer.isPresent()){
+            return false;
+        }
+        maybeCustomer.get().setPoints(points);
+        return true;
+    }
+
     public float getDiscountCoefficient() {
         return DISCOUNT_COEFFICIENT;
     }

@@ -26,7 +26,7 @@ public class AuthenticationTokenServiceImpl implements AuthenticationTokenServic
     TokenParser tokenParser;
 
     @Override
-    public String issueToken(String username, Set<Roles> authorities) {
+    public String issueToken(String username, Set<Roles> authorities, long userId) {
         String id = UUID.randomUUID().toString();
         ZonedDateTime issuedDate = ZonedDateTime.now();
         ZonedDateTime expirationDate = issuedDate.plusSeconds(validFor);
@@ -39,6 +39,7 @@ public class AuthenticationTokenServiceImpl implements AuthenticationTokenServic
                 .setIssuedAt(Date.from(issuedDate.toInstant()))
                 .setExpiration(Date.from(expirationDate.toInstant()))
                 .claim(settings.getAuthoritiesClaimName(), authorities)
+                .claim(settings.getUserIdClaimName(), userId)
                 .signWith(SignatureAlgorithm.HS512, settings.getSecret())
                 .compact();
     }

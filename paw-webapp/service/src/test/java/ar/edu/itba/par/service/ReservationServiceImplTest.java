@@ -56,7 +56,7 @@ public class ReservationServiceImplTest {
         User user = new User("user", "pass", Roles.CUSTOMER.getDescription());
         User userRest = new User("pepito", "pass", Roles.RESTAURANT.getDescription());
         Customer cust1 = new Customer("user", "123", "a@b.com", 0);
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 3, 23);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 3, 23, 100);
 
         DishCategory dishCat = new DishCategory(rest, "cat 1");
         Dish dish1 = new Dish(rest, "dish1", 100, "test", 1, dishCat);
@@ -85,7 +85,7 @@ public class ReservationServiceImplTest {
         User user = new User("user", "pass", Roles.CUSTOMER.getDescription());
         User userRest = new User("pepito", "pass", Roles.RESTAURANT.getDescription());
         Customer cust1 = new Customer("user", "123", "a@b.com", 0);
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 3, 23);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 3, 23, 100);
 
         DishCategory dishCat = new DishCategory(rest, "cat 1");
         Dish dish1 = new Dish(rest, "dish1", 100, "test", 1, dishCat);
@@ -117,7 +117,7 @@ public class ReservationServiceImplTest {
     public void testGetAvailableHoursExists() {
         // 1. Setup
         Customer cust1 = new Customer("user", "123", "a@b.com", 0);
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14, 100);
 
         LocalDateTime tommorrow = LocalDateTime.now().plusDays(1);
         Reservation res1 = new Reservation(rest, cust1, 12, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);
@@ -140,7 +140,7 @@ public class ReservationServiceImplTest {
     public void testGetAvailableHoursEmpty() {
         // 1. Setup
         Customer cust1 = new Customer("user", "123", "a@b.com", 0);
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14, 100);
 
         LocalDateTime tommorrow = LocalDateTime.now().plusDays(1);
         Reservation res1 = new Reservation(rest, cust1, 13, ReservationStatus.OPEN.ordinal(), 10, tommorrow, tommorrow);

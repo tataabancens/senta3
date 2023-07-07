@@ -18,9 +18,10 @@ import ApiErrorDetails from "../models/ApiError/ApiErrorDetails";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import { CustomerParams } from "../models/Customers/CustomerParams";
 import axios from "../api/axios"
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
+import useAuthenticationService from "../hooks/serviceHooks/authentication/useAutenticationService";
 
 interface signUpFormValues {
   username: string;
@@ -53,6 +54,7 @@ const SignUpPage: FC = () => {
 
   const userService = useUserService();
   const customerService = useCustomerService();
+  const authenticationService = useAuthenticationService();
 
   const navigate = useNavigate();
 
@@ -117,10 +119,14 @@ const SignUpPage: FC = () => {
       return;
     }
 
-    const path = `users/auth`;
-    await tryLogin<signUpFormValues>(axios, username, password,
-      props, path, setAuth, loginErrorHandler<signUpFormValues>);
-
+    const auth = await authenticationService.tryLogin(username, password, props)
+    
+    if (!auth) {
+      props.setSubmitting(false);
+      return;
+    }
+    setAuth(auth);
+    
     navigate(paths.ROOT + "/profile", { replace: true });
   }
 

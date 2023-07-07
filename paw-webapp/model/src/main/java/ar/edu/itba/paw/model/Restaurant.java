@@ -45,6 +45,9 @@ public class Restaurant {
     @Column(nullable = false)
     private Integer closeHour;
 
+    @Column(nullable = false)
+    private Integer pointsForDiscount;
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -57,7 +60,7 @@ public class Restaurant {
         // Just for hibernate
     }
 
-    public Restaurant(String restaurantName, String phone, String mail, int totalChairs, int openHour, int closeHour) {
+    public Restaurant(String restaurantName, String phone, String mail, int totalChairs, int openHour, int closeHour, int pointsForDiscount) {
         super();
         this.restaurantName = restaurantName;
         this.phone = phone;
@@ -65,6 +68,7 @@ public class Restaurant {
         this.totalChairs = totalChairs;
         this.openHour = openHour;
         this.closeHour = closeHour;
+        this.pointsForDiscount = pointsForDiscount;
     }
 
     @Deprecated
@@ -224,5 +228,13 @@ public class Restaurant {
 
     public void deleteCategory(long categoryId) {
         this.dishCategories.removeIf(category -> category.getId() == categoryId);
+    }
+
+    public Integer getPointsForDiscount() {
+        return pointsForDiscount;
+    }
+
+    public void setPointsForDiscount(Integer pointsForDiscount) {
+        this.pointsForDiscount = pointsForDiscount;
     }
 }

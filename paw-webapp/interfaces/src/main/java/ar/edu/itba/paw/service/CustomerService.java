@@ -26,4 +26,6 @@ public interface CustomerService {
     boolean patchCustomer(long id, String name, String phone, String mail, Long userId);
 
     List<Customer> getCustomers(int page);
+
+    boolean patchCustomerPoints(long id, int points);
 }

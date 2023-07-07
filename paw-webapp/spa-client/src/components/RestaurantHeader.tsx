@@ -11,6 +11,7 @@ import CategoryForm from "./forms/CategoryForm";
 import { ReservationContext } from "../context/ReservationContext";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
+import { UserRoles } from "../models/Enums/UserRoles";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 
@@ -98,7 +99,7 @@ const RestaurantHeader: FC<Props> = ({
         <AuthReservationForm handleOpen={handleAuthReservation} isOpen={authIsOpen} />
         <CategoryForm isOpen={createIsOpen} handleOpen={toggleCreateCategoryForm} canReload={toggleReload}/>
         <Grid item component={Typography} variant="h2" sx={{ color: "white" }}>
-          {role === "ROLE_RESTAURANT" ? t('restaurantHeader.menuHeader') : restaurant?  restaurant.name : <Skeleton  variant="rounded" animation="wave" width={410} height={50} />}
+          {role === UserRoles.RESTAURANT ? t('restaurantHeader.menuHeader') : restaurant?  restaurant.name : <Skeleton  variant="rounded" animation="wave" width={410} height={50} />}
         </Grid>
         {reservation? 
             <Grid item>
@@ -114,7 +115,7 @@ const RestaurantHeader: FC<Props> = ({
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>{t('restaurantHeader.myReservation')}</Button>
             </Grid>
             :
-            role === "ROLE_ANONYMOUS"?
+            role === UserRoles.ANONYMOUS?
             <Grid item>
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={() => navigate(paths.ROOT + "/createReservation")}>{t('restaurantHeader.makeReservation')}</Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={handleAuthReservation}>{t('restaurantHeader.haveReservation')}</Button>

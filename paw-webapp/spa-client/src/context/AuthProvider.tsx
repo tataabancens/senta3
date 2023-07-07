@@ -4,6 +4,8 @@ import { CustomerModel, RestaurantModel } from "../models";
 import { extractCustomerIdFromContent } from "../pages/SignUpPage";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
+import { UserRoles } from "../models/Enums/UserRoles";
+
 
 export interface Authentication {
     user: string;
@@ -50,19 +52,21 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
             return;
         }
         if (authUpdated) {
+            saveAuthInfo(auth);
             setAuthUpdated(false);
             return;
         }
         (async () => {
-            if (auth.roles[0] === "ROLE_CUSTOMER") {
+            if (auth.roles[0] === UserRoles.CUSTOMER) {
                 const customerId = extractCustomerIdFromContent(auth.contentURL);
                 const { isOk, data, error } = await customerService.getCustomerByIdNewVersion(customerId);
                 if (isOk) {
-                    auth.content = data as CustomerModel;
+                    const newAuth = { ...auth, content: data as CustomerModel };
                     setAuthUpdated(true);
-                    setAuth(auth);
+                    setAuth(newAuth);
                 }
-            } else if (auth.roles[0] === "ROLE_RESTAURANT") {
+            } else if (auth.roles[0] === UserRoles.RESTAURANT) {
+                console.log("Hi");
                 const restaurantId = 1;
                 const { isOk, data, error } = await restaurantService.getRestaurant(restaurantId, abortController);
                 if (isOk) {
@@ -71,7 +75,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
                     setAuth(newAuth);
                 }
             }
-            saveAuthInfo(auth);
         })();
     }, [auth])
 

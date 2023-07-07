@@ -12,15 +12,15 @@ import { useEffect, useRef, FC } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture.jpg";
 import { paths } from "../constants/constants";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { loginErrorHandler, tryLogin } from "../Utils";
 import axios from "../api/axios";
 import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
 import useCustomerService from "../hooks/serviceHooks/useCustomerService";
 import { extractCustomerIdFromContent } from "./SignUpPage";
 import { useTranslation } from "react-i18next";
+import useAuthenticationService from "../hooks/serviceHooks/authentication/useAutenticationService";
 
 export interface loginFormValues {
   username: string;
@@ -32,6 +32,7 @@ const LoginPage: FC = () => {
 
   const { setAuth } = useAuth();
   const { t } = useTranslation();
+  const authenticationService = useAuthenticationService();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,10 +57,8 @@ const LoginPage: FC = () => {
 
   const handleSubmit = async (values: loginFormValues, props: FormikHelpers<loginFormValues>) => {
     const {username, password} = values;
-    const path = `users/auth`;
     
-    const auth = await tryLogin(axios, username, password,
-      props, path, setAuth, loginErrorHandler<loginFormValues>);
+    const auth = await authenticationService.tryLogin(username, password, props)
     
     if (!auth) {
       props.setSubmitting(false);

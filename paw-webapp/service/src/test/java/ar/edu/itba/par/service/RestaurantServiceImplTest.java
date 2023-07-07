@@ -60,7 +60,7 @@ public class RestaurantServiceImplTest {
     @Test
     public void testUpdateRestaurantHourAndTables() {
         // 1. Setup
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14, 100);
 
         // 2. ejercicio
         restService.updateRestaurantHourAndTables(rest, 15, 1, 23);
@@ -74,7 +74,7 @@ public class RestaurantServiceImplTest {
     @Test
     public void testCreateDish() {
         // 1. Setup
-        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14);
+        Restaurant rest = new Restaurant("masterchef", "345", "restaurant@g.com", 10, 10, 14, 100);
         DishCategory dishCat = new DishCategory(rest, "cat 1");
 
         // 2. ejercicio

@@ -8,8 +8,7 @@ import { useTranslation } from "react-i18next";
 import { ReservationContext } from "../context/ReservationContext";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../constants/constants";
-import useAuth from "../hooks/useAuth";
-
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 
 type Props = {
   isOpen: boolean;

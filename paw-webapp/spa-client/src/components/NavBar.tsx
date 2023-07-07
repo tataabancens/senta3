@@ -12,7 +12,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import {emptyAuth, paths} from "../constants/constants";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 interface nameSitePair{
   key: string,
@@ -44,11 +45,11 @@ export const NavBar: React.FC<{}> = () => {
   } 
 
   useEffect(() => {
-    if(auth.roles[0] === "ROLE_CUSTOMER"){
+    if(auth.roles[0] === UserRoles.CUSTOMER){
       const pages: nameSitePair[] = Array.from(customerPages, ([key, value]) => ({key, value}));
       setRolePages(pages);
     }
-    else if(auth.roles[0] === "ROLE_RESTAURANT"){
+    else if(auth.roles[0] === UserRoles.RESTAURANT){
       const pages: nameSitePair[] = Array.from(restaurantPages, ([key, value]) => ({key, value}));
       setRolePages(pages);
     }

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.DishCategory;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 public interface RestaurantService {
@@ -26,7 +27,7 @@ public interface RestaurantService {
 
     void deleteCategory(Restaurant restaurant, long categoryId);
 
-    boolean patchRestaurant(long id, String restaurantName, String phone, String mail, Integer totalChairs, Integer openHour, Integer closeHour);
+    boolean patchRestaurant(long id, String restaurantName, String phone, String mail, Integer totalChairs, Integer openHour, Integer closeHour, Integer pointsForDiscount);
 
     boolean patchDishCategory(long restaurantId, long categoryId, String newName);
 }
