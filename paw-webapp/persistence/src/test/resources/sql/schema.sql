@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS restaurant (
     openHour int DEFAULT 0,
     closeHour int default 0,
     userId int default 1,
+    pointsForDiscount int default 100,
     FOREIGN KEY (userId) REFERENCES users (userId)
     );
 
