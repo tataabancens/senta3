@@ -26,22 +26,11 @@ const DishCard: FC<Props> = ({
   const { auth } = useAuth();
   const { reservation, discount } = useContext(ReservationContext);
   const textDecoration = discount ? 'line-through' : 'none';
-  /*const { useDish: { setDish }, useCurrentCategory: { setCategoryId }, useEditDishIsOpen: { setEditDishIsOpen } } = useRestaurantMenuContext();
-
-  const extractCategoryIdFromUrl = (urlCategory: string) => {
-    const parts = urlCategory.split('/');
-    return parseInt(parts.pop()!);
-  }*/
 
   const handleDishForm = () => {
     if(!reservation){
       navigate(paths.ROOT + "/createReservation");
     } 
-    /*else if (auth.roles[0] === "ROLE_RESTAURANT") {
-      setDish(dish);
-      setCategoryId(extractCategoryIdFromUrl(dish.category));
-      setEditDishIsOpen(true);
-    } */
     else if (reservation || (reservation && auth.roles[0] === UserRoles.RESTAURANT)) {
       setCardOpen(!isCardOpen);
     }

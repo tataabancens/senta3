@@ -9,6 +9,7 @@ import { ReservationContext } from "../context/ReservationContext";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../constants/constants";
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 type Props = {
   isOpen: boolean;
@@ -56,9 +57,9 @@ const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen}) => {
         {reservation!.status === "FINISHED" && <Typography id="modal-modal-title" variant="h5" marginBottom={10} marginTop={2}>{t('finishReservationModal.finishedTitle')}</Typography>}
         {reservation!.status === "CHECK_ORDERED" && <CircularProgress />}
         {reservation!.status === "CHECK_ORDERED" && <Typography id="modal-modal-description" marginTop={10} marginBottom={2}>{t('finishReservationModal.waitingMessage')}</Typography>}
-        {reservation!.status === "FINISHED" && auth.roles[0] === "ROLE_ANONYMOUS" &&
+        {reservation!.status === "FINISHED" && auth.roles[0] === UserRoles.ANONYMOUS &&
           <Typography id="modal-modal-description" marginTop={10} marginBottom={2}>{t('finishReservationModal.finishedMessageNoPoints')}</Typography>}
-        {reservation!.status === "FINISHED" && auth.roles[0] !== "ROLE_ANONYMOUS" &&
+        {reservation!.status === "FINISHED" && auth.roles[0] !== UserRoles.ANONYMOUS &&
           <Typography id="modal-modal-description" marginTop={10} marginBottom={2}>{t('finishReservationModal.finishedMessageWithPoints')}</Typography>}
         {reservation!.status === "FINISHED" && 
           <Box sx={{ display: "flex", width: 1, justifyContent: "center", marginY: 1 }}>

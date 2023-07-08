@@ -48,7 +48,7 @@ function App() {
           </Route>
           
           {/* Kitchen, waiter and restaurant*/}
-          <Route element={<RequireAuth allowedRoles={["ROLE_RESTAURANT", "ROLE_WAITER", "ROLE_KITCHEN"]} />}>
+          <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT, UserRoles.WAITER, UserRoles.KITCHEN]} />}>
             <Route path="kitchen" element={<Kitchen />}/>
           </Route>
             

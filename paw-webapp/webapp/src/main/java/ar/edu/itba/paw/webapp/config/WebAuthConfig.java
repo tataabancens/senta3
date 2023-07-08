@@ -120,8 +120,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //RESERVATIONS:
                 .regexMatchers(HttpMethod.GET, API_PREFIX + "\\/reservations\\?.*customerId=[1-9][0-9]*.*").access("@antMatcherVoter.canAccessReservationList(authentication, request.getQueryString()) or hasRole('RESTAURANT')")
                 .antMatchers(HttpMethod.POST, API_PREFIX + "/reservations").access("@antMatcherVoter.canPostReservation(authentication, request) or hasRole('RESTAURANT')")
-                .antMatchers(API_PREFIX + "/reservations/{securityCode}").access("@antMatcherVoter.canAccessReservation(authentication, #securityCode) or hasRole('RESTAURANT')")
-                .antMatchers(API_PREFIX + "/reservations").hasRole("RESTAURANT")
+                .antMatchers(API_PREFIX + "/reservations/{securityCode}").access("@antMatcherVoter.canAccessReservation(authentication, #securityCode)")
+                .antMatchers(API_PREFIX + "/reservations").access("hasRole('RESTAURANT') or hasRole('WAITER')")
 
 //ORDER ITEMS:
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/orderItems/{orderItemId}").access("@antMatcherVoter.canAccessOrderItem(authentication, #orderItemId) or hasRole('RESTAURANT')")

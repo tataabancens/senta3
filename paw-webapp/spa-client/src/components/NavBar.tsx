@@ -53,7 +53,7 @@ export const NavBar: React.FC<{}> = () => {
       const pages: nameSitePair[] = Array.from(restaurantPages, ([key, value]) => ({key, value}));
       setRolePages(pages);
     }
-    else if(auth.roles[0] === "ROLE_WAITER" || auth.roles[0] === "ROLE_KITCHEN"){
+    else if(auth.roles[0] === UserRoles.WAITER || auth.roles[0] === UserRoles.KITCHEN){
       const pages: nameSitePair[] = Array.from(servicePages, ([key, value]) => ({key, value}));
       setRolePages(pages);
     }

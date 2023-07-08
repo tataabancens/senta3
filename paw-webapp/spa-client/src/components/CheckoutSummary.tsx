@@ -8,6 +8,7 @@ import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { OrderItemModel, ReservationModel } from "../models";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import ShoppingCartItem from "./shoppingCart/ShoppingCartItem";
+import { UserRoles } from "../models/Enums/UserRoles";
 
 type Props = {
     reservation: ReservationModel,
@@ -90,7 +91,7 @@ const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
                 <Grid item xs={6}><Typography variant="h5" align="center" color="primary">Total:</Typography></Grid>
                 <Grid item xs ={6}><Typography variant="h5" align="center" color="primary">${calculateTotal(orderItems)}</Typography></Grid>
             </Grid>
-            { auth.roles[0] === "ROLE_RESTAURANT" &&
+            { auth.roles[0] === UserRoles.RESTAURANT &&
                 <Grid item xs={12} marginTop={5}>
                     <Button variant="contained" fullWidth onClick={endReservation}>{t('checkoutSummary.finishButton')}</Button>
                 </Grid>

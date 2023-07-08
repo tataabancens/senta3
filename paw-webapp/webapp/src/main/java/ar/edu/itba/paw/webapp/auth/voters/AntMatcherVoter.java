@@ -39,7 +39,7 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessReservation(Authentication authentication, String securityCode) {
-        if(isRestaurant(authentication)) return true;
+        if(isRestaurant(authentication) || isWaiter(authentication)) return true;
         Optional<Reservation> res = reservationService.getReservationBySecurityCode(securityCode);
         if(!res.isPresent()) return true;
         if(res.get().getCustomer().getUser() == null) return true; //reservation has no user
@@ -76,7 +76,9 @@ public class AntMatcherVoter {
     }
 
     public boolean canAccessOrderItem(Authentication authentication, long orderItemId) {
-        if(isRestaurant(authentication) || isWaiter(authentication) || isKitchen(authentication)) return true;
+        if(isRestaurant(authentication) || isWaiter(authentication) || isKitchen(authentication)){
+            return true;
+        }
         Optional<OrderItem> requestedOI = reservationService.getOrderItemById(orderItemId);
 
         if(!requestedOI.isPresent()) return false;
@@ -93,7 +95,7 @@ public class AntMatcherVoter {
         if (securityCode != null) {
             return canAccessOrderItems(authentication, securityCode);
         }
-        return isRestaurant(authentication);
+        return isRestaurant(authentication) || isWaiter(authentication) || isKitchen(authentication);
     }
 
     public boolean canAccessOrderItems(Authentication authentication, String securityCode) {
@@ -124,7 +126,7 @@ public class AntMatcherVoter {
 
     public boolean canAccessReservationList(Authentication authentication, String query){
         if(authentication instanceof AnonymousAuthenticationToken) return false;
-        if(isRestaurant(authentication)) return true;
+        if(isRestaurant(authentication) || isWaiter(authentication)) return true;
         int startIndex = query.indexOf("customerId=");
         if (startIndex != -1) {
             startIndex += 11; //length of "customerId="

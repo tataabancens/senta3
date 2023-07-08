@@ -39,13 +39,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     const restaurantService = useRestaurantService();
     const abortController = new AbortController();
 
-    // if (auth !== emptyAuth) {
-    //     const token = auth.authorization?.split(" ")[1];
-    //     console.log(token);
-    //     const decodedToken = parseJwt(token!);
-    //     console.log(decodedToken);
-    // }
-
     useEffect(() => {
         if (auth === emptyAuth) {
             saveAuthInfo(auth);
@@ -57,23 +50,31 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
             return;
         }
         (async () => {
-            if (auth.roles[0] === UserRoles.CUSTOMER) {
-                const customerId = extractCustomerIdFromContent(auth.contentURL);
-                const { isOk, data, error } = await customerService.getCustomerByIdNewVersion(customerId);
-                if (isOk) {
-                    const newAuth = { ...auth, content: data as CustomerModel };
-                    setAuthUpdated(true);
-                    setAuth(newAuth);
+            switch (auth.roles[0]) {
+                case UserRoles.CUSTOMER: {
+                    const customerId = extractCustomerIdFromContent(auth.contentURL);
+                    const { isOk, data, error } = await customerService.getCustomerByIdNewVersion(customerId);
+                    if (isOk) {
+                        const newAuth = { ...auth, content: data as CustomerModel };
+                        setAuthUpdated(true);
+                        setAuth(newAuth);
+                    }
                 }
-            } else if (auth.roles[0] === UserRoles.RESTAURANT) {
-                console.log("Hi");
-                const restaurantId = 1;
-                const { isOk, data, error } = await restaurantService.getRestaurant(restaurantId, abortController);
-                if (isOk) {
-                    const newAuth = { ...auth, content: data as RestaurantModel };
-                    setAuthUpdated(true);
-                    setAuth(newAuth);
+                    break;
+                case UserRoles.RESTAURANT: {
+                    const restaurantId = 1;
+                    const { isOk, data, error } = await restaurantService.getRestaurant(restaurantId, abortController);
+                    if (isOk) {
+                        const newAuth = { ...auth, content: data as RestaurantModel };
+                        setAuthUpdated(true);
+                        setAuth(newAuth);
+                    }
                 }
+                    break;
+                case(UserRoles.WAITER):
+                case(UserRoles.KITCHEN):
+                default:
+                    setAuthUpdated(true);
             }
         })();
     }, [auth])
