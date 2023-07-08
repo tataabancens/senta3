@@ -1,25 +1,24 @@
 import { CircularProgress, Grid, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useReservationsPagination } from "../hooks/serviceHooks/reservations/usePagination";
+import { ReservationsPaginated, useReservationsPagination } from "../hooks/serviceHooks/reservations/usePagination";
 import { ReservationModel } from "../models";
 import ReservationRow from "./ReservationRow";
 
 type Props = {
-    sortDirection: boolean,
-    value: number
+    reservationsPaginated: ReservationsPaginated,
+    page: number,
+    setPage: (page: number) => void;
 };
 
-const ReservationsTable: FC<Props> = ({sortDirection, value}) =>{
+const ReservationsTable: FC<Props> = ({reservationsPaginated, setPage, page}) =>{
     const { t } = useTranslation();
-    const [page, setPage] = useState(1);
-    const { reservations: reservationList, error: reservationsError, loading: reservationsLoading, toggleReload } = useReservationsPagination(page, value, sortDirection);
+    
+    const { reservations: reservationList, error: reservationsError, loading: reservationsLoading, toggleReload, lastPage } = reservationsPaginated;
 
     const handlePagination = (event: React.ChangeEvent<unknown>,page: number) => {
         setPage(page);
     };
-
-    
 
     return(
         <Grid item xs ={12}>
@@ -42,7 +41,7 @@ const ReservationsTable: FC<Props> = ({sortDirection, value}) =>{
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <Pagination sx={{marginY: 1}} count={10} page={page} color="primary" onChange={handlePagination} />
+                            <Pagination sx={{marginY: 1}} count={lastPage} page={page} color="primary" onChange={handlePagination} />
                         </TableRow>
                     </TableFooter>
                 </Table> 

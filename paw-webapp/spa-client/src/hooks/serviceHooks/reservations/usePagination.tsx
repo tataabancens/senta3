@@ -3,15 +3,28 @@ import { ReservationModel } from "../../../models";
 import useReservationService from "./useReservationService";
 import { ReservationParams } from "../../../models/Reservations/ReservationParams";
 
-export const useReservationsPagination = (page: number, value: number, sortDirection: boolean) => {
+export interface ReservationsPaginated {
+    reservations: ReservationModel[];
+    error: string;
+    loading: boolean;
+    toggleReload: () => void;
+    lastPage: number
+}
+
+export const useReservationsPagination = (page: number, value: number, sortDirection: boolean): ReservationsPaginated => {
     const [reservations, setReservations] = useState<ReservationModel[] | undefined>();
     const [error, setError] = useState<string>();
+    const [lastPage, setLastPage] = useState<number>(0);
     const [loadingDone, setLoadingDone] = useState<boolean>(false);
     const reservationService = useReservationService();
     const abortController = new AbortController();
     const [reload, setReload] = useState(false);
 
     const reloadReservations = () => {setReload(!reload)}
+
+    useEffect(() => {
+        
+    }, [value])
 
     useEffect(() => {
         (async () => {
@@ -22,9 +35,9 @@ export const useReservationsPagination = (page: number, value: number, sortDirec
 
             const { isOk, data, error } = await reservationService.getReservationsPaginated(reservationParams, abortController);
             if (isOk) {
-                data.status !== 204 ? setReservations(data.data) : setReservations([])
+                data.status !== 204 ? setReservations(data.reservations) : setReservations([]);
+                setLastPage(data.last);
                 setLoadingDone(true);
-                console.log(data.headers)
             }
             else{
                 setError(error);
@@ -37,9 +50,10 @@ export const useReservationsPagination = (page: number, value: number, sortDirec
     }, [value, page, sortDirection, reload]);
 
     return {
-        reservations: reservations,
-        error,
+        reservations: reservations!,
+        error: error!,
         loading: !error && !loadingDone,
-        toggleReload: reloadReservations
+        toggleReload: reloadReservations,
+        lastPage
     }
 }

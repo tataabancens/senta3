@@ -256,7 +256,7 @@ public class ReservationJpaDao implements ReservationDao {
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
-        return (int) Math.ceil(ids.size() / PAGE_SIZE);
+        return (int) Math.ceil((float) ids.size() / PAGE_SIZE);
     }
 
     @Override

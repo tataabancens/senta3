@@ -19,7 +19,7 @@ export const useRaisedHands = (raisedHand: boolean, value: number) => {
 
         const { isOk, data, error } = await reservationService.getReservationsPaginated(reservationParams, abortController);
         if (isOk) {
-            data.status !== 204 ? setReservations(data.data) : setReservations([])
+            data.status !== 204 ? setReservations(data.reservations) : setReservations([])
         }
         else{
             setError(error);

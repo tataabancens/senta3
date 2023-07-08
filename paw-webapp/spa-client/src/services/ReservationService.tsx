@@ -1,9 +1,10 @@
-import { AxiosInstance, AxiosResponse } from "axios";
+import { AxiosHeaders, AxiosInstance, AxiosResponse, AxiosResponseHeaders } from "axios";
 import { paths } from "../constants/constants";
 import { DishModel, OrderItemModel, ReservationModel } from "../models";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { ResponseDetails } from "./serviceUtils/typings";
 import { buildErrorResponse, buildSuccessResponse } from "./serviceUtils/returnTypesFactory";
+import ReservationsPage, { parseLinkHeader } from "../models/Reservations/ReservationsPage";
 
 export class ReservationService {
     private axios: AxiosInstance;
@@ -43,14 +44,16 @@ export class ReservationService {
     
     }
 
-    public async getReservationsPaginated(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<AxiosResponse>>{
+    public async getReservationsPaginated(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<ReservationsPage>>{
         try {
-            const response = await this.axios.get(paths.RESERVATIONS + params.getReservationsQuery, {signal: abortController.signal, headers: this.ACCEPT});;
-            return buildSuccessResponse(response);
+            const response = await this.axios.get(paths.RESERVATIONS + params.getReservationsQuery, {signal: abortController.signal, headers: this.ACCEPT});
+            const {prev, first, last, next} = parseLinkHeader(response.headers['link']);
+            const reservations = response.data as ReservationModel[];
+            const reservationsPage = { reservations, prev, next, first, last, page: params.page!, status: response.status}
+            return buildSuccessResponse(reservationsPage);
         } catch (e) {
             return buildErrorResponse(e as Error);
         }
-    
     }
 
 
