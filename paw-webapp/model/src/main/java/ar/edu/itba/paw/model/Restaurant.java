@@ -108,10 +108,6 @@ public class Restaurant {
         this.dishCategories = dishCategories;
     }
 
-    public void deleteDish(long dishId) {
-        dishes.removeIf(d -> d.getId() == dishId);
-    }
-
     public String getRestaurantName() {
         return restaurantName;
     }
@@ -228,6 +224,10 @@ public class Restaurant {
 
     public void deleteCategory(long categoryId) {
         this.dishCategories.removeIf(category -> category.getId() == categoryId);
+    }
+
+    public void deleteDish(long dishId) {
+        this.dishes.removeIf(dish -> dish.getId() == dishId);
     }
 
     public Integer getPointsForDiscount() {
