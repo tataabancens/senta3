@@ -45,6 +45,7 @@ export const TRANSLATIONS_ES ={
         positiveValidation: "Debe ser mayor que 0",
         dateValidation: "La fecha no puede ser en el pasado",
         secCodeValidation: "Debe ser de {{length}} caracteres",
+        categoryNameValidation: "Solo se permiten letras y numeros, no se permiten tildes",
         invalidUsernamePassword: "Usuario/contraseña invalidos. Por favor, intente nuevamente. ",
         dishNameMaxCharacters: "El nombre no puede tener más de {{characters}} caracteres",
         dishDescriptionMaxCharacters: "La descripción no puede tener más de {{characters}} caracteres"
@@ -311,6 +312,12 @@ export const TRANSLATIONS_ES ={
         tableNumber: {
             label: "Numero de mesa",
             error: "Mesa no disponible"
+        },
+        selectedDate: {
+            error: "No hay horas disponibles para ese dia y personas",
+        },
+        categoryName: {
+            duplicate: "El nombre de categoria ya existe",
         },
         confirmButton: "Confirmar",
         select: "Selecciona uno",

@@ -49,7 +49,7 @@ const AccountInfoForm: FC<Props> = ({
   reload,
 }): JSX.Element => {
   
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const { t } = useTranslation();
   const initialValues: accountInfoFormValues = {
     restaurantName: data.name,
@@ -88,10 +88,10 @@ const AccountInfoForm: FC<Props> = ({
       restaurantData.restaurantId = data?.id;
       restaurantData.restaurantName = restaurantName;
       restaurantData.phone = phone;
-      handleResponse(
-        restaurantService.editRestaurant(restaurantData),
-        (response) => reload()
-      );
+      const { isOk } = await restaurantService.editRestaurant(restaurantData);
+      if (isOk) {
+        setAuth({...auth});
+      }
 
     } else {
       let customerData = new CustomerParams();
@@ -101,7 +101,7 @@ const AccountInfoForm: FC<Props> = ({
       customerData.phone = phone;
       const { isOk } = await cs.editCustomer(customerData);
       if (isOk) {
-        reload();
+        setAuth({...auth});
       }
     }
 

@@ -3,12 +3,14 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.DishCategory;
+import ar.edu.itba.paw.model.exceptions.CategoryNameAlreadyExistsException;
 import ar.edu.itba.paw.persistance.DishCategoryDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,6 +64,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @Override
     public DishCategory createDishCategory(Restaurant restaurant, String categoryName) {
+        if (restaurant.getDishCategories().stream().anyMatch(dishCategory -> dishCategory.getName().equals(categoryName))) {
+            throw new CategoryNameAlreadyExistsException();
+        }
         return restaurant.createDishCategory(categoryName);
     }
 

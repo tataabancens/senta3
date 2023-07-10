@@ -81,9 +81,10 @@ const CreateReservation: FC = () => {
     repeatPassword: "",
   }
 
+  const today = new Date(); today.setHours(0, 0, 0, 0);
   const validationSchema = Yup.object().shape({
     qPeople: Yup.number().positive(t('validationSchema.positiveValidation')).required(t('validationSchema.required')),
-    date: Yup.date().min(new Date(), t('validationSchema.dateValidation')).required(t('validationSchema.required')),
+    date: Yup.date().min(today, t('validationSchema.dateValidation')).required(t('validationSchema.required')),
     hour: Yup.number().positive(t('validationSchema.positiveValidation')).max(24, "Less than 24"),
     customerStep: Yup.boolean(),
     firstName: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
@@ -142,14 +143,13 @@ const CreateReservation: FC = () => {
         resParams.qPeople = qPeople;
         resParams.date = date.toString();
         resParams.restaurantId = 1;
-        const { ok, error, response } = await awaitWrapper<AvailableHours>(restaurantService.getAvailableHours(resParams));
-        if (!ok) {
-          props.setFieldError("date", error.message);
+        const { isOk, error, data: availableHoursApi } = await restaurantService.getAvailableHours(resParams);
+        if (!isOk || availableHoursApi.length > 0) {
+          props.setFieldError("date", t('forms.selectedDate.error'));
           props.setSubmitting(false);
           return;
         }
-        const data = response as any as AvailableHours;
-        setAvailableHours(data.availableHours);
+        setAvailableHours(availableHoursApi);
         break;
 
       case 2: //hour

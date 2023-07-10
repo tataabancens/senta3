@@ -109,13 +109,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/restaurants/{id}/").permitAll()
 //CUSTOMERS:
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/customers/{id}").access("@antMatcherVoter.canAccessCustomer(authentication, #id)")
-                .antMatchers(HttpMethod.PATCH, API_PREFIX +  "/customers/{id}").access("@antMatcherVoter.canAccessCustomer(authentication, #id) or hasRole('RESTAURANT')")
+                .antMatchers(HttpMethod.PATCH, API_PREFIX +  "/customers/{id}").access("@antMatcherVoter.canAccessCustomer(authentication, #id)")
                 .antMatchers(HttpMethod.DELETE, API_PREFIX + "/customers/{id}").hasRole("RESTAURANT")
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/customers").hasRole("RESTAURANT")
                 .antMatchers(HttpMethod.POST, API_PREFIX + "/customers").permitAll()
 
                 .antMatchers(HttpMethod.GET, API_PREFIX + "/customers/{id}/points").access("@antMatcherVoter.canAccessCustomer(authentication, #id)")
-                .antMatchers(HttpMethod.PATCH, API_PREFIX +  "/customers/{id}").hasRole("RESTAURANT")   
+                .antMatchers(HttpMethod.PATCH, API_PREFIX +  "/customers/{id}/points").hasRole("RESTAURANT")
 
 //RESERVATIONS:
                 .regexMatchers(HttpMethod.GET, API_PREFIX + "\\/reservations\\?.*customerId=[1-9][0-9]*.*").access("@antMatcherVoter.canAccessReservationList(authentication, request.getQueryString()) or hasRole('RESTAURANT')")

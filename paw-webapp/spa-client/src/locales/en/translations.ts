@@ -45,6 +45,7 @@ export const TRANSLATIONS_EN = {
         positiveValidation: "Must be greater than 0",
         dateValidation: "Date cannot be in the past",
         secCodeValidation: "Must be {{length}} characters long",
+        categoryNameValidation: "Only letters and numbers allowed",
         invalidUsernamePassword: "Invalid username/password. Please try again.",
         dishNameMaxCharacters: "The name can't be longer than {{characters}} characters",
         dishDescriptionMaxCharacters: "The description can't be longer than {{characters}} characters"
@@ -313,6 +314,12 @@ export const TRANSLATIONS_EN = {
         tableNumber: {
             label: "Table number",
             error: "Table not available"
+        },
+        selectedDate: {
+            error: "No available hours for that date and people",
+        },
+        categoryName: {
+            duplicate: "Category name already exists"
         },
         confirmButton: "Confirm",
         select: "Select one",
