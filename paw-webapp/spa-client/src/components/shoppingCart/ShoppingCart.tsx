@@ -26,7 +26,7 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
     const shoppingCartTabs = [t('shoppingCart.cartPanel.title'),t('shoppingCart.ordersPanel.title'),t('shoppingCart.checkPanel.title')];
 
     return(
-        <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { height: 700}}}>
+        <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { height: "80vh"}}}>
           <Grid container component={Box} sx={{width: 1400}} padding={1}>
             <Grid item xs={12} sx={{display:"flex", justifyContent:"flex-end"}}>
                 <IconButton onClick={toggleCart}>
@@ -34,16 +34,16 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
                 </IconButton>
             </Grid>
             <Grid item component={DialogTitle} xs={12} sx={ {display:"flex", justifyContent:"center", marginBottom: 2}}><Typography variant="h5">{shoppingCartTabs[value]}</Typography></Grid>
-            <Grid item container component={DialogContent}>
+            <Grid item container component={DialogContent} sx={{ flexGrow: 1 }}>
                 <Grid item xs={12} component={Box} sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} >
                         {shoppingCartTabs.map((tab: string, i: number) => <Tab label={tab} value={i} key={i} />)}
                     </Tabs>
                 </Grid>
-                <Grid item xs={12}>
-                <ShoppingCartPanel value={value} index={0}/>
-                <OrdersPanel value={value} index={1} orderItems={orderItems!} />
-                <CheckPanel value={value} index={2} orderItems={orderItems!} />
+                <Grid item xs={12} sx={{ overflowY: "auto" }}>
+                    <ShoppingCartPanel value={value} index={0}/>
+                    <OrdersPanel value={value} index={1} orderItems={orderItems!} />
+                    <CheckPanel value={value} index={2} orderItems={orderItems!} />
                 </Grid>            
             </Grid>
          </Grid>

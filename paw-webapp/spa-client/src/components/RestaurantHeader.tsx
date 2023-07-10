@@ -1,7 +1,6 @@
 import { Badge, Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import { FC, useContext, useEffect, useState } from "react";
 import { themePalette } from "../config/theme.config";
-import { RestaurantModel } from "../models";
 import AuthReservationForm from "./forms/AuthReservationForm";
 import ReservationData from "./ReservationData";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -11,18 +10,19 @@ import CategoryForm from "./forms/CategoryForm";
 import { ReservationContext } from "../context/ReservationContext";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
-import { UserRoles } from "../models/Enums/UserRoles";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
+import { UserRoles } from "../models/Enums/UserRoles";
+
 
 type Props = {
-    restaurant?: RestaurantModel | undefined;
+    restaurantName?: string | undefined,
     role: string;
     toggleReload?: () => void;
 };
 
 const RestaurantHeader: FC<Props> = ({
-    restaurant,
+    restaurantName,
     role,
     toggleReload
   }): JSX.Element => {
@@ -32,7 +32,7 @@ const RestaurantHeader: FC<Props> = ({
     const [shoppingCartOpen, setShoppingCart] = useState(false);
     let navigate = useNavigate();
     const [createIsOpen, setIsOpen] = useState(false);
-    const { reservation, orderItems, discount, toggleDiscount } = useContext(ReservationContext);
+    const { reservation, orderItems, discount, toggleDiscount, restaurant, points } = useContext(ReservationContext);
     const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
     const [callWaiter, setCallWaiter] = useState(false);
     const rs = useReservationService();
@@ -99,18 +99,22 @@ const RestaurantHeader: FC<Props> = ({
         <AuthReservationForm handleOpen={handleAuthReservation} isOpen={authIsOpen} />
         <CategoryForm isOpen={createIsOpen} handleOpen={toggleCreateCategoryForm} canReload={toggleReload}/>
         <Grid item component={Typography} variant="h2" sx={{ color: "white" }}>
-          {role === UserRoles.RESTAURANT ? t('restaurantHeader.menuHeader') : restaurant?  restaurant.name : <Skeleton  variant="rounded" animation="wave" width={410} height={50} />}
+          {role === UserRoles.RESTAURANT ? t('restaurantHeader.menuHeader') :
+            restaurant?  restaurant.name : restaurantName? restaurantName :
+            <Skeleton  variant="rounded" animation="wave" width={410} height={50} />}
         </Grid>
         {reservation? 
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
+            {points && restaurant && points.points >= restaurant.pointsForDiscount &&
             <Button sx={{margin: 1}} variant="contained" color={discount? "info" : "secondary"} onClick={toggleDiscount}>
               <Typography color={discount? "secondary" : "info" }>{discount? "Remove discount" : "Apply discount"}</Typography>
-            </Button>
+            </Button>}
+            { reservation.status === "SEATED" &&
             <Button sx={{margin: 1}} variant="contained" color={callWaiter? "info" : "secondary"} onClick={toggleCallWaiter}>
               <Typography color={callWaiter? "secondary" : "info" }>{callWaiter? t('restaurantHeader.callingWaiter') : t('restaurantHeader.callWaiter')}</Typography>
-            </Button>
+            </Button>}
             <Button sx={{margin: 1}} variant="contained" color="success" onClick={toggleShoppingCart}><Badge badgeContent={selectedItemsAmount} color="secondary"><ShoppingCartIcon/></Badge></Button>
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={toggleDrawer}>{t('restaurantHeader.myReservation')}</Button>
             </Grid>

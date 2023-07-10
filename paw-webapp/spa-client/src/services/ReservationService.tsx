@@ -47,7 +47,7 @@ export class ReservationService {
     public async getReservationsPaginated(params: ReservationParams, abortController: AbortController): Promise<ResponseDetails<ReservationsPage>>{
         try {
             const response = await this.axios.get(paths.RESERVATIONS + params.getReservationsQuery, {signal: abortController.signal, headers: this.ACCEPT});
-            const {prev, first, last, next} = parseLinkHeader(response.headers['link']);
+            const {prev, first, last, next} = parseLinkHeader(response.headers['link'] as string );
             const reservations = response.data as ReservationModel[];
             const reservationsPage = { reservations, prev, next, first, last, page: params.page!, status: response.status}
             return buildSuccessResponse(reservationsPage);

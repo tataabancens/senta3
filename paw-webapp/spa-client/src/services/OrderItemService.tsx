@@ -50,7 +50,7 @@ export class OrderItemService {
 
     public async editOrderItem(params: OrderitemParams, abortController: AbortController): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.patch<OrderItemModel>(this.basePath + `/${params.orderItemId}`, params.patchOrderitemPayload, { signal: abortController.signal, headers: this.CONTENT_TYPE     });
+            await this.axios.patch<OrderItemModel>(this.basePath + `/${params.orderItemId}`, params.patchOrderitemPayload, { signal: abortController.signal, headers: this.CONTENT_TYPE });
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);

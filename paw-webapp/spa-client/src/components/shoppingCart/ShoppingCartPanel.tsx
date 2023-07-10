@@ -1,14 +1,11 @@
 import { Button, CircularProgress, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { ReservationContext } from "../../context/ReservationContext";
 import { useRecommendedDish } from "../../hooks/serviceHooks/dishes/useRecommendedDish";
 import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
-import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
-import { DishModel, OrderItemModel } from "../../models";
+import { OrderItemModel } from "../../models";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
-import { handleResponse } from "../../Utils";
 import DishCard from "../dishCard/DishCard";
 import ShoppingCartItem from "./ShoppingCartItem";
 
@@ -19,10 +16,12 @@ type TabPanelProps = {
 }
 
 const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
-  const { children, value, index } = props;
+  const { value, index } = props;
 
   const orderItemService = useOrderItemService();
-  const { reservation, updateReservation, orderItems, removeItem } = useContext(ReservationContext);
+  const { reservation, updateReservation, orderItems, removeItem, discount, restaurant } = useContext(ReservationContext);
+  let total = 0;
+  const textDecoration = discount && total !== 0? 'line-through' : 'none';
   const abortController = new AbortController();
   const { t } = useTranslation();
 
@@ -34,6 +33,10 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
 
     return total;
   }
+
+  useEffect(() => {
+    total = calculateTotal(orderItems!)
+  },[orderItems])
 
   const cancelDishes = async () => {
     orderItems?.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
@@ -70,21 +73,22 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
     <div
       role="tabpanel"
       hidden={value !== index}
+      style={{ height: '100%' }}
     >
       {value === index && (
         <Grid item container xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Grid item xs={6} component={Table}>
+          <Grid item xs={6.5} component={Table}>
             <TableHead>
               <TableRow>
                 <TableCell align="left">{t('shoppingCart.tableHeaders.dish')}</TableCell>
-                <TableCell>{t('shoppingCart.tableHeaders.qty')}</TableCell>
-                <TableCell>{t('shoppingCart.tableHeaders.subtotal')}</TableCell>
+                <TableCell align="center">{t('shoppingCart.tableHeaders.qty')}</TableCell>
+                <TableCell align="center">{t('shoppingCart.tableHeaders.subtotal')}</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {orderItems?.filter(orderItem => orderItem.status === "SELECTED").map((filteredItem) => (
-                <ShoppingCartItem key={filteredItem.orderItemId} securityCode={reservation!.securityCode} orderItem={filteredItem} isCartItem={true} />
+                <ShoppingCartItem key={filteredItem.orderItemId} securityCode={reservation!.securityCode} orderItem={filteredItem} isCartItem={true} usedDiscount={discount}/>
               ))}
             </TableBody>
           </Grid>
@@ -99,9 +103,10 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
             </Grid>
           </Grid>
           <Grid item container xs={12} sx={{ marginTop: 8 }}>
-            <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-evenly" }} marginY={2}>
-              <Typography>Total:</Typography>
-              <Typography>${calculateTotal(orderItems!)}</Typography>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }} marginY={2}>
+              <Typography marginRight={1}>Total:</Typography>
+              <Typography style={{textDecoration}} marginRight={discount? 1 : 0}>${calculateTotal(orderItems!)}</Typography>
+              {discount && total !== 0 && <Typography color="blue">{(1-restaurant!.discountCoefficient) * calculateTotal(orderItems!)}</Typography>}
             </Grid>
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-evenly" }}>
               <Button color="success" variant="outlined" onClick={confirmDishes}><Typography>{t('shoppingCart.cartPanel.orderItems')}</Typography></Button>

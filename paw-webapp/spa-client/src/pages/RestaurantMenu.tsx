@@ -8,7 +8,6 @@ import { DishCategoryModel } from "../models";
 import EditDishForm from "../components/forms/EditDishForm";
 import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
 import { useTranslation } from "react-i18next";
-import { RestaurantMenuProvider } from "../context/RestaurantMenuContext";
 import { UserRoles } from "../models/Enums/UserRoles";
 
 const RestaurantMenu: FC = () => {

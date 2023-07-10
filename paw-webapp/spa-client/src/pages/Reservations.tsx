@@ -7,23 +7,25 @@ import { useReservationsPagination } from "../hooks/serviceHooks/reservations/us
 const Reservations: FC = () => {
   const [value, setValue] = useState(9);
   const [page, setPage] = useState(1);
-  const [sortDirection, setSorting] = useState(false);
+  const [sortDirection, setSorting] = useState("DESC");
+  const [orderBy, setOrderBy] = useState("reservationid");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     setPage(1);
   };
 
-  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSorting(event.target.checked);
+  const setOrderByCriteria = (sortDirection: string, orderBy: string) => {
+    setSorting(sortDirection);
+    setOrderBy(orderBy);
   };
 
-  const reservationsPaginated = useReservationsPagination(page, value, sortDirection);
+  const reservationsPaginated = useReservationsPagination(page, value, sortDirection, orderBy);
 
   return (
       <Grid container xs={12}>
-        <ReservationTabs value={value} handleChange={handleChange} sortDirection={sortDirection} handleSwitchChange={handleSwitchChange} />
-        <ReservationsTable page={page} reservationsPaginated={reservationsPaginated} setPage={setPage}/>
+        <ReservationTabs value={value} handleChange={handleChange} />
+        <ReservationsTable page={page} reservationsPaginated={reservationsPaginated} setPage={setPage} setOrderByCriteria={setOrderByCriteria} />
       </Grid>
   );
 }

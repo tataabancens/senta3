@@ -1,7 +1,8 @@
-import { CircularProgress, Grid, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
+import { CallToActionSharp } from "@mui/icons-material";
+import { CircularProgress, Grid, Pagination, Paper, SortDirection, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TableSortLabel, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ReservationsPaginated, useReservationsPagination } from "../hooks/serviceHooks/reservations/usePagination";
+import { ReservationsPaginated} from "../hooks/serviceHooks/reservations/usePagination";
 import { ReservationModel } from "../models";
 import ReservationRow from "./ReservationRow";
 
@@ -9,10 +10,31 @@ type Props = {
     reservationsPaginated: ReservationsPaginated,
     page: number,
     setPage: (page: number) => void;
+    setOrderByCriteria: (sortDirection: string, orderBy: string) => void;
 };
 
-const ReservationsTable: FC<Props> = ({reservationsPaginated, setPage, page}) =>{
+type Order = "asc" | "desc";
+
+interface HeadCell {
+  id: string;
+  label: string;
+  sortable: boolean;
+}
+
+const headCells: HeadCell[] = [
+    { id: "code", label: "Code", sortable: false },
+    { id: "customer", label: "Customer", sortable: false },
+    { id: "date", label: "reservationdate", sortable: true },
+    { id: "hour", label: "reservationhour", sortable: true },
+    { id: "table", label: "tablenumber", sortable: false },
+    { id: "people", label: "qpeople", sortable: false },
+    { id: "actions", label: "Actions", sortable: false },
+];
+
+const ReservationsTable: FC<Props> = ({reservationsPaginated, setPage, page, setOrderByCriteria}) =>{
     const { t } = useTranslation();
+    const [order, setOrder] = useState<Order>('asc');
+    const [orderByField, setOrderByField] = useState("code");
     
     const { reservations: reservationList, error: reservationsError, loading: reservationsLoading, toggleReload, lastPage } = reservationsPaginated;
 
@@ -20,22 +42,40 @@ const ReservationsTable: FC<Props> = ({reservationsPaginated, setPage, page}) =>
         setPage(page);
     };
 
+    const handleSort = (property: string) => {
+        const isAsc = orderByField === property && order === 'asc';
+        const orderBy = headCells.find(headCell => headCell.id === property)
+        setOrderByCriteria(isAsc ? 'DESC' : 'ASC', orderBy?.sortable? orderBy.label : "reservationid")
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderByField(property);
+    };
+    
+    const createSortHandler = (property: string) => () => {
+        handleSort(property);
+    };
+
     return(
         <Grid item xs ={12}>
             {reservationList && !reservationsError && reservationList.length > 0 &&
             <TableContainer component={Paper}>
                 <Table sx={{ width: 1 }} aria-label="simple table">
-                    <TableHead>
                         <TableRow>
-                            <TableCell>{t('reservationsPage.tableHeaders.code')}</TableCell>
-                            <TableCell>{t('reservationsPage.tableHeaders.customer')}</TableCell>
-                            <TableCell align="center">{t('reservationsPage.tableHeaders.date')}</TableCell>
-                            <TableCell align="center">{t('reservationsPage.tableHeaders.hour')}</TableCell>
-                            <TableCell align="center">{t('reservationsPage.tableHeaders.table')}</TableCell>
-                            <TableCell align="center">{t('reservationsPage.tableHeaders.people')}</TableCell>
-                            <TableCell align="center"></TableCell>
-                        </TableRow>
-                    </TableHead>
+                            {headCells.map((headCell) => (
+                            <TableCell key={headCell.id} align={headCell.id === "code"? "left" : "center"}>
+                                {headCell.sortable ? (
+                                <TableSortLabel
+                                    active={orderByField === headCell.id}
+                                    direction={orderByField === headCell.id ? order : 'asc'}
+                                    onClick={createSortHandler(headCell.id)}
+                                >
+                                    {t(`reservationsPage.tableHeaders.${headCell.id}`)}
+                                </TableSortLabel>
+                                ) : (
+                                    t(`reservationsPage.tableHeaders.${headCell.id}`)
+                                )}
+                            </TableCell>
+                            ))}
+                     </TableRow>
                     <TableBody>
                         {reservationList.map((reservation: ReservationModel, i) => <ReservationRow key={i} reservation={reservation}  toggleReload={toggleReload}/>)}
                     </TableBody>

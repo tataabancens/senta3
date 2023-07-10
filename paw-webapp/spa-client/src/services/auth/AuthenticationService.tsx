@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosRequestConfig } from "axios";
+import { AxiosHeaders, AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { fromByteArray } from "base64-js";
 import { FormikHelpers } from "formik";
 import { paths } from "../../constants/constants";
@@ -52,14 +52,9 @@ export class AuthenticationService {
     }
 
     private async getUser(authorization: string, userId: number): Promise<ResponseDetails<UserModel>> {
-        const config: AxiosRequestConfig = {
-            headers: {
-                "Authorization": authorization,
-                "Accept": this.ACCEPT_HEADER,
-            }
-        }
+
         try {
-            const response = await axios.get<UserModel>(paths.USERS + '/' + userId, config);
+            const response = await axios.get<UserModel>(paths.USERS + '/' + userId, {headers: {"Authorization": authorization, "Accept": this.ACCEPT_HEADER}});
             return buildSuccessResponse(response.data);
         } catch (e) {
             return buildErrorResponse(e as Error);

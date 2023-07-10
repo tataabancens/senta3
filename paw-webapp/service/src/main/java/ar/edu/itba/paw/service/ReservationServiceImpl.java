@@ -5,6 +5,7 @@ import ar.edu.itba.paw.model.enums.OrderItemStatus;
 import ar.edu.itba.paw.model.enums.ReservationStatus;
 import ar.edu.itba.paw.model.exceptions.CustomerNotFoundException;
 import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
+import ar.edu.itba.paw.model.exceptions.TableNotAvailableException;
 import ar.edu.itba.paw.persistance.ReservationDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +175,10 @@ public class ReservationServiceImpl implements ReservationService {
         if(qPeople != null){
             reservation.setqPeople(qPeople);
         }
-        if(table != null){
+        if(table != null) {
+            if (!isTableAvailable(table)) {
+                throw new TableNotAvailableException();
+            }
             reservation.setTableNumber(table);
         }
         if(hand != null){
@@ -214,6 +218,16 @@ public class ReservationServiceImpl implements ReservationService {
 
             }
 
+        }
+        return true;
+    }
+
+    public boolean isTableAvailable(int tableNumber) {
+        List<Reservation> resList = getReservationsSeated(restaurantService.getRestaurantById(1).get());
+        for(Reservation reservation : resList) {
+            if (reservation.getTableNumber() == tableNumber){
+                return false;
+            }
         }
         return true;
     }

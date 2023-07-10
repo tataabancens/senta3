@@ -26,7 +26,7 @@ public class TableNumberValidator implements ConstraintValidator<TableNumberCons
     @Override
     public boolean isValid(String tableNumber, ConstraintValidatorContext constraintValidatorContext) {
         List<Reservation> resList = res.getReservationsSeated(rs.getRestaurantById(1).get());
-        for(Reservation reservation : resList){
+        for(Reservation reservation : resList) {
             if (Objects.equals(String.valueOf(reservation.getTableNumber()), tableNumber)){
                 return false;
             }

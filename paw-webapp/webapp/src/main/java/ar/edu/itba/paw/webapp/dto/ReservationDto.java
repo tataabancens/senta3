@@ -20,6 +20,7 @@ public class ReservationDto {
     private int peopleAmount;
     private int tableNumber;
     private boolean hand;
+    private boolean usedDiscount;
     private String status;
 
     private URI orderItems;
@@ -36,6 +37,7 @@ public class ReservationDto {
         dto.peopleAmount = reservation.getqPeople();
         dto.tableNumber = reservation.getTableNumber();
         dto.hand = reservation.isHand();
+        dto.usedDiscount = reservation.isReservationDiscount();
         dto.customerName = reservation.getCustomer().getCustomerName();
         dto.status = reservation.getReservationStatus().getName();
 
@@ -157,5 +159,13 @@ public class ReservationDto {
     }
     public URI getRecommendedDish() {
         return recommendedDish;
+    }
+
+    public boolean isUsedDiscount() {
+        return usedDiscount;
+    }
+
+    public void setUsedDiscount(boolean usedDiscount) {
+        this.usedDiscount = usedDiscount;
     }
 }

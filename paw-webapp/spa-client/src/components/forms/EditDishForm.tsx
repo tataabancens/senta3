@@ -100,12 +100,10 @@ const EditDishForm: FC<Props> = ({
   }
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string(),
+    name: Yup.string().max(65, t('validationSchema.dishNameMaxCharacters',{characters: 65})),
     categoryId: Yup.number(),
     price: Yup.number(),
-    description: Yup.string(),
-    // image: Yup.mixed().optional()
-    //   .test("FILE_TYPE", "Invalid file type", (value: any) => value && ['image/png', 'image/jpeg'].includes(value.type)),
+    description: Yup.string().max(70, t('validationSchema.dishDescriptioneMaxCharacters',{characters: 70})),
   })
 
   const handleCancel = () => {
@@ -137,26 +135,12 @@ const EditDishForm: FC<Props> = ({
                   ><Field as={TextField}
                     item
                     required
+                    fullWidth
                     id="name"
                     label={t('forms.editDish.name')}
                     name="name"
                     helperText={<ErrorMessage name="name" />}
                     error={props.errors.name}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    marginBottom={3}
-                  >
-                    <Field as={TextField}
-                      item
-                      required
-                      id="description"
-                      label={t('forms.editDish.dishDescription')}
-                      name="description"
-                      helperText={<ErrorMessage name="description" />}
-                      error={props.errors.description}
                     />
                   </Grid>
                   <Grid
@@ -196,6 +180,24 @@ const EditDishForm: FC<Props> = ({
                         </MenuItem>
                       ))}
                     </Field>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    marginBottom={3}
+                  >
+                    <Field as={TextField}
+                      item
+                      required
+                      fullWidth
+                      multiline
+                      rows={3}
+                      id="description"
+                      label={t('forms.editDish.dishDescription')}
+                      name="description"
+                      helperText={<ErrorMessage name="description" />}
+                      error={props.errors.description}
+                    />
                   </Grid>
                   <UploadImage props={props}></UploadImage>
                 </Grid>

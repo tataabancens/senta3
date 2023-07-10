@@ -12,7 +12,7 @@ import { FC } from "react";
 import { awaitWrapper, handleResponse } from "../../Utils";
 import useUserService from "../../hooks/serviceHooks/users/useUserService";
 import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestaurantService";
-import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
+import useCustomerService from "../../hooks/serviceHooks/customers/useCustomerService";
 import { CustomerModel, RestaurantModel, UserModel } from "../../models";
 import { CustomerParams } from "../../models/Customers/CustomerParams";
 import { RestParams } from "../../models/Restaurant/RestParams";
@@ -22,6 +22,7 @@ import * as Yup from "yup";
 import ApiErrorDetails from "../../models/ApiError/ApiErrorDetails";
 import { useTranslation } from "react-i18next";
 import { UserRoles } from "../../models/Enums/UserRoles";
+import useAuth from "../../hooks/serviceHooks/authentication/useAuth";
 
 interface accountInfoFormValues {
   restaurantName: string;
@@ -35,7 +36,6 @@ interface accountInfoFormValues {
 }
 
 type Props = {
-  user: UserModel;
   data: CustomerModel | RestaurantModel;
   isOpen: boolean;
   handleOpen: () => void;
@@ -43,19 +43,18 @@ type Props = {
 };
 
 const AccountInfoForm: FC<Props> = ({
-  user,
   data,
   handleOpen,
   isOpen,
   reload,
 }): JSX.Element => {
   
-
+  const { auth } = useAuth();
   const { t } = useTranslation();
   const initialValues: accountInfoFormValues = {
     restaurantName: data.name,
     customerName: data.name,
-    username: user.username,
+    username: auth.user,
     phone: data.phone,
     mail: data.mail,
     isRestaurantUser: true,
@@ -78,12 +77,12 @@ const AccountInfoForm: FC<Props> = ({
 
   const userService = useUserService();
   const restaurantService = useRestaurantService();
-  const customerService = useCustomerService();
+  const cs = useCustomerService();
 
   const handleSubmit = async (values: accountInfoFormValues, props: FormikHelpers<accountInfoFormValues>) => {
     const {restaurantName, customerName, mail, phone, password, repeatPassword} = values;
     
-    if (user?.role === UserRoles.RESTAURANT) {
+    if (auth?.roles[0] === UserRoles.RESTAURANT) {
       let restaurantData = new RestParams();
       restaurantData.mail = mail;
       restaurantData.restaurantId = data?.id;
@@ -100,14 +99,14 @@ const AccountInfoForm: FC<Props> = ({
       customerData.customerName = customerName;
       customerData.mail = mail;
       customerData.phone = phone;
-      handleResponse(
-        customerService.editCustomer(customerData),
-        (response) => reload()
-      );
+      const { isOk } = await cs.editCustomer(customerData);
+      if (isOk) {
+        reload();
+      }
     }
 
     let userData = new UserParams();
-    userData.userId = user.id;
+    userData.userId = auth.id;
     if (password !== '' && repeatPassword !== '') {
       userData.psPair = {password: password, checkPassword: repeatPassword};
     }
@@ -115,7 +114,6 @@ const AccountInfoForm: FC<Props> = ({
     const { ok: userEdited, error: userError, response: userResponse } = await awaitWrapper(userService.editUser(userData));
 
     if (!userEdited) {
-      console.log(userError)
       const errorData = userError.response?.data as ApiErrorDetails;
       props.setFieldError("username", errorData.errors?.find((e) => e.property == "username")?.description);
       props.setSubmitting(false);
@@ -137,7 +135,7 @@ const AccountInfoForm: FC<Props> = ({
                 {t('forms.accountInfo.description')}
                 </DialogContentText>
                 <Grid container marginY={3}>
-                  {user?.role === UserRoles.RESTAURANT ? (
+                  {auth?.roles[0] === UserRoles.RESTAURANT ? (
                     <Grid
                       item
                       xs={3}
@@ -170,21 +168,6 @@ const AccountInfoForm: FC<Props> = ({
                       />
                     </Grid>
                   )}
-                  <Grid
-                    item
-                    xs={5}
-                    marginBottom={3}
-                  >
-                    <Field as={TextField}
-                      required
-                      id="username"
-                      label={t('forms.accountInfo.username')}
-                      name="username"
-                      value={props.values.username}
-                      helperText={<ErrorMessage name="username"></ErrorMessage>}
-                      error={props.errors.username}
-                    />
-                  </Grid>
                   <Grid
                     item
                     xs={5}

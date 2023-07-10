@@ -1,16 +1,12 @@
-// import { createCustomerPayloadModel } from "./CreateCustomerPayloadModel";
 import { createCustomerPayloadModel } from "./CreateCustomerPayloadModel";
-import {passwordPair} from "../PasswordPairModel"
 import { patchCustomerPayloadModel } from "./PatchCustomerPayloadModel";
 
 
 export class CustomerParams {
 
     private _mail: string | undefined;
-    // private _username: string | undefined;
     private _customerName: string | undefined;
     private _phone: string | undefined;
-    // private _psPair: passwordPair | undefined;
 
     private _userId: number | undefined;
     private _customerId: number | undefined;
@@ -74,14 +70,6 @@ export class CustomerParams {
         this._mail = value;
     }
 
-    // get username(): string | undefined {
-    //     return this._username;
-    // }
-    //
-    // set username(value: string | undefined) {
-    //     this._username = value;
-    // }
-
     get customerName(): string | undefined {
         return this._customerName;
     }
@@ -98,11 +86,11 @@ export class CustomerParams {
         this._phone = value;
     }
 
-    // get psPair(): passwordPair | undefined {
-    //     return this._psPair;
-    // }
-    //
-    // set psPair(value: passwordPair | undefined) {
-    //     this._psPair = value;
-    // }
+    get points(): number | undefined {
+        return this._points;
+    }
+
+    set points(value: number | undefined) {
+        this._points = value;
+    }
 }

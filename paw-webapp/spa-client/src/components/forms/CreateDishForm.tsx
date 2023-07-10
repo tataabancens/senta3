@@ -75,7 +75,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
     }
 
     const initialValue: createDishFormValue = {
-        name: "Tengo mas de 6 caracteres",
+        name: "",
         categoryId: categoryId!,
         price: 0,
         description: "",
@@ -83,10 +83,10 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
     }
 
     const validationSchema = Yup.object().shape({
-        name: Yup.string(),
+        name: Yup.string().max(65, t('validationSchema.dishNameMaxCharacters',{characters: 65})),
         categoryId: Yup.number(),
         price: Yup.number(),
-        description: Yup.string(),
+        description: Yup.string().max(70, t('validationSchema.dishDescriptioneMaxCharacters',{characters: 70})),
         image: Yup.mixed().required(t('validationSchema.required'))
             .test("FILE_TYPE", "Invalid file type", (value) => value && ['image/png', 'image/jpeg'].includes(value.type)),
     })
@@ -121,17 +121,6 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 helperText={<ErrorMessage name="price" />}
                                 error={props.errors.price}
                             />
-                            <Field as={TextField}
-                                item
-                                required
-                                variant="standard"
-                                fullWidth
-                                id="description"
-                                label={t('forms.createDish.description')}
-                                name="description"
-                                helperText={<ErrorMessage name="description" />}
-                                error={props.errors.description}
-                            />
                             <Field as={Select}
                                 required
                                 variant="standard"
@@ -151,6 +140,19 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                     </MenuItem>
                                 ))}
                             </Field>
+                            <Field as={TextField}
+                                item
+                                required
+                                variant="standard"
+                                fullWidth
+                                multiline
+                                rows={3}
+                                id="description"
+                                label={t('forms.createDish.description')}
+                                name="description"
+                                helperText={<ErrorMessage name="description" />}
+                                error={props.errors.description}
+                            />
                             <UploadImage props={props}></UploadImage>
                         </DialogContent>
                         <DialogActions>

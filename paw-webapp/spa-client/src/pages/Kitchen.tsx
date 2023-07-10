@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import HandsTable from "../components/HandsTable";
 import KitchenTable from "../components/KitchenTable";
 import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
-import { useOrderItems } from "../hooks/serviceHooks/reservations/useOrderItems";
+import { useOrderItems } from "../hooks/serviceHooks/orderItems/useOrderItems";
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { OrderItemModel } from "../models";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";

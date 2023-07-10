@@ -48,16 +48,16 @@ type Props = {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         >
-        <img src={dish.image}  alt="la foto del plato" style={{objectFit:"cover", width: 110, borderRadius: ".8rem", aspectRatio: 1, marginRight: 20}}/>
+        <img src={dish.image}  alt="la foto del plato" style={{objectFit:"cover", width: 100, borderRadius: ".8rem", aspectRatio: 1, marginRight: 10}}/>
         <Grid item container xs={12}>
         <Grid item xs={12} sx={{ position: "relative", zIndex: 1 }}>
             <IconButton className="iconButton" style={{ position: "absolute", top: 0, right: 0, zIndex: 2 }} onClick={handleDeleteDish}>
               <DeleteIcon  color="error"/>
             </IconButton>
-          </Grid>
-          <Grid item xs={12}><Typography variant="h6">{dish.name}</Typography></Grid>
-          <Grid item xs={12}><Typography variant="body1">{dish.description}</Typography></Grid>
-          <Grid item xs={12}><Typography variant="caption">${dish.price}</Typography></Grid>
+        </Grid>
+        <Grid item xs={12}><Typography variant="subtitle1">{dish.name}</Typography></Grid>
+        <Grid item xs={12}><Typography variant="caption">{dish.description}</Typography></Grid>
+        <Grid item xs={12}><Typography variant="caption">${dish.price}</Typography></Grid>
         </Grid>
       </Link>
     </>

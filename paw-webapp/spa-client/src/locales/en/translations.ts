@@ -45,7 +45,9 @@ export const TRANSLATIONS_EN = {
         positiveValidation: "Must be greater than 0",
         dateValidation: "Date cannot be in the past",
         secCodeValidation: "Must be {{length}} characters long",
-        invalidUsernamePassword: "Invalid username/password. Please try again."
+        invalidUsernamePassword: "Invalid username/password. Please try again.",
+        dishNameMaxCharacters: "The name can't be longer than {{characters}} characters",
+        dishDescriptionMaxCharacters: "The description can't be longer than {{characters}} characters"
     },
     createReservation:{
         pageTitle: "Create reservation",
@@ -112,10 +114,14 @@ export const TRANSLATIONS_EN = {
             date: "Date",
             hour: "Hour",
             table: "Table",
-            people: "People"
+            people: "People",
+            actions: "Actions"
         },
         sortBy: "Sort By:",
-        noReservations: "There are no reservations here"
+        noReservations: "There are no reservations here",
+        tableRow:{
+            hour: "{{hour}}:00"
+        }
     },
     shoppingCart:{
         cartPanel:{
@@ -178,11 +184,9 @@ export const TRANSLATIONS_EN = {
         createDish: "Create dish"
     },
     finishReservationModal:{
-        title: "Finishing reservation",
-        waitingMessage: "Please wait until the restaurant finishes the reservation",
-        finishedTitle: "Reservation Finished",
-        finishedMessageNoPints: "The reservation was successfully finished. Please come back soon!",
-        finishedMessageWithPoints: "The reservation was successfully finished and the points have been added to your account. Please came back soon!",
+        title: "Reservation Finished",
+        finishedMessageNoPoints: "The restaurant will soon give you the bill. Thanks for coming, come back soon!",
+        finishedMessageWithPoints: "The restaurant will soon give you the bill and your points will be added. Thanks for coming, come back soon!",
         goToMenu: "Go to menu"
     },
     kitchenPage:{
@@ -305,6 +309,10 @@ export const TRANSLATIONS_EN = {
             openHour: "Open hour",
             closeHour: "Close hour",
             chairs: "Chairs"
+        },
+        tableNumber: {
+            label: "Table number",
+            error: "Table not available"
         },
         confirmButton: "Confirm",
         select: "Select one",

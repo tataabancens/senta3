@@ -3,7 +3,7 @@ export default interface CustomerModel{
     name: string,
     phone: string,
     mail: string,
-    points: number,
+    points: string,
     user: string,
     reservations: string,
     self: string,

@@ -15,10 +15,9 @@ import InfoForm from './InfoForm';
 import InfoFormStatic from './InfoFormStatic';
 import Done from './Done';
 import { useState, FC } from "react";
-import useCustomerService from "../../hooks/serviceHooks/useCustomerService";
+import useCustomerService from "../../hooks/serviceHooks/customers/useCustomerService";
 import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import useUserService from "../../hooks/serviceHooks/users/useUserService";
-import axios from "../../api/axios";
 
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
 import { CustomerParams } from "../../models/Customers/CustomerParams";
@@ -30,7 +29,7 @@ import { extractCustomerIdFromContent, extractUserIdFromLocation } from "../Sign
 
 import * as Yup from "yup";
 import { Formik, Form, FormikHelpers } from "formik";
-import { awaitWrapper, handleResponse, loginErrorHandler, tryLogin } from '../../Utils';
+import { awaitWrapper, handleResponse } from '../../Utils';
 import ApiErrorDetails from '../../models/ApiError/ApiErrorDetails';
 import useAuth from '../../hooks/serviceHooks/authentication/useAuth';
 import { CustomerModel, UserModel } from "../../models";

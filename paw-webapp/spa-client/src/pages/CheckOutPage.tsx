@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
-import CheckOutSummary from "../components/CheckoutSummary";
+import CheckOutSummary from "../components/checkout/CheckoutSummary";
 import { useReservation } from "../hooks/serviceHooks/reservations/useReservation";
-import { useOrderItemsBySecCode } from "../hooks/serviceHooks/reservations/useOrderItemsBySecCode";
+import { useOrderItemsBySecCode } from "../hooks/serviceHooks/orderItems/useOrderItemsBySecCode";
 
 
 const CheckOutPage: FC = () =>{

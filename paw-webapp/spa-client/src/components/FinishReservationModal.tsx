@@ -35,10 +35,9 @@ const style = {
 
 const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen}) => {
 
-  const { reservation } = useContext(ReservationContext);
   const { t } = useTranslation();
-  const { auth } = useAuth();
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   const handleAccept = async () => {
     navigate(paths.ROOT);
@@ -46,26 +45,19 @@ const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen}) => {
 
   return (
     <>
-        <Modal
+    <Modal
       open={isOpen}
       onClose={handleOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {reservation!.status === "CHECK_ORDERED" && <Typography id="modal-modal-title" variant="h5" marginBottom={10} marginTop={2}>{t('finishReservationModal.title')}</Typography>}
-        {reservation!.status === "FINISHED" && <Typography id="modal-modal-title" variant="h5" marginBottom={10} marginTop={2}>{t('finishReservationModal.finishedTitle')}</Typography>}
-        {reservation!.status === "CHECK_ORDERED" && <CircularProgress />}
-        {reservation!.status === "CHECK_ORDERED" && <Typography id="modal-modal-description" marginTop={10} marginBottom={2}>{t('finishReservationModal.waitingMessage')}</Typography>}
-        {reservation!.status === "FINISHED" && auth.roles[0] === UserRoles.ANONYMOUS &&
-          <Typography id="modal-modal-description" marginTop={10} marginBottom={2}>{t('finishReservationModal.finishedMessageNoPoints')}</Typography>}
-        {reservation!.status === "FINISHED" && auth.roles[0] !== UserRoles.ANONYMOUS &&
-          <Typography id="modal-modal-description" marginTop={10} marginBottom={2}>{t('finishReservationModal.finishedMessageWithPoints')}</Typography>}
-        {reservation!.status === "FINISHED" && 
-          <Box sx={{ display: "flex", width: 1, justifyContent: "center", marginY: 1 }}>
-            <Button variant="contained" fullWidth color="success" onClick={handleAccept}><Typography>{t('finishReservationModal.goToMenu')}</Typography></Button>
-          </Box>
-        }
+        <Typography id="modal-modal-title" variant="h5" marginBottom={10} marginTop={2}>{t('finishReservationModal.title')}</Typography>
+        {auth.roles[0] === UserRoles.ANONYMOUS && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageNoPoints')}</Typography>}
+        {auth.roles[0] === UserRoles.CUSTOMER && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageWithPoints')}</Typography>}
+        <Box sx={{ display: "flex", width: 1, justifyContent: "center", marginY: 1 }}>
+          <Button variant="contained" fullWidth color="success" onClick={handleAccept}><Typography>{t('finishReservationModal.goToMenu')}</Typography></Button>
+        </Box>
       </Box>
     </Modal>
     </>

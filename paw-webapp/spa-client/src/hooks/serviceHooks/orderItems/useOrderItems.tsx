@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { OrderItemModel } from "../../../models";
-import useOrderItemService from "../orderItems/useOrderItemService";
+import useOrderItemService from "./useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
 
 export const useOrderItems = (reservationFilterStatus: string, orderItemStatus: string, interval?: number) => {

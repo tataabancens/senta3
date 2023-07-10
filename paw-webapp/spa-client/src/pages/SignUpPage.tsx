@@ -11,13 +11,12 @@ import { Link, useNavigate } from "react-router-dom";
 import Image from "../commons/restaurantPicture2.jpg";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { awaitWrapper, loginErrorHandler, tryLogin } from "../Utils";
+import { awaitWrapper } from "../Utils";
 import useUserService from "../hooks/serviceHooks/users/useUserService";
 import { UserParams } from "../models/Users/UserParams";
 import ApiErrorDetails from "../models/ApiError/ApiErrorDetails";
-import useCustomerService from "../hooks/serviceHooks/useCustomerService";
+import useCustomerService from "../hooks/serviceHooks/customers/useCustomerService";
 import { CustomerParams } from "../models/Customers/CustomerParams";
-import axios from "../api/axios"
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";

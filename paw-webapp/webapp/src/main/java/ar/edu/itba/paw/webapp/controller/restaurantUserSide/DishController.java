@@ -56,7 +56,7 @@ public class DishController {
                               @DefaultValue("")@QueryParam("dishCategory") final String dishCategory) {
         Optional<List<Dish>> maybeDishList = ds.getDishes(restaurantId, dishCategory);
         if(!maybeDishList.isPresent()){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
         List<DishDto> dishDtoList = maybeDishList.get()
                 .stream().map(dish -> DishDto.fromDish(uriInfo, dish)).collect(Collectors.toList());

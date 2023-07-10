@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { DishCategoryModel, OrderItemModel, ReservationModel } from "../models";
+import { CustomerModel, DishCategoryModel, OrderItemModel, ReservationModel, RestaurantModel } from "../models";
+import PointsModel from "../models/Customers/PointsModel";
 
 
 interface ReservationContextProps{
@@ -10,6 +11,9 @@ interface ReservationContextProps{
     removeItem: (item: OrderItemModel) => void;
     discount: boolean;
     toggleDiscount: () => void;
+    customer: CustomerModel | undefined;
+    points: PointsModel | undefined;
+    restaurant: RestaurantModel | undefined;
 }
 const emptyReservationContext: ReservationContextProps = {
     reservation: undefined,
@@ -18,7 +22,10 @@ const emptyReservationContext: ReservationContextProps = {
     reloadItems: () => null,
     removeItem: () => null,
     discount: false,
-    toggleDiscount: () => null
+    toggleDiscount: () => null,
+    customer: undefined,
+    points: undefined,
+    restaurant: undefined
 }
 export const ReservationContext = createContext<ReservationContextProps>(emptyReservationContext);
 

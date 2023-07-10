@@ -96,7 +96,7 @@ const ConfirmationMessage: FC<Props> = ({ isOpen, handleOpen, category, dishes})
         <Alert onClose={handleSnackbarClose} severity="success">
           {t('restaurantMenu.deleteMessage.succesfulDeleteMessage')}
         </Alert>
-      </Snackbar>
+    </Snackbar>
     </>
   );
 }

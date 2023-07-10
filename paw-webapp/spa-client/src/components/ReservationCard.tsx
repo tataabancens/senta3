@@ -33,7 +33,7 @@ const ReservationCard: FC<Props> = ({reservation, reservationType}): JSX.Element
     };
     
     return(
-        <Grid item container component={Paper} xs={2.5} elevation={4} padding={1.5} margin={1} sx={{ minHeight: 100 }}>
+        <Grid item container component={Paper} xs={3} elevation={4} padding={1.5} margin={1} sx={{ height: 200, minWidth: 300}}>
               <Grid item xs={12}><Typography variant="h5" align="center">{reservation.customerName}</Typography></Grid>
               <Grid item xs={6}><Typography variant="body1" align="left">{t('customerReservations.reservationCard.date')}{formatDate(reservation.date)}</Typography></Grid>
               <Grid item xs={6}><Typography variant="body1" align="right">{t('customerReservations.reservationCard.hour',{hour: reservation.hour})}</Typography></Grid>

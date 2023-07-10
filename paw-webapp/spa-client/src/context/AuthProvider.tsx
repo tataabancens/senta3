@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { emptyAuth } from "../constants/constants";
 import { CustomerModel, RestaurantModel } from "../models";
 import { extractCustomerIdFromContent } from "../pages/SignUpPage";
-import useCustomerService from "../hooks/serviceHooks/useCustomerService";
+import useCustomerService from "../hooks/serviceHooks/customers/useCustomerService";
 import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
 import { UserRoles } from "../models/Enums/UserRoles";
 

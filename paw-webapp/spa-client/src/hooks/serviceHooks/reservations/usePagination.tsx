@@ -11,7 +11,7 @@ export interface ReservationsPaginated {
     lastPage: number
 }
 
-export const useReservationsPagination = (page: number, value: number, sortDirection: boolean): ReservationsPaginated => {
+export const useReservationsPagination = (page: number, value: number, sortDirection: string, orderBy?: string): ReservationsPaginated => {
     const [reservations, setReservations] = useState<ReservationModel[] | undefined>();
     const [error, setError] = useState<string>();
     const [lastPage, setLastPage] = useState<number>(0);
@@ -31,8 +31,13 @@ export const useReservationsPagination = (page: number, value: number, sortDirec
             const reservationParams = new ReservationParams();
             reservationParams.filterStatus = value.toString();
             reservationParams.page = page;
-            sortDirection? reservationParams.direction = "DESC" :  reservationParams.direction = "ASC";   
-
+            if(orderBy){
+                reservationParams.orderBy = orderBy;
+            }
+            if(sortDirection){
+                reservationParams.direction = sortDirection;
+            }
+            console.log(reservationParams);
             const { isOk, data, error } = await reservationService.getReservationsPaginated(reservationParams, abortController);
             if (isOk) {
                 data.status !== 204 ? setReservations(data.reservations) : setReservations([]);
@@ -47,7 +52,7 @@ export const useReservationsPagination = (page: number, value: number, sortDirec
         return () => {
             abortController.abort();
         }
-    }, [value, page, sortDirection, reload]);
+    }, [value, page, sortDirection, reload, orderBy]);
 
     return {
         reservations: reservations!,

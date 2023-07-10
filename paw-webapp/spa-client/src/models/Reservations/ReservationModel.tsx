@@ -10,5 +10,6 @@ export default interface ReservationModel{
     customerName: string,
     recommendedDish?: string,
     customer: string,
+    usedDiscount: boolean,
     status: string
 }

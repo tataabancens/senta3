@@ -2,13 +2,17 @@ import { Alert, Button, Grid, Paper, Snackbar, Table, TableBody, TableCell, Tabl
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { paths } from "../constants/constants";
-import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
-import useAuth from "../hooks/serviceHooks/authentication/useAuth";
-import { OrderItemModel, ReservationModel } from "../models";
-import { ReservationParams } from "../models/Reservations/ReservationParams";
-import ShoppingCartItem from "./shoppingCart/ShoppingCartItem";
-import { UserRoles } from "../models/Enums/UserRoles";
+import { paths } from "../../constants/constants";
+import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
+import { OrderItemModel, ReservationModel } from "../../models";
+import { ReservationParams } from "../../models/Reservations/ReservationParams";
+import ShoppingCartItem from "../shoppingCart/ShoppingCartItem";
+import { useCustomer } from "../../hooks/serviceHooks/customers/useCustomer";
+import { UserRoles } from "../../models/Enums/UserRoles";
+import { useRestaurant } from "../../hooks/serviceHooks/restaurants/useRestaurant";
+import useAuth from "../../hooks/serviceHooks/authentication/useAuth";
+import useCustomerService from "../../hooks/serviceHooks/customers/useCustomerService";
+import CheckoutItem from "./CheckoutItem";
 
 type Props = {
     reservation: ReservationModel,
@@ -18,10 +22,15 @@ type Props = {
 const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
 
     const { t } = useTranslation();
-    const { auth } = useAuth();
+    const { restaurant } = useRestaurant(1);
     const rs = useReservationService();
+    const cs = useCustomerService();
     const navigate = useNavigate();
+    const { customer, points } = useCustomer(reservation?.customer);
+    const [endReservationPressed, setEndReservationPressed] = useState(false);
+    const { auth } = useAuth();
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const textDecoration = reservation?.usedDiscount ? 'line-through' : 'none';
 
 
     const formatDate = (date?: string) => {
@@ -44,12 +53,19 @@ const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
     }
 
     const endReservation = async () => {
+        setEndReservationPressed(true);
         let resParams = new ReservationParams();
         resParams.securityCode = reservation.securityCode;
         resParams.status = "FINISHED";
         const { isOk } = await rs.patchReservation(resParams);
         if(isOk){
             setSnackbarOpen(true);
+            const itemsToCharge = orderItems.filter(orderItem => orderItem.status !== "SELECTED" && orderItem.status !== "DELETED");
+            let pointsToPatch = points!.points + restaurant!.pointsPerItem * itemsToCharge.length;
+            if(reservation?.usedDiscount && restaurant){
+                pointsToPatch -= restaurant.pointsForDiscount
+            }
+            await cs.patchPoints(customer!.id, pointsToPatch);
         }
     }
 
@@ -82,18 +98,24 @@ const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
                     </TableHead>
                     <TableBody>
                         {orderItems.filter(item => item.status !== "DELETED" && item.status !== "SELECTED").map((filteredItem, i) => (
-                            <ShoppingCartItem key={i} orderItem={filteredItem} isCartItem={false} />
+                            <CheckoutItem key={i} orderItem={filteredItem} restaurant={restaurant} usedDiscount={reservation?.usedDiscount} />
                         ))}
                     </TableBody>
                 </Table>
             </Grid>
             <Grid item container xs={12} marginTop={3}>
-                <Grid item xs={6}><Typography variant="h5" align="center" color="primary">Total:</Typography></Grid>
-                <Grid item xs ={6}><Typography variant="h5" align="center" color="primary">${calculateTotal(orderItems)}</Typography></Grid>
+                <Grid item xs={12} sx={{display:"flex"}} justifyContent="center">
+                    <Typography variant="h5" align="center" marginRight={2}>Total:</Typography>
+                    <Typography variant="h6" align="center" style={{textDecoration}} marginRight={reservation?.usedDiscount? 1 : 0}>
+                        ${calculateTotal(orderItems)}
+                    </Typography>
+                    {reservation?.usedDiscount && restaurant && <Typography variant="h6" color="blue">${(1-restaurant.discountCoefficient) * calculateTotal(orderItems)}</Typography>}
+                </Grid>
             </Grid>
             { auth.roles[0] === UserRoles.RESTAURANT &&
                 <Grid item xs={12} marginTop={5}>
-                    <Button variant="contained" fullWidth onClick={endReservation}>{t('checkoutSummary.finishButton')}</Button>
+                    {!endReservationPressed && <Button variant="contained" fullWidth onClick={endReservation}>{t('checkoutSummary.finishButton')}</Button>}
+                    {endReservationPressed && <Button variant="contained" disabled fullWidth onClick={endReservation}>{t('checkoutSummary.finishButton')}</Button>}
                 </Grid>
             }
         </Grid>
