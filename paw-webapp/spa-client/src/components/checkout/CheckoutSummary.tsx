@@ -60,7 +60,7 @@ const CheckoutSummary: FC<Props> = ({ reservation, orderItems }) => {
         if(isOk){
             setSnackbarOpen(true);
             const itemsToCharge = orderItems.filter(orderItem => orderItem.status !== "SELECTED" && orderItem.status !== "DELETED");
-            let pointsToPatch = points!.points + restaurant!.pointsPerItem * itemsToCharge.length;
+            let pointsToPatch = points!.points + restaurant!.addPointsCoefficient * itemsToCharge.length;
             if(reservation?.usedDiscount && restaurant){
                 pointsToPatch -= restaurant.pointsForDiscount
             }

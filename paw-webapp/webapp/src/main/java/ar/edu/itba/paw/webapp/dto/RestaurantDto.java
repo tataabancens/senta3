@@ -19,7 +19,7 @@ public class RestaurantDto {
     private int openHour, closeHour;
     private long id;
     private float discountCoefficient;
-    private int pointsPerItem;
+    private float addPointsCoefficient;
     private int pointsForDiscount;
 
     public RestaurantDto() {
@@ -35,8 +35,8 @@ public class RestaurantDto {
         dto.openHour = res.getOpenHour();
         dto.closeHour = res.getCloseHour();
         dto.id = res.getId();
-        dto.discountCoefficient = 0.25f;
-        dto.pointsPerItem = 10;
+        dto.discountCoefficient = res.getDiscountCoefficient();
+        dto.addPointsCoefficient = res.getAddPointsCoefficient();
         dto.pointsForDiscount = res.getPointsForDiscount();
 
         final UriBuilder restaurantUriBuilder = uriInfo.getBaseUriBuilder()
@@ -175,11 +175,11 @@ public class RestaurantDto {
         this.discountCoefficient = discountCoefficient;
     }
 
-    public int getPointsPerItem() {
-        return pointsPerItem;
+    public float getAddPointsCoefficient() {
+        return addPointsCoefficient;
     }
 
-    public void setPointsPerItem(int pointsPerItem) {
-        this.pointsPerItem = pointsPerItem;
+    public void setAddPointsCoefficient(float addPointsCoefficient) {
+        this.addPointsCoefficient = addPointsCoefficient;
     }
 }

@@ -48,6 +48,12 @@ public class Restaurant {
     @Column(nullable = false)
     private Integer pointsForDiscount;
 
+    @Column(nullable = false)
+    private Float discountCoefficient;
+
+    @Column(nullable = false)
+    private Float addPointsCoefficient;
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -236,5 +242,21 @@ public class Restaurant {
 
     public void setPointsForDiscount(Integer pointsForDiscount) {
         this.pointsForDiscount = pointsForDiscount;
+    }
+
+    public Float getDiscountCoefficient() {
+        return discountCoefficient;
+    }
+
+    public void setDiscountCoefficient(Float discountCoefficient) {
+        this.discountCoefficient = discountCoefficient;
+    }
+
+    public Float getAddPointsCoefficient() {
+        return addPointsCoefficient;
+    }
+
+    public void setAddPointsCoefficient(Float addPointsCoefficient) {
+        this.addPointsCoefficient = addPointsCoefficient;
     }
 }

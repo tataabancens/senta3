@@ -49,7 +49,7 @@ export const initRestaurant: RestaurantModel = {
     self: '',
     pointsForDiscount: 0,
     discountCoefficient: 1,
-    pointsPerItem: 0
+    addPointsCoefficient: 0
 }
 
 export const initCustomer: CustomerModel = {
