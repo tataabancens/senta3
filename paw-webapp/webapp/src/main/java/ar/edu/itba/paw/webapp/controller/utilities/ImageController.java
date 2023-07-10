@@ -16,14 +16,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Path("/api/resources/images")
 @Component
@@ -45,9 +43,16 @@ public class ImageController {
         ControllerUtils.longParser(imageIdP).orElseThrow(() -> new LongParseException(imageIdP));
         long imageId = Long.parseLong(imageIdP);
 
+        CacheControl cacheControl = new CacheControl();
+        cacheControl.setMaxAge(60);
+        cacheControl.setMustRevalidate(true);
+        cacheControl.setNoTransform(true);
+
         Image image = ims.getImageById(imageId).orElseThrow(ImageNotFoundException::new);
         ImageDto imageDto = ImageDto.fromImage(image);
-        return Response.ok(imageDto.getBitmap()).build();
+        return Response.ok(imageDto.getBitmap())
+                .cacheControl(cacheControl)
+                .build();
     }
 
     @PUT
