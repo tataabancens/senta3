@@ -6,7 +6,6 @@ import { paths } from "../../constants/constants";
 import useReservationService from "../../hooks/serviceHooks/reservations/useReservationService";
 import { OrderItemModel, ReservationModel } from "../../models";
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
-import ShoppingCartItem from "../shoppingCart/ShoppingCartItem";
 import { useCustomer } from "../../hooks/serviceHooks/customers/useCustomer";
 import { UserRoles } from "../../models/Enums/UserRoles";
 import { useRestaurant } from "../../hooks/serviceHooks/restaurants/useRestaurant";
@@ -19,7 +18,7 @@ type Props = {
     orderItems: OrderItemModel[]
 };
 
-const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
+const CheckoutSummary: FC<Props> = ({ reservation, orderItems }) => {
 
     const { t } = useTranslation();
     const { restaurant } = useRestaurant(1);
@@ -128,4 +127,4 @@ const CheckOutSummary: FC<Props> = ({ reservation, orderItems }) => {
     );
 }
 
-export default CheckOutSummary;
+export default CheckoutSummary;
