@@ -32,7 +32,7 @@ const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "CANCELED")).map(filteredItem => 
+                {orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "DELETED")).map(filteredItem => 
                   <OrdersItem orderItem={filteredItem} />
                 )}
               </TableBody>

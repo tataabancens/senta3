@@ -20,7 +20,7 @@ const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, isCartItem, usedD
     const [dish, setDish] = useState<DishModel | undefined>();
     const dishService = useDishService();
     const orderItemService = useOrderItemService();
-    const { removeItem, restaurant } = useContext(ReservationContext);
+    const { updateItem, restaurant } = useContext(ReservationContext);
     const abortController = new AbortController();
     const textDecoration = usedDiscount ? 'line-through' : 'none';
 
@@ -40,8 +40,8 @@ const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, isCartItem, usedD
         const { isOk } = await orderItemService.editOrderItem(orderItemParams, abortController);
 
         if (isOk) {
-            removeItem(orderItem)
-            return;
+            orderItem.status = "DELETED";
+            updateItem(orderItem);
         }
     }
 

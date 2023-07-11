@@ -19,7 +19,7 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
   const { value, index } = props;
 
   const orderItemService = useOrderItemService();
-  const { reservation, updateReservation, orderItems, removeItem, discount, restaurant } = useContext(ReservationContext);
+  const { reservation, updateReservation, orderItems, updateItem, discount, restaurant } = useContext(ReservationContext);
   let total = 0;
   const textDecoration = discount && total !== 0? 'line-through' : 'none';
   const abortController = new AbortController();
@@ -39,34 +39,37 @@ const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
   },[orderItems])
 
   const cancelDishes = async () => {
-    orderItems?.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
+    const selectedItems = orderItems?.filter(orderItem => orderItem.status === "SELECTED");
+    console.log(selectedItems);
+    selectedItems?.forEach(async selectedItem => {
       let orderItemParams = new OrderitemParams();
       orderItemParams.securityCode = reservation!.securityCode;
-      orderItemParams.orderItemId = filteredItem.orderItemId;
+      orderItemParams.orderItemId = selectedItem.orderItemId;
       orderItemParams.status = "DELETED";
       const { isOk } = await orderItemService.editOrderItem(orderItemParams, abortController);
 
       if (isOk) {
-        removeItem(filteredItem)
+        selectedItem.status = "DELETED";
+        updateItem(selectedItem);
       }
-
-    }
-    );
+    })
   }
 
   const confirmDishes = async () => {
-    orderItems?.filter(async (orderItem) => orderItem.status === "SELECTED").map(async (filteredItem) => {
+    const selectedItems = orderItems?.filter(orderItem => orderItem.status === "SELECTED");
+    console.log(selectedItems);
+    selectedItems?.forEach(async selectedItem => {
       let orderItemParams = new OrderitemParams();
       orderItemParams.securityCode = reservation!.securityCode;
-      orderItemParams.orderItemId = filteredItem.orderItemId;
+      orderItemParams.orderItemId = selectedItem.orderItemId;
       orderItemParams.status = "ORDERED";
       const { isOk } = await orderItemService.editOrderItem(orderItemParams, abortController);
 
       if (isOk) {
-        removeItem(filteredItem)
+        selectedItem.status = "ORDERED";
+        updateItem(selectedItem);
       }
-    }
-    );
+    })
   }
 
   return (

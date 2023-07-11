@@ -32,7 +32,7 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
             clearInterval(interval);
             abortController.abort();
         }
-    }, [reservation, reload]);
+    }, [reload]);
 
     const addItem = (newItem: OrderItemModel) => {
         setOrderItems((prevItems) => [...prevItems, newItem]);
@@ -42,6 +42,13 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
         setOrderItems((prevItems) => prevItems.filter((orderItem) => orderItem !== item));
     };
 
+    const updateItem = (updatedItem: OrderItemModel) => {
+        setOrderItems((prevItems) =>
+            prevItems.map((orderItem) =>
+                orderItem.orderItemId === updatedItem.orderItemId ? updatedItem : orderItem
+            )
+        );
+    };
 
     return {
         orderItems: orderItems,
@@ -49,6 +56,7 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
         loading: !orderItems && !error,
         reloadItems,
         addItem,
-        removeItem
+        removeItem,
+        updateItem
     }
 }

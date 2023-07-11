@@ -26,7 +26,7 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
     const shoppingCartTabs = [t('shoppingCart.cartPanel.title'),t('shoppingCart.ordersPanel.title'),t('shoppingCart.checkPanel.title')];
 
     return(
-        <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { height: "80vh"}}}>
+        <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { minHeight: "80vh"}}}>
           <Grid container component={Box} sx={{width: 1400}} padding={1}>
             <Grid item xs={12} sx={{display:"flex", justifyContent:"flex-end"}}>
                 <IconButton onClick={toggleCart}>
