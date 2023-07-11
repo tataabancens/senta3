@@ -144,7 +144,7 @@ const CreateReservation: FC = () => {
         resParams.date = date.toString();
         resParams.restaurantId = 1;
         const { isOk, error, data: availableHoursApi } = await restaurantService.getAvailableHours(resParams);
-        if (!isOk || availableHoursApi.length > 0) {
+        if (!isOk || !availableHoursApi) {
           props.setFieldError("date", t('forms.selectedDate.error'));
           props.setSubmitting(false);
           return;

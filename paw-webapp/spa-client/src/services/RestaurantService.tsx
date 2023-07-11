@@ -40,10 +40,9 @@ export class RestaurantService {
     public async getAvailableHours(params: ReservationParams): Promise<ResponseDetails<number[]>> {
         try {
             const response = await this.axios.get(paths.BASE_URL + `/restaurants/${params.restaurantId}/availableHours/${params.date}?qPeople=${params.qPeople}`, { headers: this.ACCEPT })
-            return response.data;
+            return buildSuccessResponse(response.data.availableHours as number[]);
         } catch(e) {
             return buildErrorResponse(e as Error);
         }
-            
     }
 }
