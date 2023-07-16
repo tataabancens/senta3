@@ -1,7 +1,7 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
 import useAuth from "./serviceHooks/authentication/useAuth";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { emptyAuth } from "../constants/constants";
 
 const useAxiosPrivate = () => {

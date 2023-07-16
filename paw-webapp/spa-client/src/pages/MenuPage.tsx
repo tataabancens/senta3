@@ -6,7 +6,6 @@ import DishDisplay from "../components/DishDisplay";
 import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
 import { useRestaurant } from "../hooks/serviceHooks/restaurants/useRestaurant";
 import { useDishCategories } from "../hooks/serviceHooks/dishes/useDishCategories";
-import useOrderItemService from "../hooks/serviceHooks/orderItems/useOrderItemService";
 import { UserRoles } from "../models/Enums/UserRoles";
 
 const MenuPage: FC = () => {
