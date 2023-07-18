@@ -1,4 +1,4 @@
-import { Button, Grid, Tab, Tabs } from "@mui/material";
+import { Button, CircularProgress, Grid, Tab, Tabs } from "@mui/material";
 import { useState, FC } from "react";
 import ConfirmationMessage from "../components/ConfirmationMessage";
 import DishDisplay from "../components/DishDisplay";
@@ -17,14 +17,11 @@ const RestaurantMenu: FC = () => {
   const { t } = useTranslation();
 
   const { useDish: { dish }, useCurrentCategory: { categoryId, setCategoryId },
-    useEditDishIsOpen: { editDishIsOpen }, 
-    getRestaurant, getDishCategories, getDishes } = useRestaurantMenuContext();
+    useEditDishIsOpen: { editDishIsOpen }, getDishCategories, getDishes } = useRestaurantMenuContext();
 
-  const { restaurant, error: restaurantError, loading: restaurantLoading } = getRestaurant;
+  const { categoryList, categoryMap } = getDishCategories;
 
-  const { categoryList, categoryMap, error: dishCategoriesError, loading: dishCategoriesLoading } = getDishCategories;
-
-  const { dishes = [], error, loading, setDishes } = getDishes;
+  const { dishes = [], setDishes } = getDishes;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setCategoryId(newValue);
@@ -46,12 +43,13 @@ const RestaurantMenu: FC = () => {
   return (
     <Grid container spacing={2} justifyContent="center">
         <EditCategoryForm isOpen={editCategoryIsOpen} handleOpen={toggleEditCategoryForm} />
-      <RestaurantHeader role={UserRoles.RESTAURANT} toggleReload={toggleReload} />
+        <RestaurantHeader role={UserRoles.RESTAURANT} toggleReload={toggleReload} />
         <ConfirmationMessage isOpen={deleteIsOpen} handleOpen={toggleDeleteModal} category={categoryMap?.get(categoryId)!} dishes={dishes.length} />
+        {categoryList &&
         <Grid item container xs={11} marginTop={2} justifyContent="space-between">
           <Grid item xs={9}>
             <Tabs value={categoryId} onChange={(event, value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
-              {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
+              {categoryList.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
             </Tabs>
           </Grid>
           <Grid item container xs={3} justifyContent="right">
@@ -65,8 +63,10 @@ const RestaurantMenu: FC = () => {
               {editDishIsOpen && <EditDishForm categoryList={categoryList!} dish={dish!} setDishes={setDishes} />}
             </Grid>
           </Grid>
-        </Grid>
-        <DishDisplay isMenu={true} dishes={dishes}/>
+        </Grid>}
+        {categoryList && dishes &&
+        <DishDisplay isMenu={true} dishes={dishes}/>}
+        {(!categoryList || !dishes) && <div style={{position: "absolute", top:"50%", right:"50%"}}><CircularProgress/></div>}
     </Grid>
   );
 }

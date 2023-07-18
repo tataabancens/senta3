@@ -128,10 +128,11 @@ const EditDishForm: FC<Props> = ({
                     marginBottom={3}
                   >
                   </Grid>
+                  <UploadImage props={props}></UploadImage>
                   <Grid
                     item
                     xs={12}
-                    marginBottom={3}
+                    marginY={3}
                   ><Field as={TextField}
                     item
                     required
@@ -199,7 +200,6 @@ const EditDishForm: FC<Props> = ({
                       error={props.errors.description}
                     />
                   </Grid>
-                  <UploadImage props={props}></UploadImage>
                 </Grid>
               </DialogContent>
               <DialogActions>

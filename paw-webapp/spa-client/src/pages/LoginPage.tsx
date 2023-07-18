@@ -15,10 +15,6 @@ import { paths } from "../constants/constants";
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "../api/axios";
-import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
-import useCustomerService from "../hooks/serviceHooks/customers/useCustomerService";
-import { extractCustomerIdFromContent } from "./SignUpPage";
 import { useTranslation } from "react-i18next";
 import useAuthenticationService from "../hooks/serviceHooks/authentication/useAutenticationService";
 

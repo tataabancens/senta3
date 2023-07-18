@@ -469,16 +469,13 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void seatCustomer(Reservation reservation, int tableNumber) {
         updateReservationStatus(reservation, ReservationStatus.SEATED);
-        updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         reservation.setTableNumber(tableNumber);
     }
 
     @Transactional
     @Override
     public void finishCustomerReservation(Reservation reservation) {
-        List<OrderItem> orderItems = getAllOrderItemsByReservation(reservation);
         updateReservationStatus(reservation, ReservationStatus.FINISHED);
-        customerService.addPointsToCustomer(reservation.getCustomer(), getTotal(orderItems));
     }
 
     @Scheduled(cron = "0 1/31 * * * ?")

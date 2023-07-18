@@ -92,7 +92,7 @@ const CreateReservation: FC = () => {
     mail: Yup.string().when("customerStep", { is: true, then: Yup.string().email(t('validationSchema.mailValidation')).required(t('validationSchema.required')) }),
     phone: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     userStep: Yup.boolean(),
-    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength')).required(t('validationSchema.required')) }),
+    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength',{length: 8})).required(t('validationSchema.required')) }),
     password: Yup.string().when("userStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     repeatPassword: Yup.string().when("userStep", {
       is: true, then: Yup.string()
@@ -310,8 +310,7 @@ const CreateReservation: FC = () => {
                         1: <DateForm props={props} />,
                         2: <HourForm props={props} availableHours={availableHours} />,
                         3: <InfoForm props={props} />,
-                        //@ts-ignore
-                        4: <InfoFormStatic customer={customer} />,
+                        4: <InfoFormStatic customer={customer!} />,
                         5: <Done props={props} secCode={secCode} />,
                         6: <ShortRegisterForm props={props} />,
                         7: <Done props={props} secCode={secCode} />

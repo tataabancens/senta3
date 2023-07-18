@@ -74,20 +74,20 @@ const Kitchen: FC = () => {
     return (
         <>
         {(auth.roles[0] === UserRoles.KITCHEN || auth.roles[0] === UserRoles.RESTAURANT) && 
-        <Grid container xs={12} padding={2} justifyContent="space-evenly" height="90vh">
-            <Grid item container xs={3.8} component={Paper} elevation={5}>
+        <Grid container justifyContent="space-evenly">
+            <Grid item container xs={12} sm={9} lg={3.8} md={6} component={Paper} elevation={5} marginX={1} marginY={2}>
                 <Grid item xs={12}><Typography variant="h4" align="center">{t('kitchenPage.orderedTitle')}</Typography></Grid>
                 {orderedOrderItems  && !orderedOrderItemsError && <KitchenTable orderItems={orderedOrderItems} actionFunction={cookItem} processStage={"ORDERED"}/>}
                 {orderedOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
                 {orderedOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
-            <Grid item container xs={3.8} component={Paper} elevation={5}>
+            <Grid item container xs={12} sm={9} lg={3.8} md={6} component={Paper} elevation={5} marginX={1} marginY={2}>
                 <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.cookingTitle')}</Typography></Grid>
                 {incomingOrderItems && !incomingOrderItemsError && <KitchenTable orderItems={incomingOrderItems} actionFunction={deliverItem} processStage={"INCOMING"}/>}
                 {incomingOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
                 {incomingOrderItemsError && <Grid xs={12} marginY={20}><Typography align="center">{t('systemError')}</Typography></Grid>}
             </Grid>
-            <Grid item container xs={3.8} component={Paper} elevation={5}>
+            <Grid item container xs={12} sm={9} lg={3.8} md={6} component={Paper} elevation={5} marginX={1} marginY={2}>
                 <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
                 {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}
                 {deliveringOrderItemsLoading  && <Grid xs={12} sx={{display:"flex"}} minHeight={300} justifyContent="center" alignItems="center"><CircularProgress /></Grid>}
@@ -95,7 +95,7 @@ const Kitchen: FC = () => {
             </Grid>
         </Grid>}
          {auth.roles[0] === UserRoles.WAITER &&
-            <Grid container xs={12} padding={2} justifyContent="space-evenly" height="90vh">
+            <Grid container padding={2} justifyContent="space-evenly" height="90vh">
                 <Grid item container xs={4} component={Paper} elevation={5}>
                     <Grid xs={12}><Typography variant="h4" align="center">{t('kitchenPage.deliveredTitle')}</Typography></Grid>
                     {deliveringOrderItems && !deliveringOrderItemsError && <KitchenTable orderItems={deliveringOrderItems} actionFunction={itemDelivered} processStage={"DELIVERING"}/>}

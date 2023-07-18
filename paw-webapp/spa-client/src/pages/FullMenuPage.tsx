@@ -49,11 +49,11 @@ const FullMenuPage: FC = () => {
     const { reservation, updateReservation } = useReservation(securityCode!, RESERVATION_INTERVAL);
     const { customer, points } = useCustomer(reservation?.customer);
     const { dishes, loading: dishesLoading } = useDishes(value, categoryMap?.get(value));
-    const { orderItems, reloadItems, removeItem } = useOrderItemsBySecCode(reservation);
+    const { orderItems, reloadItems, updateItem } = useOrderItemsBySecCode(reservation);
 
     useEffect(() => {
       if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
-    }, categoryList);
+    }, [categoryList]);
 
     if(reservation?.status === "CANCELED" || reservation?.status === "FINISHED"){
         navigate(`${paths.ROOT}/reservations/${reservation!.securityCode}/checkout`);
@@ -62,17 +62,19 @@ const FullMenuPage: FC = () => {
 
     return(
         <Grid container spacing={2} justifyContent="center">
-            <ReservationContext.Provider value={{reservation, updateReservation, orderItems, reloadItems, removeItem, discount, toggleDiscount, restaurant, customer, points}}>
+            <ReservationContext.Provider value={{reservation, updateReservation, orderItems, reloadItems, discount, toggleDiscount, restaurant, customer, points, updateItem}}>
                 <RestaurantHeader role={UserRoles.CUSTOMER} toggleReload={updateOrderItems}/>
-                {dishCategoriesLoading && dishesLoading && <CircularProgress />}
+                <Grid item xs={11} marginTop={2}>  
                 {categoryList &&
-                <Grid item xs={11} marginTop={2}>
                     <Tabs value={value} onChange={(event,value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
                     {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
-                    </Tabs>
-                </Grid>}
+                    </Tabs>}
+                </Grid>
                 {dishes && <DishDisplay dishes={dishes} isMenu={false}/>}
             </ReservationContext.Provider>
+            {dishCategoriesLoading && dishesLoading &&
+                <div style={{position: "absolute", top:"50%", right:"50%"}}><CircularProgress /></div>
+            }
         </Grid>
     );
 }

@@ -108,7 +108,7 @@ const SignUpPage: FC = () => {
     customerParams.phone = phone;
     customerParams.userId = userId;
 
-    const { ok: customerCreated, error: customerError, response: customerResponse } = await awaitWrapper(customerService.createCustomer(customerParams));
+    const { ok: customerCreated, error: customerError} = await awaitWrapper(customerService.createCustomer(customerParams));
     if (!customerCreated) {
       const errorData = customerError.response?.data as ApiErrorDetails;
       props.setFieldError("customerName", errorData.errors?.find((e) => e.property === "customerName")?.description);

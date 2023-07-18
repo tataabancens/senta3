@@ -62,7 +62,7 @@ export class DishService {
 
     public async editDish(params: DishParams): Promise<ResponseDetails<Number>> {
         try {
-            const response = await this.axios.patch(this.basePath + `/${params.id}`, params.patchDishPayload, { headers: this.CONTENT_TYPE })
+            await this.axios.patch(this.basePath + `/${params.id}`, params.patchDishPayload, { headers: this.CONTENT_TYPE })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -71,7 +71,7 @@ export class DishService {
 
     public async deleteDish(dishId: number): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.delete(this.basePath + '/' + dishId, { headers: this.ACCEPT })
+            await this.axios.delete(this.basePath + '/' + dishId, { headers: this.ACCEPT })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -120,7 +120,7 @@ export class DishService {
 
     public async editCategory(params: DishParams): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.patch(this.categoryPath + `/${params.categoryId}`, params.patchDishCategoryPayload, { headers: this.CONTENT_TYPE_CATEGORY })
+            await this.axios.patch(this.categoryPath + `/${params.categoryId}`, params.patchDishCategoryPayload, { headers: this.CONTENT_TYPE_CATEGORY })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);
@@ -129,7 +129,7 @@ export class DishService {
 
     public async deleteCategory(params: DishParams): Promise<ResponseDetails<number>> {
         try {
-            const response = await this.axios.delete(this.categoryPath + `/${params.categoryId}`, { headers: this.ACCEPT_CATEGORY })
+            await this.axios.delete(this.categoryPath + `/${params.categoryId}`, { headers: this.ACCEPT_CATEGORY })
             return buildSuccessResponse(0);
         } catch (e) {
             return buildErrorResponse(e as Error);

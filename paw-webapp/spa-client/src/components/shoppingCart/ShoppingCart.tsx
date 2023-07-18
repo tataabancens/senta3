@@ -26,8 +26,8 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
     const shoppingCartTabs = [t('shoppingCart.cartPanel.title'),t('shoppingCart.ordersPanel.title'),t('shoppingCart.checkPanel.title')];
 
     return(
-        <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { height: "80vh"}}}>
-          <Grid container component={Box} sx={{width: 1400}} padding={1}>
+        <Dialog open={isOpen} maxWidth="xl" onClose={toggleCart} PaperProps={{sx: { minHeight: "80vh", width: 1400}}}>
+          <Grid container component={Box} sx={{width: "100%", height:"100%"}} padding={1}>
             <Grid item xs={12} sx={{display:"flex", justifyContent:"flex-end"}}>
                 <IconButton onClick={toggleCart}>
                     <CloseIcon  color="primary"/>
@@ -40,7 +40,7 @@ const ShoppingCart: FC<Props> =({isOpen, toggleCart, toggleReload}) => {
                         {shoppingCartTabs.map((tab: string, i: number) => <Tab label={tab} value={i} key={i} />)}
                     </Tabs>
                 </Grid>
-                <Grid item xs={12} sx={{ overflowY: "auto" }}>
+                <Grid item xs={12} sx={{ overflowY: "auto", flexGrow: 1}}>
                     <ShoppingCartPanel value={value} index={0}/>
                     <OrdersPanel value={value} index={1} orderItems={orderItems!} />
                     <CheckPanel value={value} index={2} orderItems={orderItems!} />

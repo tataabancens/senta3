@@ -1,5 +1,5 @@
-import { Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
-import { FC } from "react";
+import { Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { OrderItemModel } from "../../models";
 import OrdersItem from "./OrdersItem";
@@ -14,7 +14,13 @@ type TabPanelProps = {
 const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
     const { children, value, index, orderItems, ...other } = props;
     const { t } = useTranslation();
-  
+    const [items, setItems] = useState<OrderItemModel[] | undefined>();
+
+    useEffect(() => {
+      const itemsToDisplay = orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "DELETED"));
+      setItems(itemsToDisplay);
+    },[orderItems])
+
     return (
       <div
         role="tabpanel"
@@ -23,6 +29,7 @@ const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
       >
         {value === index && (
           <Grid container xs={12}>
+            {items && items.length > 0 &&
             <Grid item xs={12} component={Table}>
               <TableHead>
                 <TableRow>
@@ -32,11 +39,12 @@ const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "CANCELED")).map(filteredItem => 
+                {items.map(filteredItem => 
                   <OrdersItem orderItem={filteredItem} />
                 )}
               </TableBody>
-            </Grid>
+            </Grid>}
+            {items && items.length === 0 && <Grid item xs={12} marginTop={20}><Typography variant="h5" align="center">{t('shoppingCart.ordersPanel.noDishes')}</Typography></Grid>}
           </Grid>
         )}
       </div>

@@ -40,7 +40,7 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.code',{code: reservation?.securityCode})}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.date')}{formatDate(reservation!.date)}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.hour',{hour: reservation?.hour})}</Grid>
-            <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.table',{table: reservation?.tableNumber})}</Grid>
+            <Grid item xs={12} component={Typography} variant="h6">{reservation?.tableNumber === 0 ? t('reservationData.noTable') : t('reservationData.table',{table: reservation?.tableNumber})}</Grid>
           </Grid>
         </Drawer>
     );
