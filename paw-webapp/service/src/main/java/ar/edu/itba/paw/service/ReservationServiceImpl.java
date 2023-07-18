@@ -194,30 +194,15 @@ public class ReservationServiceImpl implements ReservationService {
         if(reservationStatus != null){
             switch (reservationStatus) {
                 case OPEN:
-                    reservation.setReservationStatus(ReservationStatus.OPEN);
                 case SEATED:
-                    if(table != null){
-                        seatCustomer(reservation, table);
-                    } else {
-                        seatCustomer(reservation, 0);
-                    }
-                    break;
                 case CHECK_ORDERED:
-                    if(canOrderReceipt(reservation)){
-                        orderReceipt(reservation);
-                    } else {
-                        return false;
-                    }
-                    break;
                 case FINISHED:
-                    finishCustomerReservation(reservation); //todo si esta finished, queda congelada? debería
+                    reservation.setReservationStatus(reservationStatus); //todo si esta finished, queda congelada? debería
                     break;
                 case CANCELED: //this shouldnt happen bust just in case
                     cancelReservation(securityCode);
                     break;
-
             }
-
         }
         return true;
     }

@@ -59,7 +59,7 @@ const CheckoutSummary: FC<Props> = ({ reservation, orderItems }) => {
         const { isOk } = await rs.patchReservation(resParams);
         if(isOk){
             setSnackbarOpen(true);
-            let pointsToPatch = points!.points + restaurant!.pointsPerItem * calculateTotal(orderItems!);
+            let pointsToPatch = points!.points + restaurant!.addPointsCoefficient * calculateTotal(orderItems!);
             if(reservation?.usedDiscount && restaurant){
                 pointsToPatch -= restaurant.pointsForDiscount
             }
