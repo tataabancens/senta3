@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth.service.impl;
 
-import ar.edu.itba.paw.webapp.auth.basic.BasicAuthenticationToken;
 import ar.edu.itba.paw.webapp.auth.service.AuthFacade;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

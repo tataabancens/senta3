@@ -3,8 +3,6 @@ package ar.edu.itba.paw.service;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
 import ar.edu.itba.paw.model.DishCategory;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 public interface RestaurantService {

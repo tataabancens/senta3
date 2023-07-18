@@ -48,15 +48,6 @@ public class Customer {
         this.points = points;
     }
 
-    public Customer(String customerName, String phone, String mail, long userId, int points) {
-        super();
-        this.customerName = customerName;
-        this.phone = phone;
-        this.mail = mail;
-        this.points = points;
-//        this.userId = userId;
-    }
-
     public Customer(long customerId, String customerName, String phone, String mail, int points) {
         this.id = customerId;
         this.customerName = customerName;

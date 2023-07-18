@@ -1,30 +1,18 @@
 package ar.edu.itba.par.service;
 
-import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.enums.Roles;
-import ar.edu.itba.paw.model.User;
 import ar.edu.itba.paw.persistance.DishCategoryDao;
-import ar.edu.itba.paw.persistance.DishDao;
 import ar.edu.itba.paw.persistance.RestaurantDao;
-import ar.edu.itba.paw.persistance.UserDao;
 import ar.edu.itba.paw.service.RestaurantServiceImpl;
-import ar.edu.itba.paw.service.UserServiceImpl;
 import org.junit.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestaurantServiceImplTest {

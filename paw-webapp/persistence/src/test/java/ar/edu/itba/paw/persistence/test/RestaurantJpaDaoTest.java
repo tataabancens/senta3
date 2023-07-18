@@ -49,7 +49,7 @@ public class RestaurantJpaDaoTest {
 
     @Test
     @Rollback
-    public void getRestaurantByUsername(){
+    public void testGetRestaurantByUsername(){
         // 1. Precondiciones
 
         // 2. Ejercitacion

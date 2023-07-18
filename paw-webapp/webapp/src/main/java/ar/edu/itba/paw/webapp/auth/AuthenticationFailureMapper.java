@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthenticationFailureMapper {
+public final class AuthenticationFailureMapper {
     private AuthenticationFailureMapper() {
 
     }

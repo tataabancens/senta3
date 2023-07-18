@@ -5,7 +5,6 @@ import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -30,7 +29,6 @@ public class ImageServiceImpl implements ImageService {
         try {
             return imageDao.create(photo);
         } catch(Exception e) {
-            System.out.println(e.getMessage());
             return -1;
         }
     }

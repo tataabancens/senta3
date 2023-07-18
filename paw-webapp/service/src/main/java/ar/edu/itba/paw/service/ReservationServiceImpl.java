@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static ar.edu.itba.paw.service.ServiceUtils.CustomDateParser;
+import static ar.edu.itba.paw.service.ServiceUtils.customDateParser;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -167,7 +167,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         Reservation reservation = maybeReservation.get();
         if(reservationDate != null){
-            reservation.setReservationDate(CustomDateParser(reservationDate));
+            reservation.setReservationDate(customDateParser(reservationDate));
         }
         if(hour != null){
             reservation.setReservationHour(hour);
@@ -191,32 +191,33 @@ public class ReservationServiceImpl implements ReservationService {
                 cancelDiscount(reservation);
             }
         }
-        if(reservationStatus != null){
-            switch (reservationStatus) {
-                case OPEN:
-                    reservation.setReservationStatus(ReservationStatus.OPEN);
-                case SEATED:
-                    if(table != null){
-                        seatCustomer(reservation, table);
-                    } else {
-                        seatCustomer(reservation, 0);
-                    }
-                    break;
-                case CHECK_ORDERED:
-                    if(canOrderReceipt(reservation)){
-                        orderReceipt(reservation);
-                    } else {
-                        return false;
-                    }
-                    break;
-                case FINISHED:
-                    finishCustomerReservation(reservation); //todo si esta finished, queda congelada? debería
-                    break;
-                case CANCELED: //this shouldnt happen bust just in case
-                    cancelReservation(securityCode);
-                    break;
-
-            }
+        if(reservationStatus != null) {
+            reservation.setReservationStatus(reservationStatus);
+//            switch (reservationStatus) {
+//                case OPEN:
+//                    reservation.setReservationStatus(ReservationStatus.OPEN);
+//                case SEATED:
+//                    if(table != null){
+//                        seatCustomer(reservation, table);
+//                    } else {
+//                        seatCustomer(reservation, 0);
+//                    }
+//                    break;
+//                case CHECK_ORDERED:
+//                    if(canOrderReceipt(reservation)){
+//                        orderReceipt(reservation);
+//                    } else {
+//                        return false;
+//                    }
+//                    break;
+//                case FINISHED:
+//                    finishCustomerReservation(reservation); //todo si esta finished, queda congelada? debería
+//                    break;
+//                case CANCELED: //this shouldnt happen bust just in case
+//                    cancelReservation(securityCode);
+//                    break;
+//
+//            }
 
         }
         return true;

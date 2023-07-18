@@ -1,12 +1,9 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
 
 import javax.ws.rs.core.*;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CustomerDto {

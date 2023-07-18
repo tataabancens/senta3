@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.mappers;
 
-import ar.edu.itba.paw.model.exceptions.RestaurantNotFoundException;
 import ar.edu.itba.paw.model.exceptions.TableNotAvailableException;
 import ar.edu.itba.paw.webapp.mappers.utils.ResponseExceptionMapperUtil;
 

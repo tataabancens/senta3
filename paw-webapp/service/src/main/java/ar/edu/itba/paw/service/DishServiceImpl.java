@@ -21,16 +21,14 @@ import java.util.Optional;
 public class DishServiceImpl implements DishService {
 
     private final DishDao dishDao;
-    private final ImageDao imageDao;
     private final DishCategoryDao dishCategoryDao;
     private final RestaurantService restaurantService;
     private final ReservationService reservationService;
 
 
     @Autowired
-    public  DishServiceImpl(final DishDao dishDao, final ImageDao imageDao, DishCategoryDao dishCategoryDao, RestaurantService restaurantService, ReservationService reservationService){
+    public  DishServiceImpl(final DishDao dishDao, DishCategoryDao dishCategoryDao, RestaurantService restaurantService, ReservationService reservationService){
         this.dishDao = dishDao;
-        this.imageDao = imageDao;
         this.dishCategoryDao = dishCategoryDao;
         this.restaurantService = restaurantService;
         this.reservationService = reservationService;

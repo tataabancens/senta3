@@ -39,10 +39,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public Customer create(String customerName, String phone, String mail, Optional<User> user) {
-        if(user.isPresent()){
-            if(getCustomerByUsername(user.get().getUsername()).isPresent()){ //userId already has a customer
-                return null;
-            }
+        if(user.isPresent() && getCustomerByUsername(user.get().getUsername()).isPresent()){ //userId already has a customer
+            return null;
         }
         Customer customer = customerDao.create(customerName, phone, mail);
         if(!user.isPresent()){ // only create
@@ -114,6 +112,7 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
+    @Override
     public float getDiscountCoefficient() {
         return DISCOUNT_COEFFICIENT;
     }

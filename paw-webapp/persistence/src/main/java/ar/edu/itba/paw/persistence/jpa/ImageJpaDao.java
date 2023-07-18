@@ -3,8 +3,6 @@ package ar.edu.itba.paw.persistence.jpa;
 import ar.edu.itba.paw.model.Image;
 import ar.edu.itba.paw.persistance.ImageDao;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;

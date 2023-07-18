@@ -14,21 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static java.time.LocalTime.now;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReservationServiceImplTest {
@@ -66,7 +58,7 @@ public class ReservationServiceImplTest {
         OrderItem item1 = new OrderItem(res1, dish1, dish1.getPrice(), 1, OrderItemStatus.ORDERED);
         OrderItem item2 = new OrderItem(res1, dish2, dish2.getPrice(), 1, OrderItemStatus.ORDERED);
 
-        List<OrderItem> items = new ArrayList<OrderItem>();
+        List<OrderItem> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
 
@@ -96,7 +88,7 @@ public class ReservationServiceImplTest {
         OrderItem item2 = new OrderItem(res1, dish1, dish1.getPrice(), 1, OrderItemStatus.SELECTED);
         OrderItem item3 = new OrderItem(res1, dish1, dish1.getPrice(), 1, OrderItemStatus.SELECTED);
         OrderItem item4 = new OrderItem(res1, dish1, dish1.getPrice(), 1, OrderItemStatus.SELECTED);
-        List<OrderItem> items = new ArrayList<OrderItem>();
+        List<OrderItem> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
         items.add(item3);

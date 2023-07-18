@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Repository
 public class ReservationJpaDao implements ReservationDao {
 
-    private int PAGE_SIZE = 30;
+    private final static int PAGE_SIZE = 30;
 
     @PersistenceContext
     private EntityManager em;
@@ -176,7 +176,6 @@ public class ReservationJpaDao implements ReservationDao {
         query.setParameter("finish", LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
 
         final List<Reservation> list = query.getResultList();
-        System.out.println("DEBUG");
         return list.isEmpty() ? new ArrayList<>() : list;
     }
 

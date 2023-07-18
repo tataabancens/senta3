@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.model.PasswordPair;
-import ar.edu.itba.paw.webapp.form.customValidator.PasswordConstraint;
-import ar.edu.itba.paw.webapp.form.customValidator.PasswordLengthConstraint;
-import ar.edu.itba.paw.webapp.form.customValidator.PasswordPairFieldsNotNullConstraint;
-import ar.edu.itba.paw.webapp.form.customValidator.UsernameConstraint;
+import ar.edu.itba.paw.webapp.form.customvalidator.PasswordConstraint;
+import ar.edu.itba.paw.webapp.form.customvalidator.PasswordLengthConstraint;
+import ar.edu.itba.paw.webapp.form.customvalidator.PasswordPairFieldsNotNullConstraint;
+import ar.edu.itba.paw.webapp.form.customvalidator.UsernameConstraint;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

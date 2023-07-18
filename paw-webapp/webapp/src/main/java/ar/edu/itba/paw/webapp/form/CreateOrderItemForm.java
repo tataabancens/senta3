@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.model.enums.OrderItemStatus;
-
 public class CreateOrderItemForm {
     private long dishId;
     private int quantity;

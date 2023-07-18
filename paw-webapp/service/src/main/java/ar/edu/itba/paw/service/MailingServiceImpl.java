@@ -17,11 +17,11 @@ import java.util.Properties;
 public class MailingServiceImpl implements MailingService{
 
     @Value("${mail.from}")
-    private String FROMADDRESS;
+    private String fromAddress;
     @Value("${mail.username}")
-    private String USERNAME;
+    private String username;
     @Value("${mail.password}")
-    private String PASSWORD;
+    private String password;
 
     @Autowired
     private MessageSource messageSource;
@@ -90,13 +90,13 @@ public class MailingServiceImpl implements MailingService{
                     @Override
                     protected PasswordAuthentication
                     getPasswordAuthentication() {
-                        return new PasswordAuthentication(USERNAME,
-                                PASSWORD);
+                        return new PasswordAuthentication(username,
+                                password);
                     }
                 });
         try {
             MimeMessage msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(FROMADDRESS));
+            msg.setFrom(new InternetAddress(fromAddress));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toEmailAddress));
 
@@ -106,7 +106,7 @@ public class MailingServiceImpl implements MailingService{
             Transport.send(msg);
         } catch (Exception ex) {
 //            LOGGER.error("Email failed ", ex);
-        };
+        }
     }
 
 

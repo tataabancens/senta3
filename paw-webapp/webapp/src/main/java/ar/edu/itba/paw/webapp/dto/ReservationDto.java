@@ -1,14 +1,10 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Reservation;
-import ar.edu.itba.paw.service.DishService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.time.LocalDateTime;
 
 public class ReservationDto {
 

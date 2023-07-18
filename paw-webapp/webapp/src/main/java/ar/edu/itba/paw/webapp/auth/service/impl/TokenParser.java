@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.auth.service.impl;
 
 import ar.edu.itba.paw.model.enums.Roles;
-import ar.edu.itba.paw.webapp.auth.JwtFilter;
 import ar.edu.itba.paw.webapp.auth.exceptions.ExpiredAuthenticationTokenException;
 import ar.edu.itba.paw.webapp.auth.exceptions.InvalidAuthenticationTokenException;
 import ar.edu.itba.paw.webapp.auth.models.AuthenticationTokenDetails;
