@@ -36,7 +36,9 @@ public class TokenParser {
                     claims.getSubject(),
                     extractAuthoritiesFromClaims(claims),
                     extractIssuedDateFromClaims(claims),
-                    extractExpirationDateFromClaims(claims)
+                    extractExpirationDateFromClaims(claims),
+                    extractIsRefreshTokenFromClaims(claims),
+                    extractUserIdFromClaims(claims)
             );
         } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException | SignatureException e) {
             throw new InvalidAuthenticationTokenException("Invalid token", e);
@@ -54,6 +56,15 @@ public class TokenParser {
         List<String> rolesAsString = (List<String>) claims.getOrDefault(settings.getAuthoritiesClaimName(), new ArrayList<>());
         return rolesAsString.stream().map(Roles::valueOf).collect(Collectors.toSet());
     }
+
+    private boolean extractIsRefreshTokenFromClaims(@NotNull Claims claims) {
+        return (boolean) claims.getOrDefault(settings.getIsRefreshTokenClaimName(), false);
+    }
+
+    private Integer extractUserIdFromClaims(@NotNull Claims claims) {
+        return (Integer) claims.getOrDefault(settings.getUserIdClaimName(), 0);
+    }
+
 
     private ZonedDateTime extractIssuedDateFromClaims(@NotNull Claims claims) {
         return ZonedDateTime.ofInstant(claims.getIssuedAt().toInstant(), ZoneId.systemDefault());

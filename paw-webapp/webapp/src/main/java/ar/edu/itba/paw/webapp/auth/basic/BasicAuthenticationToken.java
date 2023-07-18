@@ -7,7 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 public class BasicAuthenticationToken extends UsernamePasswordAuthenticationToken {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 
     public BasicAuthenticationToken(Object principal, Object credentials,
                                     Collection<? extends GrantedAuthority> authorities,
@@ -18,15 +19,15 @@ public class BasicAuthenticationToken extends UsernamePasswordAuthenticationToke
 
     public BasicAuthenticationToken(String token) {
         super(null, null);
-        this.token = token;
+        this.accessToken = token;
     }
 
-    public String getToken() {
-        return token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     @Override
@@ -42,5 +43,13 @@ public class BasicAuthenticationToken extends UsernamePasswordAuthenticationToke
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return super.getAuthorities();
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
     }
 }

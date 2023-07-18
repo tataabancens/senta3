@@ -16,8 +16,11 @@ import java.util.UUID;
 
 @Component
 public class AuthenticationTokenServiceImpl implements AuthenticationTokenService {
-    @Value("${authentication.jwt.validFor}")
-    private Long validFor;
+    @Value("${authentication.jwt.accessTokenValidFor}")
+    private Long accessTokenValidFor;
+
+    @Value("${authentication.jwt.refreshTokenValidFor}")
+    private Long refreshTokenValidFor;
 
     @Autowired
     Settings settings;
@@ -26,7 +29,7 @@ public class AuthenticationTokenServiceImpl implements AuthenticationTokenServic
     TokenParser tokenParser;
 
     @Override
-    public String issueToken(String username, Set<Roles> authorities, long userId) {
+    public String issueToken(String username, Set<Roles> authorities, long userId, Long validFor, boolean isRefresh) {
         String id = UUID.randomUUID().toString();
         ZonedDateTime issuedDate = ZonedDateTime.now();
         ZonedDateTime expirationDate = issuedDate.plusSeconds(validFor);
@@ -40,8 +43,19 @@ public class AuthenticationTokenServiceImpl implements AuthenticationTokenServic
                 .setExpiration(Date.from(expirationDate.toInstant()))
                 .claim(settings.getAuthoritiesClaimName(), authorities)
                 .claim(settings.getUserIdClaimName(), userId)
+                .claim(settings.getIsRefreshTokenClaimName(), isRefresh)
                 .signWith(SignatureAlgorithm.HS512, settings.getSecret())
                 .compact();
+    }
+
+    @Override
+    public String issueRefreshToken(String username, Set<Roles> authorities, long userId) {
+        return issueToken(username, authorities, userId, refreshTokenValidFor, true);
+    }
+
+    @Override
+    public String issueAccessToken(String username, Set<Roles> authorities, long userId) {
+        return issueToken(username, authorities, userId, accessTokenValidFor, false);
     }
 
     @Override

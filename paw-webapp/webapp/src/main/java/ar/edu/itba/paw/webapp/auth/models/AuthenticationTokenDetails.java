@@ -11,13 +11,17 @@ public class AuthenticationTokenDetails {
     private final Set<Roles> authorities;
     private final ZonedDateTime issuedDate;
     private final ZonedDateTime expirationDate;
+    private final boolean isRefreshToken;
+    private final Integer userId;
 
-    public AuthenticationTokenDetails(String id, String username, Set<Roles> authorities, ZonedDateTime issuedDate, ZonedDateTime expirationDate) {
+    public AuthenticationTokenDetails(String id, String username, Set<Roles> authorities, ZonedDateTime issuedDate, ZonedDateTime expirationDate, boolean isRefreshToken, Integer userId) {
         this.id = id;
         this.username = username;
         this.authorities = authorities;
         this.issuedDate = issuedDate;
         this.expirationDate = expirationDate;
+        this.isRefreshToken = isRefreshToken;
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -38,5 +42,13 @@ public class AuthenticationTokenDetails {
 
     public String getId() {
         return id;
+    }
+
+    public boolean isRefreshToken() {
+        return isRefreshToken;
+    }
+
+    public Integer getUserId() {
+        return userId;
     }
 }
