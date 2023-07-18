@@ -121,11 +121,6 @@ const LoginPage: FC = () => {
                     helperText={<ErrorMessage name="password"/>}
                     error={!!props.errors.password}
                   />
-                  <Field as={FormControlLabel}
-                    name="remember"
-                    control={<Checkbox color="primary" />}
-                    label={t('loginPage.rememberMe')}          
-                  />
                   <Button
                     type="submit"
                     fullWidth

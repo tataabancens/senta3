@@ -23,7 +23,6 @@ export default function InfoForm({ props }: infoFormProps) {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Field as={TextField}
-            autoFocus
             id="firstName"
             name="firstName"
             label={t('createReservation.step4.firstName')}

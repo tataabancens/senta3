@@ -324,5 +324,6 @@ export const TRANSLATIONS_EN = {
         select: "Select one",
         cancelButton: "Cancel"
     },
-    systemError: "There was an error in the system. Try again later."
+    systemError: "There was an error in the system. Try again later.",
+    pageDoesNotExist: "404: The route requested does not exist"
 }
