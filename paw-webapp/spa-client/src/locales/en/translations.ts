@@ -19,6 +19,8 @@ export const TRANSLATIONS_EN = {
         haveReservation: "Have reservation",
         myReservation: "My reservation",
         callWaiter: "Call waiter",
+        removeDiscountText: "Remove discount",
+        applyDiscountText: "Apply discount",
         callingWaiter: "Calling waiter",
         createCategory: "Create category"
     },
@@ -74,7 +76,9 @@ export const TRANSLATIONS_EN = {
         },
         step5:{
             stepTitle: "Done!",
-            stepDescription: "You made a reservation on Atuel, for {{date}} at {{hour}}hs for {{qPeople}} people. Your reservation code is: {{secCode}}"
+            stepDescriptionPart1: "You made a reservation on Atuel, for the",
+            stepDescriptionPart2: " at {{hour}}hs for {{qPeople}} people. Your reservation code is: {{secCode}}",
+            pointsDisclaimer: "If you register, you will be able to receive points for discounts!"
         },
         next: "Next",
         back: "Back",
@@ -90,7 +94,8 @@ export const TRANSLATIONS_EN = {
         code: "Code: {{code}}",
         date: "Date: ",
         hour: "Hour: {{hour}}:00",
-        table: "Table: {{table}}"
+        table: "Table: {{table}}",
+        noTable: "Table: You will get a table when you arrive at the restaurant"
     },
     reservationActions:{
         seat: "Seat",
@@ -134,6 +139,7 @@ export const TRANSLATIONS_EN = {
         ordersPanel:{
             title: "Orders",
             disclaimer: "Your orders status will be seen when you arrive at the restaurants",
+            noDishes: "You have not ordered any items yet",
             orderedStatus: "Ordered",
             cookingStatus: "Cooking",
             deliveringStatus: "Delivering"

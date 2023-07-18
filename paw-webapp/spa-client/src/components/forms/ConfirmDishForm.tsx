@@ -77,6 +77,7 @@ const ConfirmDishForm: FC<Props> = ({
     return (
       <>
         <Dialog open={isOpen}>
+          <img src={dish.image}  alt="la foto del plato" style={{objectFit:"cover", width: "100%", height: 300, aspectRatio: 1}}/>
           <DialogTitle>{dish.name}</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -87,8 +88,8 @@ const ConfirmDishForm: FC<Props> = ({
                 <Grid item container xs={12} justifyContent="space-evenly">
                     <Grid item xs={4} component={ButtonGroup}>
                         <Button variant="contained" onClick={handleDecrease}><Typography>-</Typography></Button>
-                        <TextField disabled sx={{width: 130}} value={qty}/>
-                        <Button variant="contained" onClick={handleIncrease}><Typography>+</Typography></Button>
+                        <TextField disabled sx={{width: 100}} value={qty}/>
+                        <Button variant="contained"  onClick={handleIncrease}><Typography>+</Typography></Button>
                     </Grid>
                     <Grid item sx={{display:"flex", alignItems:"center", justifyContent:"center"}} xs={8} ><Typography>{t('forms.confirmDish.subtotal',{subtotal: dish.price * qty})}</Typography></Grid>
                 </Grid>

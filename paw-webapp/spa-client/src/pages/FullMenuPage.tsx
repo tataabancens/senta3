@@ -53,7 +53,7 @@ const FullMenuPage: FC = () => {
 
     useEffect(() => {
       if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
-    }, categoryList);
+    }, [categoryList]);
 
     if(reservation?.status === "CANCELED" || reservation?.status === "FINISHED"){
         navigate(`${paths.ROOT}/reservations/${reservation!.securityCode}/checkout`);
@@ -64,8 +64,7 @@ const FullMenuPage: FC = () => {
         <Grid container spacing={2} justifyContent="center">
             <ReservationContext.Provider value={{reservation, updateReservation, orderItems, reloadItems, discount, toggleDiscount, restaurant, customer, points, updateItem}}>
                 <RestaurantHeader role={UserRoles.CUSTOMER} toggleReload={updateOrderItems}/>
-                <Grid item xs={11} marginTop={2}>
-                {dishCategoriesLoading && dishesLoading && <CircularProgress />}    
+                <Grid item xs={11} marginTop={2}>  
                 {categoryList &&
                     <Tabs value={value} onChange={(event,value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
                     {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
@@ -73,6 +72,9 @@ const FullMenuPage: FC = () => {
                 </Grid>
                 {dishes && <DishDisplay dishes={dishes} isMenu={false}/>}
             </ReservationContext.Provider>
+            {dishCategoriesLoading && dishesLoading &&
+                <div style={{position: "absolute", top:"50%", right:"50%"}}><CircularProgress /></div>
+            }
         </Grid>
     );
 }

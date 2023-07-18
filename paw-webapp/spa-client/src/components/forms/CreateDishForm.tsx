@@ -96,8 +96,9 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
             <Formik initialValues={initialValue} onSubmit={handleSubmit} validationSchema={validationSchema}>
                 {(props) => (
                     <Form>
-                        <DialogTitle align="center">{t('forms.createDish.title')}</DialogTitle>
+                        <DialogTitle align="center" >{t('forms.createDish.title')}</DialogTitle>
                         <DialogContent>
+                            <UploadImage props={props}></UploadImage>
                             <Field as={TextField}
                                 item
                                 required
@@ -153,7 +154,6 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 helperText={<ErrorMessage name="description" />}
                                 error={props.errors.description}
                             />
-                            <UploadImage props={props}></UploadImage>
                         </DialogContent>
                         <DialogActions>
                             <Button
@@ -162,7 +162,7 @@ const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
                                 color="success"
                                 disabled={props.isSubmitting}
                             >{t('forms.createDish.createButton')}</Button>
-                            <Button onClick={handleOpenForm} variant="contained">{t('forms.cancelButton')}</Button>
+                            <Button onClick={handleOpenForm} variant="contained" color="error">{t('forms.cancelButton')}</Button>
                         </DialogActions>
                     </Form>
                 )}

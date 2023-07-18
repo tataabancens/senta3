@@ -11,19 +11,32 @@ interface doneProps {
 
 export default function Done({props, secCode}: doneProps) {
   const { values: {date, hour, qPeople} } = props;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const formatDate = (date: string) => {
+    const dateParts: string[] = date.split("-");
+    const year: string = dateParts[0];
+    const month: string = dateParts[1];
+    const day: string = dateParts[2];
+    if(i18n.language === "en"){
+        return `${month}/${day}/${year}`;
+    }else if(i18n.language === "es"){
+        return `${day}/${month}/${year}`;
+    }
+    return `${month}/${day}/${year}`;
+};
 
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        {t('createReservation.step5.stepDescription',
+        {t('createReservation.step5.stepDescriptionPart1')}{formatDate(date.toString())}{t('createReservation.step5.stepDescriptionPart2',
         {
-          date: date.toString(),
           hour: hour,
           qPeople: qPeople,
           secCode: secCode
         })}
       </Typography>
+      <Typography variant="body1" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>
     </React.Fragment>
   );
 }

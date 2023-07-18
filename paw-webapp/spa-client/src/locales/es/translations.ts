@@ -18,6 +18,8 @@ export const TRANSLATIONS_ES ={
         makeReservation: "Hacer reserva",
         haveReservation: "Tengo reserva",
         myReservation: "Mi reserva",
+        removeDiscountText: "Remover descuento",
+        applyDiscountText: "Aplicar descuento",
         callWaiter: "Llamar mozo",
         callingWaiter: "Llamando mozo",
         createCategory: "Crear categoría"
@@ -74,7 +76,9 @@ export const TRANSLATIONS_ES ={
         },
         step5:{
             stepTitle: "Listo!",
-            stepDescription: "Hiciste una reserva en Atuel para las {{hour}}hs del {{date}} para {{qPeople}} persona/s. Tu codigo de reserva es: {{secCode}}."
+            stepDescriptionPart1: "Hiciste una reserva en Atuel para el día ",
+            stepDescriptionPart2: " a las {{hour}}hs para {{qPeople}} persona/s. Tu codigo de reserva es: {{secCode}}.",
+            pointsDisclaimer: "Si te registras vas a poder obtener puntos para descuentos!"
         },
         next: "Siguiente",
         back: "Volver",
@@ -89,7 +93,8 @@ export const TRANSLATIONS_ES ={
         code: "Codigo: {{code}}",
         date: "Día: ",
         hour: "Hora: {{hour}}:00",
-        table: "Mesa: {{table}}"
+        table: "Mesa: {{table}}",
+        noTable: "Mesa: Una mesa te sera asignada al llegar al restaurante"
     },
     reservationActions:{
         seat: "Sentar",
@@ -133,6 +138,7 @@ export const TRANSLATIONS_ES ={
         ordersPanel:{
             title: "Pedidos",
             disclaimer: "El estatus de tus pedidos será visible al llegar al restaurante",
+            noDishes: "Aun no has ordernado ningún platillo",
             orderedStatus: "Pedido",
             cookingStatus: "Cocinando",
             deliveringStatus: "Entregando"
@@ -316,5 +322,6 @@ export const TRANSLATIONS_ES ={
         select: "Selecciona uno",
         cancelButton: "Cancelar"
     },
-    systemError: "Hubo un error en el sistema, intenta de nuevo más tarde."
+    systemError: "Hubo un error en el sistema, intenta de nuevo más tarde.",
+    pageDoesNotExist: "404: La ruta solicitada no existe"
 }

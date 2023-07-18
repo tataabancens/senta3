@@ -70,7 +70,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         value={phone}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                     <Field as={TextField}
                         required
                         id="username"
@@ -101,6 +101,8 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         helperText={<ErrorMessage name="password" />}
                         error={errors.password}
                     />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                     <Field as={TextField}
                         required
                         id="repeatPassword"

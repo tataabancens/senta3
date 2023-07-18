@@ -1,6 +1,6 @@
-import { AxiosHeaders, AxiosInstance, AxiosResponse, AxiosResponseHeaders } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
 import { paths } from "../constants/constants";
-import { DishModel, OrderItemModel, ReservationModel } from "../models";
+import { ReservationModel } from "../models";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { ResponseDetails } from "./serviceUtils/typings";
 import { buildErrorResponse, buildSuccessResponse } from "./serviceUtils/returnTypesFactory";

@@ -35,7 +35,7 @@ const ReservationActions: FC<Props> = ({ reservation, toggleReload, props, isSub
         <>
             {reservation?.status === "OPEN" &&
                 <Stack direction="row" spacing={2} justifyContent="space-evenly">
-                    <Button size="small" variant="outlined" sx={{ width: 10 }} color="success" disabled={isSubmitting} onClick={props.submitForm}>{t('reservationActions.seat')}</Button>
+                    <Button size="small" variant="outlined" sx={{ width: 200 }} color="success" disabled={isSubmitting} onClick={props.submitForm}>{t('reservationActions.seat')}</Button>
                     <Button size="small" variant="outlined" sx={{ width: 200 }} color="error" onClick={cancelReservation}>{t('reservationActions.cancel')}</Button>
                 </Stack>
             }

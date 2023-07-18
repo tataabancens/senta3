@@ -15,10 +15,10 @@ export class CustomerParams {
 
 
     get createCustomerPayload(): createCustomerPayloadModel | null {
-        if(this._mail == undefined || this._customerName == undefined || this._phone == undefined){
+        if(this._mail === undefined || this._customerName === undefined || this._phone === undefined){
             return null
         }
-        if(this._userId == undefined){
+        if(this._userId === undefined){
             return {
                 "mail": this._mail,
                 "customerName": this._customerName,

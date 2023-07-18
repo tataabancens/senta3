@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { DishCategoryModel } from "../models";
-import { Grid, Tab, Tabs } from "@mui/material";
+import { CircularProgress, Grid, Tab, Tabs } from "@mui/material";
 import RestaurantHeader from "../components/RestaurantHeader";
 import DishDisplay from "../components/DishDisplay";
 import { useDishes } from "../hooks/serviceHooks/dishes/useDishes";
@@ -23,18 +23,23 @@ const MenuPage: FC = () => {
 
   useEffect(() => {
     if (categoryList && categoryList.length > 0) setValue(categoryList[0].id)
-  }, categoryList);
+  }, [categoryList]);
 
 
   return (
     <Grid container spacing={2} justifyContent="center">
       <RestaurantHeader role={UserRoles.ANONYMOUS} restaurantName={restaurant?.name}/>
+      {categoryList && dishes &&
       <Grid item xs={11} marginTop={2}>
         <Tabs value={value} onChange={(event, value) => handleChange(event, value)} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
-          {categoryList?.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
+          {categoryList.map((category: DishCategoryModel) => (<Tab key={category.id} value={category.id} label={category.name} />))}
         </Tabs>
-      </Grid>
-      <DishDisplay isMenu={false} dishes={dishes} />
+      </Grid>}
+      {categoryList && dishes &&
+      <DishDisplay isMenu={false} dishes={dishes} />}
+      {(!categoryList || !dishes) &&
+        <div style={{position: "absolute", top:"50%", right:"50%"}}><CircularProgress /></div>
+      }
     </Grid>
   );
 }

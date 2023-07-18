@@ -109,7 +109,7 @@ const RestaurantHeader: FC<Props> = ({
             <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
             {points && restaurant && points.points >= restaurant.pointsForDiscount &&
             <Button sx={{margin: 1}} variant="contained" color={discount? "info" : "secondary"} onClick={toggleDiscount}>
-              <Typography color={discount? "secondary" : "info" }>{discount? "Remove discount" : "Apply discount"}</Typography>
+              <Typography color={discount? "secondary" : "info" }>{discount? t('restaurantHeader.removeDiscountText') : t('restaurantHeader.applyDiscountText')}</Typography>
             </Button>}
             { reservation.status === "SEATED" &&
             <Button sx={{margin: 1}} variant="contained" color={callWaiter? "info" : "secondary"} onClick={toggleCallWaiter}>
