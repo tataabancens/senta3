@@ -220,7 +220,8 @@ export const TRANSLATIONS_EN = {
     customerReservations:{
         points: "Points: {{points}}",
         activeReservationsTitle: "Active Reservations",
-        oldReservationsTitle: "Reservation history",
+        oldReservationsTitle: "Reservation History",
+        pendingReservationsTitle: "Pending Finalization",
         reservationCard:{
             date: "date: ",
             hour: "hour: {{hour}}:00",

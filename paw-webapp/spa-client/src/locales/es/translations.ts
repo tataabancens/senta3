@@ -219,6 +219,7 @@ export const TRANSLATIONS_ES ={
         points: "Puntos: {{points}}",
         activeReservationsTitle:"Reservas Activas",
         oldReservationsTitle: "Historial de reservas",
+        pendingReservationsTitle: "Finalización pendiente",
         reservationCard:{
             date: "día: ",
             hour: "hora: {{hour}}:00",
