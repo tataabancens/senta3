@@ -36,7 +36,7 @@ export default function Done({props, secCode}: doneProps) {
           secCode: secCode
         })}
       </Typography>
-      <Typography variant="body1" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>
+      <Typography variant="h6" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>
     </React.Fragment>
   );
 }

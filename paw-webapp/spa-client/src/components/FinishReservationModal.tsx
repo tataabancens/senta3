@@ -14,6 +14,7 @@ import { UserRoles } from "../models/Enums/UserRoles";
 type Props = {
   isOpen: boolean;
   handleOpen: () => void;
+  total: number;
 };
 
 const style = {
@@ -33,14 +34,21 @@ const style = {
   p: 4,
 };
 
-const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen}) => {
+const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen, total}) => {
 
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { auth } = useAuth();
+  const { restaurant } = useContext(ReservationContext);
 
   const handleAccept = async () => {
     navigate(paths.ROOT);
+  }
+
+  function truncateCalculation(): number {
+    const calculationResult = restaurant?.pointsPerItem! * total;
+    const truncatedResult = Math.trunc(calculationResult);
+    return truncatedResult;
   }
 
   return (
@@ -54,6 +62,7 @@ const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen}) => {
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h5" marginBottom={10} marginTop={2}>{t('finishReservationModal.title')}</Typography>
         {auth.roles[0] === UserRoles.ANONYMOUS && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageNoPoints')}</Typography>}
+        {auth.roles[0] === UserRoles.CUSTOMER && <Typography id="modal-modal-title" variant="h6" marginBottom={5}>+{truncateCalculation()} Pts</Typography>}
         {auth.roles[0] === UserRoles.CUSTOMER && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageWithPoints')}</Typography>}
         <Box sx={{ display: "flex", width: 1, justifyContent: "center", marginY: 1 }}>
           <Button variant="contained" fullWidth color="success" onClick={handleAccept}><Typography>{t('finishReservationModal.goToMenu')}</Typography></Button>

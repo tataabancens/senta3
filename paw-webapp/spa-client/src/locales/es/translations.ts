@@ -226,7 +226,8 @@ export const TRANSLATIONS_ES ={
             code: "codigo: {{code}}",
             people: "personas: {{people}}"
         },
-        enterButton: "Acceder"
+        enterButton: "Acceder",
+        noReservations: "No hay reservas aquí"
     },
     registerPage:{
         registerTitle: "Registro",
