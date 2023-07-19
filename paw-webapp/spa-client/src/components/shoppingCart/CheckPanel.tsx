@@ -21,7 +21,7 @@ const CheckPanel: FC<Props> = (props: Props) => {
     const { children, value, index, orderItems, ... other } = props;
     const { t } = useTranslation();
     const { auth } = useAuth();
-    const itemsToPay = orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "CANCELED"));
+    const itemsToPay = orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "DELETED"));
     const { reservation, updateReservation, discount, restaurant } = useContext(ReservationContext);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [openModal, setOpenModal] = useState(false);
