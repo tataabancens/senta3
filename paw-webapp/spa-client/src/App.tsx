@@ -16,52 +16,54 @@ import RestaurantMenu from "./pages/RestaurantMenu";
 import Kitchen from "./pages/Kitchen";
 import { RestaurantMenuProvider } from "./context/RestaurantMenuContext";
 import { UserRoles } from "./models/Enums/UserRoles";
+import { ServiceProvider } from "./context/ServiceProvider";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/*todo deploy*/}
-        {/* <Route path="/paw-2022a-05/ or /" element={<MainLayout />}> */}
-        <Route path="/paw-2022a-05/" element={<MainLayout />}>
-          {/* These are public routes */}
-          <Route index element={<MenuPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signUp" element={<SignUpPage />} />
-          <Route path="createReservation" element={< CreateReservation />} />
-          <Route path="unauthorized" element={<UnauthorizedPage />} />
-          <Route path="reservations/:securityCode" element={<FullMenuPage />} />
-          <Route path="reservations/:securityCode/checkOut" element={<CheckOutPage />} />
+      
+        <Routes>
+          {/*todo deploy*/}
+          {/* <Route path="/paw-2022a-05/ or /" element={<MainLayout />}> */}
+          <Route path="/paw-2022a-05/" element={<MainLayout />}>
+            {/* These are public routes */}
+            <Route index element={<MenuPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="signUp" element={<SignUpPage />} />
+            <Route path="createReservation" element={< CreateReservation />} />
+            <Route path="unauthorized" element={<UnauthorizedPage />} />
+            <Route path="reservations/:securityCode" element={<FullMenuPage />} />
+            <Route path="reservations/:securityCode/checkOut" element={<CheckOutPage />} />
 
-          {/* Customer only routes*/}
-          <Route element={<RequireAuth allowedRoles={[UserRoles.CUSTOMER]} />}>
-            <Route path="reservations" element={<CustomerReservations />} />
-          </Route>
+            {/* Customer only routes*/}
+            <Route element={<RequireAuth allowedRoles={[UserRoles.CUSTOMER]} />}>
+              <Route path="reservations" element={<CustomerReservations />} />
+            </Route>
 
-          {/* Restaurant only Routes*/}
-          <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT]} />}>
-            <Route path="restaurantReservations" element={<Reservations />} />
-            <Route path="restaurantMenu" element={
-              <RestaurantMenuProvider>
-                <RestaurantMenu />
-              </RestaurantMenuProvider>} />
-          </Route>
-          
-          {/* Kitchen, waiter and restaurant*/}
-          <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT, UserRoles.WAITER, UserRoles.KITCHEN]} />}>
-            <Route path="kitchen" element={<Kitchen />}/>
-          </Route>
-            
-          {/* Restaurant and customer */}
-          <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT, UserRoles.CUSTOMER]} />}>
-            <Route path="profile" element={<ProfilePage />} />
-          </Route>
+            {/* Restaurant only Routes*/}
+            <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT]} />}>
+              <Route path="restaurantReservations" element={<Reservations />} />
+              <Route path="restaurantMenu" element={
+                <RestaurantMenuProvider>
+                  <RestaurantMenu />
+                </RestaurantMenuProvider>} />
+            </Route>
 
-          {/*Catch all */}
-          <Route path="*" element={<NoPage />} />
+            {/* Kitchen, waiter and restaurant*/}
+            <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT, UserRoles.WAITER, UserRoles.KITCHEN]} />}>
+              <Route path="kitchen" element={<Kitchen />} />
+            </Route>
 
-        </Route>
-      </Routes>
+            {/* Restaurant and customer */}
+            <Route element={<RequireAuth allowedRoles={[UserRoles.RESTAURANT, UserRoles.CUSTOMER]} />}>
+              <Route path="profile" element={<ProfilePage />} />
+            </Route>
+
+            {/*Catch all */}
+            <Route path="*" element={<NoPage />} />
+
+          </Route>
+        </Routes>
     </BrowserRouter>
   );
 };

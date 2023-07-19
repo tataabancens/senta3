@@ -48,7 +48,17 @@ export class AuthenticationService {
             }
     }
 
-    public async getUser(authorization: string, userId: number): Promise<ResponseDetails<UserModel>> {
+    public async refreshAccessToken(refreshToken: string): Promise<ResponseDetails<string>> {
+        try {
+            const response = await axios.get(this.loginPath, { headers: {'Authorization': refreshToken} });
+            const newAccessToken = response.headers['authorization'] as string;
+            return buildSuccessResponse(newAccessToken);
+        } catch (e) {
+            return buildErrorResponse(e as Error);
+        }
+    }
+
+    private async getUser(authorization: string, userId: number): Promise<ResponseDetails<UserModel>> {
         try {
             const response = await axios.get<UserModel>(paths.USERS + '/' + userId, {headers: {"Authorization": authorization, "Accept": this.ACCEPT_HEADER}});
             return buildSuccessResponse(response.data);
