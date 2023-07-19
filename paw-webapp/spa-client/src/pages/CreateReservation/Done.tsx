@@ -3,6 +3,8 @@ import Typography from '@mui/material/Typography';
 import { createReservationFormValues } from './CreateReservationPage';
 import { FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
+import useAuth from '../../hooks/serviceHooks/authentication/useAuth';
+import { emptyAuth } from '../../constants/constants';
 
 interface doneProps {
   props: FormikProps<createReservationFormValues>  
@@ -12,6 +14,7 @@ interface doneProps {
 export default function Done({props, secCode}: doneProps) {
   const { values: {date, hour, qPeople} } = props;
   const { t, i18n } = useTranslation();
+  const { auth } = useAuth();
 
   const formatDate = (date: string) => {
     const dateParts: string[] = date.split("-");
@@ -36,7 +39,7 @@ export default function Done({props, secCode}: doneProps) {
           secCode: secCode
         })}
       </Typography>
-      <Typography variant="h6" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>
+      {auth === emptyAuth && <Typography variant="h6" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>}
     </React.Fragment>
   );
 }
