@@ -145,8 +145,8 @@ const LoginPage: FC = () => {
             >
               <Grid item>
                 <Link
-                  to="/signup"
-                  style={{ textDecoration: "none", color: "black" }}
+                    to={paths.ROOT + "/signUp"}
+                    style={{ textDecoration: "none", color: "black" }}
                 >
                   {t('loginPage.registerCallToAction')}
                 </Link>
