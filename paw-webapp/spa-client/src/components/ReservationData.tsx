@@ -19,9 +19,9 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
         const year: string = dateParts[0];
         const month: string = dateParts[1];
         const day: string = dateParts[2];
-        if(i18n.language === "en"){
+        if(i18n.language.includes("en",0)){
             return `${month}/${day}/${year}`;
-        }else if(i18n.language === "es"){
+        }else if(i18n.language.includes("es",0)){
             return `${day}/${month}/${year}`;
         }
         return `${month}/${day}/${year}`;
