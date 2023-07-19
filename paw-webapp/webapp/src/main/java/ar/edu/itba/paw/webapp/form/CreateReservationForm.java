@@ -1,12 +1,5 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.model.Reservation;
-
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-
-
 public class CreateReservationForm {
 
     private long restaurantId;
@@ -14,12 +7,14 @@ public class CreateReservationForm {
     private int hour;
     private int qPeople;
 
+    private String reservationDate;
+
     public CreateReservationForm() {
 
     }
 
 //    private LocalDateTime startedAtTime;
-    private String reservationDate;
+
 
     public String getReservationDate() {
         return reservationDate;

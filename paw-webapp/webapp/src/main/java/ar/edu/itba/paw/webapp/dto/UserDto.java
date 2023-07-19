@@ -2,8 +2,6 @@ package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.model.Customer;
 import ar.edu.itba.paw.model.User;
-import ar.edu.itba.paw.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;

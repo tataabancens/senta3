@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.model.Customer;
-import ar.edu.itba.paw.model.Reservation;
 import ar.edu.itba.paw.persistance.CustomerDao;
 import org.springframework.stereotype.Repository;
 
@@ -43,7 +42,7 @@ public class CustomerJpaDao implements CustomerDao {
 
     @Override
     public Customer create(String customerName, String phone, String mail, long id) {
-        final Customer customer = new Customer(customerName, phone, mail, id, 0);
+        final Customer customer = new Customer(id, customerName, phone, mail, 0);
         em.persist(customer);
         return customer;
     }
@@ -56,16 +55,12 @@ public class CustomerJpaDao implements CustomerDao {
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
-        if(! ids.isEmpty()) {
-            final TypedQuery<Customer> query = (TypedQuery<Customer>) em.createQuery("from Customer as c where c.id IN :ids"); //es hql, no sql
-            query.setParameter("ids", ids);
-            final List<Customer> list = query.getResultList();
-            return list.isEmpty() ? new ArrayList<>() : list;
-        } else {
+        if (ids.isEmpty()) {
             return new ArrayList<>();
         }
-//
-//        final List<Customer> customerList = query.getResultList();
-//        return customerList.isEmpty() ? new ArrayList<>() : customerList;
+        final TypedQuery<Customer> query = (TypedQuery<Customer>) em.createQuery("from Customer as c where c.id IN :ids"); //es hql, no sql
+        query.setParameter("ids", ids);
+        final List<Customer> list = query.getResultList();
+        return list.isEmpty() ? new ArrayList<>() : list;
     }
 }

@@ -6,7 +6,6 @@ import ar.edu.itba.paw.webapp.mappers.utils.ResponseExceptionMapperUtil;
 
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;

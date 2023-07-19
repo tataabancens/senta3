@@ -5,10 +5,12 @@ import ar.edu.itba.paw.model.Reservation;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServiceUtils {
+
+    private ServiceUtils() {
+
+    }
 
     public static String generateReservationSecurityCode(Reservation reservation) {
         int leftLimit = 48; // numeral '0'
@@ -25,7 +27,7 @@ public class ServiceUtils {
                 .toString();
     }
 
-    public static LocalDateTime CustomDateParser(String maybeDate) {
+    public static LocalDateTime customDateParser(String maybeDate) {
         if (maybeDate.length() != 10) { // format: 1999-03-17
             return null;
         }
@@ -49,6 +51,6 @@ public class ServiceUtils {
             return null;
         }
 
-        return LocalDateTime.of(year, month, day, 23, 59, 59, 990000000);
+        return LocalDateTime.of(year, month, day, 23, 59, 59, 990_000_000);
     }
 }

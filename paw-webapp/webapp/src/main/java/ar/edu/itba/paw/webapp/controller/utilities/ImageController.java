@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Path("/api/resources/images")
 @Component

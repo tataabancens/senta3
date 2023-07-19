@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.service;
 
 import ar.edu.itba.paw.model.Dish;
-import ar.edu.itba.paw.model.DishCategory;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.IOException;

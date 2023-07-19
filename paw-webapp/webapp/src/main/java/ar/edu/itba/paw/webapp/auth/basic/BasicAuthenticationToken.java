@@ -11,8 +11,7 @@ public class BasicAuthenticationToken extends UsernamePasswordAuthenticationToke
     private String refreshToken;
 
     public BasicAuthenticationToken(Object principal, Object credentials,
-                                    Collection<? extends GrantedAuthority> authorities,
-                                    AuthenticationTokenDetails tokenDetails) {
+                                    Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
 

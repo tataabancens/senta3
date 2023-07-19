@@ -35,7 +35,7 @@ const RestaurantHeader: FC<Props> = ({
     const { reservation, orderItems, discount, toggleDiscount, restaurant, points } = useContext(ReservationContext);
     const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
     const [callWaiter, setCallWaiter] = useState(false);
-    const rs = useReservationService();
+    const rs = useReservationService(); 
     const { t } = useTranslation();
 
     useEffect(() => {

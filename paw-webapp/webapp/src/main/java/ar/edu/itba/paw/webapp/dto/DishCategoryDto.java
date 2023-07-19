@@ -6,7 +6,6 @@ import ar.edu.itba.paw.model.DishCategory;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-;
 
 public class DishCategoryDto {
     private long id;

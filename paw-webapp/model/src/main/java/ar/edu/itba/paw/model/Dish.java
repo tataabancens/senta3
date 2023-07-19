@@ -36,20 +36,6 @@ public class Dish {
         this.category = category;
     }
 
-    @Deprecated
-    public Dish(long id, long restaurantId, String dishName,
-                int price, String dishDescription,
-                long imageId, DishCategory category) {
-        super();
-        this.id = id;
-        //this.restaurantId = restaurantId;
-        this.dishName = dishName;
-        this.price = price;
-        this.dishDescription = dishDescription;
-        this.imageId = imageId;
-        this.category = category;
-    }
-
     /* default */ Dish() {
         // Just for hibernate
     }

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static ar.edu.itba.paw.service.ServiceUtils.CustomDateParser;
+import static ar.edu.itba.paw.service.ServiceUtils.customDateParser;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -167,7 +167,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         Reservation reservation = maybeReservation.get();
         if(reservationDate != null){
-            reservation.setReservationDate(CustomDateParser(reservationDate));
+            reservation.setReservationDate(customDateParser(reservationDate));
         }
         if(hour != null){
             reservation.setReservationHour(hour);

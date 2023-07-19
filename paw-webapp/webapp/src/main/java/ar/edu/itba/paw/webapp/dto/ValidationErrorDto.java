@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
 
 public class ValidationErrorDto {
 

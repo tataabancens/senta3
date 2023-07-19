@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.persistence.jpa;
 
-import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.Restaurant;
-import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.persistance.RestaurantDao;
 import org.springframework.stereotype.Repository;
 

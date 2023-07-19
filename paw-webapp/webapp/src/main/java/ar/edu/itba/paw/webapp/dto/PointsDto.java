@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.model.Customer;
-import org.glassfish.jersey.internal.inject.Custom;
 
 import javax.ws.rs.core.UriInfo;
-import java.awt.*;
 import java.net.URI;
 
 public class PointsDto {

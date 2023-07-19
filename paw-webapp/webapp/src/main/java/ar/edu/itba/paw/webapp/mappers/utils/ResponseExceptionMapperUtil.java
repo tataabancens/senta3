@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-public class ResponseExceptionMapperUtil {
+public final class ResponseExceptionMapperUtil {
     private ResponseExceptionMapperUtil() {
 
     }

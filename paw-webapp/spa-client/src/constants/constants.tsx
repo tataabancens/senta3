@@ -102,4 +102,4 @@ export const timeArray =
 ]
 export const ORDERITEMS_INTERVAL = 30000 //in milliseconds
 
-export const RESERVATION_INTERVAL = 10000 //in milliseconds
+export const RESERVATION_INTERVAL = 100000 //in milliseconds
