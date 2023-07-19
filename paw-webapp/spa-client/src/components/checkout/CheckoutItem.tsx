@@ -4,6 +4,7 @@ import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { useRestaurant } from "../../hooks/serviceHooks/restaurants/useRestaurant";
 import { DishModel, OrderItemModel, RestaurantModel } from "../../models";
 import { handleResponse } from "../../Utils";
+import useServices from "../../hooks/useServices";
 
 type Props = {
     orderItem: OrderItemModel;
@@ -14,7 +15,7 @@ type Props = {
 const CheckoutItem: FC<Props> = ({orderItem, usedDiscount, restaurant}) => {
 
     const [dish, setDish] = useState<DishModel | undefined>();
-    const ds = useDishService();
+    const { dishService: ds } = useServices();
     const textDecoration = usedDiscount ? 'line-through' : 'none';
 
     useEffect(() => {

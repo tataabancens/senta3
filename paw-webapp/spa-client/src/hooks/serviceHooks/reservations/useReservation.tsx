@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { ReservationModel } from "../../../models";
 import { ReservationParams } from "../../../models/Reservations/ReservationParams";
 import useReservationService from "./useReservationService";
+import useServices from "../../useServices";
 
 export const useReservation = (securityCode: string, interval?: number) => {
-    const reservationService= useReservationService();
+    const { reservationService } = useServices();
     const abortController = new AbortController();
     const [reservation, setReservation] = useState<ReservationModel>();
     const [error, setError] = useState<string>();

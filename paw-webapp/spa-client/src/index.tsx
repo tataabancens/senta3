@@ -6,6 +6,7 @@ import { ThemeConfig } from './config/theme.config';
 import { AuthProvider } from './context/AuthProvider';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './locales';
+import { ServiceProvider } from './context/ServiceProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,9 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <I18nextProvider i18n={i18n}>
     <AuthProvider>
-      <ThemeConfig>
-        <App />
-      </ThemeConfig>
+      <ServiceProvider>
+        <ThemeConfig>
+          <App />
+        </ThemeConfig>
+      </ServiceProvider>
     </AuthProvider>
   </I18nextProvider>
 );

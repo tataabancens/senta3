@@ -17,6 +17,7 @@ import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderIte
 import { ReservationContext } from "../../context/ReservationContext";
 import { useTranslation } from "react-i18next";
 import { extractCustomerIdFromContent } from "../../pages/SignUpPage";
+import useServices from "../../hooks/useServices";
 
   
 type Props = {
@@ -31,8 +32,7 @@ const ConfirmDishForm: FC<Props> = ({
   isOpen,
 }): JSX.Element => {
   const [qty, setQty] = useState(0);
-    
-  const orderItemService = useOrderItemService();
+  const { orderItemService } = useServices();
   const { reservation, reloadItems, updateReservation } = useContext(ReservationContext);
   const { t } = useTranslation();
 

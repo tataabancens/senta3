@@ -20,6 +20,7 @@ import * as Yup from "yup";
 import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
 import useImageService from "../../hooks/serviceHooks/useImageService";
 import { useTranslation } from "react-i18next";
+import useServices from "../../hooks/useServices";
 
 
 type Props = {
@@ -41,7 +42,7 @@ const EditDishForm: FC<Props> = ({
   categoryList,
 }): JSX.Element => {
 
-  const dishService = useDishService();
+  const { dishService } = useServices();
   const imageService = useImageService();
   const { t } = useTranslation();
 

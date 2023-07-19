@@ -36,6 +36,7 @@ import { CustomerModel, UserModel } from "../../models";
 import { useTranslation } from 'react-i18next';
 import useRestaurantService from '../../hooks/serviceHooks/restaurants/useRestaurantService';
 import useAuthenticationService from '../../hooks/serviceHooks/authentication/useAutenticationService';
+import useServices from '../../hooks/useServices';
 
 export interface createReservationFormValues {
   qPeople: number;
@@ -57,11 +58,9 @@ interface AvailableHours {
 }
 
 const CreateReservation: FC = () => {
-  const customerService = useCustomerService();
-  const reservationService = useReservationService();
-  const restaurantService = useRestaurantService();
-  const authenticationService = useAuthenticationService();
-  const userService = useUserService();
+  const { customerService, reservationService, restaurantService, 
+    authenticationService, userService } = useServices();
+    
   const { setAuth } = useAuth();
   const { auth } = useAuth();
   const { t } = useTranslation();
@@ -92,7 +91,7 @@ const CreateReservation: FC = () => {
     mail: Yup.string().when("customerStep", { is: true, then: Yup.string().email(t('validationSchema.mailValidation')).required(t('validationSchema.required')) }),
     phone: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     userStep: Yup.boolean(),
-    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength',{length: 8})).required(t('validationSchema.required')) }),
+    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength', { length: 8 })).required(t('validationSchema.required')) }),
     password: Yup.string().when("userStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     repeatPassword: Yup.string().when("userStep", {
       is: true, then: Yup.string()

@@ -5,6 +5,7 @@ import { extractCustomerIdFromContent } from "../pages/SignUpPage";
 import useCustomerService from "../hooks/serviceHooks/customers/useCustomerService";
 import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
 import { UserRoles } from "../models/Enums/UserRoles";
+import useServices from "../hooks/useServices";
 
 
 export interface Authentication {
@@ -36,8 +37,7 @@ interface Props {
 export const AuthProvider: React.FC<Props> = ({ children }) => {
     const [auth, setAuth] = useState(getAuthInfo());
     const [authUpdated, setAuthUpdated] = useState<boolean>(false);
-    const customerService = useCustomerService();
-    const restaurantService = useRestaurantService();
+    const { customerService, restaurantService } = useServices();
     const abortController = new AbortController();
 
     useEffect(() => {

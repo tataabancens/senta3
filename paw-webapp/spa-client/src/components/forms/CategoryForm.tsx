@@ -6,6 +6,7 @@ import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
 import { useTranslation } from "react-i18next";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import useServices from "../../hooks/useServices";
 
 type Props = {
   isOpen: boolean;
@@ -20,7 +21,7 @@ interface createCategoryFormValue {
 const CategoryForm: FC<Props> = ({ isOpen, handleOpen, canReload }): JSX.Element => {
 
   // const [categoryName, setCategoryName] = useState("");
-  const dishService = useDishService();
+  const { dishService } = useServices();
   const { t } = useTranslation();
   const { getDishCategories: { categoryList, categoryMap, setCategories, setCategoryMap }, useCurrentCategory: { setCategoryId } } = useRestaurantMenuContext();
 

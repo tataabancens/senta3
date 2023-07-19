@@ -6,6 +6,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { ReservationContext } from "../../context/ReservationContext";
 import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import { useTranslation } from "react-i18next";
+import useServices from "../../hooks/useServices";
 
 type Props = {
     orderItem: OrderItemModel;
@@ -15,7 +16,7 @@ type Props = {
 const OrdersItem: FC<Props> = ({orderItem, toggleReload}) => {
 
     const [dish, setDish] = useState<DishModel | undefined>();
-    const dishService = useDishService();
+    const { dishService } = useServices();
     const {reservation} = useContext(ReservationContext);
     const statusMap: Map<string, number> = new Map([
         ["ORDERED", 0],

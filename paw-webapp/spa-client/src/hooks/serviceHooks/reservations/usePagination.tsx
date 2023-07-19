@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ReservationModel } from "../../../models";
 import useReservationService from "./useReservationService";
 import { ReservationParams } from "../../../models/Reservations/ReservationParams";
+import useServices from "../../useServices";
 
 export interface ReservationsPaginated {
     reservations: ReservationModel[];
@@ -16,7 +17,7 @@ export const useReservationsPagination = (page: number, value: number, sortDirec
     const [error, setError] = useState<string>();
     const [lastPage, setLastPage] = useState<number>(0);
     const [loadingDone, setLoadingDone] = useState<boolean>(false);
-    const reservationService = useReservationService();
+    const { reservationService } = useServices();
     const abortController = new AbortController();
     const [reload, setReload] = useState(false);
 

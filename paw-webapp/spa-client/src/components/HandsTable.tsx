@@ -5,6 +5,7 @@ import { useRaisedHands } from "../hooks/serviceHooks/reservations/useRaisedHand
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import { ReservationModel } from "../models";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
+import useServices from "../hooks/useServices";
 
 
   
@@ -12,7 +13,7 @@ const HandsTable: FC = () => {
 
     const { t } = useTranslation();
     const { reservations, loading, removeReservation } = useRaisedHands(true, 1);
-    const rs = useReservationService();
+    const { reservationService: rs } = useServices();
 
     const clientAttended = async (reservation: ReservationModel) => {
         let reservationParams = new ReservationParams();

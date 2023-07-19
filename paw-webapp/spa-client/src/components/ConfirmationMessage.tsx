@@ -5,6 +5,7 @@ import { DishCategoryModel } from "../models";
 import { DishParams } from "../models/Dishes/DishParams";
 import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
 import { useTranslation } from "react-i18next";
+import useServices from "../hooks/useServices";
 
 
 type Props = {
@@ -33,7 +34,7 @@ const style = {
 
 const ConfirmationMessage: FC<Props> = ({ isOpen, handleOpen, category, dishes}) => {
 
-  const dishService = useDishService();
+  const { dishService } = useServices();
   const { getDishCategories: { categoryList, categoryMap, setCategories, setCategoryMap }, useCurrentCategory: { setCategoryId } } = useRestaurantMenuContext();
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);

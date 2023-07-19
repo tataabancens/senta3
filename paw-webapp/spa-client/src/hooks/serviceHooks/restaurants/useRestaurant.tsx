@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import useRestaurantService from "./useRestaurantService"
 import { RestaurantModel } from "../../../models";
+import useServices from "../../useServices";
 
 export const useRestaurant = (restaurantId: number) => {
-    const restaurantService = useRestaurantService();
+    const { restaurantService } = useServices();
     const abortController = new AbortController();
     const [restaurant, setRestaurant] = useState<RestaurantModel>();
     const [error, setError] = useState<string>();

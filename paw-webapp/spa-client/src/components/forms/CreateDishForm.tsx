@@ -15,6 +15,7 @@ import useDishService from '../../hooks/serviceHooks/dishes/useDishService';
 import { DishParams } from '../../models/Dishes/DishParams';
 import useRestaurantMenuContext from '../../hooks/useRestaurantMenuContext';
 import { useTranslation } from 'react-i18next';
+import useServices from "../../hooks/useServices";
 
 export interface createDishFormValue {
     name: string;
@@ -32,7 +33,7 @@ type Props = {
 const CreateDishForm: FC<Props> = ({ formIsOpen, handleOpenForm }) => {
 
     const ims = useImageService();
-    const ds = useDishService();
+    const { dishService: ds } = useServices();
     const { t } = useTranslation();
 
     const { useCurrentCategory: { categoryId, setCategoryId }, getDishCategories: { categoryList }, getDishes: { addDish } } = useRestaurantMenuContext();

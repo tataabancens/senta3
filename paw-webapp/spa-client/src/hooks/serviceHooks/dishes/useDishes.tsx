@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { DishCategoryModel, DishModel } from "../../../models";
 import useDishService from "./useDishService";
+import useServices from "../../useServices";
 
 export const useDishes = (value: number, category: DishCategoryModel | undefined) => {
     const [dishes, setDishes] = useState<DishModel[] | undefined>(undefined);
     const [error, setError] = useState<string>();
-    const dishService = useDishService();
+    const { dishService } = useServices();
     const abortController = new AbortController();
 
     useEffect(() => {

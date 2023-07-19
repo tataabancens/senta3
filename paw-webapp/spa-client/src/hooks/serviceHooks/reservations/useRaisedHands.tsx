@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { ReservationModel } from "../../../models";
 import useReservationService from "./useReservationService";
 import { ReservationParams } from "../../../models/Reservations/ReservationParams";
+import useServices from "../../useServices";
 
 export const useRaisedHands = (raisedHand: boolean, value: number) => {
     const [reservations, setReservations] = useState<ReservationModel[] | undefined>(undefined);
     const [error, setError] = useState<string | undefined>(undefined);
-    const reservationService = useReservationService();
+    const { reservationService } = useServices();
     const abortController = new AbortController();
     const [reload, setReload] = useState(false);
 

@@ -23,6 +23,7 @@ import ApiErrorDetails from "../../models/ApiError/ApiErrorDetails";
 import { useTranslation } from "react-i18next";
 import { UserRoles } from "../../models/Enums/UserRoles";
 import useAuth from "../../hooks/serviceHooks/authentication/useAuth";
+import useServices from "../../hooks/useServices";
 
 interface accountInfoFormValues {
   restaurantName: string;
@@ -48,7 +49,7 @@ const AccountInfoForm: FC<Props> = ({
   isOpen,
   reload,
 }): JSX.Element => {
-  
+
   const { auth, setAuth } = useAuth();
   const { t } = useTranslation();
   const initialValues: accountInfoFormValues = {
@@ -69,19 +70,17 @@ const AccountInfoForm: FC<Props> = ({
     username: Yup.string().required(t('validationSchema.required')),
     phone: Yup.string().required(t('validationSchema.required')),
     mail: Yup.string().required(t('validationSchema.required')),
-    password: Yup.string().min(8, t('validationSchema.passwordLength',{length: 8})),
+    password: Yup.string().min(8, t('validationSchema.passwordLength', { length: 8 })),
     repeatPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], t('validationSchema.passwordMatch')),
-  
+
   })
 
-  const userService = useUserService();
-  const restaurantService = useRestaurantService();
-  const cs = useCustomerService();
+  const { userService, restaurantService, customerService: cs } = useServices();
 
   const handleSubmit = async (values: accountInfoFormValues, props: FormikHelpers<accountInfoFormValues>) => {
-    const {restaurantName, customerName, mail, phone, password, repeatPassword} = values;
-    
+    const { restaurantName, customerName, mail, phone, password, repeatPassword } = values;
+
     if (auth?.roles[0] === UserRoles.RESTAURANT) {
       let restaurantData = new RestParams();
       restaurantData.mail = mail;
@@ -90,7 +89,7 @@ const AccountInfoForm: FC<Props> = ({
       restaurantData.phone = phone;
       const { isOk } = await restaurantService.editRestaurant(restaurantData);
       if (isOk) {
-        setAuth({...auth});
+        setAuth({ ...auth });
       }
 
     } else {
@@ -101,16 +100,16 @@ const AccountInfoForm: FC<Props> = ({
       customerData.phone = phone;
       const { isOk } = await cs.editCustomer(customerData);
       if (isOk) {
-        setAuth({...auth});
+        setAuth({ ...auth });
       }
     }
 
     let userData = new UserParams();
     userData.userId = auth.id;
     if (password !== '' && repeatPassword !== '') {
-      userData.psPair = {password: password, checkPassword: repeatPassword};
+      userData.psPair = { password: password, checkPassword: repeatPassword };
     }
-    
+
     const { ok: userEdited, error: userError, response: userResponse } = await awaitWrapper(userService.editUser(userData));
 
     if (!userEdited) {
@@ -132,7 +131,7 @@ const AccountInfoForm: FC<Props> = ({
               <DialogTitle>{t('forms.accountInfo.title')}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                {t('forms.accountInfo.description')}
+                  {t('forms.accountInfo.description')}
                 </DialogContentText>
                 <Grid container marginY={3}>
                   {auth?.roles[0] === UserRoles.RESTAURANT ? (
@@ -204,7 +203,7 @@ const AccountInfoForm: FC<Props> = ({
                     marginBottom={1}
                   >
                     <Field as={TextField}
-                      
+
                       id="password"
                       label={t('forms.accountInfo.password')}
                       name="password"
@@ -220,7 +219,7 @@ const AccountInfoForm: FC<Props> = ({
                     marginBottom={1}
                   >
                     <Field as={TextField}
-            
+
                       id="repeatPassword"
                       label={t('forms.accountInfo.passwordRepeat')}
                       type="password"
@@ -234,7 +233,7 @@ const AccountInfoForm: FC<Props> = ({
               </DialogContent>
               <DialogActions>
                 <Button type="submit" disabled={props.isSubmitting} variant="contained" color="success">
-                {t('forms.confirmButton')}
+                  {t('forms.confirmButton')}
                 </Button>
                 <Button onClick={handleOpen} variant="contained">
                   {t('forms.cancelButton')}

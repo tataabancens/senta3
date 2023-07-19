@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { CustomerModel } from "../../../models";
 import PointsModel from "../../../models/Customers/PointsModel";
 import useCustomerService from "./useCustomerService";
+import useServices from "../../useServices";
 
 export const useCustomer = (customerPath: string | undefined) => {
-    const cs = useCustomerService();
+    const { customerService: cs } = useServices();
     const abortController = new AbortController();
     const [customer, setCustomer] = useState<CustomerModel | undefined>();
     const [points, setPoints] = useState<PointsModel | undefined>();

@@ -7,6 +7,7 @@ import useDishService from "../../hooks/serviceHooks/dishes/useDishService";
 import useOrderItemService from "../../hooks/serviceHooks/orderItems/useOrderItemService";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import { ReservationContext } from "../../context/ReservationContext";
+import useServices from "../../hooks/useServices";
 
 type Props = {
     orderItem: OrderItemModel;
@@ -18,8 +19,7 @@ type Props = {
 const ShoppingCartItem: FC<Props> = ({orderItem, securityCode, isCartItem, usedDiscount}) => {
 
     const [dish, setDish] = useState<DishModel | undefined>();
-    const dishService = useDishService();
-    const orderItemService = useOrderItemService();
+    const { dishService, orderItemService } = useServices();
     const { updateItem, restaurant } = useContext(ReservationContext);
     const abortController = new AbortController();
     const textDecoration = usedDiscount ? 'line-through' : 'none';
