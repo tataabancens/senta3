@@ -36,13 +36,13 @@ export const TRANSLATIONS_ES ={
             loading: "Cargando"
         },
         rememberMe: "Recuerdame",
-        forgotPassword: "¿Olvidaste tu constraseña?",
+        forgotPassword: "¿Olvidaste tu contraseña?",
         registerCallToAction: "¿No tenes cuenta? registrate!"
     },
     validationSchema:{
         required: "Requerido",
         mailValidation: "Ingresar un mail valido",
-        passwordMatch: "Las constraseñas deben coincidir",
+        passwordMatch: "Las contraseñas deben coincidir",
         passwordLength: "La contraseña debe tener al menos {{length}} caracteres",
         positiveValidation: "Debe ser mayor que 0",
         dateValidation: "La fecha no puede ser en el pasado",
@@ -138,7 +138,7 @@ export const TRANSLATIONS_ES ={
         ordersPanel:{
             title: "Pedidos",
             disclaimer: "El estatus de tus pedidos será visible al llegar al restaurante",
-            noDishes: "Aun no has ordernado ningún platillo",
+            noDishes: "Aun no has ordernado ningún plato",
             orderedStatus: "Pedido",
             cookingStatus: "Cocinando",
             deliveringStatus: "Entregando"
@@ -231,7 +231,7 @@ export const TRANSLATIONS_ES ={
     },
     registerPage:{
         registerTitle: "Registro",
-        registerButton: "registrarse",
+        registerButton: "Registrarse",
         loginCallToAction: "¿Ya tenes una cuenta? ingresa!",
         label:{
             mail: "Mail",
@@ -294,7 +294,7 @@ export const TRANSLATIONS_ES ={
             name: "Nombre",
             price: "Precio",
             description: "Descripción",
-            category: "Categorpía",
+            category: "Categoría",
         },
         editCategory:{
             title: "Editar categoría",
