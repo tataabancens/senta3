@@ -13,7 +13,7 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
 
     const reloadItems = () => {setReload(!reload)}
 
-    const getOrderItems = async () => {
+    /*const getOrderItems = async () => {
         if(!reservation) return;
         let orderItemParams = new OrderitemParams();
         orderItemParams.securityCode = reservation.securityCode;
@@ -23,16 +23,24 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
             data.length > 0 ? setOrderItems(data) : setOrderItems([]);
         }
         else setError(error);
-    }
+    }*/
 
     useEffect(() => {
-        getOrderItems()
-        const interval = setInterval(getOrderItems, ORDERITEMS_INTERVAL); 
+        (async () => {
+            if(!reservation) return;
+            let orderItemParams = new OrderitemParams();
+            orderItemParams.securityCode = reservation.securityCode;
+            
+            const { isOk, data, error } = await orderItemService.getOrderItems(orderItemParams, abortController);
+            if (isOk) {
+                data.length > 0 ? setOrderItems(data) : setOrderItems([]);
+            }
+            else setError(error);
+        })();
         return () => {
-            clearInterval(interval);
             abortController.abort();
         }
-    }, [reservation, reload]);
+    }, [reload, reservation]);
 
     const addItem = (newItem: OrderItemModel) => {
         setOrderItems((prevItems) => [...prevItems, newItem]);
@@ -42,6 +50,13 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
         setOrderItems((prevItems) => prevItems.filter((orderItem) => orderItem !== item));
     };
 
+    const updateItem = (updatedItem: OrderItemModel) => {
+        setOrderItems((prevItems) =>
+            prevItems.map((orderItem) =>
+                orderItem.orderItemId === updatedItem.orderItemId ? updatedItem : orderItem
+            )
+        );
+    };
 
     return {
         orderItems: orderItems,
@@ -49,6 +64,7 @@ export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined
         loading: !orderItems && !error,
         reloadItems,
         addItem,
-        removeItem
+        removeItem,
+        updateItem
     }
 }

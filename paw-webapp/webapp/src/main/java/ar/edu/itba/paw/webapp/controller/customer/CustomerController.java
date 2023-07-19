@@ -31,9 +31,6 @@ public class CustomerController {
     @Autowired
     private UserService us;
 
-//    @Autowired
-//    private ReservationService rs;
-
     @Context
     private UriInfo uriInfo;
 
@@ -54,7 +51,6 @@ public class CustomerController {
     @GET
     @Produces(value = { CUSTOMER_VERSION_1 })
     public Response getCustomers(@DefaultValue("1")@QueryParam("page") final int page){
-                        //        @DefaultValue("")@QueryParam("username") final String username,
         final List<CustomerDto> customers = cs.getCustomers(page)
                 .stream()
                 .map(c -> CustomerDto.fromCustomer(uriInfo, c))

@@ -9,14 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
+    private String accessToken;
     private String token;
     private UserDetails userDetails;
     private AuthenticationTokenDetails tokenDetails;
+    private boolean isRefreshToken;
 
     public JwtAuthenticationToken(String token) {
         super(AuthorityUtils.NO_AUTHORITIES);
         this.token = token;
         this.setAuthenticated(false);
+        this.isRefreshToken = false;
     }
 
     public JwtAuthenticationToken(UserDetails userDetails, AuthenticationTokenDetails authenticationTokenDetails,
@@ -26,6 +29,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         this.userDetails = userDetails;
         this.tokenDetails = authenticationTokenDetails;
         super.setAuthenticated(true);
+        this.isRefreshToken = false;
     }
 
     @Override
@@ -56,5 +60,21 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     public void eraseCredentials() {
         super.eraseCredentials();
         this.token = null;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public boolean isRefreshToken() {
+        return isRefreshToken;
+    }
+
+    public void setRefreshToken(boolean refreshToken) {
+        isRefreshToken = refreshToken;
     }
 }

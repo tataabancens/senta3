@@ -73,6 +73,5 @@ public class DishJpaDao implements DishDao {
         final TypedQuery<Dish> query = em.createQuery("from Dish where id = :id", Dish.class);
         query.setParameter("id", id);
         return query.getResultList().stream().findFirst();
-
     }
 }

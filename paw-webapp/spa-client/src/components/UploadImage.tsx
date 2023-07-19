@@ -23,7 +23,6 @@ const UploadImage: FC<Props> = ({props}) => {
             }
             return
         }
-
         const objectUrl = URL.createObjectURL(selectedFile);
         setPreview(objectUrl);
 
@@ -43,18 +42,22 @@ const UploadImage: FC<Props> = ({props}) => {
     }
 
     return (
-        <Grid>
-            <input type='file'
-                // required
-                id="image"
-                name="image"
-                onChange={onSelectFile}
-                onBlur={handleBlur}
-            />
+        <Grid container>
             { errors.image ?
-                    (<p style={{color: 'red'}}>{errors.image}</p>)
-                :   ((selectedFile || image !== "") && <img src={preview}/>)
+                    (<Grid item xs={12} sx={{display:"flex", justifyContent:"center"}}><p style={{color: 'red'}}>{errors.image}</p></Grid>)
+                :   ((selectedFile || image !== "") && <Grid item xs={12} sx={{display:"flex", justifyContent:"center"}}>
+                    <img style={{objectFit:"cover", width: 250, borderRadius: ".8rem", aspectRatio: 1, borderStyle: "solid", marginBottom: 20}} src={preview}/>
+                    </Grid>)
             }
+            <Grid item xs={12} sx={{display:"flex", justifyContent:"center"}}>
+                <input type='file'
+                    // required
+                    id="image"
+                    name="image"
+                    onChange={onSelectFile}
+                    onBlur={handleBlur}
+                />
+            </Grid>
         </Grid>
     );
 }

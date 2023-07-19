@@ -23,6 +23,9 @@ public class Settings {
     @Value("${authentication.jwt.claimNames.userId}")
     private String userIdClaimName;
 
+    @Value("${authentication.jwt.claimNames.isRefreshToken}")
+    private String isRefreshTokenClaimName;
+
 
     public String getSecret() {
         return secret;
@@ -46,5 +49,9 @@ public class Settings {
 
     public String getUserIdClaimName() {
         return userIdClaimName;
+    }
+
+    public String getIsRefreshTokenClaimName() {
+        return isRefreshTokenClaimName;
     }
 }

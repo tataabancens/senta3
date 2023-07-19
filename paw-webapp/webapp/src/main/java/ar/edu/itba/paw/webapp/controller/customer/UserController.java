@@ -39,16 +39,6 @@ public class UserController {
     @Autowired
     private AuthFacade authFacade;
 
-//    @GET //no need to implement this?
-//    @Produces(value = { MediaType.APPLICATION_JSON, })
-//    public Response listUsers() {
-//        final List<UserDto> allUsers = us.getAll()
-//                .stream()
-//                .map(u -> UserDto.fromUser(uriInfo, u))
-//                .collect(Collectors.toList());;
-//        return Response.ok(allUsers).build();
-//    }
-
     private final static String USER_VERSION_1 = "application/vnd.sentate.user.v1+json";
 
     @GET
@@ -95,7 +85,6 @@ public class UserController {
         if(succes){
             return Response.ok().build();
         }
-        //        return Response.status(400).build();
         throw new UserNotFoundException();
     }
 
@@ -103,7 +92,7 @@ public class UserController {
     @Consumes({ USER_VERSION_1 })
     @Path("/{id}")
     public Response editUser(@PathParam("id") final long id,
-                                    @Valid final UserPatchForm userPatchForm){
+                             @Valid final UserPatchForm userPatchForm){
         if(userPatchForm == null){
             return Response.status(400).build();
         }

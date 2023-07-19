@@ -41,7 +41,7 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
         BasicAuthenticationToken auth = (BasicAuthenticationToken) authentication;
         String[] credentials;
         try {
-            credentials = new String(Base64.getDecoder().decode(auth.getToken())).split(":");
+            credentials = new String(Base64.getDecoder().decode(auth.getAccessToken())).split(":");
         } catch (IllegalArgumentException iae) {
             throw new BadCredentialsException("Invalid basic header");
         }
@@ -54,11 +54,16 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad username/password combination");
         }
         UserDetails userDetails = pawUserDetailsService.loadUserByUsername(credentials[0]);
-        String authenticationToken = tokenService.issueToken(credentials[0], mapToAuthority(userDetails.getAuthorities()), maybeUser.getId());
+        String authenticationToken = tokenService.issueAccessToken(credentials[0], mapToAuthority(userDetails.getAuthorities()), maybeUser.getId());
+        String refreshToken = tokenService.issueRefreshToken(credentials[0], mapToAuthority(userDetails.getAuthorities()), maybeUser.getId());
+
+        AuthenticationTokenDetails tokenDetails = tokenService.parseToken(authenticationToken);
 
         BasicAuthenticationToken trustedAuth = new BasicAuthenticationToken(credentials[0], credentials[1],
-                userDetails.getAuthorities());
-        trustedAuth.setToken(authenticationToken);
+                userDetails.getAuthorities(), tokenDetails);
+
+        trustedAuth.setAccessToken(authenticationToken);
+        trustedAuth.setRefreshToken(refreshToken);
         return trustedAuth;
     }
 

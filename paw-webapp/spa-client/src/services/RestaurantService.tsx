@@ -28,12 +28,21 @@ export class RestaurantService {
         }
     }
 
-    public editRestaurant(params: RestParams): Promise<AxiosResponse> {
-        return this.axios.patch(this.basePath + `/${params.restaurantId}`, params.patchRestaurantPayload, { headers: this.CONTENT_TYPE } )
+    public async editRestaurant(params: RestParams): Promise<ResponseDetails<number>> {
+        try {
+            const response = await this.axios.patch(this.basePath + `/${params.restaurantId}`, params.patchRestaurantPayload, { headers: this.CONTENT_TYPE } )
+            return buildSuccessResponse(0);
+        } catch (e) {
+            return buildErrorResponse(e as Error);
+        }
     }
 
-    public async getAvailableHours(params: ReservationParams): Promise<number[]> {
-        const response = await this.axios.get(paths.BASE_URL + `/restaurants/${params.restaurantId}/availableHours/${params.date}?qPeople=${params.qPeople}`, { headers: this.ACCEPT })
-        return response.data;
+    public async getAvailableHours(params: ReservationParams): Promise<ResponseDetails<number[]>> {
+        try {
+            const response = await this.axios.get(paths.BASE_URL + `/restaurants/${params.restaurantId}/availableHours/${params.date}?qPeople=${params.qPeople}`, { headers: this.ACCEPT })
+            return buildSuccessResponse(response.data.availableHours as number[]);
+        } catch(e) {
+            return buildErrorResponse(e as Error);
+        }
     }
 }

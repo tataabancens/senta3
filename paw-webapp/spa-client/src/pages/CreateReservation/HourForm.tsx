@@ -14,6 +14,7 @@ interface hourFormProps {
 export default function HourForm({ props, availableHours }: hourFormProps) {
     const { handleBlur, handleChange, values, errors } = props;
     const { t } = useTranslation();
+
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>{t('createReservation.step3.stepDescription')}</Typography>

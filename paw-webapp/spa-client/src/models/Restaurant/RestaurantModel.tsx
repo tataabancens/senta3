@@ -12,6 +12,6 @@ export default interface RestaurantModel{
     closeHour: number,
     pointsForDiscount: number,
     discountCoefficient: number,
-    pointsPerItem: number,
+    addPointsCoefficient: number,
     self: string
 }

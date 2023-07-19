@@ -20,6 +20,7 @@ export default function DateForm({ props }: dateFormProps) {
         <Field as={TextField}
           id="Date"
           name="date"
+          required
           type="date"
           sx={{ width: 220 }}
           InputLabelProps={{

@@ -19,9 +19,9 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
         const year: string = dateParts[0];
         const month: string = dateParts[1];
         const day: string = dateParts[2];
-        if(i18n.language === "en"){
+        if(i18n.language.includes("en",0)){
             return `${month}/${day}/${year}`;
-        }else if(i18n.language === "es"){
+        }else if(i18n.language.includes("es",0)){
             return `${day}/${month}/${year}`;
         }
         return `${month}/${day}/${year}`;
@@ -40,7 +40,7 @@ const ReservationData: FC<Props> =({reservation, state, toggleDrawer}) => {
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.code',{code: reservation?.securityCode})}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.date')}{formatDate(reservation!.date)}</Grid>
             <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.hour',{hour: reservation?.hour})}</Grid>
-            <Grid item xs={12} component={Typography} variant="h6">{t('reservationData.table',{table: reservation?.tableNumber})}</Grid>
+            <Grid item xs={12} component={Typography} variant="h6">{reservation?.tableNumber === 0 ? t('reservationData.noTable') : t('reservationData.table',{table: reservation?.tableNumber})}</Grid>
           </Grid>
         </Drawer>
     );

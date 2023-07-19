@@ -4,6 +4,7 @@ package ar.edu.itba.paw.webapp.controller.restaurant;
 import ar.edu.itba.paw.model.Dish;
 import ar.edu.itba.paw.model.DishCategory;
 import ar.edu.itba.paw.model.Restaurant;
+import ar.edu.itba.paw.model.exceptions.ReservationNotFoundException;
 import ar.edu.itba.paw.service.DishService;
 import ar.edu.itba.paw.service.ImageService;
 import ar.edu.itba.paw.service.RestaurantService;
@@ -86,7 +87,12 @@ public class DishController {
     @Path("/{id}")
     @Produces(value = { DISH_VERSION_1 })
     public Response deleteDish(@PathParam("restaurantId") final long restaurantId, @PathParam("id") final long dishId){
-        ds.deleteDish(dishId);
+        Optional<Restaurant> maybeRestaurant = rs.getRestaurantById(restaurantId);
+        if (!maybeRestaurant.isPresent()) {
+            throw new ReservationNotFoundException();
+        }
+        Restaurant restaurant = maybeRestaurant.get();
+        rs.deleteDish(restaurant, dishId);
         return Response.noContent().build();
     }
 

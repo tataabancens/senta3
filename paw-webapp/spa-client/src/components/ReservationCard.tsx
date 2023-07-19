@@ -39,11 +39,12 @@ const ReservationCard: FC<Props> = ({reservation, reservationType}): JSX.Element
               <Grid item xs={6}><Typography variant="body1" align="right">{t('customerReservations.reservationCard.hour',{hour: reservation.hour})}</Typography></Grid>
               <Grid item xs={6}><Typography variant="body1" align="left">{t('customerReservations.reservationCard.people',{people: reservation.peopleAmount})}</Typography></Grid>
               <Grid item xs={6}><Typography variant="body1" align="right">{t('customerReservations.reservationCard.code',{code: reservation.securityCode})}</Typography></Grid>
+              { reservationType !== "PENDING" &&
               <Grid item xs={12}>
                 <Button color="primary" variant="contained" fullWidth onClick={handleNavigation}>
                   {t('customerReservations.enterButton')}
                 </Button>
-              </Grid>
+              </Grid>}
         </Grid>
     );
 }

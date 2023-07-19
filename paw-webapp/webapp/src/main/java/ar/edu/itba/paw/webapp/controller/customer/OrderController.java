@@ -61,21 +61,6 @@ public class OrderController {
         }).build();
     }
 
-//    @GET
-//    @Produces(value = {MediaType.APPLICATION_JSON,})
-//    public Response getOrderItems(@PathParam("securityCode") final String securityCode) {
-//        Optional<Reservation> maybeReservation = rs.getReservationBySecurityCode(securityCode);
-//        if (!maybeReservation.isPresent()) {
-//            throw new ReservationNotFoundException();
-//        }
-//        List<OrderItemDto> orderItemDtoList = rs.getOrderItemsOfReservation(maybeReservation.get().getId())
-//                .stream()
-//                .map(o -> OrderItemDto.fromOrderItem(uriInfo, o))
-//                .collect(Collectors.toList());
-//
-//        return Response.ok(new GenericEntity<List<OrderItemDto>>(orderItemDtoList) {}).build();
-//    }
-
 
     @GET
     @Path("/{orderItemId}")
@@ -105,7 +90,7 @@ public class OrderController {
     @PATCH
     @Consumes({ ORDER_ITEM_VERSION_1 })
     @Path("/{id}")
-    public Response editReservation(@PathParam("id") final long id,
+    public Response editOrderItem(@PathParam("id") final long id,
                                     final OrderItemPatchForm orderItemPatchForm){
 
         return (rs.patchOrderItem(orderItemPatchForm.getSecurityCode(), id, orderItemPatchForm.getStatus())) ? Response.ok().build() : Response.status(400).build();

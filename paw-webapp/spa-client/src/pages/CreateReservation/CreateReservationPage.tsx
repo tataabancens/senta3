@@ -6,7 +6,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import QPeopleForm from './QPeopleForm';
 import DateForm from './DateForm';
@@ -81,9 +80,10 @@ const CreateReservation: FC = () => {
     repeatPassword: "",
   }
 
+  const today = new Date(); today.setHours(0, 0, 0, 0);
   const validationSchema = Yup.object().shape({
     qPeople: Yup.number().positive(t('validationSchema.positiveValidation')).required(t('validationSchema.required')),
-    date: Yup.date().min(new Date(), t('validationSchema.dateValidation')).required(t('validationSchema.required')),
+    date: Yup.date().min(today, t('validationSchema.dateValidation')).required(t('validationSchema.required')),
     hour: Yup.number().positive(t('validationSchema.positiveValidation')).max(24, "Less than 24"),
     customerStep: Yup.boolean(),
     firstName: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
@@ -91,7 +91,7 @@ const CreateReservation: FC = () => {
     mail: Yup.string().when("customerStep", { is: true, then: Yup.string().email(t('validationSchema.mailValidation')).required(t('validationSchema.required')) }),
     phone: Yup.string().when("customerStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     userStep: Yup.boolean(),
-    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength')).required(t('validationSchema.required')) }),
+    username: Yup.string().when("userStep", { is: true, then: Yup.string().min(8, t('validationSchema.passwordLength',{length: 8})).required(t('validationSchema.required')) }),
     password: Yup.string().when("userStep", { is: true, then: Yup.string().required(t('validationSchema.required')) }),
     repeatPassword: Yup.string().when("userStep", {
       is: true, then: Yup.string()
@@ -131,7 +131,7 @@ const CreateReservation: FC = () => {
         break;
       case 1: //date
         if (auth.id > 0) { //there is a logged in user
-          if (user != undefined) {
+          if (user !== undefined) {
             const custId = extractCustomerIdFromContent(user.content);
             setCustomerId(custId);
             handleResponse(customerService.getCustomerById(custId), (customer: CustomerModel) =>
@@ -142,14 +142,13 @@ const CreateReservation: FC = () => {
         resParams.qPeople = qPeople;
         resParams.date = date.toString();
         resParams.restaurantId = 1;
-        const { ok, error, response } = await awaitWrapper<AvailableHours>(restaurantService.getAvailableHours(resParams));
-        if (!ok) {
-          props.setFieldError("date", error.message);
+        const { isOk, error, data: availableHoursApi } = await restaurantService.getAvailableHours(resParams);
+        if (!isOk || !availableHoursApi) {
+          props.setFieldError("date", t('forms.selectedDate.error'));
           props.setSubmitting(false);
           return;
         }
-        const data = response as any as AvailableHours;
-        setAvailableHours(data.availableHours);
+        setAvailableHours(availableHoursApi);
         break;
 
       case 2: //hour
@@ -158,7 +157,7 @@ const CreateReservation: FC = () => {
           props.setSubmitting(false);
           return;
         }
-        if (customer != undefined) {
+        if (customer !== undefined) {
           setActiveStep(activeStep + 2); //skip create customer
           return;
         }
@@ -172,9 +171,9 @@ const CreateReservation: FC = () => {
         const { ok: customerCreated, error: customerError, response: customerResponse } = await awaitWrapper(customerService.createCustomer(cusParams));
         if (!customerCreated) {
           const errorData = customerError.response?.data as ApiErrorDetails;
-          props.setFieldError("customerName", errorData.errors?.find((e) => e.property == "customerName")?.description);
-          props.setFieldError("email", errorData.errors?.find((e) => e.property == "email")?.description);
-          props.setFieldError("phone", errorData.errors?.find((e) => e.property == "phone")?.description);
+          props.setFieldError("customerName", errorData.errors?.find((e) => e.property === "customerName")?.description);
+          props.setFieldError("email", errorData.errors?.find((e) => e.property === "email")?.description);
+          props.setFieldError("phone", errorData.errors?.find((e) => e.property === "phone")?.description);
           props.setSubmitting(false);
           return;
         }
@@ -197,7 +196,6 @@ const CreateReservation: FC = () => {
         setResCode(resResponse!.headers["location"]!.split("/reservations/")[1]);
         setActiveStep(activeStep + 2); //skip one
         return;
-        break;
 
       case 4:
         resParams.hour = hour;
@@ -205,8 +203,7 @@ const CreateReservation: FC = () => {
         resParams.date = date.toString();
         resParams.restaurantId = 1;
 
-        // @ts-ignore
-        resParams.customerId = customer.id;
+        resParams.customerId = customer!.id;
         const { ok: resCreated2, error: resError2, response: resResponse2 } = await awaitWrapper(reservationService.createReservation(resParams));
         if (!resCreated2) {
           console.log(resError2);
@@ -216,7 +213,6 @@ const CreateReservation: FC = () => {
         setResCode(resResponse2!.headers["location"]!.split("/reservations/")[1]);
         setActiveStep(activeStep + 3); //go to last
         return;
-        break;
 
       case 5: //done
         props.setFieldValue("userStep", true);
@@ -227,12 +223,12 @@ const CreateReservation: FC = () => {
         userParams.psPair = { password: password, checkPassword: repeatPassword };
         userParams.role = "CUSTOMER";
         userParams.customerId = customerId;
-        const { ok: userCreated, error: userError, response: userResponse } = await awaitWrapper(userService.createUser(userParams));
+        const { ok: userCreated, error: userError } = await awaitWrapper(userService.createUser(userParams));
 
         if (!userCreated) {
           const errorData = userError.response?.data as ApiErrorDetails;
-          props.setFieldError("username", errorData.errors?.find((e) => e.property == "username")?.description);
-          props.setFieldError("password", errorData.errors?.find((e) => e.property == "psPair")?.description);
+          props.setFieldError("username", errorData.errors?.find((e) => e.property === "username")?.description);
+          props.setFieldError("password", errorData.errors?.find((e) => e.property === "psPair")?.description);
           props.setSubmitting(false);
           return;
         }
@@ -264,13 +260,13 @@ const CreateReservation: FC = () => {
 
   const handleBack = (values: createReservationFormValues, props: FormikHelpers<createReservationFormValues>) => {
     let curr = activeStep;
-    if (curr == 0) {
+    if (curr === 0) {
       navigate(`${paths.ROOT}`);
     }
-    if (curr == 4) {
+    if (curr === 4) {
       curr--;
     }
-    if (curr == 5 || curr == 7) {
+    if (curr === 5 || curr === 7) {
       navigate(`${paths.ROOT}/reservations/${secCode}`);
       return;
     }
@@ -310,8 +306,7 @@ const CreateReservation: FC = () => {
                         1: <DateForm props={props} />,
                         2: <HourForm props={props} availableHours={availableHours} />,
                         3: <InfoForm props={props} />,
-                        //@ts-ignore
-                        4: <InfoFormStatic customer={customer} />,
+                        4: <InfoFormStatic customer={customer!} />,
                         5: <Done props={props} secCode={secCode} />,
                         6: <ShortRegisterForm props={props} />,
                         7: <Done props={props} secCode={secCode} />
@@ -319,7 +314,7 @@ const CreateReservation: FC = () => {
                     }
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <Button onClick={() => handleBack(props.values, props)} sx={{ mt: 3, ml: 1 }}
-                        disabled={activeStep == 7}
+                        disabled={activeStep === 7}
                       >
                         {
                           {
