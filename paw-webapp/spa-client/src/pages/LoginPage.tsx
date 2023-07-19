@@ -62,7 +62,6 @@ const LoginPage: FC = () => {
     }
     setAuth(auth);
     props.setSubmitting(false);
-    
     navigate(from, { replace: true });
   };
 

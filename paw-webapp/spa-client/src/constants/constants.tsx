@@ -28,6 +28,7 @@ export const userRoles = {
 export const emptyAuth = {
     user: "",
     authorization: "",
+    refreshToken: "",
     roles: [],
     id: -1,
     content: undefined,

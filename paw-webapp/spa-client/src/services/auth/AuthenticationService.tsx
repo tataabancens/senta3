@@ -27,13 +27,11 @@ export class AuthenticationService {
                         }
                     }
                 );
-    
                 const authorization: string | undefined = response?.headers.authorization;
-                
+                const refreshToken: string | undefined = response?.headers['refresh-token'];
+
                 const parsedToken = parseJwt(authorization?.substring(this.jwtTokenOffset)!)
                 const { authorities: roles, userId } = parsedToken;
-                
-                console.log("logged in username: " + username);
 
                 const { isOk, data: user, error } = await this.getUser(authorization!, userId);
 
@@ -43,15 +41,14 @@ export class AuthenticationService {
     
                 const content = undefined;
 
-                return { user: username, roles, authorization, id: userId, contentURL, content };
+                return { user: username, roles, authorization, refreshToken, id: userId, contentURL, content };
             } catch (err: any) {
                 this.loginErrorHandler(err, props);
                 return null;
             }
     }
 
-    private async getUser(authorization: string, userId: number): Promise<ResponseDetails<UserModel>> {
-
+    public async getUser(authorization: string, userId: number): Promise<ResponseDetails<UserModel>> {
         try {
             const response = await axios.get<UserModel>(paths.USERS + '/' + userId, {headers: {"Authorization": authorization, "Accept": this.ACCEPT_HEADER}});
             return buildSuccessResponse(response.data);
