@@ -18,6 +18,8 @@ export const TRANSLATIONS_ES ={
         makeReservation: "Hacer reserva",
         haveReservation: "Tengo reserva",
         myReservation: "Mi reserva",
+        removeDiscountText: "Remover descuento",
+        applyDiscountText: "Aplicar descuento",
         callWaiter: "Llamar mozo",
         callingWaiter: "Llamando mozo",
         createCategory: "Crear categoría"
@@ -34,17 +36,18 @@ export const TRANSLATIONS_ES ={
             loading: "Cargando"
         },
         rememberMe: "Recuerdame",
-        forgotPassword: "¿Olvidaste tu constraseña?",
+        forgotPassword: "¿Olvidaste tu contraseña?",
         registerCallToAction: "¿No tenes cuenta? registrate!"
     },
     validationSchema:{
         required: "Requerido",
         mailValidation: "Ingresar un mail valido",
-        passwordMatch: "Las constraseñas deben coincidir",
+        passwordMatch: "Las contraseñas deben coincidir",
         passwordLength: "La contraseña debe tener al menos {{length}} caracteres",
         positiveValidation: "Debe ser mayor que 0",
         dateValidation: "La fecha no puede ser en el pasado",
         secCodeValidation: "Debe ser de {{length}} caracteres",
+        categoryNameValidation: "Solo se permiten letras y numeros, no se permiten tildes",
         invalidUsernamePassword: "Usuario/contraseña invalidos. Por favor, intente nuevamente. ",
         dishNameMaxCharacters: "El nombre no puede tener más de {{characters}} caracteres",
         dishDescriptionMaxCharacters: "La descripción no puede tener más de {{characters}} caracteres"
@@ -74,7 +77,18 @@ export const TRANSLATIONS_ES ={
         },
         step5:{
             stepTitle: "Listo!",
-            stepDescription: "Hiciste una reserva en Atuel para las {{hour}}hs del {{date}} para {{qPeople}} persona/s. Tu codigo de reserva es: {{secCode}}."
+            stepDescriptionPart1: "Hiciste una reserva en Atuel para el día ",
+            stepDescriptionPart2: " a las {{hour}}hs para {{qPeople}} persona/s. Tu codigo de reserva es: {{secCode}}.",
+            pointsDisclaimer: "Si te registras vas a poder obtener puntos para descuentos!"
+        },
+        shortRegister:{
+            title: "Registrarse",
+            firstName: "Nombre",
+            lastName: "Apellido",
+            phone: "Telefono",
+            username: "Usuario",
+            password: "Contraseña",
+            repeatPassword: "Repetir contraseña"
         },
         next: "Siguiente",
         back: "Volver",
@@ -89,7 +103,8 @@ export const TRANSLATIONS_ES ={
         code: "Codigo: {{code}}",
         date: "Día: ",
         hour: "Hora: {{hour}}:00",
-        table: "Mesa: {{table}}"
+        table: "Mesa: {{table}}",
+        noTable: "Mesa: Una mesa te sera asignada al llegar al restaurante"
     },
     reservationActions:{
         seat: "Sentar",
@@ -133,6 +148,7 @@ export const TRANSLATIONS_ES ={
         ordersPanel:{
             title: "Pedidos",
             disclaimer: "El estatus de tus pedidos será visible al llegar al restaurante",
+            noDishes: "Aun no has ordernado ningún plato",
             orderedStatus: "Pedido",
             cookingStatus: "Cocinando",
             deliveringStatus: "Entregando"
@@ -213,17 +229,19 @@ export const TRANSLATIONS_ES ={
         points: "Puntos: {{points}}",
         activeReservationsTitle:"Reservas Activas",
         oldReservationsTitle: "Historial de reservas",
+        pendingReservationsTitle: "Finalización pendiente",
         reservationCard:{
             date: "día: ",
             hour: "hora: {{hour}}:00",
             code: "codigo: {{code}}",
             people: "personas: {{people}}"
         },
-        enterButton: "Acceder"
+        enterButton: "Acceder",
+        noReservations: "No hay reservas aquí"
     },
     registerPage:{
         registerTitle: "Registro",
-        registerButton: "registrarse",
+        registerButton: "Registrarse",
         loginCallToAction: "¿Ya tenes una cuenta? ingresa!",
         label:{
             mail: "Mail",
@@ -277,7 +295,7 @@ export const TRANSLATIONS_ES ={
         },
         confirmDish:{
             dishPrice: "Precio: ${{price}}",
-            subtotal: "Subtotal: ${{subtotal}}",
+            subtotal: "Subtotal: $",
             addToCart: "Agregar al carrito"
         },
         createDish:{
@@ -286,7 +304,7 @@ export const TRANSLATIONS_ES ={
             name: "Nombre",
             price: "Precio",
             description: "Descripción",
-            category: "Categorpía",
+            category: "Categoría",
         },
         editCategory:{
             title: "Editar categoría",
@@ -312,9 +330,16 @@ export const TRANSLATIONS_ES ={
             label: "Numero de mesa",
             error: "Mesa no disponible"
         },
+        selectedDate: {
+            error: "No hay horas disponibles para ese dia y personas",
+        },
+        categoryName: {
+            duplicate: "El nombre de categoria ya existe",
+        },
         confirmButton: "Confirmar",
         select: "Selecciona uno",
         cancelButton: "Cancelar"
     },
-    systemError: "Hubo un error en el sistema, intenta de nuevo más tarde."
+    systemError: "Hubo un error en el sistema, intenta de nuevo más tarde.",
+    pageDoesNotExist: "404: La ruta solicitada no existe"
 }

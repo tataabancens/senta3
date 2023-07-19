@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import {  useState, FC } from "react";
 import { CustomerModel, RestaurantModel } from "../models";
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
@@ -28,14 +28,15 @@ const ProfilePage: FC = () => {
         borderRadius={3}
         sx={{
           background:
-            `linear-gradient(51deg, rgba(217,30,54,1) 40%, rgba(255,253,247,1) 80%);`,
+            `linear-gradient(51deg, rgba(128, 0, 128, 1) 40%, rgba(255,253,247,1) 80%);`,
         }}
       >
         <Typography variant="h2" sx={{ color: "white" }}>{t('profilePage.title')}</Typography>
       </Grid>
-      {auth?.roles[0] === UserRoles.RESTAURANT ?
+      {auth?.roles[0] === UserRoles.RESTAURANT && auth.content ?
         <RestaurantInfo restaurant={auth.content as RestaurantModel} reloadInfo={handleReload} /> :
         <CustomerInfo customer={auth.content as CustomerModel} reloadInfo={handleReload} />}
+      {(!auth || !auth.content) && <div style={{position:"absolute", top: "50%", right:"50%"}}><CircularProgress /></div>}
     </Grid>
   );
 }

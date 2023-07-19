@@ -18,12 +18,24 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     UserDetailsService userDetailsService;
 
+    @Autowired
+    private AuthenticationTokenService tokenService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = (String) authentication.getCredentials();
-        AuthenticationTokenDetails authenticationTokenDetails = authenticationTokenService.parseToken(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationTokenDetails.getUsername());
-        return new JwtAuthenticationToken(userDetails, authenticationTokenDetails, userDetails.getAuthorities());
+        AuthenticationTokenDetails authTokenDetails = authenticationTokenService.parseToken(token);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authTokenDetails.getUsername());
+        JwtAuthenticationToken jwtAuthToken =  new JwtAuthenticationToken(userDetails, authTokenDetails, userDetails.getAuthorities());
+        if (authTokenDetails.isRefreshToken()) {
+            String accessTokenToken = tokenService.issueAccessToken( authTokenDetails.getUsername(),
+                    authTokenDetails.getAuthorities(),
+                    authTokenDetails.getUserId());
+            jwtAuthToken.setAccessToken(accessTokenToken);
+            jwtAuthToken.setRefreshToken(true);
+        }
+        return jwtAuthToken;
     }
 
     @Override

@@ -16,6 +16,6 @@ public class NoAvailableHoursExceptionMapper implements ExceptionMapper<NoAvaila
 
     @Override
     public Response toResponse(NoAvailableHoursFoundException e) {
-        return ResponseExceptionMapperUtil.toResponse(Response.Status.NOT_FOUND, e.getMessage(), uriInfo);
+        return ResponseExceptionMapperUtil.toResponse(Response.Status.NO_CONTENT, e.getMessage(), uriInfo);
     }
 }

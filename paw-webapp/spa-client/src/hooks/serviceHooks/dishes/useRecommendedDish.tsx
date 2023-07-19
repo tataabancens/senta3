@@ -29,7 +29,7 @@ export const useRecommendedDish = (reservation: ReservationModel, orderItems: Or
         return () => {
             abortController.abort();
         }
-    }, [orderItems, reservation]);
+    }, []);
 
     const extractDishIdFromPath = (): number => {
         const parts = reservation.recommendedDish!.split('/');

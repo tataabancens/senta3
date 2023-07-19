@@ -46,7 +46,7 @@ export class CustomerService {
         pointsParams.points = points;
         const abortController = new AbortController();
         try{
-            await this.axios.patch(this.basePath + "/" + customerId + "/points",pointsParams.patchCustomerPayload, {signal: abortController.signal, headers: this.ACCEPT });
+            await this.axios.patch(this.basePath + "/" + customerId + "/points",pointsParams.patchCustomerPayload, {signal: abortController.signal, headers: this.CONTENT_TYPE });
             return buildSuccessResponse(0);
         }catch(e){
             return buildErrorResponse(e as Error);

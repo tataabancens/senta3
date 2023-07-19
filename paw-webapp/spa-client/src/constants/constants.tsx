@@ -28,6 +28,7 @@ export const userRoles = {
 export const emptyAuth = {
     user: "",
     authorization: "",
+    refreshToken: "",
     roles: [],
     id: -1,
     content: undefined,
@@ -49,7 +50,7 @@ export const initRestaurant: RestaurantModel = {
     self: '',
     pointsForDiscount: 0,
     discountCoefficient: 1,
-    pointsPerItem: 0
+    addPointsCoefficient: 0
 }
 
 export const initCustomer: CustomerModel = {

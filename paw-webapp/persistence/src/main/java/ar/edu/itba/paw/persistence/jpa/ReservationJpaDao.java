@@ -113,10 +113,7 @@ public class ReservationJpaDao implements ReservationDao {
         @SuppressWarnings("unchecked")
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
-        /*
-        final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
-                .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
-         */
+
         if(! ids.isEmpty()){
             final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.id IN :ids order by id", OrderItem.class); //es hql, no sql
             query.setParameter("ids", ids);
@@ -135,11 +132,7 @@ public class ReservationJpaDao implements ReservationDao {
         final List<Long> ids = (List<Long>) idQuery.getResultList().stream()
                 .map(o -> ((Integer) o).longValue()).collect(Collectors.toList());
 
-        //final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o", OrderItem.class); //es hql, no sql
-        //query.setMaxResults(200);
-        //query.setFirstResult(0);
-        //final List<OrderItem> list = query.getResultList();
-        //return list.isEmpty() ? new ArrayList<>() : list;
+
         if(! ids.isEmpty()){
             final TypedQuery<OrderItem> query = em.createQuery("from OrderItem as o where o.id IN :ids order by id", OrderItem.class); //es hql, no sql
             query.setParameter("ids", ids);
@@ -157,8 +150,6 @@ public class ReservationJpaDao implements ReservationDao {
         statusList.add(ReservationStatus.CANCELED);
         statusList.add(ReservationStatus.FINISHED);
         query.setParameter("statusList", statusList);
-//        query.setParameter("start", Timestamp.valueOf(reservationDate.minusDays(1)));
-//        query.setParameter("finish", Timestamp.valueOf(reservationDate));
         query.setParameter("start", reservationDate.minusDays(1));
         query.setParameter("finish", reservationDate);
         final List<Reservation> list = query.getResultList();
@@ -168,10 +159,6 @@ public class ReservationJpaDao implements ReservationDao {
     @Override
     public List<Reservation> getReservationsOfToday(long restaurantId) {
         final TypedQuery<Reservation> query = em.createQuery("from Reservation as r where r.reservationDate between :start and :finish", Reservation.class); //es hql, no sql
-//        Timestamp startDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
-//        Timestamp endDay = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
-//        query.setParameter("start", startDay);
-//        query.setParameter("finish", endDay);
         query.setParameter("start", LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT));
         query.setParameter("finish", LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
 
@@ -280,28 +267,5 @@ public class ReservationJpaDao implements ReservationDao {
             return new ArrayList<>();
         }
     }
-
-//
-//    @Override
-//    public void updateOrderItemsStatus(long reservationId, OrderItemStatus oldStatus, OrderItemStatus newStatus) {
-//
-//    }
-//
-//    @Override
-//    public void updateOrderItemStatus(long orderItemId, OrderItemStatus newStatus) {
-//
-//    }
-//
-//
-//    @Override
-//    public void deleteOrderItemsByReservationIdAndStatus(long reservationId, OrderItemStatus status) {
-//
-//    }
-//
-//    @Override
-//    public void deleteOrderItemByReservationIdAndStatus(long reservationId, OrderItemStatus status, long orderItemId) {
-//
-//    }
-
 
 }

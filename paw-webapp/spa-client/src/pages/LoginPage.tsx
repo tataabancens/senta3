@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
   Grid,
   Paper,
   TextField,
@@ -15,10 +13,6 @@ import { paths } from "../constants/constants";
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "../api/axios";
-import useRestaurantService from "../hooks/serviceHooks/restaurants/useRestaurantService";
-import useCustomerService from "../hooks/serviceHooks/customers/useCustomerService";
-import { extractCustomerIdFromContent } from "./SignUpPage";
 import { useTranslation } from "react-i18next";
 import useAuthenticationService from "../hooks/serviceHooks/authentication/useAutenticationService";
 
@@ -66,7 +60,6 @@ const LoginPage: FC = () => {
     }
     setAuth(auth);
     props.setSubmitting(false);
-    
     navigate(from, { replace: true });
   };
 
@@ -125,11 +118,6 @@ const LoginPage: FC = () => {
                     helperText={<ErrorMessage name="password"/>}
                     error={!!props.errors.password}
                   />
-                  <Field as={FormControlLabel}
-                    name="remember"
-                    control={<Checkbox color="primary" />}
-                    label={t('loginPage.rememberMe')}          
-                  />
                   <Button
                     type="submit"
                     fullWidth
@@ -154,8 +142,8 @@ const LoginPage: FC = () => {
             >
               <Grid item>
                 <Link
-                  to="/signup"
-                  style={{ textDecoration: "none", color: "black" }}
+                    to={paths.ROOT + "/signUp"}
+                    style={{ textDecoration: "none", color: "black" }}
                 >
                   {t('loginPage.registerCallToAction')}
                 </Link>

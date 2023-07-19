@@ -10,13 +10,13 @@ const CheckOutPage: FC = () =>{
 
     const { securityCode } = useParams();
 
-    const { reservation, loading: reservationLoading, error: reservationError, updateReservation } = useReservation(securityCode!);
+    const { reservation, loading} = useReservation(securityCode!);
 
-    const {orderItems, error: orderItemsError, loading: orderItemLoading} = useOrderItemsBySecCode(reservation);
+    const {orderItems} = useOrderItemsBySecCode(reservation);
 
     return(
         <Grid container xs={12} justifyContent="center">
-           <CheckOutSummary reservation={reservation!} orderItems={orderItems!} />  
+           { !loading && <CheckOutSummary reservation={reservation!} orderItems={orderItems!} />  }
         </Grid>
     );
 }

@@ -194,30 +194,15 @@ public class ReservationServiceImpl implements ReservationService {
         if(reservationStatus != null){
             switch (reservationStatus) {
                 case OPEN:
-                    reservation.setReservationStatus(ReservationStatus.OPEN);
                 case SEATED:
-                    if(table != null){
-                        seatCustomer(reservation, table);
-                    } else {
-                        seatCustomer(reservation, 0);
-                    }
-                    break;
                 case CHECK_ORDERED:
-                    if(canOrderReceipt(reservation)){
-                        orderReceipt(reservation);
-                    } else {
-                        return false;
-                    }
-                    break;
                 case FINISHED:
-                    finishCustomerReservation(reservation); //todo si esta finished, queda congelada? debería
+                    reservation.setReservationStatus(reservationStatus); //todo si esta finished, queda congelada? debería
                     break;
                 case CANCELED: //this shouldnt happen bust just in case
                     cancelReservation(securityCode);
                     break;
-
             }
-
         }
         return true;
     }
@@ -469,16 +454,13 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void seatCustomer(Reservation reservation, int tableNumber) {
         updateReservationStatus(reservation, ReservationStatus.SEATED);
-        updateOrderItemsStatus(reservation, OrderItemStatus.ORDERED, OrderItemStatus.INCOMING);
         reservation.setTableNumber(tableNumber);
     }
 
     @Transactional
     @Override
     public void finishCustomerReservation(Reservation reservation) {
-        List<OrderItem> orderItems = getAllOrderItemsByReservation(reservation);
         updateReservationStatus(reservation, ReservationStatus.FINISHED);
-        customerService.addPointsToCustomer(reservation.getCustomer(), getTotal(orderItems));
     }
 
     @Scheduled(cron = "0 1/31 * * * ?")

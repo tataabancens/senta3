@@ -11,6 +11,7 @@ export interface Authentication {
     user: string;
     id: number;
     authorization: string | undefined;
+    refreshToken: string | undefined;
     roles: string[];
     content: CustomerModel | RestaurantModel | undefined;
     contentURL: string;
@@ -74,7 +75,8 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
                 case(UserRoles.WAITER):
                 case(UserRoles.KITCHEN):
                 default:
-                    setAuthUpdated(true);
+                    break;
+                    // setAuthUpdated(true);
             }
         })();
     }, [auth])

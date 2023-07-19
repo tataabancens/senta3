@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.webapp.auth.basic.BasicAuthenticationToken;
 import ar.edu.itba.paw.webapp.auth.jwt.JwtAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -42,12 +41,19 @@ public class JwtFilter extends OncePerRequestFilter {
                 String authToken = header.substring(BASIC_TOKEN_OFFSET);
                 Authentication authResult = authenticationManager.authenticate(new BasicAuthenticationToken(authToken));
                 SecurityContextHolder.getContext().setAuthentication(authResult);
+                BasicAuthenticationToken basicAuthenticationToken = (BasicAuthenticationToken) authResult;
 
-                httpServletResponse.addHeader("Authorization", "Bearer " + ((BasicAuthenticationToken) authResult).getToken());
+                httpServletResponse.addHeader("Authorization", "Bearer " + basicAuthenticationToken.getAccessToken());
+                httpServletResponse.addHeader("Refresh-Token", "Bearer " + basicAuthenticationToken.getRefreshToken());
             } if (header.startsWith("Bearer ")) {
                 String authToken = header.substring(JWT_TOKEN_OFFSET);
                 Authentication authResult = authenticationManager.authenticate(new JwtAuthenticationToken(authToken));
                 SecurityContextHolder.getContext().setAuthentication(authResult);
+
+                JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authResult;
+                if (jwtAuthenticationToken.isRefreshToken()) {
+                    httpServletResponse.addHeader("Authorization", "Bearer " + jwtAuthenticationToken.getAccessToken());
+                }
             }
         } catch (AuthenticationException e) {
             authenticationFailureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);

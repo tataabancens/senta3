@@ -91,6 +91,7 @@ export const NavBar: React.FC<{}> = () => {
                     <Button variant="contained"
                       color={location.pathname === `${paths.ROOT}/profile`? "info" : "primary"}
                      onClick={() => {navigate(paths.ROOT + "/profile")}}
+                     disabled={auth.roles[0] === UserRoles.WAITER || auth.roles[0] === UserRoles.KITCHEN}
                      >
                       <Typography color={location.pathname === `${paths.ROOT}/profile`? "primary" : "info"}>{auth?.user}</Typography>
                     </Button>

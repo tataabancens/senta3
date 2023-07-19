@@ -18,9 +18,10 @@ const OrdersItem: FC<Props> = ({orderItem, toggleReload}) => {
     const dishService = useDishService();
     const {reservation} = useContext(ReservationContext);
     const statusMap: Map<string, number> = new Map([
-        ["ORDERED", 1],
+        ["ORDERED", 0],
         ["INCOMING", 1],
-        ["DELIVERED", 3]
+        ["DELIVERED", 2],
+        ["FINISHED", 3]
     ]);
     const { t } = useTranslation();
 

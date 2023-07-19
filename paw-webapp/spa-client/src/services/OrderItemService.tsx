@@ -1,4 +1,4 @@
-import { AxiosResponse, AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 import { paths } from "../constants/constants";
 import { OrderItemModel } from "../models";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";

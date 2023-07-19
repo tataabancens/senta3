@@ -8,7 +8,7 @@ interface ReservationContextProps{
     updateReservation: () => void;
     orderItems: OrderItemModel[] | undefined;
     reloadItems: () => void;
-    removeItem: (item: OrderItemModel) => void;
+    updateItem: (item: OrderItemModel) => void;
     discount: boolean;
     toggleDiscount: () => void;
     customer: CustomerModel | undefined;
@@ -20,7 +20,7 @@ const emptyReservationContext: ReservationContextProps = {
     updateReservation: () => null,
     orderItems: undefined,
     reloadItems: () => null,
-    removeItem: () => null,
+    updateItem: () => null,
     discount: false,
     toggleDiscount: () => null,
     customer: undefined,
