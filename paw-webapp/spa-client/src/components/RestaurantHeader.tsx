@@ -11,7 +11,6 @@ import { ReservationContext } from "../context/ReservationContext";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
-import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
 import { UserRoles } from "../models/Enums/UserRoles";
 import useServices from "../hooks/useServices";
 

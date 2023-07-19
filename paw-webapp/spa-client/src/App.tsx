@@ -16,7 +16,6 @@ import RestaurantMenu from "./pages/RestaurantMenu";
 import Kitchen from "./pages/Kitchen";
 import { RestaurantMenuProvider } from "./context/RestaurantMenuContext";
 import { UserRoles } from "./models/Enums/UserRoles";
-import { ServiceProvider } from "./context/ServiceProvider";
 
 function App() {
   return (

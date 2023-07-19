@@ -92,7 +92,7 @@ export const TRANSLATIONS_EN = {
         },
         next: "Next",
         back: "Back",
-        makeReservaton: "Place reservation",
+        makeReservation: "Place reservation",
         continueWithoutSigning: "Continue without signing up",
         signUp: "Sign up",
         goToReservation: "Continue to reservation",

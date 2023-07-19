@@ -7,7 +7,7 @@ import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
 import { useTranslation } from "react-i18next";
 import { ReservationContext } from "../context/ReservationContext";
 import { useNavigate } from "react-router-dom";
-import { paths } from "../constants/constants";
+import { emptyAuth, paths } from "../constants/constants";
 import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { UserRoles } from "../models/Enums/UserRoles";
 
@@ -46,7 +46,7 @@ const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen, total}) => {
   }
 
   function truncateCalculation(): number {
-    const calculationResult = restaurant?.pointsPerItem! * total;
+    const calculationResult = restaurant?.addPointsCoefficient! * total;
     const truncatedResult = Math.trunc(calculationResult);
     return truncatedResult;
   }
@@ -61,7 +61,7 @@ const FinishReservationModal: FC<Props> = ({ isOpen, handleOpen, total}) => {
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h5" marginBottom={10} marginTop={2}>{t('finishReservationModal.title')}</Typography>
-        {auth.roles[0] === UserRoles.ANONYMOUS && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageNoPoints')}</Typography>}
+        {auth === emptyAuth && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageNoPoints')}</Typography>}
         {auth.roles[0] === UserRoles.CUSTOMER && <Typography id="modal-modal-title" variant="h6" marginBottom={5}>+{truncateCalculation()} Pts</Typography>}
         {auth.roles[0] === UserRoles.CUSTOMER && <Typography id="modal-modal-title" variant="body1" marginBottom={5}>{t('finishReservationModal.finishedMessageWithPoints')}</Typography>}
         <Box sx={{ display: "flex", width: 1, justifyContent: "center", marginY: 1 }}>
