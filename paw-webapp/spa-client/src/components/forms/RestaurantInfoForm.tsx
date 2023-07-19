@@ -91,7 +91,7 @@ const RestaurantInfoForm: FC<Props> = ({
                     fullWidth
                     label={t('forms.restaurantInfo.openHour')}
                 >
-                    {timeArray.map((time, index) => <MenuItem value={index}>{time}</MenuItem>)}
+                    {timeArray.map((time, index) => <MenuItem key={index} value={index}>{time}</MenuItem>)}
               </Select>
               </Grid>
               <Grid item component={FormControl} xs={5} marginY={2} marginX={1}>
@@ -101,7 +101,7 @@ const RestaurantInfoForm: FC<Props> = ({
                     defaultValue={data?.closeHour.toString()}
                     fullWidth
                 >
-                  {timeArray.map((time, index) => <MenuItem value={index}>{time}</MenuItem>)}
+                  {timeArray.map((time, index) => <MenuItem key={index} value={index}>{time}</MenuItem>)}
               </Select>
               </Grid>
             </Grid>
