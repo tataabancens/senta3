@@ -14,12 +14,7 @@ type TabPanelProps = {
 const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
     const { children, value, index, orderItems, ...other } = props;
     const { t } = useTranslation();
-    const [items, setItems] = useState<OrderItemModel[] | undefined>();
-
-    useEffect(() => {
-      const itemsToDisplay = orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "DELETED"));
-      setItems(itemsToDisplay);
-    },[orderItems])
+    const itemsToDisplay = orderItems.filter(orderItem => (orderItem.status !== "SELECTED" && orderItem.status !== "DELETED"));
 
     return (
       <div
@@ -29,7 +24,7 @@ const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
       >
         {value === index && (
           <Grid container xs={12}>
-            {items && items.length > 0 &&
+            {itemsToDisplay && itemsToDisplay.length > 0 &&
             <Grid item xs={12} component={Table}>
               <TableHead>
                 <TableRow>
@@ -39,12 +34,12 @@ const OrdersPanel:FC<TabPanelProps> = (props: TabPanelProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {items.map(filteredItem => 
-                  <OrdersItem orderItem={filteredItem} />
+                {itemsToDisplay.map(item => 
+                  <OrdersItem orderItem={item} />
                 )}
               </TableBody>
             </Grid>}
-            {items && items.length === 0 && <Grid item xs={12} marginTop={20}><Typography variant="h5" align="center">{t('shoppingCart.ordersPanel.noDishes')}</Typography></Grid>}
+            {itemsToDisplay && itemsToDisplay.length === 0 && <Grid item xs={12} marginTop={20}><Typography variant="h5" align="center">{t('shoppingCart.ordersPanel.noDishes')}</Typography></Grid>}
           </Grid>
         )}
       </div>

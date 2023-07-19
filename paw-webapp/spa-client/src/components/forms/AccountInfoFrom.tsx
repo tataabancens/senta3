@@ -137,7 +137,7 @@ const AccountInfoForm: FC<Props> = ({
                   {auth?.roles[0] === UserRoles.RESTAURANT ? (
                     <Grid
                       item
-                      xs={3}
+                      xs={12}
                       marginBottom={3}
                     >
                       <Field as={TextField}
@@ -145,6 +145,7 @@ const AccountInfoForm: FC<Props> = ({
                         id="restaurantName"
                         label={t('forms.accountInfo.restaurantName')}
                         name="restaurantName"
+                        fullWidth
                         value={props.values.restaurantName}
                         helperText={<ErrorMessage name="restaurantName"></ErrorMessage>}
                         error={props.errors.restaurantName}
@@ -152,7 +153,7 @@ const AccountInfoForm: FC<Props> = ({
                     </Grid>
                   ) : (
                     <Grid
-                      xs={5}
+                      xs={12}
                       marginBottom={3}
                       item
                     >
@@ -161,6 +162,7 @@ const AccountInfoForm: FC<Props> = ({
                         id="customerName"
                         label={t('forms.accountInfo.customerName')}
                         name="customerName"
+                        fullWidth
                         value={props.values.customerName}
                         helperText={<ErrorMessage name="customerName"></ErrorMessage>}
                         error={props.errors.customerName}
@@ -169,7 +171,7 @@ const AccountInfoForm: FC<Props> = ({
                   )}
                   <Grid
                     item
-                    xs={5}
+                    xs={12}
                     marginBottom={1}
                   >
                     <Field as={TextField}
@@ -177,6 +179,7 @@ const AccountInfoForm: FC<Props> = ({
                       id="mail"
                       label={t('forms.accountInfo.mail')}
                       name="mail"
+                      fullWidth
                       value={props.values.mail}
                       helperText={<ErrorMessage name="mail"></ErrorMessage>}
                       error={props.errors.mail}
@@ -184,7 +187,7 @@ const AccountInfoForm: FC<Props> = ({
                   </Grid>
                   <Grid
                     item
-                    xs={5}
+                    xs={12}
                     marginBottom={1}
                   >
                     <Field as={TextField}
@@ -192,6 +195,7 @@ const AccountInfoForm: FC<Props> = ({
                       id="phone"
                       label={t('forms.accountInfo.phone')}
                       name="phone"
+                      fullWidth
                       value={props.values.phone}
                       helperText={<ErrorMessage name="phone"></ErrorMessage>}
                       error={props.errors.phone}
@@ -199,7 +203,7 @@ const AccountInfoForm: FC<Props> = ({
                   </Grid>
                   <Grid
                     item
-                    xs={5}
+                    xs={12}
                     marginBottom={1}
                   >
                     <Field as={TextField}
@@ -207,6 +211,7 @@ const AccountInfoForm: FC<Props> = ({
                       id="password"
                       label={t('forms.accountInfo.password')}
                       name="password"
+                      fullWidth
                       type="password"
                       value={props.values.password}
                       helperText={<ErrorMessage name="password"></ErrorMessage>}
@@ -215,7 +220,7 @@ const AccountInfoForm: FC<Props> = ({
                   </Grid>
                   <Grid
                     item
-                    xs={5}
+                    xs={12}
                     marginBottom={1}
                   >
                     <Field as={TextField}
@@ -223,6 +228,7 @@ const AccountInfoForm: FC<Props> = ({
                       id="repeatPassword"
                       label={t('forms.accountInfo.passwordRepeat')}
                       type="password"
+                      fullWidth
                       name="repeatPassword"
                       value={props.values.repeatPassword}
                       helperText={<ErrorMessage name="repeatPassword"></ErrorMessage>}

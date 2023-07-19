@@ -36,13 +36,13 @@ export const TRANSLATIONS_ES ={
             loading: "Cargando"
         },
         rememberMe: "Recuerdame",
-        forgotPassword: "¿Olvidaste tu constraseña?",
+        forgotPassword: "¿Olvidaste tu contraseña?",
         registerCallToAction: "¿No tenes cuenta? registrate!"
     },
     validationSchema:{
         required: "Requerido",
         mailValidation: "Ingresar un mail valido",
-        passwordMatch: "Las constraseñas deben coincidir",
+        passwordMatch: "Las contraseñas deben coincidir",
         passwordLength: "La contraseña debe tener al menos {{length}} caracteres",
         positiveValidation: "Debe ser mayor que 0",
         dateValidation: "La fecha no puede ser en el pasado",
@@ -80,6 +80,15 @@ export const TRANSLATIONS_ES ={
             stepDescriptionPart1: "Hiciste una reserva en Atuel para el día ",
             stepDescriptionPart2: " a las {{hour}}hs para {{qPeople}} persona/s. Tu codigo de reserva es: {{secCode}}.",
             pointsDisclaimer: "Si te registras vas a poder obtener puntos para descuentos!"
+        },
+        shortRegister:{
+            title: "Registrarse",
+            firstName: "Nombre",
+            lastName: "Apellido",
+            phone: "Telefono",
+            username: "Usuario",
+            password: "Contraseña",
+            repeatPassword: "Repetir contraseña"
         },
         next: "Siguiente",
         back: "Volver",
@@ -139,7 +148,7 @@ export const TRANSLATIONS_ES ={
         ordersPanel:{
             title: "Pedidos",
             disclaimer: "El estatus de tus pedidos será visible al llegar al restaurante",
-            noDishes: "Aun no has ordernado ningún platillo",
+            noDishes: "Aun no has ordernado ningún plato",
             orderedStatus: "Pedido",
             cookingStatus: "Cocinando",
             deliveringStatus: "Entregando"
@@ -220,17 +229,19 @@ export const TRANSLATIONS_ES ={
         points: "Puntos: {{points}}",
         activeReservationsTitle:"Reservas Activas",
         oldReservationsTitle: "Historial de reservas",
+        pendingReservationsTitle: "Finalización pendiente",
         reservationCard:{
             date: "día: ",
             hour: "hora: {{hour}}:00",
             code: "codigo: {{code}}",
             people: "personas: {{people}}"
         },
-        enterButton: "Acceder"
+        enterButton: "Acceder",
+        noReservations: "No hay reservas aquí"
     },
     registerPage:{
         registerTitle: "Registro",
-        registerButton: "registrarse",
+        registerButton: "Registrarse",
         loginCallToAction: "¿Ya tenes una cuenta? ingresa!",
         label:{
             mail: "Mail",
@@ -293,7 +304,7 @@ export const TRANSLATIONS_ES ={
             name: "Nombre",
             price: "Precio",
             description: "Descripción",
-            category: "Categorpía",
+            category: "Categoría",
         },
         editCategory:{
             title: "Editar categoría",

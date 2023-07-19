@@ -21,10 +21,10 @@ export default function Done({ props, secCode }: doneProps) {
     const year: string = dateParts[0];
     const month: string = dateParts[1];
     const day: string = dateParts[2];
-    if (i18n.language === "en") {
-      return `${month}/${day}/${year}`;
-    } else if (i18n.language === "es") {
-      return `${day}/${month}/${year}`;
+    if(i18n.language.includes("en",0)){
+        return `${month}/${day}/${year}`;
+    }else if(i18n.language.includes("es",0)){
+        return `${day}/${month}/${year}`;
     }
     return `${month}/${day}/${year}`;
   };
@@ -39,7 +39,7 @@ export default function Done({ props, secCode }: doneProps) {
             secCode: secCode
           })}
       </Typography>
-      {auth !== emptyAuth && <Typography variant="body1" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>}
+      {auth === emptyAuth && <Typography variant="h6" color="secondary" align='center' marginY={5}>{t('createReservation.step5.pointsDisclaimer')}</Typography>}
     </React.Fragment>
   );
 }

@@ -33,11 +33,14 @@ const CheckPanel: FC<Props> = (props: Props) => {
         itemsToPay.map(item => {
             total += item.quantity * item.unitPrice
         })
-        if(discount){
-            total = total * (1-restaurant!.discountCoefficient)
-        }
     
         return total;
+    }
+
+    const calculateDiscountedTotal = () => {
+        const total = calculateTotal();
+
+        return total * (1-restaurant!.discountCoefficient);
     }
 
     const orderCheck = async () => {
@@ -89,7 +92,13 @@ const CheckPanel: FC<Props> = (props: Props) => {
                     <Grid item container xs={12} sx={{marginTop: 3}}>
                         <Grid item xs={3}></Grid>
                         <Grid item xs={5}><Typography variant="h6">Total:</Typography></Grid>
-                        <Grid item xs={3}><Typography variant="h6" color={discount? "secondary" : "text.primary"}>${calculateTotal()}</Typography></Grid>
+                        {discount && 
+                        <Grid item xs={1}>
+                             <Typography variant="h6" color="blue">${calculateDiscountedTotal()}</Typography>
+                        </Grid>}
+                        <Grid item xs={1.5}>
+                            <Typography variant="h6" >{discount? "" : "$"}{calculateTotal()}</Typography>
+                        </Grid>
                     </Grid>
                     <Grid item container xs ={12} sx={{marginTop: 3}} justifyContent="center">
                         <Grid item xs={8}>
@@ -101,7 +110,7 @@ const CheckPanel: FC<Props> = (props: Props) => {
                 </Grid>
                 )}
             </div>
-            <FinishReservationModal isOpen={openModal} handleOpen={handleOpen}/>
+            <FinishReservationModal isOpen={openModal} handleOpen={handleOpen} total={calculateTotal()} />
         </>
     );
 }

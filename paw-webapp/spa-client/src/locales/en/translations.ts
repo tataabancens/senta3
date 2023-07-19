@@ -81,6 +81,15 @@ export const TRANSLATIONS_EN = {
             stepDescriptionPart2: " at {{hour}}hs for {{qPeople}} people. Your reservation code is: {{secCode}}",
             pointsDisclaimer: "If you register, you will be able to receive points for discounts!"
         },
+        shortRegister:{
+            title: "Register an account",
+            firstName: "First name",
+            lastName: "Last name",
+            phone: "Phone",
+            username: "Username",
+            password: "Password",
+            repeatPassword: "Repeat Password"
+        },
         next: "Next",
         back: "Back",
         makeReservaton: "Place reservation",
@@ -221,14 +230,16 @@ export const TRANSLATIONS_EN = {
     customerReservations:{
         points: "Points: {{points}}",
         activeReservationsTitle: "Active Reservations",
-        oldReservationsTitle: "Reservation history",
+        oldReservationsTitle: "Reservation History",
+        pendingReservationsTitle: "Pending Finalization",
         reservationCard:{
             date: "date: ",
             hour: "hour: {{hour}}:00",
             code: "code: {{code}}",
             people: "people: {{people}}"
         },
-        enterButton: "Enter"
+        enterButton: "Enter",
+        noReservations: "There are no reservations here"
     },
     registerPage:{
         registerTitle: "Sign up",
@@ -331,5 +342,6 @@ export const TRANSLATIONS_EN = {
         select: "Select one",
         cancelButton: "Cancel"
     },
-    systemError: "There was an error in the system. Try again later."
+    systemError: "There was an error in the system. Try again later.",
+    pageDoesNotExist: "404: The route requested does not exist"
 }

@@ -5,7 +5,7 @@ import { ReservationParams } from "../../../models/Reservations/ReservationParam
 import useServices from "../../useServices";
 
 export const useReservations = (customerId: number, filterStatus: string) => {
-    const [reservations, setReservations] = useState<ReservationModel[]>([]);
+    const [reservations, setReservations] = useState<ReservationModel[]>();
     const [error, setError] = useState<string>();
     const [loadingDone, setLoadingDone] = useState<boolean>(false);
     const { reservationService } = useServices();
@@ -37,6 +37,6 @@ export const useReservations = (customerId: number, filterStatus: string) => {
     return {
         reservations: reservations,
         error,
-        loading: reservations.length === 0 && !error || !loadingDone,
+        loading: !error || !loadingDone,
     }
 }

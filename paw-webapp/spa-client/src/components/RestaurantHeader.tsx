@@ -108,7 +108,7 @@ const RestaurantHeader: FC<Props> = ({
             <Grid item>
             <ReservationData toggleDrawer={toggleDrawer} state={state} reservation={reservation}/>
             <ShoppingCart toggleCart={toggleShoppingCart} isOpen={shoppingCartOpen} toggleReload={toggleReload}/>
-            {points && restaurant && points.points >= restaurant.pointsForDiscount &&
+            {points && restaurant && points.points >= restaurant.pointsForDiscount && (reservation.status === "OPEN" || reservation.status === "SEATED") &&
             <Button sx={{margin: 1}} variant="contained" color={discount? "info" : "secondary"} onClick={toggleDiscount}>
               <Typography color={discount? "secondary" : "info" }>{discount? t('restaurantHeader.removeDiscountText') : t('restaurantHeader.applyDiscountText')}</Typography>
             </Button>}
@@ -126,9 +126,12 @@ const RestaurantHeader: FC<Props> = ({
             <Button sx={{margin: 1}} variant="contained" color="secondary" onClick={handleAuthReservation}>{t('restaurantHeader.haveReservation')}</Button>
             </Grid>
             :
+            role === UserRoles.RESTAURANT? 
             <Grid item xs={1}>
               <Button onClick={toggleCreateCategoryForm} variant="contained" fullWidth color="success">{t('restaurantHeader.createCategory')}</Button>
             </Grid>
+            :
+            <div></div>
         }
       </Grid>
     );
