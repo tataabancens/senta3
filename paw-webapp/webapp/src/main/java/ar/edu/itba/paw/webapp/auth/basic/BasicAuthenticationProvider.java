@@ -60,7 +60,7 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
         AuthenticationTokenDetails tokenDetails = tokenService.parseToken(authenticationToken);
 
         BasicAuthenticationToken trustedAuth = new BasicAuthenticationToken(credentials[0], credentials[1],
-                userDetails.getAuthorities(), tokenDetails);
+                userDetails.getAuthorities());
 
         trustedAuth.setAccessToken(authenticationToken);
         trustedAuth.setRefreshToken(refreshToken);
