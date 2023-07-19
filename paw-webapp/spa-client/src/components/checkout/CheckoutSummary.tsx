@@ -12,7 +12,7 @@ import { useRestaurant } from "../../hooks/serviceHooks/restaurants/useRestauran
 import useAuth from "../../hooks/serviceHooks/authentication/useAuth";
 import useCustomerService from "../../hooks/serviceHooks/customers/useCustomerService";
 import CheckoutItem from "./CheckoutItem";
-import useServices from "../../hooks/useServices";
+import useServiceProvider from "../../context/ServiceProvider";
 
 type Props = {
     reservation: ReservationModel,
@@ -23,7 +23,7 @@ const CheckoutSummary: FC<Props> = ({ reservation, orderItems }) => {
 
     const { t, i18n } = useTranslation();
     const { restaurant } = useRestaurant(1);
-    const {customerService: cs, reservationService: rs } = useServices();
+    const {customerService: cs, reservationService: rs } = useServiceProvider();
     const navigate = useNavigate();
     const { customer, points } = useCustomer(reservation?.customer);
     const [endReservationPressed, setEndReservationPressed] = useState(false);

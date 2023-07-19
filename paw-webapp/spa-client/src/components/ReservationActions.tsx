@@ -8,7 +8,7 @@ import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
 import { FormikHelpers } from "formik";
 import { tableNumberFormValue } from "./ReservationRow";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
 
 type Props = {
     reservation: ReservationModel | undefined;
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const ReservationActions: FC<Props> = ({ reservation, toggleReload, props, isSubmitting }) => {
-    const { reservationService } = useServices();
+    const { reservationService } = useServiceProvider();
     const navigate = useNavigate();
     const { t } = useTranslation();
 

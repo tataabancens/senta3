@@ -9,7 +9,7 @@ import { UserRoles } from "../../models/Enums/UserRoles";
 import { ReservationParams } from "../../models/Reservations/ReservationParams";
 import FinishReservationModal from "../FinishReservationModal";
 import ShoppingCartItem from "./ShoppingCartItem";
-import useServices from "../../hooks/useServices";
+import useServiceProvider from "../../context/ServiceProvider";
 
 type Props = {
     children?: React.ReactNode;
@@ -26,7 +26,7 @@ const CheckPanel: FC<Props> = (props: Props) => {
     const { reservation, updateReservation, discount, restaurant } = useContext(ReservationContext);
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const { reservationService: rs } = useServices();
+    const { reservationService: rs } = useServiceProvider();
 
     const calculateTotal = () =>{
         let total = 0;

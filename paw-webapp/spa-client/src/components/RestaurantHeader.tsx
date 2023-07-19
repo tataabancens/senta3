@@ -12,7 +12,7 @@ import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import { UserRoles } from "../models/Enums/UserRoles";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
 
 
 type Props = {
@@ -35,7 +35,7 @@ const RestaurantHeader: FC<Props> = ({
     const { reservation, orderItems, discount, toggleDiscount, restaurant, points } = useContext(ReservationContext);
     const [selectedItemsAmount, setSelectedItemsAmount] = useState(0);
     const [callWaiter, setCallWaiter] = useState(false);
-    const { reservationService: rs } = useServices();
+    const { reservationService: rs } = useServiceProvider();
     const { t } = useTranslation();
 
     useEffect(() => {

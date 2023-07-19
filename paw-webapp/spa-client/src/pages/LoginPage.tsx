@@ -24,7 +24,7 @@ export interface loginFormValues {
 
 const LoginPage: FC = () => {
 
-  const { setAuth } = useAuth();
+  const { setAuth, setAuthUpdated, authUpdated } = useAuth();
   const { t } = useTranslation();
   const authenticationService = useAuthenticationService();
 
@@ -53,12 +53,13 @@ const LoginPage: FC = () => {
     const {username, password} = values;
     
     const auth = await authenticationService.tryLogin(username, password, props)
-    
+    console.log(auth);
     if (!auth) {
       props.setSubmitting(false);
       return;
     }
     setAuth(auth);
+    setAuthUpdated(!authUpdated);
     props.setSubmitting(false);
     navigate(from, { replace: true });
   };

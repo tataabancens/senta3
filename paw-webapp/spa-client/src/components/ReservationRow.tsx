@@ -7,7 +7,7 @@ import { Formik, FormikHelpers, Field, ErrorMessage } from "formik";
 import { useTranslation } from "react-i18next";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
 
 type Props = {
     reservation: ReservationModel | undefined;
@@ -20,7 +20,7 @@ export interface tableNumberFormValue {
 
 const ReservationRow: FC<Props> = ({ reservation, toggleReload }) => {
     const { t, i18n } = useTranslation();
-    const { reservationService } = useServices();
+    const { reservationService } = useServiceProvider();
 
     const formatDate = (date: string) => {
         const dateParts: string[] = date.split("-");

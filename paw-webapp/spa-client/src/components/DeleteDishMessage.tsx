@@ -4,7 +4,7 @@ import useDishService from "../hooks/serviceHooks/dishes/useDishService";
 import { DishModel } from "../models";
 import { useTranslation } from "react-i18next";
 import useRestaurantMenuContext from "../hooks/useRestaurantMenuContext";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
 
 
 type Props = {
@@ -32,7 +32,7 @@ const style = {
 
 const DeleteDishMessage: FC<Props> = ({ isOpen, handleOpen, dish }) => {
 
-  const { dishService: ds } = useServices();
+  const { dishService: ds } = useServiceProvider();
   const { t } = useTranslation();
   const { getDishes } = useRestaurantMenuContext();
 

@@ -8,7 +8,7 @@ import { OrderItemModel } from "../../models";
 import { OrderitemParams } from "../../models/OrderItems/OrderitemParams";
 import DishCard from "../dishCard/DishCard";
 import ShoppingCartItem from "./ShoppingCartItem";
-import useServices from "../../hooks/useServices";
+import useServiceProvider from "../../context/ServiceProvider";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -19,7 +19,7 @@ type TabPanelProps = {
 const ShoppingCartPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
   const { value, index } = props;
 
-  const { orderItemService } = useServices();
+  const { orderItemService } = useServiceProvider();
   const { reservation, updateReservation, orderItems, updateItem, discount, restaurant } = useContext(ReservationContext);
   let total = 0;
   const textDecoration = discount && total !== 0? 'line-through' : 'none';

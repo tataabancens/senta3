@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import { ReservationModel } from "../../models";
 import ApiErrorDetails, { ApiError } from "../../models/ApiError/ApiErrorDetails";
 import { useTranslation } from "react-i18next";
-import useServices from "../../hooks/useServices";
+import useServiceProvider from "../../context/ServiceProvider";
 
 type Props = {
   isOpen: boolean;
@@ -23,7 +23,7 @@ interface findReservationFormValue {
 
 const AuthReservationForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
   const navigate = useNavigate();
-  const { reservationService } = useServices();
+  const { reservationService } = useServiceProvider();
   const { t } = useTranslation();
 
   const initialValue: findReservationFormValue = {

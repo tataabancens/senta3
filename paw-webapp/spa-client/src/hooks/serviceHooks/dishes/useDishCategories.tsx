@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
 import { DishCategoryModel, RestaurantModel } from "../../../models"
 import useDishService from "./useDishService";
-import useServices from "../../useServices";
+import useServiceProvider from "../../../context/ServiceProvider";
 
 export const useDishCategories = (restaurant: RestaurantModel | undefined) => {
     const [categories, setCategories] = useState<DishCategoryModel[]>();
     const [categoryMap, setCategoryMap] = useState<Map<number, DishCategoryModel>>();
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
-    const { dishService } = useServices();
+    const { dishService } = useServiceProvider();
 
     useEffect(() => {
         (async () => {

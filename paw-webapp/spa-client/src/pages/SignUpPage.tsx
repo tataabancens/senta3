@@ -21,7 +21,7 @@ import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { paths } from "../constants/constants";
 import { useTranslation } from "react-i18next";
 import useAuthenticationService from "../hooks/serviceHooks/authentication/useAutenticationService";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
 
 interface signUpFormValues {
   username: string;
@@ -52,7 +52,7 @@ export const extractCustomerIdFromContent = (content: string): number=> {
 
 const SignUpPage: FC = () => {
 
-  const { customerService, userService, authenticationService } = useServices();
+  const { customerService, userService, authenticationService } = useServiceProvider();
   const navigate = useNavigate();
 
   const { setAuth } = useAuth();

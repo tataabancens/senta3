@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { OrderItemModel } from "../../../models";
 import useOrderItemService from "./useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
-import useServices from "../../useServices";
+import useServiceProvider from "../../../context/ServiceProvider";
 
 export const useOrderItems = (reservationFilterStatus: string, orderItemStatus: string, interval?: number) => {
     const [orderItems, setOrderItems] = useState<OrderItemModel[] | undefined>(undefined);
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
-    const { orderItemService } = useServices();
+    const { orderItemService } = useServiceProvider();
 
     const getOrderItems = async () => {
         let orderItemParams = new OrderitemParams();

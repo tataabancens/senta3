@@ -21,7 +21,7 @@ import useRestaurantService from "../../hooks/serviceHooks/restaurants/useRestau
 import { useTranslation } from "react-i18next";
 import { timeArray } from "../../constants/constants";
 import useAuth from "../../hooks/serviceHooks/authentication/useAuth";
-import useServices from "../../hooks/useServices";
+import useServiceProvider from "../../context/ServiceProvider";
 
 type Props = {
   data: RestaurantModel | undefined;
@@ -41,7 +41,7 @@ const RestaurantInfoForm: FC<Props> = ({
   const [closeHour, setCloseHour] = useState<number | undefined>();
   const { t } = useTranslation();
 
-  const { restaurantService } = useServices();
+  const { restaurantService } = useServiceProvider();
 
   const handleSubmit = async () => {
 

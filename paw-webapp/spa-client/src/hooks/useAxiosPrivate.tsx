@@ -10,8 +10,11 @@ const useAxiosPrivate = () => {
     const authenticationService = useAuthenticationService();
 
     useEffect(() => {
+        
         const requestIntercept = axiosPrivate.interceptors.request.use(
+            
             (config: any) => {
+                console.log("Hooola");
                 if (!config.headers['Authorization'] && !config.sent) {
                     if (auth?.authorization) {
                         config.headers['Authorization'] = auth.authorization;

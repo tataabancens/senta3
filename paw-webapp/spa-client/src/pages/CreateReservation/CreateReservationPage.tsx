@@ -35,7 +35,7 @@ import { CustomerModel, UserModel } from "../../models";
 import { useTranslation } from 'react-i18next';
 import useRestaurantService from '../../hooks/serviceHooks/restaurants/useRestaurantService';
 import useAuthenticationService from '../../hooks/serviceHooks/authentication/useAutenticationService';
-import useServices from '../../hooks/useServices';
+import useServiceProvider from '../../context/ServiceProvider';
 
 export interface createReservationFormValues {
   qPeople: number;
@@ -58,7 +58,7 @@ interface AvailableHours {
 
 const CreateReservation: FC = () => {
   const { customerService, reservationService, restaurantService, 
-    authenticationService, userService } = useServices();
+    authenticationService, userService } = useServiceProvider();
     
   const { setAuth } = useAuth();
   const { auth } = useAuth();

@@ -15,14 +15,14 @@ import { UserRoles } from "../models/Enums/UserRoles";
 import { useCustomer } from "../hooks/serviceHooks/customers/useCustomer";
 import { ReservationParams } from "../models/Reservations/ReservationParams";
 import useReservationService from "../hooks/serviceHooks/reservations/useReservationService";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
 
 const FullMenuPage: FC = () => {
 
     const [value, setValue] = useState(0);
     const [reloadOrderItems, setReload] = useState(false);
     const [discount, setDiscount] = useState(false);
-    const { reservationService: rs } = useServices();
+    const { reservationService: rs } = useServiceProvider();
 
     const { securityCode } = useParams();
 

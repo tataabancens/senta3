@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { DishModel, OrderItemModel, ReservationModel } from "../../../models";
 import useDishService from "./useDishService";
-import useServices from "../../useServices";
+import useServiceProvider from "../../../context/ServiceProvider";
 
 
 export const useRecommendedDish = (reservation: ReservationModel, orderItems: OrderItemModel[], updateReservation: () => void) => {
     const [dish, setDish] = useState<DishModel | undefined>(undefined);
     const [noDish, setNoDish] = useState<Boolean | undefined>();
     const [error, setError] = useState<string>();
-    const { dishService } = useServices();
+    const { dishService } = useServiceProvider();
     const abortController = new AbortController();
 
     useEffect(() => {

@@ -3,14 +3,14 @@ import { OrderItemModel, ReservationModel } from "../../../models";
 import useOrderItemService from "./useOrderItemService";
 import { OrderitemParams } from "../../../models/OrderItems/OrderitemParams";
 import { ORDERITEMS_INTERVAL } from "../../../constants/constants";
-import useServices from "../../useServices";
+import useServiceProvider from "../../../context/ServiceProvider";
 
 export const useOrderItemsBySecCode = (reservation: ReservationModel | undefined) => {
     const [orderItems, setOrderItems] = useState<OrderItemModel[]>([]);
     const [reload, setReload] = useState(false)
     const [error, setError] = useState<string>();
     const abortController = new AbortController();
-    const { orderItemService } = useServices();
+    const { orderItemService } = useServiceProvider();
 
     const reloadItems = () => {setReload(!reload)}
 

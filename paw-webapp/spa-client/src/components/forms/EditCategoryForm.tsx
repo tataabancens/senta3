@@ -5,7 +5,7 @@ import { DishCategoryModel } from "../../models";
 import { DishParams } from "../../models/Dishes/DishParams";
 import useRestaurantMenuContext from "../../hooks/useRestaurantMenuContext";
 import { useTranslation } from "react-i18next";
-import useServices from "../../hooks/useServices";
+import useServiceProvider from "../../context/ServiceProvider";
 
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 const EditCategoryForm: FC<Props> = ({ isOpen, handleOpen }): JSX.Element => {
 
   const [categoryName, setCategoryName] = useState("");
-  const { dishService } = useServices();
+  const { dishService } = useServiceProvider();
   const { t } = useTranslation();
   const { getDishCategories: { categoryList, categoryMap, setCategories, setCategoryMap }, useCurrentCategory: { categoryId, setCategoryId } } = useRestaurantMenuContext();
 

@@ -9,14 +9,14 @@ import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 import { OrderItemModel } from "../models";
 import { OrderitemParams } from "../models/OrderItems/OrderitemParams";
 import { UserRoles } from "../models/Enums/UserRoles";
-import useServices from "../hooks/useServices";
+import useServiceProvider from "../context/ServiceProvider";
   
 
 const Kitchen: FC = () => {
     let filterStatus = "1";
     let orderItemStatus = "1";
     const { t } = useTranslation();
-    const { orderItemService } = useServices();
+    const { orderItemService } = useServiceProvider();
     const { auth } = useAuth();
     const { orderItems: orderedOrderItems,
             error: orderedOrderItemsError,

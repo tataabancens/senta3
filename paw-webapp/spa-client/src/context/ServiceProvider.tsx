@@ -8,6 +8,7 @@ import { CustomerService } from "../services/customer/CustomerService";
 import { OrderItemService } from "../services/OrderItemService";
 import { ReservationService } from "../services/ReservationService";
 import { UserService } from "../services/UserService";
+import useAuth from "../hooks/serviceHooks/authentication/useAuth";
 
 export interface ServiceContext {
     authenticationService: AuthenticationService;
@@ -35,8 +36,9 @@ interface Props {
     children: React.ReactNode;
 }
 
-export const ServiceProvider: React.FC<Props> = ({ children }) => {
-    const axiosPrivate = useAxiosPrivate();
+export const useServiceProvider = () => {
+    const { axiosPrivate } = useAuth();
+    // const axiosPrivate = useAxiosPrivate();
     const authenticationService = new AuthenticationService();
     const dishService = new DishService(axiosPrivate);
     const restaurantService = new RestaurantService(axiosPrivate);
@@ -45,11 +47,16 @@ export const ServiceProvider: React.FC<Props> = ({ children }) => {
     const reservationService = new ReservationService(axiosPrivate);
     const userService = new UserService(axiosPrivate);
 
-    return (
-        <ServiceContext.Provider value={{ authenticationService, dishService, restaurantService, customerService, reservationService, orderItemService, userService }}>
-            {children}
-        </ServiceContext.Provider>
-    )
+    return {
+        customerService,
+        dishService,
+        restaurantService,
+        orderItemService,
+        reservationService,
+        userService,
+        authenticationService
+    }
+    
 }
 
-export default ServiceContext
+export default useServiceProvider

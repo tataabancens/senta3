@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import ServiceContext from "../context/ServiceProvider";
 
-const useServices = () => {
-    return useContext(ServiceContext);
+const useServiceProvider = () => {
+    return null;
 }
 
-export default useServices;
+export default useServiceProvider;
