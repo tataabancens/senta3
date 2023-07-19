@@ -17,6 +17,7 @@ const RestaurantInfo: FC<Props> = ({restaurant, reloadInfo}): JSX.Element => {
     const [isOpenAccountForm, setOpenAccountForm] = useState(false);
     const [isOpenRestForm, setOpenRestForm] = useState(false);
     const { auth } = useAuth();
+    const { content: data } = auth as { content: RestaurantModel };
 
     const handleOpenAccountForm = () => {
         setOpenAccountForm(!isOpenAccountForm);

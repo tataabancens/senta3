@@ -45,7 +45,9 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
             saveAuthInfo(auth);
             return;
         }
+        console.log(authUpdated);
         if (authUpdated) {
+            console.log("Hola");
             saveAuthInfo(auth);
             setAuthUpdated(false);
             return;
@@ -67,6 +69,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
                     const { isOk, data, error } = await restaurantService.getRestaurant(restaurantId, abortController);
                     if (isOk) {
                         const newAuth = { ...auth, content: data as RestaurantModel };
+                        console.log("Estoy cargando datos");
                         setAuthUpdated(true);
                         setAuth(newAuth);
                     }
@@ -75,7 +78,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
                 case(UserRoles.WAITER):
                 case(UserRoles.KITCHEN):
                 default:
-                    setAuthUpdated(true);
+                    break;
             }
         })();
     }, [auth])

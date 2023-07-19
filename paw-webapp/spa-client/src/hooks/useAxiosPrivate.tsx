@@ -4,12 +4,10 @@ import useAuth from "./serviceHooks/authentication/useAuth";
 import { AxiosResponse } from "axios";
 import { emptyAuth, paths } from "../constants/constants";
 import useAuthenticationService from "./serviceHooks/authentication/useAutenticationService";
-import { useNavigate } from "react-router-dom";
 
 const useAxiosPrivate = () => {
     const { auth, setAuth } = useAuth();
     const authenticationService = useAuthenticationService();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
