@@ -22,13 +22,13 @@ const CustomerReservations: FC = () => {
   const { t } = useTranslation();
 
   const activeFilterStatus = "0"
-  const { reservations: activeReservations, error: activeReservationsError, loading: activeReservationsLoading } = useReservations(content.id, activeFilterStatus);
+  const { reservations: activeReservations } = useReservations(content.id, activeFilterStatus);
   const seatedFilterStatus = "1"
-  const { reservations: seatedReservations, error: seatedReservationsError, loading: seatedReservationsLoading } = useReservations(content.id, seatedFilterStatus);
+  const { reservations: seatedReservations } = useReservations(content.id, seatedFilterStatus);
   const pendingFilterStatus = "2"
-  const { reservations: pendingReservations, error: pendingReservationsError} = useReservations(content.id, pendingFilterStatus);
+  const { reservations: pendingReservations} = useReservations(content.id, pendingFilterStatus);
   const finishedFilterStatus = "3"
-  const { reservations: finishedReservations, error: finishedReservationsError, loading: finishedReservationsLoading } = useReservations(content.id, finishedFilterStatus);
+  const { reservations: finishedReservations } = useReservations(content.id, finishedFilterStatus);
 
   useEffect(() => {
     if(seatedReservations) { 

@@ -6,7 +6,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import QPeopleForm from './QPeopleForm';
 import DateForm from './DateForm';
@@ -131,7 +130,7 @@ const CreateReservation: FC = () => {
         break;
       case 1: //date
         if (auth.id > 0) { //there is a logged in user
-          if (user != undefined) {
+          if (user !== undefined) {
             const custId = extractCustomerIdFromContent(user.content);
             setCustomerId(custId);
             handleResponse(customerService.getCustomerById(custId), (customer: CustomerModel) =>
@@ -158,7 +157,7 @@ const CreateReservation: FC = () => {
           props.setSubmitting(false);
           return;
         }
-        if (customer != undefined) {
+        if (customer !== undefined) {
           setActiveStep(activeStep + 2); //skip create customer
           return;
         }
@@ -172,9 +171,9 @@ const CreateReservation: FC = () => {
         const { ok: customerCreated, error: customerError, response: customerResponse } = await awaitWrapper(customerService.createCustomer(cusParams));
         if (!customerCreated) {
           const errorData = customerError.response?.data as ApiErrorDetails;
-          props.setFieldError("customerName", errorData.errors?.find((e) => e.property == "customerName")?.description);
-          props.setFieldError("email", errorData.errors?.find((e) => e.property == "email")?.description);
-          props.setFieldError("phone", errorData.errors?.find((e) => e.property == "phone")?.description);
+          props.setFieldError("customerName", errorData.errors?.find((e) => e.property === "customerName")?.description);
+          props.setFieldError("email", errorData.errors?.find((e) => e.property === "email")?.description);
+          props.setFieldError("phone", errorData.errors?.find((e) => e.property === "phone")?.description);
           props.setSubmitting(false);
           return;
         }
@@ -197,7 +196,6 @@ const CreateReservation: FC = () => {
         setResCode(resResponse!.headers["location"]!.split("/reservations/")[1]);
         setActiveStep(activeStep + 2); //skip one
         return;
-        break;
 
       case 4:
         resParams.hour = hour;
@@ -205,8 +203,7 @@ const CreateReservation: FC = () => {
         resParams.date = date.toString();
         resParams.restaurantId = 1;
 
-        // @ts-ignore
-        resParams.customerId = customer.id;
+        resParams.customerId = customer!.id;
         const { ok: resCreated2, error: resError2, response: resResponse2 } = await awaitWrapper(reservationService.createReservation(resParams));
         if (!resCreated2) {
           console.log(resError2);
@@ -216,7 +213,6 @@ const CreateReservation: FC = () => {
         setResCode(resResponse2!.headers["location"]!.split("/reservations/")[1]);
         setActiveStep(activeStep + 3); //go to last
         return;
-        break;
 
       case 5: //done
         props.setFieldValue("userStep", true);
@@ -227,12 +223,12 @@ const CreateReservation: FC = () => {
         userParams.psPair = { password: password, checkPassword: repeatPassword };
         userParams.role = "CUSTOMER";
         userParams.customerId = customerId;
-        const { ok: userCreated, error: userError, response: userResponse } = await awaitWrapper(userService.createUser(userParams));
+        const { ok: userCreated, error: userError } = await awaitWrapper(userService.createUser(userParams));
 
         if (!userCreated) {
           const errorData = userError.response?.data as ApiErrorDetails;
-          props.setFieldError("username", errorData.errors?.find((e) => e.property == "username")?.description);
-          props.setFieldError("password", errorData.errors?.find((e) => e.property == "psPair")?.description);
+          props.setFieldError("username", errorData.errors?.find((e) => e.property === "username")?.description);
+          props.setFieldError("password", errorData.errors?.find((e) => e.property === "psPair")?.description);
           props.setSubmitting(false);
           return;
         }
@@ -264,13 +260,13 @@ const CreateReservation: FC = () => {
 
   const handleBack = (values: createReservationFormValues, props: FormikHelpers<createReservationFormValues>) => {
     let curr = activeStep;
-    if (curr == 0) {
+    if (curr === 0) {
       navigate(`${paths.ROOT}`);
     }
-    if (curr == 4) {
+    if (curr === 4) {
       curr--;
     }
-    if (curr == 5 || curr == 7) {
+    if (curr === 5 || curr === 7) {
       navigate(`${paths.ROOT}/reservations/${secCode}`);
       return;
     }
@@ -318,7 +314,7 @@ const CreateReservation: FC = () => {
                     }
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <Button onClick={() => handleBack(props.values, props)} sx={{ mt: 3, ml: 1 }}
-                        disabled={activeStep == 7}
+                        disabled={activeStep === 7}
                       >
                         {
                           {
