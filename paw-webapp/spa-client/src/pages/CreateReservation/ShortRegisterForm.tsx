@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { createReservationFormValues } from './CreateReservationPage';
 import { Field, ErrorMessage, FormikProps } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 interface ShortRegisterFormProps {
     props: FormikProps<createReservationFormValues>;
@@ -16,10 +17,11 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
         handleChange,
         handleBlur,
         errors } = props;
+    const { t } = useTranslation();
     return (
         <React.Fragment>
-            <Typography variant="h6" gutterBottom>
-                Create an account
+            <Typography variant="h6" align="center" marginBottom={2}>
+                {t('createReservation.shortRegister.title')}
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
@@ -27,7 +29,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         disabled
                         id="firstName"
                         name="firstName"
-                        label="First name"
+                        label={t('createReservation.shortRegister.firstName')}
                         fullWidth
                         autoComplete="firstName"
                         variant="standard"
@@ -39,7 +41,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         disabled
                         id="lastName"
                         name="lastName"
-                        label="Last name"
+                        label={t('createReservation.shortRegister.lastName')}
                         fullWidth
                         autoComplete="lastName"
                         variant="standard"
@@ -63,7 +65,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         disabled
                         id="phone"
                         name="phone"
-                        label="Phone"
+                        label={t('createReservation.shortRegister.phone')}
                         fullWidth
                         autoComplete="phone"
                         variant="standard"
@@ -75,7 +77,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         required
                         id="username"
                         name="username"
-                        label="Username"
+                        label={t('createReservation.shortRegister.username')}
                         fullWidth
                         autoComplete="username"
                         variant="standard"
@@ -91,7 +93,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         required
                         id="password"
                         name="password"
-                        label="Password"
+                        label={t('createReservation.shortRegister.password')}
                         type="password"
                         fullWidth
                         variant="standard"
@@ -107,7 +109,7 @@ export default function ShortRegisterForm({ props }: ShortRegisterFormProps) {
                         required
                         id="repeatPassword"
                         name="repeatPassword"
-                        label="Repeat password"
+                        label={t('createReservation.shortRegister.repeatPassword')}
                         type="password"
                         fullWidth
                         variant="standard"

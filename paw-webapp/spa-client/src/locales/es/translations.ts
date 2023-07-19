@@ -80,6 +80,15 @@ export const TRANSLATIONS_ES ={
             stepDescriptionPart2: " a las {{hour}}hs para {{qPeople}} persona/s. Tu codigo de reserva es: {{secCode}}.",
             pointsDisclaimer: "Si te registras vas a poder obtener puntos para descuentos!"
         },
+        shortRegister:{
+            title: "Registrarse",
+            firstName: "Nombre",
+            lastName: "Apellido",
+            phone: "Telefono",
+            username: "Usuario",
+            password: "Contraseña",
+            repeatPassword: "Repetir contraseña"
+        },
         next: "Siguiente",
         back: "Volver",
         makeReservation: "Reservar",
