@@ -148,7 +148,7 @@ export const TRANSLATIONS_EN = {
         },
         ordersPanel:{
             title: "Orders",
-            disclaimer: "Your orders status will be seen when you arrive at the restaurants",
+            disclaimer: "Your orders status will be seen when you arrive at the restaurant",
             noDishes: "You have not ordered any items yet",
             orderedStatus: "Ordered",
             cookingStatus: "Cooking",
