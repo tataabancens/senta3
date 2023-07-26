@@ -73,10 +73,21 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <filter>
+    <filter-name>DefaultPageRedirectFilter</filter-name>
+    <filter-class>ar.edu.itba.paw.webapp.config.DefaultPageRedirectFilter</filter-class>
+  </filter>
+
+
   <filter-mapping>
     <filter-name>jersey</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+    <filter-mapping>
+      <filter-name>DefaultPageRedirectFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
   <error-page>
     <error-code>404</error-code>
